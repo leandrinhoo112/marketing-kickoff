@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) { console.error(error); }
     }
 
-    // FUNÇÃO PARA ENVIAR ALERTA COM MENÇÃO À EQUIPE
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
 
@@ -65,35 +64,26 @@ document.addEventListener('DOMContentLoaded', () => {
                                 "type": "TextBlock",
                                 "size": "Large",
                                 "weight": "Bolder",
-                                "text": "🚨 ALERTA GERAL: PEDIDO DE AJUDA",
+                                "text": "🚨 <at>Geral</at> - AJUDA NECESSÁRIA",
                                 "color": "Attention"
                             },
                             {
                                 "type": "TextBlock",
-                                "text": "Atenção Equipe! Temos um colega precisando de suporte agora.",
-                                "wrap": true,
-                                "weight": "Bolder"
+                                "text": `O colega **${entry.username}** sinalizou que precisa de ajuda no Radar Diário!`,
+                                "wrap": true
                             },
                             {
                                 "type": "FactSet",
                                 "facts": [
-                                    { "title": "Quem:", "value": entry.username },
-                                    { "title": "O que houve:", "value": entry.help_needed || 'Impedimento técnico' },
-                                    { "title": "Com quem:", "value": entry.who_help || 'Qualquer pessoa disponível' },
-                                    { "title": "Bloqueios:", "value": entry.blockers || 'Nenhum' }
+                                    { "title": "Ajuda:", "value": entry.help_needed || 'Impedimento' },
+                                    { "title": "Com quem:", "value": entry.who_help || 'Equipe' }
                                 ]
-                            },
-                            {
-                                "type": "TextBlock",
-                                "text": "Por favor, verifiquem o Radar Diário para mais detalhes.",
-                                "wrap": true,
-                                "isSubtle": true
                             }
                         ],
                         "actions": [
                             {
                                 "type": "Action.OpenUrl",
-                                "title": "Ver no Radar Diário",
+                                "title": "Ver Radar Diário",
                                 "url": window.location.href
                             }
                         ],
@@ -103,10 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             "entities": [
                                 {
                                     "type": "mention",
-                                    "text": "<at>Canal</at>",
+                                    "text": "<at>Geral</at>",
                                     "mentioned": {
-                                        "id": "channel",
-                                        "name": "Canal"
+                                        "id": "General",
+                                        "name": "Geral"
                                     }
                                 }
                             ]
