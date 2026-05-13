@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) { console.error(error); }
     }
 
-    // FUNÇÃO PARA ENVIAR ALERTA NO FORMATO DE CARTÃO (PADRÃO GRATUITO DO TEAMS)
+    // FUNÇÃO PARA ENVIAR ALERTA COM MENÇÃO À EQUIPE
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
 
@@ -61,30 +61,68 @@ document.addEventListener('DOMContentLoaded', () => {
                     "content": {
                         "type": "AdaptiveCard",
                         "body": [
-                            { "type": "TextBlock", "size": "Medium", "weight": "Bolder", "text": "🚨 ALERTA NO RADAR DIÁRIO" },
-                            { "type": "TextBlock", "text": `**Colaborador:** ${entry.username}`, "wrap": true },
-                            { "type": "TextBlock", "text": `**Pedido de Ajuda:** ${entry.help_needed || 'Não informado'}`, "wrap": true },
-                            { "type": "TextBlock", "text": `**Impedimentos:** ${entry.blockers || 'Nenhum'}`, "wrap": true, "color": "Attention" }
+                            {
+                                "type": "TextBlock",
+                                "size": "Large",
+                                "weight": "Bolder",
+                                "text": "🚨 ALERTA GERAL: PEDIDO DE AJUDA",
+                                "color": "Attention"
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Atenção Equipe! Temos um colega precisando de suporte agora.",
+                                "wrap": true,
+                                "weight": "Bolder"
+                            },
+                            {
+                                "type": "FactSet",
+                                "facts": [
+                                    { "title": "Quem:", "value": entry.username },
+                                    { "title": "O que houve:", "value": entry.help_needed || 'Impedimento técnico' },
+                                    { "title": "Com quem:", "value": entry.who_help || 'Qualquer pessoa disponível' },
+                                    { "title": "Bloqueios:", "value": entry.blockers || 'Nenhum' }
+                                ]
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Por favor, verifiquem o Radar Diário para mais detalhes.",
+                                "wrap": true,
+                                "isSubtle": true
+                            }
+                        ],
+                        "actions": [
+                            {
+                                "type": "Action.OpenUrl",
+                                "title": "Ver no Radar Diário",
+                                "url": window.location.href
+                            }
                         ],
                         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                        "version": "1.0"
+                        "version": "1.2",
+                        "msTeams": {
+                            "entities": [
+                                {
+                                    "type": "mention",
+                                    "text": "<at>Canal</at>",
+                                    "mentioned": {
+                                        "id": "channel",
+                                        "name": "Canal"
+                                    }
+                                }
+                            ]
+                        }
                     }
                 }
             ]
         };
 
         try {
-            const response = await fetch(TEAMS_WEBHOOK_URL, {
+            await fetch(TEAMS_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            if (response.ok) {
-                console.log("🔔 Alerta de CARTÃO enviado ao Teams!");
-            } else {
-                console.error("❌ O Teams recusou o cartão:", response.status);
-            }
-        } catch (e) { console.error("Erro na comunicação com Teams:", e); }
+        } catch (e) { console.error("Erro Teams:", e); }
     }
 
     if (form) {
@@ -107,9 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
-                
                 await sendTeamsAlert(entry);
-
                 alert('✅ RADAR ENVIADO COM SUCESSO!');
                 form.reset();
                 loadEntries();
