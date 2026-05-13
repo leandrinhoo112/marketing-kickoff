@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const blockersVal = (entry.blockers || '').toLowerCase().trim();
                     const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
                     return `
-                    <div class="kickoff-item" style="border-left: 4px solid #6841f1; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                    <div class="kickoff-item" style="border-left: 4px solid #6841f1; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
                         <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
-                            <div>
+                            <div class="user-info">
                                 <h4 style="color: #8e6eff; font-size: 1.2em; margin: 0;">${entry.username || 'Membro do Time'}</h4>
                                 <span style="opacity: 0.5; font-size: 0.85em;">${new Date(entry.created_at).toLocaleString('pt-BR')}</span>
                             </div>
@@ -49,11 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) { console.error(error); }
     }
 
-    // FUNÇÃO PARA ENVIAR ALERTA NO FORMATO PADRÃO DO TEAMS (GRATUITO)
+    // FUNÇÃO PARA ENVIAR ALERTA NO FORMATO DE CARTÃO (PADRÃO GRATUITO DO TEAMS)
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
 
-        // Formato de "Adaptive Card" que o Teams aceita na versão gratuita
         const payload = {
             "type": "message",
             "attachments": [
@@ -62,11 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     "content": {
                         "type": "AdaptiveCard",
                         "body": [
-                            { "type": "TextBlock", "size": "Medium", "weight": "Bolder", "text": "🚨 Pedido de Ajuda no Radar Diário" },
+                            { "type": "TextBlock", "size": "Medium", "weight": "Bolder", "text": "🚨 ALERTA NO RADAR DIÁRIO" },
                             { "type": "TextBlock", "text": `**Colaborador:** ${entry.username}`, "wrap": true },
-                            { "type": "TextBlock", "text": `**Ajuda:** ${entry.help_needed || 'N/a'}`, "wrap": true },
-                            { "type": "TextBlock", "text": `**Com quem:** ${entry.who_help || 'Time'}`, "wrap": true },
-                            { "type": "TextBlock", "text": `**Impedimento:** ${entry.blockers || 'Nenhum'}`, "wrap": true, "color": "Attention" }
+                            { "type": "TextBlock", "text": `**Pedido de Ajuda:** ${entry.help_needed || 'Não informado'}`, "wrap": true },
+                            { "type": "TextBlock", "text": `**Impedimentos:** ${entry.blockers || 'Nenhum'}`, "wrap": true, "color": "Attention" }
                         ],
                         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                         "version": "1.0"
@@ -76,13 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            await fetch(TEAMS_WEBHOOK_URL, {
+            const response = await fetch(TEAMS_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            console.log("🔔 Alerta enviado ao Teams!");
-        } catch (e) { console.error("Erro Teams:", e); }
+            if (response.ok) {
+                console.log("🔔 Alerta de CARTÃO enviado ao Teams!");
+            } else {
+                console.error("❌ O Teams recusou o cartão:", response.status);
+            }
+        } catch (e) { console.error("Erro na comunicação com Teams:", e); }
     }
 
     if (form) {
@@ -105,7 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
+                
                 await sendTeamsAlert(entry);
+
                 alert('✅ RADAR ENVIADO COM SUCESSO!');
                 form.reset();
                 loadEntries();
