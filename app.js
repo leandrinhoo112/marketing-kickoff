@@ -16,7 +16,7 @@ try {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 Aplicativo Marketing Kickoff Iniciado");
+    console.log("🚀 Aplicativo Radar Diário Iniciado");
     
     const form = document.getElementById('kickoffForm');
     const kickoffList = document.getElementById('kickoffList');
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
 
-                alert('✅ KICKOFF ENVIADO COM SUCESSO!');
+                alert('✅ RADAR ENVIADO COM SUCESSO!');
                 form.reset();
                 loadEntries();
             } catch (error) {
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error(error);
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Enviar Kickoff <i data-lucide="send"></i>';
+                submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>';
                 if (window.lucide) window.lucide.createIcons();
             }
         });
