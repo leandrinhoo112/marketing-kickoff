@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Kickoff | Daily Team Sync</title>
+    <meta name="description" content="App de Kickoff diário para times de marketing. Organize suas tarefas, compartilhe progressos e peça ajuda de forma eficiente.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="background-blob"></div>
+    <div class="background-blob blob-2"></div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i data-lucide="rocket"></i>
+                <span>Marketing<span>Kickoff</span></span>
+            </div>
+            <div class="date-display" id="currentDate"></div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="form-section">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h2>Novo Check-in Diário</h2>
+                    <p>Preencha suas metas e atualizações para o dia de hoje.</p>
+                </div>
+                
+                <form id="kickoffForm">
+                    <div class="input-group">
+                        <label for="userName"><i data-lucide="user"></i> Nome Completo</label>
+                        <input type="text" id="userName" name="userName" placeholder="Seu nome" required>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label for="yesterdayTasks"><i data-lucide="check-circle"></i> O que foi concluído ontem?</label>
+                            <textarea id="yesterdayTasks" name="yesterdayTasks" placeholder="Liste as tarefas finalizadas..." required></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="todayTasks"><i data-lucide="target"></i> O que você fará hoje?</label>
+                            <textarea id="todayTasks" name="todayTasks" placeholder="Quais são as metas para hoje?" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label for="helpNeeded"><i data-lucide="help-circle"></i> Precisa de ajuda com algo?</label>
+                            <textarea id="helpNeeded" name="helpNeeded" placeholder="Descreva onde o progresso travou..."></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="whoHelp"><i data-lucide="users"></i> De quem você precisa de ajuda?</label>
+                            <input type="text" id="whoHelp" name="whoHelp" placeholder="Nome do colega ou time">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="blockers"><i data-lucide="alert-triangle"></i> Algo impedindo o seu progresso? (Deixe em branco se não houver)</label>
+                        <textarea id="blockers" name="blockers" placeholder="Ex: Aguardando aprovação, problema técnico..."></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="observations"><i data-lucide="message-square"></i> Observações Diárias</label>
+                        <textarea id="observations" name="observations" placeholder="Algo mais que o time precise saber?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        Enviar Kickoff <i data-lucide="send"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <div class="section-header">
+                <h3><i data-lucide="list"></i> Feed da Equipe</h3>
+            </div>
+            <div id="kickoffList" class="kickoff-list">
+                <!-- Entries will be loaded here -->
+                <div class="empty-state">
+                    <i data-lucide="calendar"></i>
+                    <p>Nenhum registro hoje. Seja o primeiro!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <img src="Logo-Faculdade-Inspirar-4.png" alt="Faculdade Inspirar" style="height: 60px; margin-bottom: 15px; filter: brightness(0) invert(1);">
+            <p>&copy; 2026 Marketing Kickoff • Desenvolvido pelo Leandro Campeão 🏆</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
