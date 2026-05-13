@@ -1,23 +1,17 @@
 const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
+const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/e52c755857fb4ec4919f2795dabfec8f/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=OmOV_CtfLiuUeKN394lLoyAabM9hesLiFE2ky6o0B2c';
 
-// Mudamos o nome para 'supabaseClient' para evitar conflito com a biblioteca
 let supabaseClient;
 try {
     if (window.supabase) {
-        // Inicializa usando a biblioteca global
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log("✅ Conexão com Supabase preparada!");
-    } else {
-        console.error("❌ Erro: Biblioteca Supabase não encontrada no navegador.");
     }
 } catch (e) {
-    console.error("❌ Erro ao iniciar cliente:", e);
+    console.error("Erro ao iniciar Supabase:", e);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 Aplicativo Radar Diário Iniciado");
-    
     const form = document.getElementById('kickoffForm');
     const kickoffList = document.getElementById('kickoffList');
     const dateDisplay = document.getElementById('currentDate');
@@ -59,23 +53,43 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>`;
                 }).join('');
             } else {
-                kickoffList.innerHTML = '<div class="empty-state" style="text-align: center; padding: 40px; opacity: 0.5;"><p>Nenhum registro hoje. Seja o primeiro!</p></div>';
+                kickoffList.innerHTML = '<div class="empty-state" style="text-align: center; padding: 40px; opacity: 0.5;"><p>Nenhum registro hoje.</p></div>';
             }
             if (window.lucide) window.lucide.createIcons();
         } catch (error) {
-            console.error('Erro ao carregar dados:', error);
+            console.error('Erro ao carregar:', error);
+        }
+    }
+
+    // FUNÇÃO PARA ENVIAR ALERTA AO TEAMS
+    async function sendTeamsAlert(entry) {
+        if (!entry.help_needed && !entry.blockers) return;
+
+        const payload = {
+            title: "🚨 NOVO ALERTA: Pedido de Ajuda no Radar!",
+            userName: entry.username,
+            help: entry.help_needed || "Nenhum",
+            who: entry.who_help || "Alguém do time",
+            blockers: entry.blockers || "Nenhum",
+            url: window.location.href
+        };
+
+        try {
+            await fetch(TEAMS_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            console.log("🔔 Alerta enviado ao Teams!");
+        } catch (e) {
+            console.error("Erro ao avisar Teams:", e);
         }
     }
 
     if (form) {
         form.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Agora isso vai funcionar!
-            console.log("📩 Enviando formulário...");
-
-            if (!supabaseClient) {
-                alert("Erro: O sistema de banco de dados não carregou corretamente.");
-                return;
-            }
+            e.preventDefault();
+            if (!supabaseClient) return;
 
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
@@ -95,12 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
 
+                // TENTA ENVIAR O ALERTA PARA O TEAMS
+                await sendTeamsAlert(entry);
+
                 alert('✅ RADAR ENVIADO COM SUCESSO!');
                 form.reset();
                 loadEntries();
             } catch (error) {
                 alert('Erro ao salvar: ' + error.message);
-                console.error(error);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>';
