@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
 
+        // Versão 1.4 com menção embutida no texto
         const payload = {
             "type": "message",
             "attachments": [
@@ -64,39 +65,33 @@ document.addEventListener('DOMContentLoaded', () => {
                                 "type": "TextBlock",
                                 "size": "Large",
                                 "weight": "Bolder",
-                                "text": "🚨 <at>Geral</at> - AJUDA NECESSÁRIA",
+                                "text": "🚨 <at>canal</at> - AJUDA URGENTE",
                                 "color": "Attention"
                             },
                             {
                                 "type": "TextBlock",
-                                "text": `O colega **${entry.username}** sinalizou que precisa de ajuda no Radar Diário!`,
+                                "text": `**${entry.username}** enviou um sinal de alerta no Radar!`,
                                 "wrap": true
                             },
                             {
                                 "type": "FactSet",
                                 "facts": [
-                                    { "title": "Ajuda:", "value": entry.help_needed || 'Impedimento' },
+                                    { "title": "O que:", "value": entry.help_needed || 'Impedimento' },
                                     { "title": "Com quem:", "value": entry.who_help || 'Equipe' }
                                 ]
                             }
                         ],
-                        "actions": [
-                            {
-                                "type": "Action.OpenUrl",
-                                "title": "Ver Radar Diário",
-                                "url": window.location.href
-                            }
-                        ],
+                        "actions": [{ "type": "Action.OpenUrl", "title": "Abrir Radar Diário", "url": window.location.href }],
                         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                        "version": "1.2",
-                        "msTeams": {
+                        "version": "1.4",
+                        "msteams": {
                             "entities": [
                                 {
                                     "type": "mention",
-                                    "text": "<at>Geral</at>",
+                                    "text": "<at>canal</at>",
                                     "mentioned": {
-                                        "id": "General",
-                                        "name": "Geral"
+                                        "id": "channel",
+                                        "name": "Canal"
                                     }
                                 }
                             ]
@@ -107,12 +102,15 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            await fetch(TEAMS_WEBHOOK_URL, {
+            const response = await fetch(TEAMS_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-        } catch (e) { console.error("Erro Teams:", e); }
+            if (!response.ok) {
+                console.error("Teams recusou menção. Status:", response.status);
+            }
+        } catch (e) { console.error(e); }
     }
 
     if (form) {
