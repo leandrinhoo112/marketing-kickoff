@@ -51,20 +51,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ENVIANDO APENAS UMA STRING DE TEXTO PARA FACILITAR
     async function sendTeamsAlert(entry) {
-        if (!entry.help_needed && !entry.blockers) return;
+        if (!entry.help_needed && !entry.blockers) {
+            console.log("ℹ️ Nenhuma ajuda ou impedimento relatado. Pulando alerta do Teams.");
+            return;
+        }
 
-        const textMessage = `🚨 ALERTA RADAR: O colaborador ${entry.username} precisa de ajuda!\n\n❓ Ajuda: ${entry.help_needed || 'Impedimento'}\n🤝 Com: ${entry.who_help || 'Equipe'}\n🔗 Ver no site: ${window.location.href}`;
+        const textMessage = `🚨 **ALERTA RADAR: AJUDA NECESSÁRIA**\n\n**Colaborador:** ${entry.username}\n**❓ Ajuda:** ${entry.help_needed || 'Impedimento'}\n**🤝 Com:** ${entry.who_help || 'Equipe'}\n\n**🔗 Ver no site:** [Clique aqui para ver o feed](${window.location.href})`;
+
+        console.group("🚀 Enviando Alerta para o Teams");
+        console.log("URL:", TEAMS_WEBHOOK_URL);
+        console.log("Payload:", { "text": textMessage });
+
+        // Usaremos a nossa nova API Proxy para evitar erros de CORS
+        const PROXY_URL = '/api/send-teams'; 
+        // Se estiver testando localmente (file://), você pode usar a URL completa após o deploy:
+        // const PROXY_URL = 'https://kickoff-diario.vercel.app/api/send-teams';
 
         try {
-            await fetch(TEAMS_WEBHOOK_URL, {
+            const response = await fetch(PROXY_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ "mensagem": textMessage })
+                body: JSON.stringify({ "text": textMessage })
             });
-        } catch (e) { console.error(e); }
+
+            if (response.ok) {
+                console.log("✅ Sucesso via Proxy!");
+                alert("✅ Radar enviado ao Teams com sucesso!");
+            } else {
+                console.error("❌ Erro na API Proxy");
+                alert("⚠️ A API Proxy respondeu com erro. Certifique-se de que fez o deploy da pasta /api.");
+            }
+        } catch (e) {
+            console.error("❌ Erro de Conexão (CORS ou Rede):", e);
+            alert("❌ Erro crítico ao contatar o Teams. Pode ser um problema de CORS ou a URL expirou. Veja o console (F12).");
+        }
+        console.groupEnd();
     }
 
     if (form) {
+        const testBtn = document.getElementById('testTeamsBtn');
+        if (testBtn) {
+            testBtn.addEventListener('click', async () => {
+                const testEntry = {
+                    username: "TESTE MANUAL",
+                    help_needed: "Teste de conexão do botão",
+                    who_help: "Suporte",
+                    blockers: "Nenhum"
+                };
+                testBtn.innerText = 'Testando...';
+                testBtn.disabled = true;
+                await sendTeamsAlert(testEntry);
+                testBtn.innerText = 'Testar Teams';
+                testBtn.disabled = false;
+                if (window.lucide) window.lucide.createIcons();
+            });
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
