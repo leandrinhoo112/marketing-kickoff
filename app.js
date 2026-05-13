@@ -1,6 +1,6 @@
 const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
-const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/e52c755857fb4ec4919f2795dabfec8f/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=OmOV_CtfLiuUeKN394lLoyAabM9hesLiFE2ky6o0B2c';
+const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/153e3f8a2751498d97cc12492a53f4a1/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=TuCpM5J-KocBqn5jqNzhwQ8UAxc2PJqIRBgzFKj8xcU';
 
 let supabaseClient;
 try {
@@ -49,25 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) { console.error(error); }
     }
 
-    // ENVIANDO DADOS PUROS PARA O POWER AUTOMATE
+    // ENVIANDO APENAS UMA STRING DE TEXTO PARA FACILITAR
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
 
-        const payload = {
-            "userName": entry.username,
-            "help": entry.help_needed || "N/a",
-            "who": entry.who_help || "Equipe",
-            "blockers": entry.blockers || "Nenhum",
-            "url": window.location.href
-        };
+        const textMessage = `🚨 ALERTA RADAR: O colaborador ${entry.username} precisa de ajuda!\n\n❓ Ajuda: ${entry.help_needed || 'Impedimento'}\n🤝 Com: ${entry.who_help || 'Equipe'}\n🔗 Ver no site: ${window.location.href}`;
 
         try {
             await fetch(TEAMS_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({ "mensagem": textMessage })
             });
-            console.log("🔔 Dados enviados ao Power Automate!");
         } catch (e) { console.error(e); }
     }
 
