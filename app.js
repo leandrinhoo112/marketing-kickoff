@@ -7,9 +7,7 @@ try {
     if (window.supabase) {
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     }
-} catch (e) {
-    console.error("Erro ao iniciar Supabase:", e);
-}
+} catch (e) { console.error(e); }
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('kickoffForm');
@@ -23,22 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadEntries() {
         if (!supabaseClient) return;
         try {
-            const { data, error } = await supabaseClient
-                .from('kickoffs')
-                .select('*')
-                .order('created_at', { ascending: false });
-            
+            const { data, error } = await supabaseClient.from('kickoffs').select('*').order('created_at', { ascending: false });
             if (error) throw error;
-            
-            if (data && data.length > 0) {
+            if (data) {
                 kickoffList.innerHTML = data.map(entry => {
                     const blockersVal = (entry.blockers || '').toLowerCase().trim();
                     const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
-
                     return `
-                    <div class="kickoff-item" style="border-left: 4px solid #6841f1; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    <div class="kickoff-item" style="border-left: 4px solid #6841f1; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px;">
                         <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
-                            <div class="user-info">
+                            <div>
                                 <h4 style="color: #8e6eff; font-size: 1.2em; margin: 0;">${entry.username || 'Membro do Time'}</h4>
                                 <span style="opacity: 0.5; font-size: 0.85em;">${new Date(entry.created_at).toLocaleString('pt-BR')}</span>
                             </div>
@@ -52,26 +44,35 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>`;
                 }).join('');
-            } else {
-                kickoffList.innerHTML = '<div class="empty-state" style="text-align: center; padding: 40px; opacity: 0.5;"><p>Nenhum registro hoje.</p></div>';
             }
             if (window.lucide) window.lucide.createIcons();
-        } catch (error) {
-            console.error('Erro ao carregar:', error);
-        }
+        } catch (error) { console.error(error); }
     }
 
-    // FUNÇÃO PARA ENVIAR ALERTA AO TEAMS
+    // FUNÇÃO PARA ENVIAR ALERTA NO FORMATO PADRÃO DO TEAMS (GRATUITO)
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
 
+        // Formato de "Adaptive Card" que o Teams aceita na versão gratuita
         const payload = {
-            title: "🚨 NOVO ALERTA: Pedido de Ajuda no Radar!",
-            userName: entry.username,
-            help: entry.help_needed || "Nenhum",
-            who: entry.who_help || "Alguém do time",
-            blockers: entry.blockers || "Nenhum",
-            url: window.location.href
+            "type": "message",
+            "attachments": [
+                {
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content": {
+                        "type": "AdaptiveCard",
+                        "body": [
+                            { "type": "TextBlock", "size": "Medium", "weight": "Bolder", "text": "🚨 Pedido de Ajuda no Radar Diário" },
+                            { "type": "TextBlock", "text": `**Colaborador:** ${entry.username}`, "wrap": true },
+                            { "type": "TextBlock", "text": `**Ajuda:** ${entry.help_needed || 'N/a'}`, "wrap": true },
+                            { "type": "TextBlock", "text": `**Com quem:** ${entry.who_help || 'Time'}`, "wrap": true },
+                            { "type": "TextBlock", "text": `**Impedimento:** ${entry.blockers || 'Nenhum'}`, "wrap": true, "color": "Attention" }
+                        ],
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "version": "1.0"
+                    }
+                }
+            ]
         };
 
         try {
@@ -81,16 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(payload)
             });
             console.log("🔔 Alerta enviado ao Teams!");
-        } catch (e) {
-            console.error("Erro ao avisar Teams:", e);
-        }
+        } catch (e) { console.error("Erro Teams:", e); }
     }
 
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!supabaseClient) return;
-
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             submitBtn.innerText = 'Enviando...';
@@ -108,15 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
-
-                // TENTA ENVIAR O ALERTA PARA O TEAMS
                 await sendTeamsAlert(entry);
-
                 alert('✅ RADAR ENVIADO COM SUCESSO!');
                 form.reset();
                 loadEntries();
             } catch (error) {
-                alert('Erro ao salvar: ' + error.message);
+                alert('Erro: ' + error.message);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>';
