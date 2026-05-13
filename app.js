@@ -49,67 +49,25 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) { console.error(error); }
     }
 
+    // ENVIANDO DADOS PUROS PARA O POWER AUTOMATE
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
 
-        // Versão 1.4 com menção embutida no texto
         const payload = {
-            "type": "message",
-            "attachments": [
-                {
-                    "contentType": "application/vnd.microsoft.card.adaptive",
-                    "content": {
-                        "type": "AdaptiveCard",
-                        "body": [
-                            {
-                                "type": "TextBlock",
-                                "size": "Large",
-                                "weight": "Bolder",
-                                "text": "🚨 <at>canal</at> - AJUDA URGENTE",
-                                "color": "Attention"
-                            },
-                            {
-                                "type": "TextBlock",
-                                "text": `**${entry.username}** enviou um sinal de alerta no Radar!`,
-                                "wrap": true
-                            },
-                            {
-                                "type": "FactSet",
-                                "facts": [
-                                    { "title": "O que:", "value": entry.help_needed || 'Impedimento' },
-                                    { "title": "Com quem:", "value": entry.who_help || 'Equipe' }
-                                ]
-                            }
-                        ],
-                        "actions": [{ "type": "Action.OpenUrl", "title": "Abrir Radar Diário", "url": window.location.href }],
-                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                        "version": "1.4",
-                        "msteams": {
-                            "entities": [
-                                {
-                                    "type": "mention",
-                                    "text": "<at>canal</at>",
-                                    "mentioned": {
-                                        "id": "channel",
-                                        "name": "Canal"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
+            "userName": entry.username,
+            "help": entry.help_needed || "N/a",
+            "who": entry.who_help || "Equipe",
+            "blockers": entry.blockers || "Nenhum",
+            "url": window.location.href
         };
 
         try {
-            const response = await fetch(TEAMS_WEBHOOK_URL, {
+            await fetch(TEAMS_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            if (!response.ok) {
-                console.error("Teams recusou menção. Status:", response.status);
-            }
+            console.log("🔔 Dados enviados ao Power Automate!");
         } catch (e) { console.error(e); }
     }
 
