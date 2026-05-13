@@ -1,21 +1,22 @@
 const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
 
-// Tenta criar o cliente Supabase com segurança
-let supabase;
+// Mudamos o nome para 'supabaseClient' para evitar conflito com a biblioteca
+let supabaseClient;
 try {
     if (window.supabase) {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log("✅ Supabase conectado com sucesso!");
+        // Inicializa usando a biblioteca global
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        console.log("✅ Conexão com Supabase preparada!");
     } else {
-        console.error("❌ Erro: Biblioteca do Supabase não carregada!");
+        console.error("❌ Erro: Biblioteca Supabase não encontrada no navegador.");
     }
 } catch (e) {
-    console.error("❌ Erro ao iniciar Supabase:", e);
+    console.error("❌ Erro ao iniciar cliente:", e);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 Aplicativo Iniciado");
+    console.log("🚀 Aplicativo Marketing Kickoff Iniciado");
     
     const form = document.getElementById('kickoffForm');
     const kickoffList = document.getElementById('kickoffList');
@@ -25,11 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
         dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 
-    // CARREGAR DADOS
     async function loadEntries() {
-        if (!supabase) return;
+        if (!supabaseClient) return;
         try {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('kickoffs')
                 .select('*')
                 .order('created_at', { ascending: false });
@@ -59,21 +59,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>`;
                 }).join('');
             } else {
-                kickoffList.innerHTML = '<div class="empty-state" style="text-align: center; padding: 40px; opacity: 0.5;"><p>Nenhum registro hoje.</p></div>';
+                kickoffList.innerHTML = '<div class="empty-state" style="text-align: center; padding: 40px; opacity: 0.5;"><p>Nenhum registro hoje. Seja o primeiro!</p></div>';
             }
             if (window.lucide) window.lucide.createIcons();
         } catch (error) {
-            console.error('Erro ao carregar:', error);
+            console.error('Erro ao carregar dados:', error);
         }
     }
 
     if (form) {
         form.addEventListener('submit', async (e) => {
-            e.preventDefault(); // ISSO AQUI É O QUE IMPEDE A PÁGINA DE RECARREGAR
-            console.log("📩 Tentando enviar...");
+            e.preventDefault(); // Agora isso vai funcionar!
+            console.log("📩 Enviando formulário...");
 
-            if (!supabase) {
-                alert("Erro: Banco de dados não inicializado.");
+            if (!supabaseClient) {
+                alert("Erro: O sistema de banco de dados não carregou corretamente.");
                 return;
             }
 
@@ -92,14 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const { error } = await supabase.from('kickoffs').insert([entry]);
+                const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
 
-                alert('✅ ENVIADO COM SUCESSO!');
+                alert('✅ KICKOFF ENVIADO COM SUCESSO!');
                 form.reset();
                 loadEntries();
             } catch (error) {
-                alert('Erro ao salvar no Supabase: ' + error.message);
+                alert('Erro ao salvar: ' + error.message);
                 console.error(error);
             } finally {
                 submitBtn.disabled = false;
