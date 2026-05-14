@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <div class="background-blob"></div>
@@ -30,6 +32,15 @@
     </header>
 
     <main class="container">
+        <!-- BARRA DE BUSCA -->
+        <div class="search-container" style="margin-bottom: 30px;">
+            <div class="input-group" style="margin-bottom: 0;">
+                <div class="search-wrapper" style="position: relative;">
+                    <i data-lucide="search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar no feed por nome ou tarefa..." style="padding-left: 45px; background: rgba(255,255,255,0.05); border-radius: 50px;">
+                </div>
+            </div>
+        </div>
         <section class="form-section">
             <div class="glass-card">
                 <div class="card-header">

@@ -11,9 +11,11 @@ try {
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('kickoffForm');
     const kickoffList = document.getElementById('kickoffList');
+    const searchInput = document.getElementById('searchInput');
     const dateDisplay = document.getElementById('currentDate');
 
-    // Inicializa o container de Toasts
+    let allEntries = [];
+
     const toastContainer = document.createElement('div');
     toastContainer.className = 'toast-container';
     document.body.appendChild(toastContainer);
@@ -31,88 +33,84 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-    // Gerenciamento de Rascunho (Draft)
-    const formFields = ['userName', 'yesterdayTasks', 'todayTasks', 'helpNeeded', 'whoHelp', 'blockers', 'observations'];
-    
-    function saveDraft() {
-        const draft = {};
-        formFields.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) draft[id] = el.value;
+    // Gerador de Iniciais para Avatar
+    function getInitials(name) {
+        return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    }
+
+    // Datas Humanas (Simplificado)
+    function timeAgo(date) {
+        const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+        if (seconds < 60) return 'agora mesmo';
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return `há ${minutes} min`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `há ${hours} h`;
+        return new Date(date).toLocaleDateString('pt-BR');
+    }
+
+    // Busca / Filtro
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            renderEntries(allEntries.filter(e => 
+                e.username.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                e.today_tasks.toLowerCase().includes(searchInput.value.toLowerCase())
+            ));
         });
-        localStorage.setItem('radar_draft', JSON.stringify(draft));
     }
 
-    function loadDraft() {
-        const draft = JSON.parse(localStorage.getItem('radar_draft'));
-        if (draft) {
-            formFields.forEach(id => {
-                const el = document.getElementById(id);
-                if (el && draft[id]) el.value = draft[id];
-            });
+    function renderEntries(entries) {
+        if (!entries.length) {
+            kickoffList.innerHTML = '<div class="empty-state"><p>Nenhum resultado encontrado.</p></div>';
+            return;
         }
-    }
 
-    formFields.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', saveDraft);
-    });
-
-    if (dateDisplay) {
-        dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        kickoffList.innerHTML = entries.map(entry => {
+            const blockersVal = (entry.blockers || '').toLowerCase().trim();
+            const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
+            return `
+            <div class="kickoff-item" style="border-left: 4px solid #6841f1; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="avatar">${getInitials(entry.username)}</div>
+                        <div class="user-info">
+                            <h4 style="color: #8e6eff; font-size: 1.2em; margin: 0;">${entry.username || 'Membro'}</h4>
+                            <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
+                        </div>
+                    </div>
+                    ${hasBlockers ? '<span style="background: rgba(255, 65, 108, 0.1); color: #ff416c; padding: 4px 10px; border-radius: 6px; font-size: 0.8em; font-weight: bold;">⚠️ Impedido</span>' : ''}
+                </div>
+                <div class="item-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ontem</label><p>${entry.yesterday_tasks || '-'}</p></div>
+                    <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Hoje</label><p>${entry.today_tasks || '-'}</p></div>
+                    ${entry.help_needed ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ajuda</label><p style="color: #02ceff;">${entry.help_needed} ${entry.who_help ? `(${entry.who_help})` : ''}</p></div>` : ''}
+                    ${entry.observations ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Obs</label><p>${entry.observations}</p></div>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+        if (window.lucide) window.lucide.createIcons();
     }
 
     async function loadEntries() {
         if (!supabaseClient) return;
-        
-        // Se a lista estiver vazia, mostra skeletons
-        if (kickoffList.innerHTML === '' || kickoffList.querySelector('.empty-state')) {
-            kickoffList.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
-        }
-
         try {
             const { data, error } = await supabaseClient.from('kickoffs').select('*').order('created_at', { ascending: false });
             if (error) throw error;
             if (data) {
-                kickoffList.innerHTML = data.map(entry => {
-                    const blockersVal = (entry.blockers || '').toLowerCase().trim();
-                    const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
-                    return `
-                    <div class="kickoff-item" style="border-left: 4px solid #6841f1; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-                        <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
-                            <div class="user-info">
-                                <h4 style="color: #8e6eff; font-size: 1.2em; margin: 0;">${entry.username || 'Membro do Time'}</h4>
-                                <span style="opacity: 0.5; font-size: 0.85em;">${new Date(entry.created_at).toLocaleString('pt-BR')}</span>
-                            </div>
-                            ${hasBlockers ? '<span style="background: rgba(255, 65, 108, 0.1); color: #ff416c; padding: 4px 10px; border-radius: 6px; font-size: 0.8em; font-weight: bold;">⚠️ Impedido</span>' : ''}
-                        </div>
-                        <div class="item-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                            <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ontem</label><p>${entry.yesterday_tasks || '-'}</p></div>
-                            <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Hoje</label><p>${entry.today_tasks || '-'}</p></div>
-                            ${entry.help_needed ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ajuda</label><p style="color: #02ceff;">${entry.help_needed} ${entry.who_help ? `(${entry.who_help})` : ''}</p></div>` : ''}
-                            ${entry.observations ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Obs</label><p>${entry.observations}</p></div>` : ''}
-                        </div>
-                    </div>`;
-                }).join('');
+                allEntries = data;
+                if (!searchInput.value) renderEntries(data);
             }
-            if (window.lucide) window.lucide.createIcons();
         } catch (error) { console.error(error); }
     }
 
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
-
         const PROXY_URL = '/api/send-teams'; 
-        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém do time'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
-
+        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
         try {
-            await fetch(PROXY_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: message })
-            });
+            await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: message }) });
             showToast("Notificação enviada ao Teams!");
-        } catch (e) { console.error("Erro no alerta:", e); }
+        } catch (e) { console.error(e); }
     }
 
     if (form) {
@@ -120,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Enviando...';
 
             const entry = {
                 username: document.getElementById('userName').value,
@@ -136,13 +133,19 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
+                
+                // EXPLOSÃO DE CONFETE! 🎉
+                if (window.confetti) {
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#6841f1', '#02ceff', '#ffffff'] });
+                }
+
                 await sendTeamsAlert(entry);
                 showToast("Radar enviado com sucesso!");
                 form.reset();
-                localStorage.removeItem('radar_draft'); // Limpa rascunho após sucesso
+                localStorage.removeItem('radar_draft');
                 loadEntries();
             } catch (error) {
-                showToast('Erro ao enviar: ' + error.message, 'error');
+                showToast('Erro: ' + error.message, 'error');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>';
@@ -151,19 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const testTeamsBtn = document.getElementById('testTeamsBtn');
-    if (testTeamsBtn) {
-        testTeamsBtn.addEventListener('click', async () => {
-            testTeamsBtn.disabled = true;
-            try {
-                await sendTeamsAlert({ username: 'Teste UX', help_needed: 'Verificando Toasts 🚀' });
-                showToast("Teste de conexão disparado!");
-            } catch (e) { showToast("Erro no teste", "error"); }
-            setTimeout(() => testTeamsBtn.disabled = false, 2000);
-        });
-    }
-
-    loadDraft();
     loadEntries();
     setInterval(loadEntries, 10000);
 });
