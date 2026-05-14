@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function updatePresence(entries) {
-        const now = new Date().toISOString().split('T')[0];
-        const todayEntries = entries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
+        const todayStr = new Date().toLocaleDateString('pt-BR');
+        const todayEntries = entries.filter(e => new Date(e.created_at).toLocaleDateString('pt-BR') === todayStr);
         const hour = new Date().getHours();
         let gp = "Bom dia"; if (hour >= 12 && hour < 18) gp = "Boa tarde"; else if (hour >= 18) gp = "Boa noite";
         dynamicGreeting.innerText = todayEntries.length === 0 ? `${gp}, Time! Vamos ser o primeiro? 🚀` : `${gp}! Já somos ${todayEntries.length} ativos hoje! 🔥`;
@@ -117,10 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function copyDailySummary() {
-        const now = new Date().toISOString().split('T')[0];
-        const todayEntries = allEntries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
+        const todayStr = new Date().toLocaleDateString('pt-BR');
+        const todayEntries = allEntries.filter(e => new Date(e.created_at).toLocaleDateString('pt-BR') === todayStr);
         if (todayEntries.length === 0) { showToast("Nenhum registro hoje.", "error"); return; }
-        let summary = `*🚀 RESUMO DO RADAR DIÁRIO - ${new Date().toLocaleDateString('pt-BR')}*\n\n`;
+        let summary = `*🚀 RESUMO DO RADAR DIÁRIO - ${todayStr}*\n\n`;
         todayEntries.forEach(e => {
             const u = decodeUser(e.username);
             summary += `👤 *${u.name}*\n✅ Ontem: ${e.yesterday_tasks}\n🎯 Hoje: ${e.today_tasks}\n`;
@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (copySummaryBtn) copySummaryBtn.addEventListener('click', copyDailySummary);
 
     function updateStats(entries) {
-        const now = new Date().toISOString().split('T')[0];
-        const todayEntries = entries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
+        const todayStr = new Date().toLocaleDateString('pt-BR');
+        const todayEntries = entries.filter(e => new Date(e.created_at).toLocaleDateString('pt-BR') === todayStr);
         statTotal.innerText = todayEntries.length;
         statHelp.innerText = todayEntries.filter(e => e.help_needed && e.help_needed.trim() !== '').length;
         const bc = todayEntries.filter(e => {
@@ -159,17 +159,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyFilters() {
         const searchTerm = searchInput.value.toLowerCase();
         const filterType = dateFilter.value;
-        const now = new Date(); const todayStr = now.toISOString().split('T')[0];
+        const now = new Date();
         const filtered = allEntries.filter(entry => {
             const u = decodeUser(entry.username);
             const matchesSearch = u.name.toLowerCase().includes(searchTerm) || entry.today_tasks.toLowerCase().includes(searchTerm);
             let matchesDate = true;
-            const entryDateStr = new Date(entry.created_at).toISOString().split('T')[0];
-            if (filterType === 'today') matchesDate = entryDateStr === todayStr;
-            else if (filterType === 'yesterday') { const yest = new Date(); yest.setDate(now.getDate() - 1); matchesDate = entryDateStr === yest.toISOString().split('T')[0]; }
+            const entryDate = new Date(entry.created_at).toLocaleDateString('pt-BR');
+            if (filterType === 'today') matchesDate = entryDate === now.toLocaleDateString('pt-BR');
+            else if (filterType === 'yesterday') { const yest = new Date(); yest.setDate(now.getDate() - 1); matchesDate = entryDate === yest.toLocaleDateString('pt-BR'); }
             else if (filterType === 'thisWeek') { const lw = new Date(); lw.setDate(now.getDate() - 7); matchesDate = new Date(entry.created_at) >= lw; }
-            else if (filterType === 'thisMonth') { const fm = new Date(now.getFullYear(), now.getMonth(), 1); matchesDate = new Date(entry.created_at) >= fm; }
-            else if (filterType === 'custom' && customDateInput.value) { matchesDate = entryDateStr === customDateInput.value; }
+            else if (filterType === 'thisMonth') { matchesDate = new Date(entry.created_at).getMonth() === now.getMonth(); }
+            else if (filterType === 'custom' && customDateInput.value) { 
+                const customDate = new Date(customDateInput.value + 'T00:00:00').toLocaleDateString('pt-BR');
+                matchesDate = entryDate === customDate;
+            }
             return matchesSearch && matchesDate;
         });
         renderEntries(filtered);
@@ -178,20 +181,19 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderEntries(entries) {
         if (!entries.length) { kickoffList.innerHTML = '<div class="empty-state"><p>Nada encontrado.</p></div>'; return; }
         const currentName = userNameInput.value.trim().toLowerCase();
-        const currentColor = userColorInput.value.toLowerCase().trim();
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = new Date().toLocaleDateString('pt-BR');
 
         kickoffList.innerHTML = entries.map(entry => {
             const u = decodeUser(entry.username);
+            const entryDate = new Date(entry.created_at).toLocaleDateString('pt-BR');
             const blockersVal = (entry.blockers || '').toLowerCase().trim();
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
-            const isFromToday = new Date(entry.created_at).toISOString().split('T')[0] === todayStr;
             
-            // Lógica Robusta: Case Insensitive e Trim
+            // Lógica Simplificada: Apenas Nome e Dia (Local)
             const isMine = myRadarIds.includes(entry.id) || 
-                          (currentName !== '' && u.name.toLowerCase() === currentName && u.color === currentColor && isFromToday);
+                          (currentName !== '' && u.name.toLowerCase() === currentName && entryDate === todayStr);
 
             return `
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : u.color}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
@@ -199,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : u.color}">${getInitials(u.name)}</div>
                         <div class="user-info">
-                            <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name} ${isMine ? '<span style="background: rgba(255,255,255,0.1); font-size: 0.6em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle;">VOCÊ</span>' : ''}</h4>
+                            <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name} ${isMine ? '<span style="background: #6841f1; color: white; font-size: 0.5em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle;">VOCÊ</span>' : ''}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
                         </div>
                     </div>
