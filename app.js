@@ -52,49 +52,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!entry.help_needed && !entry.blockers) return;
 
         const PROXY_URL = '/api/send-teams'; 
-
-        // Criando um Cartão Adaptativo de verdade
-        const adaptiveCard = {
-            "type": "AdaptiveCard",
-            "body": [
-                {
-                    "type": "TextBlock",
-                    "size": "Medium",
-                    "weight": "Bolder",
-                    "text": "🚨 ALERTA DE RADAR DIÁRIO",
-                    "color": "Accent"
-                },
-                {
-                    "type": "FactSet",
-                    "facts": [
-                        { "title": "Membro:", "value": entry.username || "Time" },
-                        { "title": "Ajuda:", "value": entry.help_needed || "Nenhuma" },
-                        { "title": "Impedimentos:", "value": entry.blockers || "Nenhum" }
-                    ]
-                },
-                {
-                    "type": "ActionSet",
-                    "actions": [
-                        {
-                            "type": "Action.OpenUrl",
-                            "title": "Ver Radar no Site",
-                            "url": window.location.href
-                        }
-                    ]
-                }
-            ],
-            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-            "version": "1.3"
-        };
+        
+        // FORMATO SIMPLES PARA WEBHOOK CLÁSSICO (O ÚNICO QUE FUNCIONA)
+        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Clique aqui para ver o Radar](${window.location.href})`;
 
         try {
-            await fetch(PROXY_URL, {
+            const response = await fetch(PROXY_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(adaptiveCard) // Enviamos o CARTÃO puro
+                body: JSON.stringify({ text: message })
             });
-            console.log("✅ Cartão enviado!");
-        } catch (e) { console.error("Erro no cartão:", e); }
+
+            if (response.ok) {
+                console.log("✅ Alerta enviado ao Teams!");
+            } else {
+                console.error("❌ Erro no envio:", response.status);
+            }
+        } catch (e) { console.error("Erro no alerta:", e); }
     }
 
     if (form) {
