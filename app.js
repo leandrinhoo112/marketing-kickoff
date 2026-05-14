@@ -8,6 +8,7 @@ try {
     }
 } catch (e) { console.error(e); }
 
+// Registrar o PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW fail:', err));
@@ -60,17 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     formFields.forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', saveDraft); });
 
-    if (userNameInput) userNameInput.addEventListener('input', () => applyFilters());
-    if (userColorInput) userColorInput.addEventListener('input', () => applyFilters());
-
     function getInitials(name) { return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase(); }
 
     function decodeUser(fullString) {
         const parts = (fullString || '').split('|');
-        return { 
-            name: (parts[0] || 'Membro').trim(), 
-            color: (parts[1] || '#6841f1').toLowerCase().trim() 
-        };
+        return { name: (parts[0] || 'Membro').trim(), color: (parts[1] || '#6841f1').toLowerCase().trim() };
     }
 
     window.deleteEntry = async (id) => {
@@ -179,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderEntries(entries) {
         if (!entries.length) { kickoffList.innerHTML = '<div class="empty-state"><p>Nada encontrado.</p></div>'; return; }
-        
         kickoffList.innerHTML = entries.map(entry => {
             const u = decodeUser(entry.username);
             const blockersVal = (entry.blockers || '').toLowerCase().trim();
