@@ -106,9 +106,9 @@ header .container {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
-    padding: 40px;
+    padding: 50px; /* Aumentado para dar mais respiro */
     box-shadow: var(--shadow);
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 .card-header {
@@ -132,28 +132,28 @@ header .container {
 form {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 35px; /* Mais espaço entre as linhas do form */
 }
 
 .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 40px; /* Dobrado o espaço entre colunas */
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px; /* Mais espaço entre label e o campo */
 }
 
 .input-group label {
-    font-size: 14px;
+    font-size: 15px; /* Ligeiramente maior */
     font-weight: 600;
     color: var(--text-muted);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .input-group label i {
@@ -162,14 +162,14 @@ form {
     color: var(--primary);
 }
 
-input, textarea {
+input, textarea, select {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
-    border-radius: 10px;
-    padding: 12px 16px;
+    border-radius: 12px;
+    padding: 15px 20px; /* Campos mais altos e largos internamente */
     color: white;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 16px;
     transition: var(--transition);
 }
 
