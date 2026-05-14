@@ -58,25 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username: entry.username,
-                    help_needed: entry.help_needed,
-                    who_help: entry.who_help,
-                    blockers: entry.blockers,
-                    observations: entry.observations,
-                    url: window.location.href
+                    text: `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed}\n**Quem:** ${entry.who_help}\n**Impedimentos:** ${entry.blockers}\n\n[Ver no Radar](${window.location.href})`
                 })
             });
 
             if (response.ok) {
-                alert("✅ Radar enviado ao Teams via Make!");
-            } else {
-                const errorText = await response.text();
-                alert(`⚠️ Erro na Ponte (Status ${response.status}): ${errorText}`);
+                console.log("✅ Alerta enviado!");
             }
-        } catch (e) {
-            console.error("❌ Erro de Conexão:", e);
-            alert("❌ Erro ao contatar a ponte do Make. Verifique o deploy.");
-        }
+        } catch (e) { console.error("Erro no alerta:", e); }
     }
 
     if (form) {
@@ -101,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
                 await sendTeamsAlert(entry);
-                alert('✅ RADAR SALVO COM SUCESSO!');
+                alert('✅ RADAR ENVIADO COM SUCESSO!');
                 form.reset();
                 loadEntries();
             } catch (error) {

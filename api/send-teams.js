@@ -1,6 +1,4 @@
-
 export default async function handler(req, res) {
-  // Configurações de CORS para permitir chamadas do seu próprio site
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -18,19 +16,19 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/ub6qoelm2wvlq26ur83qj4ehbqu04yhg';
+  const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8255dd2aa6c94e75845024015942f676/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=UbXtOo29r1H_vdE1MMLjYDgZ3LIXdRNa3Gr6VvicFyY';
 
   try {
-    const response = await fetch(MAKE_WEBHOOK_URL, {
+    const response = await fetch(TEAMS_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body) // Enviamos o objeto completo (nome, ajuda, etc)
+      body: JSON.stringify(req.body)
     });
 
     const responseText = await response.text();
     res.status(response.status).json({ success: response.ok, info: responseText });
   } catch (error) {
-    console.error('Make Bridge Error:', error);
+    console.error('Proxy Error:', error);
     res.status(500).json({ error: error.message });
   }
 }
