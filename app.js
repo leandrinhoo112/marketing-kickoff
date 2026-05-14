@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('kickoffForm');
     const kickoffList = document.getElementById('kickoffList');
     const searchInput = document.getElementById('searchInput');
+    const dateFilter = document.getElementById('dateFilter');
     const dateDisplay = document.getElementById('currentDate');
 
     let allEntries = [];
@@ -33,12 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-    // Gerador de Iniciais para Avatar
     function getInitials(name) {
         return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
     }
 
-    // Datas Humanas (Simplificado)
     function timeAgo(date) {
         const seconds = Math.floor((new Date() - new Date(date)) / 1000);
         if (seconds < 60) return 'agora mesmo';
@@ -49,19 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Date(date).toLocaleDateString('pt-BR');
     }
 
-    // Busca / Filtro
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            renderEntries(allEntries.filter(e => 
-                e.username.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-                e.today_tasks.toLowerCase().includes(searchInput.value.toLowerCase())
-            ));
+    // Lógica Combinada de Busca e Filtro
+    function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filterDate = dateFilter.value; // Formato YYYY-MM-DD
+
+        const filtered = allEntries.filter(entry => {
+            const matchesSearch = entry.username.toLowerCase().includes(searchTerm) || 
+                                entry.today_tasks.toLowerCase().includes(searchTerm);
+            
+            let matchesDate = true;
+            if (filterDate) {
+                const entryDate = new Date(entry.created_at).toISOString().split('T')[0];
+                matchesDate = entryDate === filterDate;
+            }
+
+            return matchesSearch && matchesDate;
         });
+
+        renderEntries(filtered);
     }
+
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (dateFilter) dateFilter.addEventListener('change', applyFilters);
 
     function renderEntries(entries) {
         if (!entries.length) {
-            kickoffList.innerHTML = '<div class="empty-state"><p>Nenhum resultado encontrado.</p></div>';
+            kickoffList.innerHTML = '<div class="empty-state" style="padding: 40px; text-align: center; opacity: 0.5;"><i data-lucide="search-x" style="width: 48px; height: 48px; margin-bottom: 15px;"></i><p>Nenhum radar encontrado para esta busca ou data.</p></div>';
+            if (window.lucide) window.lucide.createIcons();
             return;
         }
 
@@ -98,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             if (data) {
                 allEntries = data;
-                if (!searchInput.value) renderEntries(data);
+                applyFilters(); // Aplica filtros atuais ao carregar
             }
         } catch (error) { console.error(error); }
     }
@@ -133,12 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
-                
-                // EXPLOSÃO DE CONFETE! 🎉
                 if (window.confetti) {
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#6841f1', '#02ceff', '#ffffff'] });
                 }
-
                 await sendTeamsAlert(entry);
                 showToast("Radar enviado com sucesso!");
                 form.reset();
@@ -154,6 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if (dateDisplay) {
+        dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
     loadEntries();
-    setInterval(loadEntries, 10000);
+    setInterval(loadEntries, 15000);
 });

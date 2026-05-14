@@ -21,24 +21,26 @@
     <div class="background-blob blob-2"></div>
     
     <header>
-        <div class="container">
-            <div class="logo">
+        <div class="container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <div class="logo" style="margin-bottom: 5px;">
                 <i data-lucide="activity"></i>
                 <span>Radar<span>Diário</span></span>
             </div>
-            <img src="Logo-Faculdade-Inspirar-4.png" alt="Inspirar Logo" style="height: 60px; margin: 10px 0; filter: drop-shadow(0 0 10px rgba(104, 65, 241, 0.3));">
-            <div class="date-display" id="currentDate"></div>
+            <img src="Logo-Faculdade-Inspirar-4.png" alt="Inspirar Logo" style="height: 75px; margin: 5px 0; filter: drop-shadow(0 0 10px rgba(104, 65, 241, 0.3));">
+            <div class="date-display" id="currentDate" style="font-weight: 600; opacity: 0.8; font-size: 1.1em; color: #8e6eff;"></div>
         </div>
     </header>
 
     <main class="container">
-        <!-- BARRA DE BUSCA -->
-        <div class="search-container" style="margin-bottom: 30px;">
-            <div class="input-group" style="margin-bottom: 0;">
-                <div class="search-wrapper" style="position: relative;">
-                    <i data-lucide="search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
-                    <input type="text" id="searchInput" placeholder="Buscar no feed por nome ou tarefa..." style="padding-left: 45px; background: rgba(255,255,255,0.05); border-radius: 50px;">
-                </div>
+        <!-- BARRA DE BUSCA E FILTRO -->
+        <div class="filters-container" style="margin-bottom: 40px; display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+            <div class="search-wrapper" style="position: relative;">
+                <i data-lucide="search" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
+                <input type="text" id="searchInput" placeholder="O que você está procurando no feed hoje? (nome ou tarefa)" style="padding-left: 55px; height: 60px; font-size: 1.1em; background: rgba(255,255,255,0.05); border-radius: 15px; width: 100%;">
+            </div>
+            <div class="date-filter-wrapper" style="position: relative;">
+                <i data-lucide="calendar" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5; pointer-events: none;"></i>
+                <input type="date" id="dateFilter" style="padding-left: 55px; height: 60px; font-size: 1.1em; background: rgba(255,255,255,0.05); border-radius: 15px; width: 100%; color-scheme: dark;">
             </div>
         </div>
         <section class="form-section">
