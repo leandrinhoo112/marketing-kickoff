@@ -38,72 +38,53 @@ document.addEventListener('DOMContentLoaded', () => {
     let editingId = null;
     let myRadarIds = JSON.parse(localStorage.getItem('my_radar_ids') || '[]');
 
-    const toastContainer = document.createElement('div');
-    toastContainer.className = 'toast-container';
-    document.body.appendChild(toastContainer);
-
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         const icon = type === 'success' ? 'check-circle' : 'alert-circle';
         toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
-        toastContainer.appendChild(toast);
+        document.body.appendChild(toast);
         if (window.lucide) window.lucide.createIcons();
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.remove(), 300);
-        }, 4000);
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
     }
 
     const formFields = ['userName', 'userColor', 'yesterdayTasks', 'todayTasks', 'helpNeeded', 'whoHelp', 'blockers', 'observations'];
     function saveDraft() {
         if (editingId) return;
         const draft = {};
-        formFields.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) draft[id] = el.value;
-        });
+        formFields.forEach(id => { const el = document.getElementById(id); if (el) draft[id] = el.value; });
         localStorage.setItem('radar_draft', JSON.stringify(draft));
     }
     function loadDraft() {
         const draft = JSON.parse(localStorage.getItem('radar_draft'));
-        if (draft) {
-            formFields.forEach(id => {
-                const el = document.getElementById(id);
-                if (el && draft[id]) el.value = draft[id];
-            });
-        }
+        if (draft) { formFields.forEach(id => { const el = document.getElementById(id); if (el && draft[id]) el.value = draft[id]; }); }
     }
-    formFields.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', saveDraft);
-    });
+    formFields.forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', saveDraft); });
 
-    // RE-RENDER AO MUDAR O NOME (Para "acender" os botões de editar)
     if (userNameInput) userNameInput.addEventListener('input', () => applyFilters());
     if (userColorInput) userColorInput.addEventListener('input', () => applyFilters());
 
-    function getInitials(name) {
-        return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-    }
+    function getInitials(name) { return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase(); }
 
     function decodeUser(fullString) {
         const parts = (fullString || '').split('|');
-        return { name: parts[0] || 'Membro', color: parts[1] || '#6841f1' };
+        return { 
+            name: (parts[0] || 'Membro').trim(), 
+            color: (parts[1] || '#6841f1').toLowerCase().trim() 
+        };
     }
 
     window.deleteEntry = async (id) => {
-        if (!confirm('Tem certeza que deseja remover este radar?')) return;
+        if (!confirm('Deseja remover este radar?')) return;
         try {
             const { error } = await supabaseClient.from('kickoffs').delete().eq('id', id);
             if (error) throw error;
-            showToast('Radar removido!');
-            loadEntries();
+            showToast('Removido!'); loadEntries();
         } catch (e) { showToast('Erro: ' + e.message, 'error'); }
     };
 
     window.editEntry = (id) => {
-        const entry = allEntries.find(e => e.id == id); // Usar == para comparar string/number
+        const entry = allEntries.find(e => e.id == id);
         if (!entry) return;
         editingId = id;
         const u = decodeUser(entry.username);
@@ -125,13 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const now = new Date().toISOString().split('T')[0];
         const todayEntries = entries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
         const hour = new Date().getHours();
-        let gp = "Bom dia";
-        if (hour >= 12 && hour < 18) gp = "Boa tarde"; else if (hour >= 18) gp = "Boa noite";
+        let gp = "Bom dia"; if (hour >= 12 && hour < 18) gp = "Boa tarde"; else if (hour >= 18) gp = "Boa noite";
         dynamicGreeting.innerText = todayEntries.length === 0 ? `${gp}, Time! Vamos ser o primeiro? 🚀` : `${gp}! Já somos ${todayEntries.length} ativos hoje! 🔥`;
         const uniqueUsers = []; const seenNames = new Set();
         todayEntries.forEach(e => {
             const u = decodeUser(e.username);
-            if (!seenNames.has(u.name)) { uniqueUsers.push(u); seenNames.add(u.name); }
+            if (!seenNames.has(u.name.toLowerCase())) { uniqueUsers.push(u); seenNames.add(u.name.toLowerCase()); }
         });
         presenceBar.innerHTML = uniqueUsers.map(u => `<div class="presence-avatar" title="${u.name}" style="background: ${u.color}">${getInitials(u.name)}</div>`).join('');
     }
@@ -149,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (blk && !['não','nao','nada'].includes(blk)) summary += `⚠️ Impedimento: ${e.blockers}\n`;
             summary += `----------------------------\n`;
         });
-        navigator.clipboard.writeText(summary).then(() => showToast("Resumo copiado! 🎉"));
+        navigator.clipboard.writeText(summary).then(() => showToast("Copiado! 🎉"));
     }
 
     if (copySummaryBtn) copySummaryBtn.addEventListener('click', copyDailySummary);
@@ -186,31 +166,19 @@ document.addEventListener('DOMContentLoaded', () => {
             let matchesDate = true;
             const entryDateStr = new Date(entry.created_at).toISOString().split('T')[0];
             if (filterType === 'today') matchesDate = entryDateStr === todayStr;
-            else if (filterType === 'yesterday') {
-                const yest = new Date(); yest.setDate(now.getDate() - 1);
-                matchesDate = entryDateStr === yest.toISOString().split('T')[0];
-            } else if (filterType === 'thisWeek') {
-                const lw = new Date(); lw.setDate(now.getDate() - 7);
-                matchesDate = new Date(entry.created_at) >= lw;
-            } else if (filterType === 'thisMonth') {
-                const fm = new Date(now.getFullYear(), now.getMonth(), 1);
-                matchesDate = new Date(entry.created_at) >= fm;
-            } else if (filterType === 'custom' && customDateInput.value) {
-                matchesDate = entryDateStr === customDateInput.value;
-            }
+            else if (filterType === 'yesterday') { const yest = new Date(); yest.setDate(now.getDate() - 1); matchesDate = entryDateStr === yest.toISOString().split('T')[0]; }
+            else if (filterType === 'thisWeek') { const lw = new Date(); lw.setDate(now.getDate() - 7); matchesDate = new Date(entry.created_at) >= lw; }
+            else if (filterType === 'thisMonth') { const fm = new Date(now.getFullYear(), now.getMonth(), 1); matchesDate = new Date(entry.created_at) >= fm; }
+            else if (filterType === 'custom' && customDateInput.value) { matchesDate = entryDateStr === customDateInput.value; }
             return matchesSearch && matchesDate;
         });
         renderEntries(filtered);
     }
 
     function renderEntries(entries) {
-        if (!entries.length) {
-            kickoffList.innerHTML = '<div class="empty-state"><p>Nenhum registro encontrado.</p></div>';
-            return;
-        }
-
-        const currentName = userNameInput.value.trim();
-        const currentColor = userColorInput.value;
+        if (!entries.length) { kickoffList.innerHTML = '<div class="empty-state"><p>Nada encontrado.</p></div>'; return; }
+        const currentName = userNameInput.value.trim().toLowerCase();
+        const currentColor = userColorInput.value.toLowerCase().trim();
         const todayStr = new Date().toISOString().split('T')[0];
 
         kickoffList.innerHTML = entries.map(entry => {
@@ -219,10 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
-            
-            // LÓGICA DE PROPRIEDADE: ID no localStorage OU (Nome + Cor iguais E ser de hoje)
             const isFromToday = new Date(entry.created_at).toISOString().split('T')[0] === todayStr;
-            const isMine = myRadarIds.includes(entry.id) || (currentName !== '' && u.name === currentName && u.color === currentColor && isFromToday);
+            
+            // Lógica Robusta: Case Insensitive e Trim
+            const isMine = myRadarIds.includes(entry.id) || 
+                          (currentName !== '' && u.name.toLowerCase() === currentName && u.color === currentColor && isFromToday);
 
             return `
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : u.color}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
@@ -230,8 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : u.color}">${getInitials(u.name)}</div>
                         <div class="user-info">
-                            <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name}</h4>
-                            <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)} ${isMine ? '• Você' : ''}</span>
+                            <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name} ${isMine ? '<span style="background: rgba(255,255,255,0.1); font-size: 0.6em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle;">VOCÊ</span>' : ''}</h4>
+                            <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
@@ -272,9 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const u = decodeUser(entry.username);
         const PROXY_URL = '/api/send-teams'; 
         const message = `${isUpdate ? '🔄 **RADAR ATUALIZADO**' : '🚨 **ALERTA DE RADAR**'}\n\n**Membro:** ${u.name}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
-        try {
-            await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: message }) });
-        } catch (e) { console.error(e); }
+        try { await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: message }) }); } catch (e) {}
     }
 
     if (form) {
@@ -282,11 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            const rawName = userNameInput.value;
-            const rawColor = userColorInput.value;
-            const encodedUser = `${rawName}|${rawColor}`;
             const entry = {
-                username: encodedUser,
+                username: `${userNameInput.value}|${userColorInput.value}`,
                 yesterday_tasks: document.getElementById('yesterdayTasks').value,
                 today_tasks: document.getElementById('todayTasks').value,
                 help_needed: document.getElementById('helpNeeded').value,
@@ -299,25 +263,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (editingId) {
                     const { error } = await supabaseClient.from('kickoffs').update(entry).eq('id', editingId);
                     if (error) throw error;
-                    showToast("Radar atualizado!");
-                    await sendTeamsAlert(entry, true);
+                    showToast("Atualizado!"); await sendTeamsAlert(entry, true);
                     editingId = null;
                 } else {
                     const { data, error } = await supabaseClient.from('kickoffs').insert([entry]).select();
                     if (error) throw error;
-                    if (data && data[0]) {
-                        myRadarIds.push(data[0].id);
-                        localStorage.setItem('my_radar_ids', JSON.stringify(myRadarIds));
-                    }
-                    successSound.play();
-                    if (window.confetti) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                    await sendTeamsAlert(entry);
-                    showToast("Radar enviado!");
+                    if (data && data[0]) { myRadarIds.push(data[0].id); localStorage.setItem('my_radar_ids', JSON.stringify(myRadarIds)); }
+                    successSound.play(); if (window.confetti) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                    await sendTeamsAlert(entry); showToast("Enviado!");
                 }
-                form.reset();
-                localStorage.removeItem('radar_draft');
-                submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>';
-                loadEntries();
+                form.reset(); localStorage.removeItem('radar_draft');
+                submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>'; loadEntries();
             } catch (error) { showToast('Erro: ' + error.message, 'error'); } 
             finally { submitBtn.disabled = false; if (window.lucide) window.lucide.createIcons(); }
         });
@@ -332,7 +288,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (customDateInput) customDateInput.addEventListener('change', applyFilters);
     if (dateDisplay) { dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); }
-    loadDraft();
-    loadEntries();
-    setInterval(loadEntries, 10000);
+    loadDraft(); loadEntries(); setInterval(loadEntries, 10000);
 });
