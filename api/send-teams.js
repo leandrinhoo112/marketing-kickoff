@@ -20,14 +20,22 @@ export default async function handler(req, res) {
   const TEAMS_WEBHOOK_URL = 'https://portalinspirar.webhook.office.com/webhookb2/788e882d-da9e-4053-a368-ca866d5663fc@cf5c7f8b-4d1a-4965-a547-0b57e056daa0/IncomingWebhook/6b18e551a1144638a1d80751bef845b1/64db5465-070d-4015-9594-6c998e463ccd/V2bzx3RhsS4RifD23wFgyCoZaisbYvFJWnnQXjdGPK7o01';
 
   try {
+    const payload = JSON.stringify(req.body);
+    console.log('Sending to Teams:', payload);
+
     const response = await fetch(TEAMS_WEBHOOK_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body)
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: payload
     });
 
     const responseText = await response.text();
-    res.status(200).json({ success: true, info: responseText });
+    console.log('Teams Response:', responseText);
+
+    // O Teams clássico retorna "1" em caso de sucesso
+    res.status(200).json({ success: response.ok, info: responseText });
   } catch (error) {
     console.error('Proxy Error:', error);
     res.status(500).json({ error: error.message });
