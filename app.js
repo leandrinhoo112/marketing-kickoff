@@ -8,7 +8,6 @@ try {
     }
 } catch (e) { console.error(e); }
 
-// Registro do PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW fail:', err));
@@ -25,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const copySummaryBtn = document.getElementById('copySummaryBtn');
     const presenceBar = document.getElementById('presenceBar');
     const dynamicGreeting = document.getElementById('dynamicGreeting');
+    const userColorInput = document.getElementById('userColor');
 
     const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
     successSound.volume = 0.5;
@@ -52,16 +52,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
+    // Gerenciamento de Rascunho (Incluindo Cor)
+    const formFields = ['userName', 'userColor', 'yesterdayTasks', 'todayTasks', 'helpNeeded', 'whoHelp', 'blockers', 'observations'];
+    function saveDraft() {
+        const draft = {};
+        formFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) draft[id] = el.value;
+        });
+        localStorage.setItem('radar_draft', JSON.stringify(draft));
+    }
+    function loadDraft() {
+        const draft = JSON.parse(localStorage.getItem('radar_draft'));
+        if (draft) {
+            formFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && draft[id]) el.value = draft[id];
+            });
+        }
+    }
+    formFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', saveDraft);
+    });
+
     function getInitials(name) {
         return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
     }
 
-    // Atualiza Saudação e Presença
+    // Decodifica Nome e Cor (Hack para não mudar o Banco de Dados)
+    function decodeUser(fullString) {
+        const parts = (fullString || '').split('|');
+        return {
+            name: parts[0] || 'Membro',
+            color: parts[1] || '#6841f1'
+        };
+    }
+
     function updatePresence(entries) {
         const now = new Date().toISOString().split('T')[0];
         const todayEntries = entries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
         
-        // 1. Saudação Dinâmica
         const hour = new Date().getHours();
         let greetingPrefix = "Bom dia";
         if (hour >= 12 && hour < 18) greetingPrefix = "Boa tarde";
@@ -73,10 +104,18 @@ document.addEventListener('DOMContentLoaded', () => {
             dynamicGreeting.innerText = `${greetingPrefix}! Já somos ${todayEntries.length} ativos no Radar hoje! 🔥`;
         }
 
-        // 2. Barra de Presença (Avatares únicos de quem postou hoje)
-        const uniqueUsers = [...new Set(todayEntries.map(e => e.username))];
-        presenceBar.innerHTML = uniqueUsers.map(user => `
-            <div class="presence-avatar" title="${user}">${getInitials(user)}</div>
+        const uniqueUsers = [];
+        const seenNames = new Set();
+        todayEntries.forEach(e => {
+            const u = decodeUser(e.username);
+            if (!seenNames.has(u.name)) {
+                uniqueUsers.push(u);
+                seenNames.add(u.name);
+            }
+        });
+
+        presenceBar.innerHTML = uniqueUsers.map(u => `
+            <div class="presence-avatar" title="${u.name}" style="background: ${u.color}">${getInitials(u.name)}</div>
         `).join('');
     }
 
@@ -86,7 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (todayEntries.length === 0) { showToast("Nenhum registro hoje.", "error"); return; }
         let summary = `*🚀 RESUMO DO RADAR DIÁRIO - ${new Date().toLocaleDateString('pt-BR')}*\n\n`;
         todayEntries.forEach(e => {
-            summary += `👤 *${e.username}*\n✅ Ontem: ${e.yesterday_tasks}\n🎯 Hoje: ${e.today_tasks}\n`;
+            const u = decodeUser(e.username);
+            summary += `👤 *${u.name}*\n✅ Ontem: ${e.yesterday_tasks}\n🎯 Hoje: ${e.today_tasks}\n`;
             if (e.help_needed) summary += `🆘 Ajuda: ${e.help_needed}\n`;
             const blk = (e.blockers || '').toLowerCase();
             if (blk && !['não','nao','nada'].includes(blk)) summary += `⚠️ Impedimento: ${e.blockers}\n`;
@@ -126,7 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const todayStr = now.toISOString().split('T')[0];
 
         const filtered = allEntries.filter(entry => {
-            const matchesSearch = entry.username.toLowerCase().includes(searchTerm) || 
+            const u = decodeUser(entry.username);
+            const matchesSearch = u.name.toLowerCase().includes(searchTerm) || 
                                 entry.today_tasks.toLowerCase().includes(searchTerm);
             let matchesDate = true;
             const entryDateStr = new Date(entry.created_at).toISOString().split('T')[0];
@@ -156,18 +197,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         kickoffList.innerHTML = entries.map(entry => {
+            const u = decodeUser(entry.username);
             const blockersVal = (entry.blockers || '').toLowerCase().trim();
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
 
             return `
-            <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : '#6841f1'}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
+            <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : u.color}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : ''}">${getInitials(entry.username)}</div>
+                        <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : u.color}">${getInitials(u.name)}</div>
                         <div class="user-info">
-                            <h4 style="color: ${isUrgent ? '#ff416c' : '#8e6eff'}; font-size: 1.2em; margin: 0;">${entry.username || 'Membro'}</h4>
+                            <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
                         </div>
                     </div>
@@ -203,8 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function sendTeamsAlert(entry) {
         if (!entry.help_needed && !entry.blockers) return;
+        const u = decodeUser(entry.username);
         const PROXY_URL = '/api/send-teams'; 
-        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
+        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${u.name}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
         try {
             await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: message }) });
             showToast("Notificação enviada ao Teams!");
@@ -216,8 +259,13 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
+            
+            const rawName = document.getElementById('userName').value;
+            const rawColor = document.getElementById('userColor').value;
+            const encodedUser = `${rawName}|${rawColor}`;
+
             const entry = {
-                username: document.getElementById('userName').value,
+                username: encodedUser,
                 yesterday_tasks: document.getElementById('yesterdayTasks').value,
                 today_tasks: document.getElementById('todayTasks').value,
                 help_needed: document.getElementById('helpNeeded').value,
@@ -226,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 observations: document.getElementById('observations').value,
                 created_at: new Date().toISOString()
             };
+
             try {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
@@ -258,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 
+    loadDraft();
     loadEntries();
     setInterval(loadEntries, 10000);
 });
