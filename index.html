@@ -74,9 +74,14 @@
                         <textarea id="observations" name="observations" placeholder="Algo mais que o time precise saber?"></textarea>
                     </div>
 
-                    <button type="submit" class="btn-primary">
-                        Enviar Radar <i data-lucide="send"></i>
-                    </button>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button type="submit" class="btn-primary" style="flex: 2;">
+                            Enviar Radar <i data-lucide="send"></i>
+                        </button>
+                        <button type="button" id="testTeamsBtn" class="btn-secondary" style="flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+                            Testar Teams <i data-lucide="zap"></i>
+                        </button>
+                    </div>
                 </form>
             </div>
         </section>

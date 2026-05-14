@@ -1,6 +1,6 @@
 const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
-const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/153e3f8a2751498d97cc12492a53f4a1/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=TuCpM5J-KocBqn5jqNzhwQ8UAxc2PJqIRBgzFKj8xcU';
+const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8255dd2aa6c94e75845024015942f676/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=UbXtOo29r1H_vdE1MMLjYDgZ3LIXdRNa3Gr6VvicFyY';
 
 let supabaseClient;
 try {
@@ -62,10 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("URL:", TEAMS_WEBHOOK_URL);
         console.log("Payload:", { "text": textMessage });
 
-        // Usaremos a nossa nova API Proxy para evitar erros de CORS
-        const PROXY_URL = '/api/send-teams'; 
-        // Se estiver testando localmente (file://), você pode usar a URL completa após o deploy:
-        // const PROXY_URL = 'https://kickoff-diario.vercel.app/api/send-teams';
+        // Usando a URL completa para funcionar tanto localmente quanto na Vercel
+        const PROXY_URL = 'https://kickoff-diario.vercel.app/api/send-teams'; 
 
         try {
             const response = await fetch(PROXY_URL, {

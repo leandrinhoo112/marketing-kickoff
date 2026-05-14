@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/153e3f8a2751498d97cc12492a53f4a1/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=TuCpM5J-KocBqn5jqNzhwQ8UAxc2PJqIRBgzFKj8xcU';
+  const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8255dd2aa6c94e75845024015942f676/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=UbXtOo29r1H_vdE1MMLjYDgZ3LIXdRNa3Gr6VvicFyY';
 
   try {
     const response = await fetch(TEAMS_WEBHOOK_URL, {
