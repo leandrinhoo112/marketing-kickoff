@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allEntries = [];
     let editingId = null;
-    let myRadarIds = JSON.parse(localStorage.getItem('my_radar_ids') || '[]');
 
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
@@ -180,20 +179,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderEntries(entries) {
         if (!entries.length) { kickoffList.innerHTML = '<div class="empty-state"><p>Nada encontrado.</p></div>'; return; }
-        const currentName = userNameInput.value.trim().toLowerCase();
-        const todayStr = new Date().toLocaleDateString('pt-BR');
-
+        
         kickoffList.innerHTML = entries.map(entry => {
             const u = decodeUser(entry.username);
-            const entryDate = new Date(entry.created_at).toLocaleDateString('pt-BR');
             const blockersVal = (entry.blockers || '').toLowerCase().trim();
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
-            
-            // Lógica Simplificada: Apenas Nome e Dia (Local)
-            const isMine = myRadarIds.includes(entry.id) || 
-                          (currentName !== '' && u.name.toLowerCase() === currentName && entryDate === todayStr);
 
             return `
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : u.color}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
@@ -201,17 +193,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : u.color}">${getInitials(u.name)}</div>
                         <div class="user-info">
-                            <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name} ${isMine ? '<span style="background: #6841f1; color: white; font-size: 0.5em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle;">VOCÊ</span>' : ''}</h4>
+                            <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        ${isMine ? `
                         <div class="item-actions">
                             <button class="action-btn edit" onclick="editEntry('${entry.id}')" title="Editar"><i data-lucide="edit-3"></i></button>
                             <button class="action-btn delete" onclick="deleteEntry('${entry.id}')" title="Remover"><i data-lucide="trash-2"></i></button>
                         </div>
-                        ` : ''}
                         <div style="display: flex; gap: 8px;">
                             ${needsHelp ? '<span class="help-badge" style="background: rgba(2, 206, 255, 0.1); color: #02ceff; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">🆘 Ajuda</span>' : ''}
                             ${hasBlockers ? '<span class="help-badge blocker-badge" style="background: rgba(255, 65, 108, 0.1); color: #ff416c; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">⛔ Impedido</span>' : ''}
@@ -270,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     const { data, error } = await supabaseClient.from('kickoffs').insert([entry]).select();
                     if (error) throw error;
-                    if (data && data[0]) { myRadarIds.push(data[0].id); localStorage.setItem('my_radar_ids', JSON.stringify(myRadarIds)); }
                     successSound.play(); if (window.confetti) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                     await sendTeamsAlert(entry); showToast("Enviado!");
                 }
