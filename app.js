@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const statBlockers = document.getElementById('statBlockers');
 
     let allEntries = [];
+    let editingId = null; // ID do radar sendo editado
+    
+    // IDs dos radares que este usuário enviou
+    let myRadarIds = JSON.parse(localStorage.getItem('my_radar_ids') || '[]');
 
     const toastContainer = document.createElement('div');
     toastContainer.className = 'toast-container';
@@ -52,9 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-    // Gerenciamento de Rascunho (Incluindo Cor)
     const formFields = ['userName', 'userColor', 'yesterdayTasks', 'todayTasks', 'helpNeeded', 'whoHelp', 'blockers', 'observations'];
     function saveDraft() {
+        if (editingId) return; // Não salvar rascunho enquanto edita
         const draft = {};
         formFields.forEach(id => {
             const el = document.getElementById(id);
@@ -80,43 +84,59 @@ document.addEventListener('DOMContentLoaded', () => {
         return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
     }
 
-    // Decodifica Nome e Cor (Hack para não mudar o Banco de Dados)
     function decodeUser(fullString) {
         const parts = (fullString || '').split('|');
-        return {
-            name: parts[0] || 'Membro',
-            color: parts[1] || '#6841f1'
-        };
+        return { name: parts[0] || 'Membro', color: parts[1] || '#6841f1' };
     }
+
+    // --- FUNÇÕES DE EDIÇÃO E EXCLUSÃO ---
+    window.deleteEntry = async (id) => {
+        if (!confirm('Tem certeza que deseja remover este radar?')) return;
+        try {
+            const { error } = await supabaseClient.from('kickoffs').delete().eq('id', id);
+            if (error) throw error;
+            showToast('Radar removido com sucesso!');
+            loadEntries();
+        } catch (e) { showToast('Erro ao remover: ' + e.message, 'error'); }
+    };
+
+    window.editEntry = (id) => {
+        const entry = allEntries.find(e => e.id === id);
+        if (!entry) return;
+        
+        editingId = id;
+        const u = decodeUser(entry.username);
+        
+        document.getElementById('userName').value = u.name;
+        document.getElementById('userColor').value = u.color;
+        document.getElementById('yesterdayTasks').value = entry.yesterday_tasks;
+        document.getElementById('todayTasks').value = entry.today_tasks;
+        document.getElementById('helpNeeded').value = entry.help_needed || '';
+        document.getElementById('whoHelp').value = entry.who_help || '';
+        document.getElementById('blockers').value = entry.blockers || '';
+        document.getElementById('observations').value = entry.observations || '';
+        
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = 'Atualizar Radar <i data-lucide="save"></i>';
+        if (window.lucide) window.lucide.createIcons();
+        
+        window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
+        showToast('Modo de edição ativado', 'info');
+    };
 
     function updatePresence(entries) {
         const now = new Date().toISOString().split('T')[0];
         const todayEntries = entries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
-        
         const hour = new Date().getHours();
-        let greetingPrefix = "Bom dia";
-        if (hour >= 12 && hour < 18) greetingPrefix = "Boa tarde";
-        else if (hour >= 18) greetingPrefix = "Boa noite";
-
-        if (todayEntries.length === 0) {
-            dynamicGreeting.innerText = `${greetingPrefix}, Time! Vamos ser o primeiro hoje? 🚀`;
-        } else {
-            dynamicGreeting.innerText = `${greetingPrefix}! Já somos ${todayEntries.length} ativos no Radar hoje! 🔥`;
-        }
-
-        const uniqueUsers = [];
-        const seenNames = new Set();
+        let gp = "Bom dia";
+        if (hour >= 12 && hour < 18) gp = "Boa tarde"; else if (hour >= 18) gp = "Boa noite";
+        dynamicGreeting.innerText = todayEntries.length === 0 ? `${gp}, Time! Vamos ser o primeiro? 🚀` : `${gp}! Já somos ${todayEntries.length} ativos hoje! 🔥`;
+        const uniqueUsers = []; const seenNames = new Set();
         todayEntries.forEach(e => {
             const u = decodeUser(e.username);
-            if (!seenNames.has(u.name)) {
-                uniqueUsers.push(u);
-                seenNames.add(u.name);
-            }
+            if (!seenNames.has(u.name)) { uniqueUsers.push(u); seenNames.add(u.name); }
         });
-
-        presenceBar.innerHTML = uniqueUsers.map(u => `
-            <div class="presence-avatar" title="${u.name}" style="background: ${u.color}">${getInitials(u.name)}</div>
-        `).join('');
+        presenceBar.innerHTML = uniqueUsers.map(u => `<div class="presence-avatar" title="${u.name}" style="background: ${u.color}">${getInitials(u.name)}</div>`).join('');
     }
 
     function copyDailySummary() {
@@ -142,11 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const todayEntries = entries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
         statTotal.innerText = todayEntries.length;
         statHelp.innerText = todayEntries.filter(e => e.help_needed && e.help_needed.trim() !== '').length;
-        const blockersCount = todayEntries.filter(e => {
+        const bc = todayEntries.filter(e => {
             const b = (e.blockers || '').toLowerCase().trim();
             return b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b);
         }).length;
-        statBlockers.innerText = blockersCount;
+        statBlockers.innerText = bc;
     }
 
     function timeAgo(date) {
@@ -162,16 +182,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyFilters() {
         const searchTerm = searchInput.value.toLowerCase();
         const filterType = dateFilter.value;
-        const now = new Date();
-        const todayStr = now.toISOString().split('T')[0];
-
+        const now = new Date(); const todayStr = now.toISOString().split('T')[0];
         const filtered = allEntries.filter(entry => {
             const u = decodeUser(entry.username);
-            const matchesSearch = u.name.toLowerCase().includes(searchTerm) || 
-                                entry.today_tasks.toLowerCase().includes(searchTerm);
+            const matchesSearch = u.name.toLowerCase().includes(searchTerm) || entry.today_tasks.toLowerCase().includes(searchTerm);
             let matchesDate = true;
             const entryDateStr = new Date(entry.created_at).toISOString().split('T')[0];
-
             if (filterType === 'today') matchesDate = entryDateStr === todayStr;
             else if (filterType === 'yesterday') {
                 const yest = new Date(); yest.setDate(now.getDate() - 1);
@@ -195,13 +211,14 @@ document.addEventListener('DOMContentLoaded', () => {
             kickoffList.innerHTML = '<div class="empty-state"><p>Nenhum registro encontrado.</p></div>';
             return;
         }
-
         kickoffList.innerHTML = entries.map(entry => {
             const u = decodeUser(entry.username);
             const blockersVal = (entry.blockers || '').toLowerCase().trim();
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
+            
+            const isMine = myRadarIds.includes(entry.id);
 
             return `
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : u.color}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
@@ -213,9 +230,17 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 8px;">
-                        ${needsHelp ? '<span class="help-badge" style="background: rgba(2, 206, 255, 0.1); color: #02ceff; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">🆘 Ajuda</span>' : ''}
-                        ${hasBlockers ? '<span class="help-badge blocker-badge" style="background: rgba(255, 65, 108, 0.1); color: #ff416c; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">⛔ Impedido</span>' : ''}
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        ${isMine ? `
+                        <div class="item-actions">
+                            <button class="action-btn edit" onclick="editEntry(${entry.id})" title="Editar"><i data-lucide="edit-3"></i></button>
+                            <button class="action-btn delete" onclick="deleteEntry(${entry.id})" title="Remover"><i data-lucide="trash-2"></i></button>
+                        </div>
+                        ` : ''}
+                        <div style="display: flex; gap: 8px;">
+                            ${needsHelp ? '<span class="help-badge" style="background: rgba(2, 206, 255, 0.1); color: #02ceff; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">🆘 Ajuda</span>' : ''}
+                            ${hasBlockers ? '<span class="help-badge blocker-badge" style="background: rgba(255, 65, 108, 0.1); color: #ff416c; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">⛔ Impedido</span>' : ''}
+                        </div>
                     </div>
                 </div>
                 <div class="item-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
@@ -234,23 +259,17 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const { data, error } = await supabaseClient.from('kickoffs').select('*').order('created_at', { ascending: false });
             if (error) throw error;
-            if (data) {
-                allEntries = data;
-                updateStats(data);
-                updatePresence(data);
-                applyFilters();
-            }
+            if (data) { allEntries = data; updateStats(data); updatePresence(data); applyFilters(); }
         } catch (error) { console.error(error); }
     }
 
-    async function sendTeamsAlert(entry) {
+    async function sendTeamsAlert(entry, isUpdate = false) {
         if (!entry.help_needed && !entry.blockers) return;
         const u = decodeUser(entry.username);
         const PROXY_URL = '/api/send-teams'; 
-        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${u.name}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
+        const message = `${isUpdate ? '🔄 **RADAR ATUALIZADO**' : '🚨 **ALERTA DE RADAR**'}\n\n**Membro:** ${u.name}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
         try {
             await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: message }) });
-            showToast("Notificação enviada ao Teams!");
         } catch (e) { console.error(e); }
     }
 
@@ -259,11 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            
             const rawName = document.getElementById('userName').value;
             const rawColor = document.getElementById('userColor').value;
             const encodedUser = `${rawName}|${rawColor}`;
-
             const entry = {
                 username: encodedUser,
                 yesterday_tasks: document.getElementById('yesterdayTasks').value,
@@ -274,23 +291,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 observations: document.getElementById('observations').value,
                 created_at: new Date().toISOString()
             };
-
             try {
-                const { error } = await supabaseClient.from('kickoffs').insert([entry]);
-                if (error) throw error;
-                successSound.play();
-                if (window.confetti) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                await sendTeamsAlert(entry);
-                showToast("Radar enviado!");
+                if (editingId) {
+                    const { error } = await supabaseClient.from('kickoffs').update(entry).eq('id', editingId);
+                    if (error) throw error;
+                    showToast("Radar atualizado!");
+                    await sendTeamsAlert(entry, true);
+                    editingId = null;
+                } else {
+                    const { data, error } = await supabaseClient.from('kickoffs').insert([entry]).select();
+                    if (error) throw error;
+                    if (data && data[0]) {
+                        myRadarIds.push(data[0].id);
+                        localStorage.setItem('my_radar_ids', JSON.stringify(myRadarIds));
+                    }
+                    successSound.play();
+                    if (window.confetti) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                    await sendTeamsAlert(entry);
+                    showToast("Radar enviado!");
+                }
                 form.reset();
                 localStorage.removeItem('radar_draft');
+                submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>';
                 loadEntries();
             } catch (error) { showToast('Erro: ' + error.message, 'error'); } 
-            finally { 
-                submitBtn.disabled = false; 
-                submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>'; 
-                if (window.lucide) window.lucide.createIcons();
-            }
+            finally { submitBtn.disabled = false; if (window.lucide) window.lucide.createIcons(); }
         });
     }
 
@@ -302,11 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (customDateInput) customDateInput.addEventListener('change', applyFilters);
-
-    if (dateDisplay) {
-        dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    }
-
+    if (dateDisplay) { dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); }
     loadDraft();
     loadEntries();
     setInterval(loadEntries, 10000);

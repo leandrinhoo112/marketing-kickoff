@@ -414,6 +414,38 @@ footer {
     text-transform: uppercase;
 }
 
+/* Edit/Delete Actions */
+.item-actions {
+    display: flex;
+    gap: 12px;
+    margin-left: 15px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.action-btn.edit:hover { color: #02ceff; }
+.action-btn.delete:hover { color: #ff416c; }
+
+@keyframes pulseGlow {
+    from { box-shadow: 0 0 10px rgba(255, 65, 108, 0.1); }
+    to { box-shadow: 0 0 25px rgba(255, 65, 108, 0.4); }
+}
+
 /* Urgency Pulse */
 .urgent-item {
     box-shadow: 0 0 15px rgba(255, 65, 108, 0.2) !important;
