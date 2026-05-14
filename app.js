@@ -13,12 +13,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const kickoffList = document.getElementById('kickoffList');
     const dateDisplay = document.getElementById('currentDate');
 
+    // Inicializa o container de Toasts
+    const toastContainer = document.createElement('div');
+    toastContainer.className = 'toast-container';
+    document.body.appendChild(toastContainer);
+
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        const icon = type === 'success' ? 'check-circle' : 'alert-circle';
+        toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
+        toastContainer.appendChild(toast);
+        if (window.lucide) window.lucide.createIcons();
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    // Gerenciamento de Rascunho (Draft)
+    const formFields = ['userName', 'yesterdayTasks', 'todayTasks', 'helpNeeded', 'whoHelp', 'blockers', 'observations'];
+    
+    function saveDraft() {
+        const draft = {};
+        formFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) draft[id] = el.value;
+        });
+        localStorage.setItem('radar_draft', JSON.stringify(draft));
+    }
+
+    function loadDraft() {
+        const draft = JSON.parse(localStorage.getItem('radar_draft'));
+        if (draft) {
+            formFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && draft[id]) el.value = draft[id];
+            });
+        }
+    }
+
+    formFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', saveDraft);
+    });
+
     if (dateDisplay) {
         dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 
     async function loadEntries() {
         if (!supabaseClient) return;
+        
+        // Se a lista estiver vazia, mostra skeletons
+        if (kickoffList.innerHTML === '' || kickoffList.querySelector('.empty-state')) {
+            kickoffList.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
+        }
+
         try {
             const { data, error } = await supabaseClient.from('kickoffs').select('*').order('created_at', { ascending: false });
             if (error) throw error;
@@ -52,22 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!entry.help_needed && !entry.blockers) return;
 
         const PROXY_URL = '/api/send-teams'; 
-        
-        // FORMATO SIMPLES PARA WEBHOOK CLÁSSICO (O ÚNICO QUE FUNCIONA)
-        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém do time'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Clique aqui para ver o Radar](${window.location.href})`;
+        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém do time'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
 
         try {
-            const response = await fetch(PROXY_URL, {
+            await fetch(PROXY_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text: message })
             });
-
-            if (response.ok) {
-                console.log("✅ Alerta enviado ao Teams!");
-            } else {
-                console.error("❌ Erro no envio:", response.status);
-            }
+            showToast("Notificação enviada ao Teams!");
         } catch (e) { console.error("Erro no alerta:", e); }
     }
 
@@ -93,11 +137,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
                 await sendTeamsAlert(entry);
-                alert('✅ RADAR ENVIADO COM SUCESSO!');
+                showToast("Radar enviado com sucesso!");
                 form.reset();
+                localStorage.removeItem('radar_draft'); // Limpa rascunho após sucesso
                 loadEntries();
             } catch (error) {
-                alert('Erro: ' + error.message);
+                showToast('Erro ao enviar: ' + error.message, 'error');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>';
@@ -106,6 +151,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const testTeamsBtn = document.getElementById('testTeamsBtn');
+    if (testTeamsBtn) {
+        testTeamsBtn.addEventListener('click', async () => {
+            testTeamsBtn.disabled = true;
+            try {
+                await sendTeamsAlert({ username: 'Teste UX', help_needed: 'Verificando Toasts 🚀' });
+                showToast("Teste de conexão disparado!");
+            } catch (e) { showToast("Erro no teste", "error"); }
+            setTimeout(() => testTeamsBtn.disabled = false, 2000);
+        });
+    }
+
+    loadDraft();
     loadEntries();
     setInterval(loadEntries, 10000);
 });
