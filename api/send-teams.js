@@ -18,19 +18,27 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8255dd2aa6c94e75845024015942f676/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=UbXtOo29r1H_vdE1MMLjYDgZ3LIXdRNa3Gr6VvicFyY';
+  const USER_EMAIL = 'leandro.franco@inspirar.com.br';
 
   try {
-    const response = await fetch(TEAMS_WEBHOOK_URL, {
+    // Usamos o FormSubmit (serviço gratuito) para enviar o e-mail
+    const response = await fetch(`https://formsubmit.co/ajax/${USER_EMAIL}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body)
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: "ALERTA RADAR",
+        message: req.body.text,
+        _template: "table" // Deixa o e-mail mais organizado
+      })
     });
 
-    const status = response.status;
-    res.status(status).json({ success: response.ok });
+    const data = await response.json();
+    res.status(response.status).json({ success: response.ok, info: data });
   } catch (error) {
-    console.error('Proxy Error:', error);
+    console.error('Email Bridge Error:', error);
     res.status(500).json({ error: error.message });
   }
 }
