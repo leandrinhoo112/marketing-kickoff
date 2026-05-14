@@ -54,12 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
     }
 
-    // Toggle Admin Panel
+    // Toggle Admin Panel with Password
     window.toggleAdmin = () => {
         if (adminArea.style.display === 'none') {
-            adminArea.style.display = 'block';
-            adminArea.scrollIntoView({ behavior: 'smooth' });
-            updateAdminPanel();
+            const password = prompt("Por favor, digite a senha de acesso administrativo:");
+            if (password === "CampeãoInspirar") {
+                adminArea.style.display = 'block';
+                adminArea.scrollIntoView({ behavior: 'smooth' });
+                updateAdminPanel();
+                showToast('Acesso Administrador Liberado', 'success');
+            } else if (password !== null) {
+                showToast('Senha Incorreta!', 'error');
+            }
         } else {
             adminArea.style.display = 'none';
         }
