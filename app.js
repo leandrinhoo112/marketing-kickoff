@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const PROXY_URL = '/api/send-teams'; 
         
         // FORMATO SIMPLES PARA WEBHOOK CLÁSSICO (O ÚNICO QUE FUNCIONA)
-        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Clique aqui para ver o Radar](${window.location.href})`;
+        const message = `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém do time'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Clique aqui para ver o Radar](${window.location.href})`;
 
         try {
             const response = await fetch(PROXY_URL, {
