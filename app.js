@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const copySummaryBtn = document.getElementById('copySummaryBtn');
     const presenceBar = document.getElementById('presenceBar');
     const dynamicGreeting = document.getElementById('dynamicGreeting');
+    const userNameInput = document.getElementById('userName');
     const userColorInput = document.getElementById('userColor');
 
     const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
@@ -34,9 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statBlockers = document.getElementById('statBlockers');
 
     let allEntries = [];
-    let editingId = null; // ID do radar sendo editado
-    
-    // IDs dos radares que este usuário enviou
+    let editingId = null;
     let myRadarIds = JSON.parse(localStorage.getItem('my_radar_ids') || '[]');
 
     const toastContainer = document.createElement('div');
@@ -58,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const formFields = ['userName', 'userColor', 'yesterdayTasks', 'todayTasks', 'helpNeeded', 'whoHelp', 'blockers', 'observations'];
     function saveDraft() {
-        if (editingId) return; // Não salvar rascunho enquanto edita
+        if (editingId) return;
         const draft = {};
         formFields.forEach(id => {
             const el = document.getElementById(id);
@@ -80,6 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.addEventListener('input', saveDraft);
     });
 
+    // RE-RENDER AO MUDAR O NOME (Para "acender" os botões de editar)
+    if (userNameInput) userNameInput.addEventListener('input', () => applyFilters());
+    if (userColorInput) userColorInput.addEventListener('input', () => applyFilters());
+
     function getInitials(name) {
         return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
     }
@@ -89,39 +92,33 @@ document.addEventListener('DOMContentLoaded', () => {
         return { name: parts[0] || 'Membro', color: parts[1] || '#6841f1' };
     }
 
-    // --- FUNÇÕES DE EDIÇÃO E EXCLUSÃO ---
     window.deleteEntry = async (id) => {
         if (!confirm('Tem certeza que deseja remover este radar?')) return;
         try {
             const { error } = await supabaseClient.from('kickoffs').delete().eq('id', id);
             if (error) throw error;
-            showToast('Radar removido com sucesso!');
+            showToast('Radar removido!');
             loadEntries();
-        } catch (e) { showToast('Erro ao remover: ' + e.message, 'error'); }
+        } catch (e) { showToast('Erro: ' + e.message, 'error'); }
     };
 
     window.editEntry = (id) => {
-        const entry = allEntries.find(e => e.id === id);
+        const entry = allEntries.find(e => e.id == id); // Usar == para comparar string/number
         if (!entry) return;
-        
         editingId = id;
         const u = decodeUser(entry.username);
-        
-        document.getElementById('userName').value = u.name;
-        document.getElementById('userColor').value = u.color;
+        userNameInput.value = u.name;
+        userColorInput.value = u.color;
         document.getElementById('yesterdayTasks').value = entry.yesterday_tasks;
         document.getElementById('todayTasks').value = entry.today_tasks;
         document.getElementById('helpNeeded').value = entry.help_needed || '';
         document.getElementById('whoHelp').value = entry.who_help || '';
         document.getElementById('blockers').value = entry.blockers || '';
         document.getElementById('observations').value = entry.observations || '';
-        
         const submitBtn = form.querySelector('button[type="submit"]');
         submitBtn.innerHTML = 'Atualizar Radar <i data-lucide="save"></i>';
         if (window.lucide) window.lucide.createIcons();
-        
         window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
-        showToast('Modo de edição ativado', 'info');
     };
 
     function updatePresence(entries) {
@@ -211,6 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
             kickoffList.innerHTML = '<div class="empty-state"><p>Nenhum registro encontrado.</p></div>';
             return;
         }
+
+        const currentName = userNameInput.value.trim();
+        const currentColor = userColorInput.value;
+        const todayStr = new Date().toISOString().split('T')[0];
+
         kickoffList.innerHTML = entries.map(entry => {
             const u = decodeUser(entry.username);
             const blockersVal = (entry.blockers || '').toLowerCase().trim();
@@ -218,7 +220,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
             
-            const isMine = myRadarIds.includes(entry.id);
+            // LÓGICA DE PROPRIEDADE: ID no localStorage OU (Nome + Cor iguais E ser de hoje)
+            const isFromToday = new Date(entry.created_at).toISOString().split('T')[0] === todayStr;
+            const isMine = myRadarIds.includes(entry.id) || (currentName !== '' && u.name === currentName && u.color === currentColor && isFromToday);
 
             return `
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : u.color}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
@@ -227,14 +231,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : u.color}">${getInitials(u.name)}</div>
                         <div class="user-info">
                             <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name}</h4>
-                            <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
+                            <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)} ${isMine ? '• Você' : ''}</span>
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
                         ${isMine ? `
                         <div class="item-actions">
-                            <button class="action-btn edit" onclick="editEntry(${entry.id})" title="Editar"><i data-lucide="edit-3"></i></button>
-                            <button class="action-btn delete" onclick="deleteEntry(${entry.id})" title="Remover"><i data-lucide="trash-2"></i></button>
+                            <button class="action-btn edit" onclick="editEntry('${entry.id}')" title="Editar"><i data-lucide="edit-3"></i></button>
+                            <button class="action-btn delete" onclick="deleteEntry('${entry.id}')" title="Remover"><i data-lucide="trash-2"></i></button>
                         </div>
                         ` : ''}
                         <div style="display: flex; gap: 8px;">
@@ -278,8 +282,8 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            const rawName = document.getElementById('userName').value;
-            const rawColor = document.getElementById('userColor').value;
+            const rawName = userNameInput.value;
+            const rawColor = userColorInput.value;
             const encodedUser = `${rawName}|${rawColor}`;
             const entry = {
                 username: encodedUser,
