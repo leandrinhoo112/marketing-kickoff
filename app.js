@@ -1,6 +1,5 @@
 const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
-const TEAMS_WEBHOOK_URL = 'https://defaultcf5c7f8b4d1a4965a5470b57e056da.a0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8255dd2aa6c94e75845024015942f676/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=UbXtOo29r1H_vdE1MMLjYDgZ3LIXdRNa3Gr6VvicFyY';
 
 let supabaseClient;
 try {
@@ -49,63 +48,38 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) { console.error(error); }
     }
 
-    // ENVIANDO APENAS UMA STRING DE TEXTO PARA FACILITAR
     async function sendTeamsAlert(entry) {
-        if (!entry.help_needed && !entry.blockers) {
-            console.log("ℹ️ Nenhuma ajuda ou impedimento relatado. Pulando alerta do Teams.");
-            return;
-        }
+        if (!entry.help_needed && !entry.blockers) return;
 
-        const textMessage = `🚨 **ALERTA RADAR: AJUDA NECESSÁRIA**\n\n**Colaborador:** ${entry.username}\n**❓ Ajuda:** ${entry.help_needed || 'Impedimento'}\n**🤝 Com:** ${entry.who_help || 'Equipe'}\n\n**🔗 Ver no site:** [Clique aqui para ver o feed](${window.location.href})`;
-
-        console.group("🚀 Enviando Alerta para o Teams");
-        console.log("URL:", TEAMS_WEBHOOK_URL);
-        console.log("Payload:", { "text": textMessage });
-
-        // Usando a URL completa para funcionar tanto localmente quanto na Vercel
-        const PROXY_URL = 'https://kickoff-diario.vercel.app/api/send-teams'; 
+        const PROXY_URL = '/api/send-teams'; 
 
         try {
             const response = await fetch(PROXY_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ "text": textMessage })
+                body: JSON.stringify({
+                    username: entry.username,
+                    help_needed: entry.help_needed,
+                    who_help: entry.who_help,
+                    blockers: entry.blockers,
+                    observations: entry.observations,
+                    url: window.location.href
+                })
             });
 
             if (response.ok) {
-                console.log("✅ Sucesso via Proxy!");
-                alert("✅ Radar enviado! Verifique seu e-mail para ativar o serviço na primeira vez.");
+                alert("✅ Radar enviado ao Teams via Make!");
             } else {
                 const errorText = await response.text();
-                console.error("❌ Erro na API Proxy:", response.status, errorText);
-                alert(`⚠️ Erro na API (Status ${response.status}): ${errorText || 'O servidor não respondeu corretamente'}`);
+                alert(`⚠️ Erro na Ponte (Status ${response.status}): ${errorText}`);
             }
         } catch (e) {
             console.error("❌ Erro de Conexão:", e);
-            alert("❌ Não foi possível falar com o servidor. Verifique se o deploy na Vercel foi concluído.");
+            alert("❌ Erro ao contatar a ponte do Make. Verifique o deploy.");
         }
-        console.groupEnd();
     }
 
     if (form) {
-        const testBtn = document.getElementById('testTeamsBtn');
-        if (testBtn) {
-            testBtn.addEventListener('click', async () => {
-                const testEntry = {
-                    username: "TESTE MANUAL",
-                    help_needed: "Teste de conexão do botão",
-                    who_help: "Suporte",
-                    blockers: "Nenhum"
-                };
-                testBtn.innerText = 'Testando...';
-                testBtn.disabled = true;
-                await sendTeamsAlert(testEntry);
-                testBtn.innerText = 'Testar Teams';
-                testBtn.disabled = false;
-                if (window.lucide) window.lucide.createIcons();
-            });
-        }
-
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
@@ -119,14 +93,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 help_needed: document.getElementById('helpNeeded').value,
                 who_help: document.getElementById('whoHelp').value,
                 blockers: document.getElementById('blockers').value,
-                observations: document.getElementById('observations').value
+                observations: document.getElementById('observations').value,
+                created_at: new Date().toISOString()
             };
 
             try {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
                 await sendTeamsAlert(entry);
-                alert('✅ RADAR ENVIADO COM SUCESSO!');
+                alert('✅ RADAR SALVO COM SUCESSO!');
                 form.reset();
                 loadEntries();
             } catch (error) {

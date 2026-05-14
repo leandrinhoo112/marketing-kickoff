@@ -18,30 +18,19 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const USER_EMAIL = 'leandro.franco@inspirar.com.br';
+  const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/ub6qoelm2wvlq26ur83qj4ehbqu04yhg';
 
   try {
-    const response = await fetch(`https://formsubmit.co/ajax/${USER_EMAIL}`, {
+    const response = await fetch(MAKE_WEBHOOK_URL, {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        _subject: "ALERTA RADAR: AJUDA NECESSÁRIA",
-        message: req.body.text
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body) // Enviamos o objeto completo (nome, ajuda, etc)
     });
 
-    // Em vez de tentar ler como JSON direto, pegamos o texto puro primeiro
     const responseText = await response.text();
-    
-    res.status(response.status).json({ 
-      success: response.ok, 
-      info: "Comando processado" 
-    });
+    res.status(response.status).json({ success: response.ok, info: responseText });
   } catch (error) {
-    console.error('Email Bridge Error:', error);
+    console.error('Make Bridge Error:', error);
     res.status(500).json({ error: error.message });
   }
 }
