@@ -1,6 +1,8 @@
 const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
 
+const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "KAMILLE", "JOÃO", "EDSON", "LUIZ", "JORGE", "VANESSA", "BRUNO"];
+
 let supabaseClient;
 try {
     if (window.supabase) {
@@ -8,7 +10,6 @@ try {
     }
 } catch (e) { console.error(e); }
 
-// Registrar o PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW fail:', err));
@@ -27,6 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const dynamicGreeting = document.getElementById('dynamicGreeting');
     const userNameInput = document.getElementById('userName');
     const userColorInput = document.getElementById('userColor');
+
+    // Admin Elements
+    const adminArea = document.getElementById('adminArea');
+    const checkinStatus = document.getElementById('checkinStatus');
+    const adminBlockersSummary = document.getElementById('adminBlockersSummary');
 
     const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
     successSound.volume = 0.5;
@@ -48,18 +54,52 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
     }
 
-    const formFields = ['userName', 'userColor', 'yesterdayTasks', 'todayTasks', 'helpNeeded', 'whoHelp', 'blockers', 'observations'];
-    function saveDraft() {
-        if (editingId) return;
-        const draft = {};
-        formFields.forEach(id => { const el = document.getElementById(id); if (el) draft[id] = el.value; });
-        localStorage.setItem('radar_draft', JSON.stringify(draft));
+    // Toggle Admin Panel
+    window.toggleAdmin = () => {
+        if (adminArea.style.display === 'none') {
+            adminArea.style.display = 'block';
+            adminArea.scrollIntoView({ behavior: 'smooth' });
+            updateAdminPanel();
+        } else {
+            adminArea.style.display = 'none';
+        }
+    };
+
+    function updateAdminPanel() {
+        const todayStr = new Date().toLocaleDateString('pt-BR');
+        const todayEntries = allEntries.filter(e => new Date(e.created_at).toLocaleDateString('pt-BR') === todayStr);
+        const namesWhoPosted = todayEntries.map(e => decodeUser(e.username).name.toUpperCase());
+
+        // 1. Status de Check-in
+        checkinStatus.innerHTML = TEAM_MEMBERS.map(member => {
+            const hasPosted = namesWhoPosted.includes(member);
+            return `
+                <div style="background: ${hasPosted ? 'rgba(2, 206, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)'}; 
+                            color: ${hasPosted ? '#02ceff' : 'rgba(255,255,255,0.3)'}; 
+                            padding: 8px 12px; border-radius: 8px; border: 1px solid ${hasPosted ? '#02ceff' : 'transparent'};
+                            font-size: 0.8em; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                    <i data-lucide="${hasPosted ? 'check-circle' : 'circle'}"></i> ${member}
+                </div>
+            `;
+        }).join('');
+
+        // 2. Resumo de Impedimentos
+        const blockers = todayEntries.filter(e => {
+            const b = (e.blockers || '').toLowerCase().trim();
+            return b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b);
+        });
+
+        if (blockers.length === 0) {
+            adminBlockersSummary.innerHTML = '<p style="opacity: 0.5;">Nenhum impedimento relatado hoje. ✨</p>';
+        } else {
+            adminBlockersSummary.innerHTML = blockers.map(e => `
+                <div style="margin-bottom: 10px; padding: 10px; background: rgba(255, 65, 108, 0.1); border-radius: 8px; border-left: 3px solid #ff416c;">
+                    <strong>${decodeUser(e.username).name}:</strong> ${e.blockers}
+                </div>
+            `).join('');
+        }
+        if (window.lucide) window.lucide.createIcons();
     }
-    function loadDraft() {
-        const draft = JSON.parse(localStorage.getItem('radar_draft'));
-        if (draft) { formFields.forEach(id => { const el = document.getElementById(id); if (el && draft[id]) el.value = draft[id]; }); }
-    }
-    formFields.forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', saveDraft); });
 
     function getInitials(name) { return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase(); }
 
@@ -118,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         todayEntries.forEach(e => {
             const u = decodeUser(e.username);
             summary += `👤 *${u.name}*\n✅ Ontem: ${e.yesterday_tasks}\n🎯 Hoje: ${e.today_tasks}\n`;
-            if (e.help_needed) summary += `🆘 Ajuda: ${e.help_needed}\n`;
+            if (e.help_needed) summary += `🆘 Ajuda: ${e.help_needed} (com ${e.who_help || '?'})\n`;
             const blk = (e.blockers || '').toLowerCase();
             if (blk && !['não','nao','nada'].includes(blk)) summary += `⚠️ Impedimento: ${e.blockers}\n`;
             summary += `----------------------------\n`;
@@ -138,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b);
         }).length;
         statBlockers.innerText = bc;
+        if (adminArea.style.display !== 'none') updateAdminPanel();
     }
 
     function timeAgo(date) {
@@ -180,7 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
-
             return `
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : u.color}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
@@ -226,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!entry.help_needed && !entry.blockers) return;
         const u = decodeUser(entry.username);
         const PROXY_URL = '/api/send-teams'; 
-        const message = `${isUpdate ? '🔄 **RADAR ATUALIZADO**' : '🚨 **ALERTA DE RADAR**'}\n\n**Membro:** ${u.name}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
+        const message = `${isUpdate ? '🔄 **RADAR ATUALIZADO**' : '🚨 **ALERTA DE RADAR**'}\n\n**Membro:** ${u.name}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De whom:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
         try { await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: message }) }); } catch (e) {}
     }
 
@@ -247,17 +287,15 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             try {
                 if (editingId) {
-                    const { error } = await supabaseClient.from('kickoffs').update(entry).eq('id', editingId);
-                    if (error) throw error;
+                    await supabaseClient.from('kickoffs').update(entry).eq('id', editingId);
                     showToast("Atualizado!"); await sendTeamsAlert(entry, true);
                     editingId = null;
                 } else {
-                    const { data, error } = await supabaseClient.from('kickoffs').insert([entry]).select();
-                    if (error) throw error;
+                    await supabaseClient.from('kickoffs').insert([entry]);
                     successSound.play(); if (window.confetti) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                     await sendTeamsAlert(entry); showToast("Enviado!");
                 }
-                form.reset(); localStorage.removeItem('radar_draft');
+                form.reset();
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>'; loadEntries();
             } catch (error) { showToast('Erro: ' + error.message, 'error'); } 
             finally { submitBtn.disabled = false; if (window.lucide) window.lucide.createIcons(); }
@@ -272,6 +310,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (customDateInput) customDateInput.addEventListener('change', applyFilters);
-    if (dateDisplay) { dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); }
-    loadDraft(); loadEntries(); setInterval(loadEntries, 10000);
+    loadEntries(); setInterval(loadEntries, 10000);
 });

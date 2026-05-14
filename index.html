@@ -88,14 +88,25 @@
                     <p>Preencha suas metas e atualizações para o dia de hoje.</p>
                 </div>
                 
-                <form id="kickoffForm">
                     <div class="grid-2">
                         <div class="input-group">
-                            <label for="userName"><i data-lucide="user"></i> Nome Completo</label>
-                            <input type="text" id="userName" name="userName" placeholder="Seu nome" required>
+                            <label for="userName"><i data-lucide="user"></i> Membro da Equipe</label>
+                            <select id="userName" name="userName" required style="height: 45px; background: #1a152e; border-radius: 8px; color: white; border: 1px solid rgba(255,255,255,0.1); width: 100%; padding: 0 15px; cursor: pointer;">
+                                <option value="" disabled selected>Selecione seu nome...</option>
+                                <option value="LEANDRO">LEANDRO</option>
+                                <option value="IGOR">IGOR</option>
+                                <option value="YASMIM">YASMIM</option>
+                                <option value="KAMILLE">KAMILLE</option>
+                                <option value="JOÃO">JOÃO</option>
+                                <option value="EDSON">EDSON</option>
+                                <option value="LUIZ">LUIZ</option>
+                                <option value="JORGE">JORGE</option>
+                                <option value="VANESSA">VANESSA</option>
+                                <option value="BRUNO">BRUNO</option>
+                            </select>
                         </div>
                         <div class="input-group">
-                            <label for="userColor"><i data-lucide="palette"></i> Cor do Perfil</label>
+                            <label for="userColor"><i data-lucide="palette"></i> Sua Cor</label>
                             <div style="display: flex; gap: 10px; align-items: center;">
                                 <input type="color" id="userColor" value="#6841f1" style="width: 100%; height: 45px; padding: 5px; cursor: pointer; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
                             </div>
@@ -120,7 +131,20 @@
                         </div>
                         <div class="input-group">
                             <label for="whoHelp"><i data-lucide="users"></i> De quem você precisa de ajuda?</label>
-                            <input type="text" id="whoHelp" name="whoHelp" placeholder="Nome do colega ou time">
+                            <select id="whoHelp" name="whoHelp" style="height: 45px; background: #1a152e; border-radius: 8px; color: white; border: 1px solid rgba(255,255,255,0.1); width: 100%; padding: 0 15px; cursor: pointer;">
+                                <option value="">Ninguém (Progresso OK)</option>
+                                <option value="LEANDRO">LEANDRO</option>
+                                <option value="IGOR">IGOR</option>
+                                <option value="YASMIM">YASMIM</option>
+                                <option value="KAMILLE">KAMILLE</option>
+                                <option value="JOÃO">JOÃO</option>
+                                <option value="EDSON">EDSON</option>
+                                <option value="LUIZ">LUIZ</option>
+                                <option value="JORGE">JORGE</option>
+                                <option value="VANESSA">VANESSA</option>
+                                <option value="BRUNO">BRUNO</option>
+                                <option value="OUTRO">OUTRO / TIME</option>
+                            </select>
                         </div>
                     </div>
 
@@ -163,10 +187,39 @@
         </section>
     </main>
 
+    <!-- ÁREA DO ADMINISTRADOR (ESCONDIDA POR PADRÃO) -->
+    <section id="adminArea" class="container" style="display: none; margin-top: 50px; padding-top: 30px; border-top: 2px dashed rgba(104, 65, 241, 0.3);">
+        <div class="glass-card" style="border: 2px solid #6841f1;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="color: #6841f1;"><i data-lucide="shield-check"></i> Painel do Gestor</h2>
+                    <p>Controle de presença e produtividade do time.</p>
+                </div>
+                <button onclick="toggleAdmin()" class="btn-secondary" style="padding: 5px 15px; font-size: 0.8em;">Fechar X</button>
+            </div>
+
+            <div class="grid-2" style="margin-top: 20px;">
+                <div class="content-block">
+                    <h4 style="margin-bottom: 15px;"><i data-lucide="users"></i> Quem já postou hoje?</h4>
+                    <div id="checkinStatus" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <!-- Status dos membros entrará aqui -->
+                    </div>
+                </div>
+                <div class="content-block">
+                    <h4 style="margin-bottom: 15px;"><i data-lucide="alert-circle"></i> Resumo de Impedimentos</h4>
+                    <div id="adminBlockersSummary" style="max-height: 200px; overflow-y: auto; font-size: 0.9em; opacity: 0.8;">
+                        <!-- Resumo de bloqueios entrará aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="footer-content">
             <img src="Logo-Faculdade-Inspirar-4.png" alt="Faculdade Inspirar" style="height: 60px; margin-bottom: 15px; filter: brightness(0) invert(1);">
             <p>&copy; 2026 Radar Diário • Desenvolvido pelo Leandro Campeão 🏆</p>
+            <button onclick="toggleAdmin()" style="margin-top: 20px; background: none; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.7em;">Acesso Administrativo</button>
         </div>
     </footer>
 
