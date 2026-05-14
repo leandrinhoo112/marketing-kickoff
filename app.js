@@ -53,19 +53,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const PROXY_URL = '/api/send-teams'; 
 
+        // Criando um Cartão Adaptativo de verdade
+        const adaptiveCard = {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "🚨 ALERTA DE RADAR DIÁRIO",
+                    "color": "Accent"
+                },
+                {
+                    "type": "FactSet",
+                    "facts": [
+                        { "title": "Membro:", "value": entry.username || "Time" },
+                        { "title": "Ajuda:", "value": entry.help_needed || "Nenhuma" },
+                        { "title": "Impedimentos:", "value": entry.blockers || "Nenhum" }
+                    ]
+                },
+                {
+                    "type": "ActionSet",
+                    "actions": [
+                        {
+                            "type": "Action.OpenUrl",
+                            "title": "Ver Radar no Site",
+                            "url": window.location.href
+                        }
+                    ]
+                }
+            ],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.3"
+        };
+
         try {
-            const response = await fetch(PROXY_URL, {
+            await fetch(PROXY_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    text: `🚨 **ALERTA DE RADAR**\n\n**Membro:** ${entry.username}\n**Ajuda:** ${entry.help_needed}\n**Quem:** ${entry.who_help}\n**Impedimentos:** ${entry.blockers}\n\n[Ver no Radar](${window.location.href})`
-                })
+                body: JSON.stringify(adaptiveCard) // Enviamos o CARTÃO puro
             });
-
-            if (response.ok) {
-                console.log("✅ Alerta enviado!");
-            }
-        } catch (e) { console.error("Erro no alerta:", e); }
+            console.log("✅ Cartão enviado!");
+        } catch (e) { console.error("Erro no cartão:", e); }
     }
 
     if (form) {
