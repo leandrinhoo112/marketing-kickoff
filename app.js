@@ -74,14 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 console.log("✅ Sucesso via Proxy!");
-                alert("✅ Radar enviado ao Teams com sucesso!");
+                alert("✅ Radar enviado! Verifique seu e-mail para ativar o serviço na primeira vez.");
             } else {
-                console.error("❌ Erro na API Proxy");
-                alert("⚠️ A API Proxy respondeu com erro. Certifique-se de que fez o deploy da pasta /api.");
+                const errorText = await response.text();
+                console.error("❌ Erro na API Proxy:", response.status, errorText);
+                alert(`⚠️ Erro na API (Status ${response.status}): ${errorText || 'O servidor não respondeu corretamente'}`);
             }
         } catch (e) {
-            console.error("❌ Erro de Conexão (CORS ou Rede):", e);
-            alert("❌ Erro crítico ao contatar o Teams. Pode ser um problema de CORS ou a URL expirou. Veja o console (F12).");
+            console.error("❌ Erro de Conexão:", e);
+            alert("❌ Não foi possível falar com o servidor. Verifique se o deploy na Vercel foi concluído.");
         }
         console.groupEnd();
     }
