@@ -1,0 +1,22 @@
+{
+  "name": "Radar Diário Inspirar",
+  "short_name": "Radar",
+  "description": "Sistema de Check-in Diário do Time de Marketing",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0a1e",
+  "theme_color": "#6841f1",
+  "icons": [
+    {
+      "src": "Logo-Faculdade-Inspirar-4.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Logo-Faculdade-Inspirar-4.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

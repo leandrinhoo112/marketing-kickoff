@@ -9,6 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6841f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Lucide Icons -->
@@ -21,17 +25,26 @@
     <div class="background-blob blob-2"></div>
     
     <header>
-        <div class="container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-            <div class="logo" style="margin-bottom: 5px;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; gap: 20px;">
+            <div class="logo" style="flex: 1; margin-bottom: 0;">
                 <i data-lucide="activity"></i>
                 <span>Radar<span>Diário</span></span>
             </div>
-            <img src="Logo-Faculdade-Inspirar-4.png" alt="Inspirar Logo" style="height: 75px; margin: 5px 0; filter: drop-shadow(0 0 10px rgba(104, 65, 241, 0.3));">
-            <div class="date-display" id="currentDate" style="font-weight: 600; opacity: 0.8; font-size: 1.1em; color: #8e6eff;"></div>
+            <div style="flex: 1; display: flex; justify-content: center;">
+                <img src="Logo-Faculdade-Inspirar-4.png" alt="Inspirar Logo" style="height: 80px; filter: drop-shadow(0 0 10px rgba(104, 65, 241, 0.3));">
+            </div>
+            <div class="date-display" id="currentDate" style="flex: 1; text-align: right; font-weight: 600; opacity: 0.8; font-size: 1em; color: #8e6eff;"></div>
         </div>
     </header>
 
     <main class="container">
+        <!-- SAUDAÇÃO E PRESENÇA -->
+        <section class="greeting-section" style="margin-bottom: 30px; text-align: center;">
+            <h2 id="dynamicGreeting" style="font-size: 1.8em; margin-bottom: 10px; font-weight: 800; background: linear-gradient(to right, #fff, #8e6eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Bom dia, Time! 🚀</h2>
+            <div id="presenceBar" style="display: flex; justify-content: center; gap: -10px; margin-top: 15px;">
+                <!-- Avatares de quem já postou hoje entrarão aqui -->
+            </div>
+        </section>
         <!-- BARRA DE BUSCA E FILTRO -->
         <div class="filters-container" style="margin-bottom: 40px; display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
             <div class="search-wrapper" style="position: relative;">
@@ -39,10 +52,35 @@
                 <input type="text" id="searchInput" placeholder="O que você está procurando no feed hoje? (nome ou tarefa)" style="padding-left: 55px; height: 60px; font-size: 1.1em; background: rgba(255,255,255,0.05); border-radius: 15px; width: 100%;">
             </div>
             <div class="date-filter-wrapper" style="position: relative;">
-                <i data-lucide="calendar" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5; pointer-events: none;"></i>
-                <input type="date" id="dateFilter" style="padding-left: 55px; height: 60px; font-size: 1.1em; background: rgba(255,255,255,0.05); border-radius: 15px; width: 100%; color-scheme: dark;">
+                <i data-lucide="filter" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5; pointer-events: none;"></i>
+                <select id="dateFilter" style="padding-left: 55px; height: 60px; font-size: 1.1em; background: #1a152e; border-radius: 15px; width: 100%; color: white; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; appearance: none; color-scheme: dark;">
+                    <option value="all" style="background: #1a152e;">📅 Todos os registros</option>
+                    <option value="today" style="background: #1a152e;">Hoje</option>
+                    <option value="yesterday" style="background: #1a152e;">Ontem</option>
+                    <option value="beforeYesterday" style="background: #1a152e;">Anteontem</option>
+                    <option value="thisWeek" style="background: #1a152e;">Esta Semana</option>
+                    <option value="thisMonth" style="background: #1a152e;">Este Mês</option>
+                    <option value="custom" style="background: #1a152e;">📅 Escolher data específica...</option>
+                </select>
+                <input type="date" id="customDateInput" style="display: none; margin-top: 10px; height: 60px; font-size: 1.1em; background: #1a152e; border-radius: 15px; width: 100%; color: white; border: 1px solid var(--primary); padding: 0 20px; color-scheme: dark;">
             </div>
         </div>
+        <!-- DASHBOARD DE ESTATÍSTICAS -->
+        <section class="stats-dashboard" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 40px;">
+            <div class="glass-card" style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #6841f1;">
+                <h3 id="statTotal" style="font-size: 2em; margin-bottom: 5px;">0</h3>
+                <p style="font-size: 0.8em; opacity: 0.6; text-transform: uppercase;">Check-ins Hoje</p>
+            </div>
+            <div class="glass-card" style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #02ceff;">
+                <h3 id="statHelp" style="font-size: 2em; margin-bottom: 5px; color: #02ceff;">0</h3>
+                <p style="font-size: 0.8em; opacity: 0.6; text-transform: uppercase;">Pedidos de Ajuda</p>
+            </div>
+            <div class="glass-card" style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #ff416c;">
+                <h3 id="statBlockers" style="font-size: 2em; margin-bottom: 5px; color: #ff416c;">0</h3>
+                <p style="font-size: 0.8em; opacity: 0.6; text-transform: uppercase;">Impedimentos</p>
+            </div>
+        </section>
+
         <section class="form-section">
             <div class="glass-card">
                 <div class="card-header">
@@ -101,8 +139,11 @@
         </section>
 
         <section class="history-section">
-            <div class="section-header">
-                <h3><i data-lucide="list"></i> Feed da Equipe</h3>
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h3 style="margin-bottom: 0;"><i data-lucide="list"></i> Feed da Equipe</h3>
+                <button id="copySummaryBtn" class="btn-secondary" style="background: rgba(104, 65, 241, 0.1); border: 1px solid rgba(104, 65, 241, 0.3); color: #8e6eff; padding: 8px 16px; border-radius: 8px; font-size: 0.85em; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;">
+                    <i data-lucide="copy"></i> Copiar Resumo do Dia
+                </button>
             </div>
             <div id="kickoffList" class="kickoff-list">
                 <!-- Entries will be loaded here -->

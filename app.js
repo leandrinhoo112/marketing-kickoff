@@ -8,12 +8,30 @@ try {
     }
 } catch (e) { console.error(e); }
 
+// Registro do PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW fail:', err));
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('kickoffForm');
     const kickoffList = document.getElementById('kickoffList');
     const searchInput = document.getElementById('searchInput');
     const dateFilter = document.getElementById('dateFilter');
+    const customDateInput = document.getElementById('customDateInput');
     const dateDisplay = document.getElementById('currentDate');
+    const copySummaryBtn = document.getElementById('copySummaryBtn');
+    const presenceBar = document.getElementById('presenceBar');
+    const dynamicGreeting = document.getElementById('dynamicGreeting');
+
+    const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+    successSound.volume = 0.5;
+
+    const statTotal = document.getElementById('statTotal');
+    const statHelp = document.getElementById('statHelp');
+    const statBlockers = document.getElementById('statBlockers');
 
     let allEntries = [];
 
@@ -38,6 +56,59 @@ document.addEventListener('DOMContentLoaded', () => {
         return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
     }
 
+    // Atualiza Saudação e Presença
+    function updatePresence(entries) {
+        const now = new Date().toISOString().split('T')[0];
+        const todayEntries = entries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
+        
+        // 1. Saudação Dinâmica
+        const hour = new Date().getHours();
+        let greetingPrefix = "Bom dia";
+        if (hour >= 12 && hour < 18) greetingPrefix = "Boa tarde";
+        else if (hour >= 18) greetingPrefix = "Boa noite";
+
+        if (todayEntries.length === 0) {
+            dynamicGreeting.innerText = `${greetingPrefix}, Time! Vamos ser o primeiro hoje? 🚀`;
+        } else {
+            dynamicGreeting.innerText = `${greetingPrefix}! Já somos ${todayEntries.length} ativos no Radar hoje! 🔥`;
+        }
+
+        // 2. Barra de Presença (Avatares únicos de quem postou hoje)
+        const uniqueUsers = [...new Set(todayEntries.map(e => e.username))];
+        presenceBar.innerHTML = uniqueUsers.map(user => `
+            <div class="presence-avatar" title="${user}">${getInitials(user)}</div>
+        `).join('');
+    }
+
+    function copyDailySummary() {
+        const now = new Date().toISOString().split('T')[0];
+        const todayEntries = allEntries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
+        if (todayEntries.length === 0) { showToast("Nenhum registro hoje.", "error"); return; }
+        let summary = `*🚀 RESUMO DO RADAR DIÁRIO - ${new Date().toLocaleDateString('pt-BR')}*\n\n`;
+        todayEntries.forEach(e => {
+            summary += `👤 *${e.username}*\n✅ Ontem: ${e.yesterday_tasks}\n🎯 Hoje: ${e.today_tasks}\n`;
+            if (e.help_needed) summary += `🆘 Ajuda: ${e.help_needed}\n`;
+            const blk = (e.blockers || '').toLowerCase();
+            if (blk && !['não','nao','nada'].includes(blk)) summary += `⚠️ Impedimento: ${e.blockers}\n`;
+            summary += `----------------------------\n`;
+        });
+        navigator.clipboard.writeText(summary).then(() => showToast("Resumo copiado! 🎉"));
+    }
+
+    if (copySummaryBtn) copySummaryBtn.addEventListener('click', copyDailySummary);
+
+    function updateStats(entries) {
+        const now = new Date().toISOString().split('T')[0];
+        const todayEntries = entries.filter(e => new Date(e.created_at).toISOString().split('T')[0] === now);
+        statTotal.innerText = todayEntries.length;
+        statHelp.innerText = todayEntries.filter(e => e.help_needed && e.help_needed.trim() !== '').length;
+        const blockersCount = todayEntries.filter(e => {
+            const b = (e.blockers || '').toLowerCase().trim();
+            return b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b);
+        }).length;
+        statBlockers.innerText = blockersCount;
+    }
+
     function timeAgo(date) {
         const seconds = Math.floor((new Date() - new Date(date)) / 1000);
         if (seconds < 60) return 'agora mesmo';
@@ -48,56 +119,67 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Date(date).toLocaleDateString('pt-BR');
     }
 
-    // Lógica Combinada de Busca e Filtro
     function applyFilters() {
         const searchTerm = searchInput.value.toLowerCase();
-        const filterDate = dateFilter.value; // Formato YYYY-MM-DD
+        const filterType = dateFilter.value;
+        const now = new Date();
+        const todayStr = now.toISOString().split('T')[0];
 
         const filtered = allEntries.filter(entry => {
             const matchesSearch = entry.username.toLowerCase().includes(searchTerm) || 
                                 entry.today_tasks.toLowerCase().includes(searchTerm);
-            
             let matchesDate = true;
-            if (filterDate) {
-                const entryDate = new Date(entry.created_at).toISOString().split('T')[0];
-                matchesDate = entryDate === filterDate;
-            }
+            const entryDateStr = new Date(entry.created_at).toISOString().split('T')[0];
 
+            if (filterType === 'today') matchesDate = entryDateStr === todayStr;
+            else if (filterType === 'yesterday') {
+                const yest = new Date(); yest.setDate(now.getDate() - 1);
+                matchesDate = entryDateStr === yest.toISOString().split('T')[0];
+            } else if (filterType === 'thisWeek') {
+                const lw = new Date(); lw.setDate(now.getDate() - 7);
+                matchesDate = new Date(entry.created_at) >= lw;
+            } else if (filterType === 'thisMonth') {
+                const fm = new Date(now.getFullYear(), now.getMonth(), 1);
+                matchesDate = new Date(entry.created_at) >= fm;
+            } else if (filterType === 'custom' && customDateInput.value) {
+                matchesDate = entryDateStr === customDateInput.value;
+            }
             return matchesSearch && matchesDate;
         });
-
         renderEntries(filtered);
     }
 
-    if (searchInput) searchInput.addEventListener('input', applyFilters);
-    if (dateFilter) dateFilter.addEventListener('change', applyFilters);
-
     function renderEntries(entries) {
         if (!entries.length) {
-            kickoffList.innerHTML = '<div class="empty-state" style="padding: 40px; text-align: center; opacity: 0.5;"><i data-lucide="search-x" style="width: 48px; height: 48px; margin-bottom: 15px;"></i><p>Nenhum radar encontrado para esta busca ou data.</p></div>';
-            if (window.lucide) window.lucide.createIcons();
+            kickoffList.innerHTML = '<div class="empty-state"><p>Nenhum registro encontrado.</p></div>';
             return;
         }
 
         kickoffList.innerHTML = entries.map(entry => {
             const blockersVal = (entry.blockers || '').toLowerCase().trim();
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
+            const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
+            const isUrgent = hasBlockers || needsHelp;
+
             return `
-            <div class="kickoff-item" style="border-left: 4px solid #6841f1; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : '#6841f1'}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <div class="avatar">${getInitials(entry.username)}</div>
+                        <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : ''}">${getInitials(entry.username)}</div>
                         <div class="user-info">
-                            <h4 style="color: #8e6eff; font-size: 1.2em; margin: 0;">${entry.username || 'Membro'}</h4>
+                            <h4 style="color: ${isUrgent ? '#ff416c' : '#8e6eff'}; font-size: 1.2em; margin: 0;">${entry.username || 'Membro'}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
                         </div>
                     </div>
-                    ${hasBlockers ? '<span style="background: rgba(255, 65, 108, 0.1); color: #ff416c; padding: 4px 10px; border-radius: 6px; font-size: 0.8em; font-weight: bold;">⚠️ Impedido</span>' : ''}
+                    <div style="display: flex; gap: 8px;">
+                        ${needsHelp ? '<span class="help-badge" style="background: rgba(2, 206, 255, 0.1); color: #02ceff; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">🆘 Ajuda</span>' : ''}
+                        ${hasBlockers ? '<span class="help-badge blocker-badge" style="background: rgba(255, 65, 108, 0.1); color: #ff416c; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">⛔ Impedido</span>' : ''}
+                    </div>
                 </div>
                 <div class="item-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
                     <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ontem</label><p>${entry.yesterday_tasks || '-'}</p></div>
                     <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Hoje</label><p>${entry.today_tasks || '-'}</p></div>
-                    ${entry.help_needed ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ajuda</label><p style="color: #02ceff;">${entry.help_needed} ${entry.who_help ? `(${entry.who_help})` : ''}</p></div>` : ''}
+                    ${entry.help_needed ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ajuda</label><p style="color: #02ceff; font-weight: 500;">${entry.help_needed} ${entry.who_help ? `(${entry.who_help})` : ''}</p></div>` : ''}
                     ${entry.observations ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Obs</label><p>${entry.observations}</p></div>` : ''}
                 </div>
             </div>`;
@@ -112,7 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             if (data) {
                 allEntries = data;
-                applyFilters(); // Aplica filtros atuais ao carregar
+                updateStats(data);
+                updatePresence(data);
+                applyFilters();
             }
         } catch (error) { console.error(error); }
     }
@@ -132,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-
             const entry = {
                 username: document.getElementById('userName').value,
                 yesterday_tasks: document.getElementById('yesterdayTasks').value,
@@ -143,32 +226,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 observations: document.getElementById('observations').value,
                 created_at: new Date().toISOString()
             };
-
             try {
                 const { error } = await supabaseClient.from('kickoffs').insert([entry]);
                 if (error) throw error;
-                if (window.confetti) {
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#6841f1', '#02ceff', '#ffffff'] });
-                }
+                successSound.play();
+                if (window.confetti) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                 await sendTeamsAlert(entry);
-                showToast("Radar enviado com sucesso!");
+                showToast("Radar enviado!");
                 form.reset();
                 localStorage.removeItem('radar_draft');
                 loadEntries();
-            } catch (error) {
-                showToast('Erro: ' + error.message, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>';
+            } catch (error) { showToast('Erro: ' + error.message, 'error'); } 
+            finally { 
+                submitBtn.disabled = false; 
+                submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>'; 
                 if (window.lucide) window.lucide.createIcons();
             }
         });
     }
+
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (dateFilter) {
+        dateFilter.addEventListener('change', () => {
+            if (dateFilter.value === 'custom') customDateInput.style.display = 'block';
+            else { customDateInput.style.display = 'none'; applyFilters(); }
+        });
+    }
+    if (customDateInput) customDateInput.addEventListener('change', applyFilters);
 
     if (dateDisplay) {
         dateDisplay.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 
     loadEntries();
-    setInterval(loadEntries, 15000);
+    setInterval(loadEntries, 10000);
 });
