@@ -132,13 +132,20 @@ header .container {
 form {
     display: flex;
     flex-direction: column;
-    gap: 35px; /* Mais espaço entre as linhas do form */
+    gap: 0; /* Vamos usar margens nos grupos para ter mais controle */
 }
 
 .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px; /* Dobrado o espaço entre colunas */
+    gap: 50px;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Linha divisória sutil */
+}
+
+.grid-2:last-of-type {
+    border-bottom: none;
 }
 
 .input-group {
@@ -148,12 +155,14 @@ form {
 }
 
 .input-group label {
-    font-size: 15px; /* Ligeiramente maior */
+    font-size: 15px;
     font-weight: 600;
     color: var(--text-muted);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-top: 10px; /* Afasta o texto do campo de cima */
 }
 
 .input-group label i {
@@ -166,11 +175,19 @@ input, textarea, select {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
-    padding: 15px 20px; /* Campos mais altos e largos internamente */
+    padding: 18px 24px;
     color: white;
     font-family: inherit;
     font-size: 16px;
     transition: var(--transition);
+    min-height: 55px;
+    width: 100%;
+}
+
+select option {
+    background-color: #1a152e; /* Fundo escuro para os nomes aparecerem */
+    color: white;
+    padding: 10px;
 }
 
 input:focus, textarea:focus {

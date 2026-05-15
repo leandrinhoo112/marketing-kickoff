@@ -32,7 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Admin Elements
     const adminArea = document.getElementById('adminArea');
     const checkinStatus = document.getElementById('checkinStatus');
-    const adminBlockersSummary = document.getElementById('adminBlockersSummary');
+    const adminStatParticipation = document.getElementById('adminStatParticipation');
+    const adminStatTasks = document.getElementById('adminStatTasks');
+    const adminStatBlockers = document.getElementById('adminStatBlockers');
+    const adminTimeRange = document.getElementById('adminTimeRange');
+    const adminMemberSelect = document.getElementById('adminMemberSelect');
+    const adminIndividualCard = document.getElementById('adminIndividualCard');
 
     const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
     successSound.volume = 0.5;
@@ -43,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allEntries = [];
     let editingId = null;
+
+    // CONFIGURAÇÃO INICIAL: FILTRAR POR HOJE POR PADRÃO
+    if (dateFilter) dateFilter.value = 'today';
 
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
@@ -71,14 +79,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function updateAdminPanel() {
-        const todayStr = new Date().toLocaleDateString('pt-BR');
-        const todayEntries = allEntries.filter(e => new Date(e.created_at).toLocaleDateString('pt-BR') === todayStr);
-        const namesWhoPosted = todayEntries.map(e => decodeUser(e.username).name.toUpperCase());
+    function filterByRange(entries, range) {
+        const now = new Date();
+        const todayStr = now.toLocaleDateString('pt-BR');
+        
+        return entries.filter(e => {
+            const entryDateStr = new Date(e.created_at).toLocaleDateString('pt-BR');
+            const entryDate = new Date(e.created_at);
+            
+            if (range === 'today') return entryDateStr === todayStr;
+            if (range === 'thisWeek') {
+                const lw = new Date(); lw.setDate(now.getDate() - 7);
+                return entryDate >= lw;
+            }
+            if (range === 'thisMonth') {
+                return entryDate.getMonth() === now.getMonth() && entryDate.getFullYear() === now.getFullYear();
+            }
+            return true;
+        });
+    }
 
-        // 1. Status de Check-in
+    function updateAdminPanel() {
+        const range = adminTimeRange.value;
+        const filtered = filterByRange(allEntries, range);
+        
+        // 1. Adesão (Baseado apenas em HOJE para ser realista)
+        const todayEntries = filterByRange(allEntries, 'today');
+        const namesWhoPostedToday = todayEntries.map(e => decodeUser(e.username).name.toUpperCase());
+        const participation = Math.round((namesWhoPostedToday.length / TEAM_MEMBERS.length) * 100);
+        adminStatParticipation.innerText = `${participation}%`;
+
+        // 2. Total de Tarefas (Soma aproximada de linhas nos campos hoje/ontem)
+        let totalTasks = 0;
+        filtered.forEach(e => {
+            const count = (str) => (str || '').split('\n').filter(l => l.trim().length > 0).length || 1;
+            totalTasks += count(e.today_tasks);
+        });
+        adminStatTasks.innerText = totalTasks;
+
+        // 3. Impedimentos no período
+        const blockersCount = filtered.filter(e => {
+            const b = (e.blockers || '').toLowerCase().trim();
+            return b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b);
+        }).length;
+        adminStatBlockers.innerText = blockersCount;
+
+        // 4. Status de Check-in (Sempre Hoje)
         checkinStatus.innerHTML = TEAM_MEMBERS.map(member => {
-            const hasPosted = namesWhoPosted.includes(member);
+            const hasPosted = namesWhoPostedToday.includes(member);
             return `
                 <div style="background: ${hasPosted ? 'rgba(2, 206, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)'}; 
                             color: ${hasPosted ? '#02ceff' : 'rgba(255,255,255,0.3)'}; 
@@ -89,23 +137,47 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }).join('');
 
-        // 2. Resumo de Impedimentos
-        const blockers = todayEntries.filter(e => {
-            const b = (e.blockers || '').toLowerCase().trim();
-            return b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b);
-        });
-
-        if (blockers.length === 0) {
-            adminBlockersSummary.innerHTML = '<p style="opacity: 0.5;">Nenhum impedimento relatado hoje. ✨</p>';
-        } else {
-            adminBlockersSummary.innerHTML = blockers.map(e => `
-                <div style="margin-bottom: 10px; padding: 10px; background: rgba(255, 65, 108, 0.1); border-radius: 8px; border-left: 3px solid #ff416c;">
-                    <strong>${decodeUser(e.username).name}:</strong> ${e.blockers}
-                </div>
-            `).join('');
-        }
+        updateIndividualAnalysis();
         if (window.lucide) window.lucide.createIcons();
     }
+
+    function updateIndividualAnalysis() {
+        const selectedMember = adminMemberSelect.value;
+        if (!selectedMember) { adminIndividualCard.style.display = 'none'; return; }
+        
+        const memberEntries = allEntries.filter(e => decodeUser(e.username).name.toUpperCase() === selectedMember);
+        const lastEntry = memberEntries[0];
+        
+        adminIndividualCard.style.display = 'block';
+        if (memberEntries.length === 0) {
+            adminIndividualCard.innerHTML = `<p style="opacity: 0.5;">Nenhum registro encontrado para ${selectedMember}.</p>`;
+            return;
+        }
+
+        const totalTasks = memberEntries.reduce((acc, e) => acc + (e.today_tasks.split('\n').length || 1), 0);
+        const blockersCount = memberEntries.filter(e => e.blockers && e.blockers.trim() !== '').length;
+
+        adminIndividualCard.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Total de Check-ins:</span> <strong>${memberEntries.length}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Estimativa de Entregas:</span> <strong style="color: #02ceff;">${totalTasks} tarefas</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Alertas Gerados:</span> <strong style="color: #ff416c;">${blockersCount} impedimentos</strong>
+                </div>
+                <div style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <label style="font-size: 0.7em; color: var(--text-muted);">ÚLTIMO STATUS (${timeAgo(lastEntry.created_at)}):</label>
+                    <p style="font-size: 0.9em; margin-top: 5px;">"${lastEntry.today_tasks.substring(0, 100)}${lastEntry.today_tasks.length > 100 ? '...' : ''}"</p>
+                </div>
+            </div>
+        `;
+    }
+
+    if (adminTimeRange) adminTimeRange.addEventListener('change', updateAdminPanel);
+    if (adminMemberSelect) adminMemberSelect.addEventListener('change', updateIndividualAnalysis);
 
     function getInitials(name) { return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase(); }
 
@@ -117,8 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.deleteEntry = async (id) => {
         if (!confirm('Deseja remover este radar?')) return;
         try {
-            const { error } = await supabaseClient.from('kickoffs').delete().eq('id', id);
-            if (error) throw error;
+            await supabaseClient.from('kickoffs').delete().eq('id', id);
             showToast('Removido!'); loadEntries();
         } catch (e) { showToast('Erro: ' + e.message, 'error'); }
     };
@@ -184,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b);
         }).length;
         statBlockers.innerText = bc;
-        if (adminArea.style.display !== 'none') updateAdminPanel();
+        if (adminArea && adminArea.style.display !== 'none') updateAdminPanel();
     }
 
     function timeAgo(date) {
@@ -205,14 +276,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const u = decodeUser(entry.username);
             const matchesSearch = u.name.toLowerCase().includes(searchTerm) || entry.today_tasks.toLowerCase().includes(searchTerm);
             let matchesDate = true;
-            const entryDate = new Date(entry.created_at).toLocaleDateString('pt-BR');
-            if (filterType === 'today') matchesDate = entryDate === now.toLocaleDateString('pt-BR');
-            else if (filterType === 'yesterday') { const yest = new Date(); yest.setDate(now.getDate() - 1); matchesDate = entryDate === yest.toLocaleDateString('pt-BR'); }
-            else if (filterType === 'thisWeek') { const lw = new Date(); lw.setDate(now.getDate() - 7); matchesDate = new Date(entry.created_at) >= lw; }
-            else if (filterType === 'thisMonth') { matchesDate = new Date(entry.created_at).getMonth() === now.getMonth(); }
+            const entryDateStr = new Date(entry.created_at).toLocaleDateString('pt-BR');
+            const entryDate = new Date(entry.created_at);
+            
+            if (filterType === 'today') matchesDate = entryDateStr === now.toLocaleDateString('pt-BR');
+            else if (filterType === 'yesterday') { const yest = new Date(); yest.setDate(now.getDate() - 1); matchesDate = entryDateStr === yest.toLocaleDateString('pt-BR'); }
+            else if (filterType === 'thisWeek') { const lw = new Date(); lw.setDate(now.getDate() - 7); matchesDate = entryDate >= lw; }
+            else if (filterType === 'thisMonth') { matchesDate = entryDate.getMonth() === now.getMonth() && entryDate.getFullYear() === now.getFullYear(); }
             else if (filterType === 'custom' && customDateInput.value) { 
                 const customDate = new Date(customDateInput.value + 'T00:00:00').toLocaleDateString('pt-BR');
-                matchesDate = entryDate === customDate;
+                matchesDate = entryDateStr === customDate;
             }
             return matchesSearch && matchesDate;
         });
@@ -272,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!entry.help_needed && !entry.blockers) return;
         const u = decodeUser(entry.username);
         const PROXY_URL = '/api/send-teams'; 
-        const message = `${isUpdate ? '🔄 **RADAR ATUALIZADO**' : '🚨 **ALERTA DE RADAR**'}\n\n**Membro:** ${u.name}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De whom:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
+        const message = `${isUpdate ? '🔄 **RADAR ATUALIZADO**' : '🚨 **ALERTA DE RADAR**'}\n\n**Membro:** ${u.name}\n**Ajuda:** ${entry.help_needed || 'Não'}\n**De quem:** ${entry.who_help || 'Alguém'}\n**Impedimentos:** ${entry.blockers || 'Não'}\n\n[Ver no site](${window.location.href})`;
         try { await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: message }) }); } catch (e) {}
     }
 
