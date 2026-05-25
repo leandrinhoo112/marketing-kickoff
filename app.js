@@ -53,11 +53,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dateFilter) dateFilter.value = 'today';
 
     function showToast(message, type = 'success') {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+        }
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         const icon = type === 'success' ? 'check-circle' : 'alert-circle';
         toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
-        document.body.appendChild(toast);
+        container.appendChild(toast);
         if (window.lucide) window.lucide.createIcons();
         setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
     }
