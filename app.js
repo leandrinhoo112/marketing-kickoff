@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allEntries = [];
     let editingId = null;
+    let userColors = {};
 
     // CONFIGURAÇÃO INICIAL: FILTRAR POR HOJE POR PADRÃO
     if (dateFilter) dateFilter.value = 'today';
@@ -228,7 +229,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const uniqueUsers = []; const seenNames = new Set();
         todayEntries.forEach(e => {
             const u = decodeUser(e.username);
-            if (!seenNames.has(u.name.toLowerCase())) { uniqueUsers.push(u); seenNames.add(u.name.toLowerCase()); }
+            if (!seenNames.has(u.name.toLowerCase())) { 
+                u.color = userColors[u.name] || u.color;
+                uniqueUsers.push(u); 
+                seenNames.add(u.name.toLowerCase()); 
+            }
         });
         presenceBar.innerHTML = uniqueUsers.map(u => `<div class="presence-avatar" title="${u.name}" style="background: ${u.color}">${getInitials(u.name)}</div>`).join('');
     }
@@ -302,17 +307,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!entries.length) { kickoffList.innerHTML = '<div class="empty-state"><p>Nada encontrado.</p></div>'; return; }
         kickoffList.innerHTML = entries.map(entry => {
             const u = decodeUser(entry.username);
+            const displayColor = userColors[u.name] || u.color;
             const blockersVal = (entry.blockers || '').toLowerCase().trim();
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
             return `
-            <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : u.color}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
+            <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : u.color}">${getInitials(u.name)}</div>
+                        <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : displayColor}">${getInitials(u.name)}</div>
                         <div class="user-info">
-                            <h4 style="color: ${isUrgent ? '#ff416c' : u.color}; font-size: 1.2em; margin: 0;">${u.name}</h4>
+                            <h4 style="color: ${isUrgent ? '#ff416c' : displayColor}; font-size: 1.2em; margin: 0;">${u.name}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
                         </div>
                     </div>
@@ -346,7 +352,17 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const { data, error } = await supabaseClient.from('kickoffs').select('*').order('created_at', { ascending: false });
             if (error) throw error;
-            if (data) { allEntries = data; updateStats(data); updatePresence(data); applyFilters(); }
+            if (data) { 
+                allEntries = data; 
+                userColors = {};
+                data.forEach(entry => {
+                    const u = decodeUser(entry.username);
+                    if (!userColors[u.name]) userColors[u.name] = u.color;
+                });
+                updateStats(data); 
+                updatePresence(data); 
+                applyFilters(); 
+            }
         } catch (error) { 
             console.error(error);
             showToast('Erro ao carregar dados: ' + error.message, 'error');
@@ -390,6 +406,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>'; loadEntries();
             } catch (error) { showToast('Erro: ' + error.message, 'error'); } 
             finally { submitBtn.disabled = false; if (window.lucide) window.lucide.createIcons(); }
+        });
+    }
+
+    if (userNameInput) {
+        userNameInput.addEventListener('change', () => {
+            const selectedName = userNameInput.value;
+            if (userColors[selectedName]) {
+                userColorInput.value = userColors[selectedName];
+            }
+        });
+    }
+
+    if (userColorInput) {
+        userColorInput.addEventListener('input', (e) => {
+            const selectedName = userNameInput.value;
+            if (!selectedName) return;
+            userColors[selectedName] = e.target.value;
+            updatePresence(allEntries);
+            applyFilters();
         });
     }
 
