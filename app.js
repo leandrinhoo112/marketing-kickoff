@@ -333,12 +333,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadEntries() {
-        if (!supabaseClient) return;
+        if (!supabaseClient) {
+            showToast('Erro crítico: Supabase não inicializado', 'error');
+            return;
+        }
         try {
             const { data, error } = await supabaseClient.from('kickoffs').select('*').order('created_at', { ascending: false });
             if (error) throw error;
             if (data) { allEntries = data; updateStats(data); updatePresence(data); applyFilters(); }
-        } catch (error) { console.error(error); }
+        } catch (error) { 
+            console.error(error);
+            showToast('Erro ao carregar dados: ' + error.message, 'error');
+        }
     }
 
     async function sendTeamsAlert(entry, isUpdate = false) {
