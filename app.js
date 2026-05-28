@@ -29,6 +29,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const userNameInput = document.getElementById('userName');
     const userColorInput = document.getElementById('userColor');
 
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => {
+                b.style.background = 'transparent';
+                b.style.color = '#a0aec0';
+                b.classList.remove('active');
+            });
+            btn.style.background = btn.dataset.target === 'tab-radar' ? '#6841f1' : '#ffd700';
+            btn.style.color = btn.dataset.target === 'tab-radar' ? 'white' : '#0f0a1e';
+            btn.classList.add('active');
+
+            tabPanes.forEach(pane => {
+                pane.style.display = 'none';
+            });
+            document.getElementById(btn.dataset.target).style.display = 'block';
+        });
+    });
+
+    // Sucesso Semanal Elements
+    const sucessoForm = document.getElementById('sucessoForm');
+    const sucessoList = document.getElementById('sucessoList');
+    const sucessoUserName = document.getElementById('sucessoUserName');
+    let allSucessos = [];
+    let editingSucessoId = null;
+
     // Admin Elements
     const adminArea = document.getElementById('adminArea');
     const checkinStatus = document.getElementById('checkinStatus');
@@ -283,9 +312,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchTerm = searchInput.value.toLowerCase();
         const filterType = dateFilter.value;
         const now = new Date();
-        const filtered = allEntries.filter(entry => {
+        
+        const filterFn = (entry, searchFields) => {
             const u = decodeUser(entry.username);
-            const matchesSearch = u.name.toLowerCase().includes(searchTerm) || entry.today_tasks.toLowerCase().includes(searchTerm);
+            let matchesSearch = u.name.toLowerCase().includes(searchTerm);
+            if (!matchesSearch && searchTerm) {
+                matchesSearch = searchFields.some(field => (entry[field] || '').toLowerCase().includes(searchTerm));
+            } else if (!searchTerm) {
+                matchesSearch = true;
+            }
+            
             let matchesDate = true;
             const entryDateStr = new Date(entry.created_at).toLocaleDateString('pt-BR');
             const entryDate = new Date(entry.created_at);
@@ -299,8 +335,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 matchesDate = entryDateStr === customDate;
             }
             return matchesSearch && matchesDate;
-        });
-        renderEntries(filtered);
+        };
+
+        const filteredRadar = allEntries.filter(e => filterFn(e, ['today_tasks', 'yesterday_tasks', 'observations']));
+        renderEntries(filteredRadar);
+
+        const filteredSucessos = allSucessos.filter(e => filterFn(e, ['victory', 'praise', 'insight']));
+        renderSucessos(filteredSucessos);
     }
 
     function renderEntries(entries) {
@@ -428,6 +469,112 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // SUCESSO SEMANAL LOGIC
+    async function loadSucessos() {
+        if (!supabaseClient) return;
+        try {
+            const { data, error } = await supabaseClient.from('sucessos').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            if (data) { 
+                allSucessos = data;
+                renderSucessos(data);
+            }
+        } catch (error) { 
+            console.error(error);
+        }
+    }
+
+    function renderSucessos(entries) {
+        if (!entries.length) { 
+            sucessoList.innerHTML = '<div class="empty-state"><i data-lucide="star"></i><p>Nenhum sucesso registrado ainda.</p></div>'; 
+            if (window.lucide) window.lucide.createIcons();
+            return; 
+        }
+        sucessoList.innerHTML = entries.map(entry => {
+            const u = decodeUser(entry.username);
+            const displayColor = '#ffd700';
+            return `
+            <div class="kickoff-item" style="border-left: 4px solid ${displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
+                <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="avatar" style="background: ${displayColor}; color: #0f0a1e;">${getInitials(u.name)}</div>
+                        <div class="user-info">
+                            <h4 style="color: ${displayColor}; font-size: 1.2em; margin: 0;">${u.name}</h4>
+                            <span style="opacity: 0.5; font-size: 0.85em;">${new Date(entry.created_at).toLocaleDateString('pt-BR')}</span>
+                        </div>
+                    </div>
+                    <div class="actions" style="display: flex; gap: 10px;">
+                        <button onclick="editSucesso(${entry.id})" class="btn-icon" style="background: none; border: none; color: #a0aec0; cursor: pointer; transition: color 0.3s;" title="Editar"><i data-lucide="edit-2"></i></button>
+                        <button onclick="deleteSucesso(${entry.id})" class="btn-icon" style="background: none; border: none; color: #ff416c; cursor: pointer; transition: color 0.3s;" title="Apagar"><i data-lucide="trash-2"></i></button>
+                    </div>
+                </div>
+                <div class="item-content" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+                    <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">A Minha Vitória</label><p>🏆 ${entry.victory}</p></div>
+                    <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">Elogio ao Colega</label><p>🏆 ${entry.praise}</p></div>
+                    <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">O que aprendi (Ou quero aprender)</label><p>🏆 ${entry.insight}</p></div>
+                </div>
+            </div>`;
+        }).join('');
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    if (sucessoForm) {
+        sucessoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = sucessoForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            const entry = {
+                username: `${sucessoUserName.value}|#ffd700`,
+                victory: document.getElementById('sucessoVictory').value,
+                praise: document.getElementById('sucessoPraise').value,
+                insight: document.getElementById('sucessoInsight').value,
+                created_at: new Date().toISOString()
+            };
+            try {
+                if (editingSucessoId) {
+                    await supabaseClient.from('sucessos').update(entry).eq('id', editingSucessoId);
+                    showToast("Sucesso Atualizado!");
+                    editingSucessoId = null;
+                } else {
+                    await supabaseClient.from('sucessos').insert([entry]);
+                    successSound.play(); 
+                    if (window.confetti) confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#ffd700', '#ffffff', '#6841f1'] });
+                    showToast("Sucesso Celebrado! 🎉");
+                }
+                sucessoForm.reset();
+                submitBtn.innerHTML = 'Celebrar Sucesso <i data-lucide="star"></i>'; 
+                loadSucessos();
+            } catch (error) { 
+                showToast('Erro: ' + error.message, 'error'); 
+            } finally { 
+                submitBtn.disabled = false; 
+                if (window.lucide) window.lucide.createIcons(); 
+            }
+        });
+    }
+
+    window.deleteSucesso = async (id) => {
+        if (!confirm('Certeza que deseja apagar este sucesso?')) return;
+        try {
+            await supabaseClient.from('sucessos').delete().eq('id', id);
+            showToast("Sucesso apagado!", "error"); loadSucessos();
+        } catch (e) { showToast('Erro', 'error'); }
+    }
+
+    window.editSucesso = (id) => {
+        const entry = allSucessos.find(e => e.id == id);
+        if (!entry) return;
+        editingSucessoId = id;
+        const u = decodeUser(entry.username);
+        sucessoUserName.value = u.name;
+        document.getElementById('sucessoVictory').value = entry.victory || '';
+        document.getElementById('sucessoPraise').value = entry.praise || '';
+        document.getElementById('sucessoInsight').value = entry.insight || '';
+        
+        sucessoForm.scrollIntoView({ behavior: 'smooth' });
+        sucessoForm.querySelector('button[type="submit"]').innerHTML = 'Atualizar Sucesso <i data-lucide="refresh-cw"></i>';
+    }
+
     if (searchInput) searchInput.addEventListener('input', applyFilters);
     if (dateFilter) {
         dateFilter.addEventListener('change', () => {
@@ -436,5 +583,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (customDateInput) customDateInput.addEventListener('change', applyFilters);
-    loadEntries(); setInterval(loadEntries, 10000);
+    loadEntries(); 
+    loadSucessos();
+    setInterval(() => {
+        loadEntries();
+        loadSucessos();
+    }, 10000);
 });

@@ -55,6 +55,13 @@
                 <!-- Avatares de quem já postou hoje entrarão aqui -->
             </div>
         </section>
+        
+        <!-- TABS DE NAVEGAÇÃO -->
+        <div class="tabs-container" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto;">
+            <button class="tab-btn active" data-target="tab-radar" style="padding: 12px 24px; border-radius: 12px; border: none; background: #6841f1; color: white; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;"><i data-lucide="target"></i> Radar Diário</button>
+            <button class="tab-btn" data-target="tab-sucesso" style="padding: 12px 24px; border-radius: 12px; border: none; background: transparent; color: #a0aec0; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;"><i data-lucide="star"></i> Sucesso Semanal</button>
+        </div>
+
         <!-- BARRA DE BUSCA E FILTRO -->
         <div class="filters-container"
             style="margin-bottom: 40px; display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
@@ -62,7 +69,7 @@
                 <i data-lucide="search"
                     style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
                 <input type="text" id="searchInput"
-                    placeholder="O que você está procurando no feed hoje? (nome ou tarefa)"
+                    placeholder="O que você está procurando no feed hoje? (nome ou texto)"
                     style="padding-left: 55px; height: 60px; font-size: 1.1em; background: rgba(255,255,255,0.05); border-radius: 15px; width: 100%;">
             </div>
             <div class="date-filter-wrapper" style="position: relative;">
@@ -82,6 +89,8 @@
                     style="display: none; margin-top: 10px; height: 60px; font-size: 1.1em; background: #1a152e; border-radius: 15px; width: 100%; color: white; border: 1px solid var(--primary); padding: 0 20px; color-scheme: dark;">
             </div>
         </div>
+
+        <div id="tab-radar" class="tab-pane active">
         <!-- DASHBOARD DE ESTATÍSTICAS -->
         <section class="stats-dashboard"
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 40px;">
@@ -217,6 +226,74 @@
                 </div>
             </div>
         </section>
+        </div> <!-- FIM TAB RADAR -->
+
+        <!-- INÍCIO TAB SUCESSO -->
+        <div id="tab-sucesso" class="tab-pane" style="display: none;">
+            <section class="form-section">
+                <div class="glass-card" style="border-color: rgba(255, 215, 0, 0.3); box-shadow: 0 10px 30px -5px rgba(255, 215, 0, 0.1);">
+                    <div class="card-header">
+                        <h2 style="background: linear-gradient(to right, #fff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sucesso Semanal 🌟</h2>
+                        <p>Celebre as vitórias da semana e agradeça ao time!</p>
+                    </div>
+
+                    <form id="sucessoForm">
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label for="sucessoUserName"><i data-lucide="user"></i> Membro da Equipe</label>
+                            <select id="sucessoUserName" name="sucessoUserName" required>
+                                <option value="" disabled selected>Selecione seu nome...</option>
+                                <option value="LEANDRO">LEANDRO</option>
+                                <option value="IGOR">IGOR</option>
+                                <option value="YASMIM">YASMIM</option>
+                                <option value="KAMILLE">KAMILLE</option>
+                                <option value="JOÃO">JOÃO</option>
+                                <option value="EDSON">EDSON</option>
+                                <option value="LUIZ">LUIZ</option>
+                                <option value="JORGE">JORGE</option>
+                                <option value="MARIANA">MARIANA</option>
+                                <option value="VANESSA">VANESSA</option>
+                                <option value="BRUNO">BRUNO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label for="sucessoVictory"><i data-lucide="award"></i> A Minha Vitória</label>
+                        <textarea id="sucessoVictory" name="sucessoVictory" placeholder="O melhor que fiz essa semana..." required></textarea>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label for="sucessoPraise"><i data-lucide="heart"></i> Elogio ao Colega</label>
+                        <textarea id="sucessoPraise" name="sucessoPraise" placeholder="Um elogio público a um colega..." required></textarea>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label for="sucessoInsight"><i data-lucide="lightbulb"></i> O que aprendi (Ou quero aprender)</label>
+                        <textarea id="sucessoInsight" name="sucessoInsight" placeholder="Um insight que tive ou algo que pretendo estudar..." required></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button type="submit" class="btn-primary" style="flex: 2; background: #ffd700; color: #0f0a1e; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);">
+                            Celebrar Sucesso <i data-lucide="star"></i>
+                        </button>
+                    </div>
+                    </form>
+                </div>
+            </section>
+
+            <section class="history-section">
+                <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h3 style="margin-bottom: 0; color: #ffd700;"><i data-lucide="star"></i> Mural de Sucessos</h3>
+                </div>
+                <div id="sucessoList" class="kickoff-list">
+                    <div class="empty-state">
+                        <i data-lucide="star"></i>
+                        <p>Nenhum sucesso registrado ainda. Seja o primeiro a celebrar!</p>
+                    </div>
+                </div>
+            </section>
+        </div> <!-- FIM TAB SUCESSO -->
     </main>
 
     <!-- ÁREA DO ADMINISTRADOR (ESCONDIDA POR PADRÃO) -->
@@ -310,7 +387,7 @@
         </div>
     </footer>
 
-    <script src="app.js?v=1.4"></script>
+    <script src="app.js?v=2.0"></script>
     <script>
         lucide.createIcons();
     </script>
