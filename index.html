@@ -213,18 +213,21 @@
 
                 <div class="input-group" style="margin-bottom: 20px;">
                     <label><i data-lucide="battery-charging"></i> Nível de Energia Diário</label>
-                    <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
-                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                            <input type="radio" name="energyLevel" value="😄 Energizado" required>
-                            <span style="font-size: 1.2em;">😄</span> Energizado
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                        <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
+                            <input type="radio" name="energyLevel" value="🟢 Livre: Pode me mandar coisa nova." required style="margin: 0;">
+                            <span style="font-size: 1.2em;">🟢</span>
+                            <span style="font-weight: 500; font-size: 0.95em;">Livre: Pode me mandar coisa nova.</span>
                         </label>
-                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                            <input type="radio" name="energyLevel" value="😐 Normal">
-                            <span style="font-size: 1.2em;">😐</span> Normal
+                        <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
+                            <input type="radio" name="energyLevel" value="🟡 No limite: Finalizando o que tenho, mas aceito demandas." style="margin: 0;">
+                            <span style="font-size: 1.2em;">🟡</span>
+                            <span style="font-weight: 500; font-size: 0.95em;">No limite: Finalizando o que tenho, mas aceito demandas.</span>
                         </label>
-                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                            <input type="radio" name="energyLevel" value="😫 Sobrecarregado">
-                            <span style="font-size: 1.2em;">😫</span> Sobrecarregado
+                        <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
+                            <input type="radio" name="energyLevel" value="🔴 Explodindo: Preciso de ajuda ou repriorização." style="margin: 0;">
+                            <span style="font-size: 1.2em;">🔴</span>
+                            <span style="font-weight: 500; font-size: 0.95em;">Explodindo: Preciso de ajuda ou repriorização.</span>
                         </label>
                     </div>
                 </div>
@@ -361,18 +364,21 @@
 
                     <div class="input-group" style="margin-bottom: 20px;">
                         <label><i data-lucide="battery-charging"></i> Você se sente sobrecarregado?</label>
-                        <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
-                            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                                <input type="radio" name="fbSobrecarregado" value="Sim, muito" required>
-                                Sim, muito 😫
+                        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                            <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
+                                <input type="radio" name="fbSobrecarregado" value="Sim, muito" required style="margin: 0;">
+                                <span style="font-size: 1.2em;">😫</span>
+                                <span style="font-weight: 500; font-size: 0.95em;">Sim, muito</span>
                             </label>
-                            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                                <input type="radio" name="fbSobrecarregado" value="Um pouco">
-                                Um pouco 😐
+                            <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
+                                <input type="radio" name="fbSobrecarregado" value="Um pouco" style="margin: 0;">
+                                <span style="font-size: 1.2em;">😐</span>
+                                <span style="font-weight: 500; font-size: 0.95em;">Um pouco</span>
                             </label>
-                            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                                <input type="radio" name="fbSobrecarregado" value="Não, está tranquilo">
-                                Não, está tranquilo 😄
+                            <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
+                                <input type="radio" name="fbSobrecarregado" value="Não, está tranquilo" style="margin: 0;">
+                                <span style="font-size: 1.2em;">😄</span>
+                                <span style="font-weight: 500; font-size: 0.95em;">Não, está tranquilo</span>
                             </label>
                         </div>
                     </div>
@@ -502,16 +508,16 @@
                 <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="brain"></i> Mapa de Carga de Trabalho (Visualização Semanal)</h4>
                 <div id="workloadMap" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
                     <div class="glass-card" style="padding: 20px; border-top: 3px solid #ff416c;">
-                        <h5 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="flame" style="width: 16px; height: 16px;"></i> Sobrecarregados</h5>
+                        <h5 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="flame" style="width: 16px; height: 16px;"></i> 🔴 Explodindo</h5>
                         <ul id="overloadedList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
                     </div>
-                    <div class="glass-card" style="padding: 20px; border-top: 3px solid #02ceff;">
-                        <h5 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="wind" style="width: 16px; height: 16px;"></i> Leves</h5>
-                        <ul id="lightloadList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
-                    </div>
                     <div class="glass-card" style="padding: 20px; border-top: 3px solid #ffd700;">
-                        <h5 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="alert-triangle" style="width: 16px; height: 16px;"></i> Impedidos</h5>
-                        <ul id="blockedList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
+                        <h5 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="activity" style="width: 16px; height: 16px;"></i> 🟡 No limite</h5>
+                        <ul id="limitList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
+                    </div>
+                    <div class="glass-card" style="padding: 20px; border-top: 3px solid #02ceff;">
+                        <h5 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="wind" style="width: 16px; height: 16px;"></i> 🟢 Livre</h5>
+                        <ul id="lightloadList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
                     </div>
                 </div>
             </div>
@@ -549,7 +555,7 @@
         </div>
     </footer>
 
-    <script src="app.js?v=2.6"></script>
+    <script src="app.js?v=3.1"></script>
     <script>
         lucide.createIcons();
     </script>

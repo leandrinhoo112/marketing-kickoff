@@ -184,6 +184,33 @@ input, textarea, select {
     width: 100%;
 }
 
+input[type="radio"], input[type="color"] {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+}
+
+input[type="radio"] {
+    -webkit-appearance: radio !important;
+    appearance: radio !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    min-width: 20px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+.radio-card:hover {
+    background: rgba(255,255,255,0.08) !important;
+    border-color: rgba(255,255,255,0.3) !important;
+}
+
+.radio-card input[type="radio"]:checked + span + span {
+    color: #fff;
+}
+
 select option {
     background-color: #1a152e; /* Fundo escuro para os nomes aparecerem */
     color: white;

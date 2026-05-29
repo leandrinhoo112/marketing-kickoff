@@ -192,33 +192,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const activeUsers = Object.keys(userStats).filter(u => userStats[u].tasks > 0 || userStats[u].blockers > 0);
-        let totalTasksWeek = 0;
-        activeUsers.forEach(u => totalTasksWeek += userStats[u].tasks);
-        const avgTasks = activeUsers.length ? totalTasksWeek / activeUsers.length : 0;
-
-        const overloaded = [];
-        const lightload = [];
-        const heavilyBlocked = [];
+        const energyMap = { explodindo: [], limite: [], livre: [] };
 
         activeUsers.forEach(u => {
-            if (userStats[u].tasks > avgTasks * 1.3 && userStats[u].tasks > 3) overloaded.push({ name: u, count: userStats[u].tasks });
-            else if (userStats[u].tasks < avgTasks * 0.7) lightload.push({ name: u, count: userStats[u].tasks });
-            if (userStats[u].blockers >= 1) heavilyBlocked.push({ name: u, count: userStats[u].blockers });
+            const userLatestEntries = thisWeekEntries.filter(e => decodeUser(e.username).name.toUpperCase() === u).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+            if (userLatestEntries.length > 0) {
+                const latestEnergy = userLatestEntries[0].energy_level || '';
+                if (latestEnergy.includes('Explodindo')) {
+                    energyMap.explodindo.push(u);
+                } else if (latestEnergy.includes('No limite')) {
+                    energyMap.limite.push(u);
+                } else if (latestEnergy.includes('Livre')) {
+                    energyMap.livre.push(u);
+                }
+            }
         });
 
-        overloaded.sort((a,b) => b.count - a.count);
-        lightload.sort((a,b) => a.count - b.count);
-        heavilyBlocked.sort((a,b) => b.count - a.count);
-
-        const renderList = (arr, label) => arr.length ? arr.map(x => `<li style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px;"><strong>${x.name}</strong>: ${x.count} ${label}</li>`).join('') : '<li style="opacity: 0.5;">Ninguém! 🎉</li>';
+        const renderEnergyList = (arr) => arr.length ? arr.map(name => `<li style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px;"><strong>${name}</strong></li>`).join('') : '<li style="opacity: 0.5;">Ninguém.</li>';
 
         const olList = document.getElementById('overloadedList');
+        const limitList = document.getElementById('limitList');
         const llList = document.getElementById('lightloadList');
-        const blList = document.getElementById('blockedList');
 
-        if(olList) olList.innerHTML = renderList(overloaded, 'tarefas');
-        if(llList) llList.innerHTML = renderList(lightload, 'tarefas');
-        if(blList) blList.innerHTML = renderList(heavilyBlocked, 'impedimentos');
+        if(olList) olList.innerHTML = renderEnergyList(energyMap.explodindo);
+        if(limitList) limitList.innerHTML = renderEnergyList(energyMap.limite);
+        if(llList) llList.innerHTML = renderEnergyList(energyMap.livre);
 
         // 6. DETECTOR DE GARGALOS REPETIDOS
         const bottleneckAlertsContainer = document.getElementById('bottleneckAlerts');
@@ -747,9 +745,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 container.innerHTML = data.map(fb => `
-                    <div class="glass-card" style="padding: 15px; border-left: 4px solid #02ceff; margin-bottom: 15px; background: rgba(2, 206, 255, 0.05);">
+                    <div class="glass-card" style="padding: 15px; border-left: 4px solid #02ceff; margin-bottom: 15px; background: rgba(2, 206, 255, 0.05); position: relative;">
+                        <button onclick="deleteFeedback('${fb.id}')" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 65, 108, 0.1); border: none; color: #ff416c; padding: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s;" title="Apagar Feedback">
+                            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                        </button>
                         <span style="font-size: 0.7em; color: #a0aec0; display: block; margin-bottom: 10px;">Enviado em: ${new Date(fb.created_at).toLocaleDateString('pt-BR')} às ${new Date(fb.created_at).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}</span>
-                        <div style="margin-bottom: 10px;">
+                        <div style="margin-bottom: 10px; padding-right: 25px;">
                             <strong style="color: #02ceff; font-size: 0.8em; text-transform: uppercase;">Travando o Desempenho:</strong>
                             <p style="margin: 5px 0 0 0; font-size: 0.9em;">${fb.desempenho || '-'}</p>
                         </div>
@@ -771,6 +772,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 `).join('');
             }
         } catch (error) { console.error(error); }
+    };
+
+    window.deleteFeedback = async (id) => {
+        if (!confirm('Tem certeza que deseja apagar este feedback permanentemente?')) return;
+        try {
+            const { error } = await supabaseClient.from('feedbacks').delete().eq('id', id);
+            if (error) throw error;
+            showToast("Feedback removido!", "error");
+            loadFeedbacks();
+        } catch (error) {
+            showToast('Erro ao remover: ' + error.message, 'error');
+        }
     };
 
     const myReportBtn = document.getElementById('myReportBtn');
