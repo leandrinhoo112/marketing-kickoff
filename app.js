@@ -82,6 +82,186 @@ document.addEventListener('DOMContentLoaded', () => {
     // CONFIGURAÇÃO INICIAL: FILTRAR POR HOJE POR PADRÃO
     if (dateFilter) dateFilter.value = 'today';
 
+    // LOGIN & SESSÃO (Boas-vindas)
+    const welcomeModal = document.getElementById('welcomeModal');
+    const loginName = document.getElementById('loginName');
+    const enterAppBtn = document.getElementById('enterAppBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const profileNameDisplay = document.getElementById('profileNameDisplay');
+    
+    let currentUser = localStorage.getItem('currentUser');
+
+    if (!currentUser && welcomeModal) {
+        welcomeModal.style.display = 'flex';
+    } else if (currentUser) {
+        applyCurrentUser();
+    }
+
+    if (enterAppBtn) {
+        enterAppBtn.addEventListener('click', () => {
+            if (!loginName.value) {
+                alert('Por favor, selecione quem é você antes de entrar!');
+                return;
+            }
+            currentUser = loginName.value;
+            localStorage.setItem('currentUser', currentUser);
+            applyCurrentUser();
+            welcomeModal.style.display = 'none';
+            calculateXP(); // Recalcular ao entrar
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        });
+    }
+
+    function applyCurrentUser() {
+        if (userNameInput) userNameInput.value = currentUser;
+        if (sucessoUserName) sucessoUserName.value = currentUser;
+        if (profileNameDisplay) profileNameDisplay.innerText = currentUser;
+        
+        // Puxa a cor do usuário se já existir, senão mantém a padrão
+        if (userColors[currentUser] && userColorInput) {
+            userColorInput.value = userColors[currentUser];
+        }
+    }
+
+    // Gamificação (Cálculo de XP)
+    function calculateXP() {
+        if (!currentUser || allEntries.length === 0) return;
+        
+        let xp = 0;
+        
+        // +10 XP por cada Check-in (Radar)
+        const myCheckins = allEntries.filter(e => decodeUser(e.username).name.toUpperCase() === currentUser);
+        xp += myCheckins.length * 10;
+
+        // +30 XP por cada Elogio Recebido no Sucesso Semanal
+        const myPraises = allSucessos.filter(e => {
+            const praiseText = (e.praise || '').toUpperCase();
+            return praiseText.includes(currentUser);
+        });
+        xp += myPraises.length * 30;
+
+        const userXpDisplay = document.getElementById('userXpDisplay');
+        if (userXpDisplay) userXpDisplay.innerText = xp;
+
+        const streak = calculateStreak(myCheckins);
+        
+        const streakBadge = document.getElementById('streakBadge');
+        const streakCountDisplay = document.getElementById('streakCountDisplay');
+        if (streakBadge && streak > 0) {
+            streakBadge.style.display = 'flex';
+            streakCountDisplay.innerText = `${streak} Dias de Ofensiva`;
+        } else if (streakBadge) {
+            streakBadge.style.display = 'none';
+        }
+
+        renderAchievements(myCheckins.length, myPraises.length, xp);
+
+        // Efeito Dopaminoso (Mostrar apenas 1x por sessão)
+        if (streak > 0 && !sessionStorage.getItem('streakShown')) {
+            showStreakPopup(streak);
+            sessionStorage.setItem('streakShown', 'true');
+        }
+    }
+
+    function calculateStreak(myCheckins) {
+        if (!myCheckins.length) return 0;
+        
+        const checkinDates = [...new Set(myCheckins.map(e => {
+            const d = new Date(e.created_at);
+            return d.toLocaleDateString('en-CA'); // Formato YYYY-MM-DD local
+        }))].sort().reverse();
+        
+        let streak = 0;
+        let dateToCheck = new Date();
+        
+        const toDateStr = (d) => d.toLocaleDateString('en-CA');
+        const todayStr = toDateStr(dateToCheck);
+
+        if (checkinDates.includes(todayStr)) {
+            streak++;
+            dateToCheck.setDate(dateToCheck.getDate() - 1);
+        } else {
+            // Ainda não fez hoje, começa a contar de ontem
+            dateToCheck.setDate(dateToCheck.getDate() - 1);
+        }
+
+        while (true) {
+            const dateStr = toDateStr(dateToCheck);
+            const dayOfWeek = dateToCheck.getDay(); // 0 Dom, 6 Sab
+            const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+            if (checkinDates.includes(dateStr)) {
+                streak++;
+                dateToCheck.setDate(dateToCheck.getDate() - 1);
+            } else if (isWeekend) {
+                dateToCheck.setDate(dateToCheck.getDate() - 1); // Pula fim de semana
+            } else {
+                break; // Quebrou
+            }
+        }
+        return streak;
+    }
+
+    window.showStreakPopup = function(streak) {
+        const popup = document.getElementById('streakPopup');
+        const content = document.getElementById('streakPopupContent');
+        const number = document.getElementById('streakPopupNumber');
+        if (!popup) return;
+
+        number.innerText = streak;
+        popup.style.display = 'flex';
+        
+        // Efeito de confete explosivo
+        if (window.confetti) {
+            const end = Date.now() + 1.5 * 1000;
+            const colors = ['#ff416c', '#ff4b2b', '#ffd700'];
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        setTimeout(() => {
+            content.style.transform = 'scale(1)';
+        }, 100);
+
+        // Esconde depois de 3 segundos
+        setTimeout(() => {
+            content.style.transform = 'scale(0)';
+            setTimeout(() => popup.style.display = 'none', 500);
+        }, 3000);
+    };
+
+    function renderAchievements(checkinsCount, praisesCount, totalXp) {
+        const achievements = [
+            { id: 'primeiros_passos', title: 'Primeiros Passos', desc: '1º check-in realizado', icon: '🌱', condition: checkinsCount >= 1 },
+            { id: 'em_chamas', title: 'Em Chamas', desc: '5 check-ins (Consistência)', icon: '🔥', condition: checkinsCount >= 5 },
+            { id: 'mente_brilhante', title: 'Mente Brilhante', desc: 'Citado 3x em Elogios', icon: '🧠', condition: praisesCount >= 3 },
+            { id: 'coluna_time', title: 'Coluna do Time', desc: 'Citado 10x em Elogios', icon: '🤝', condition: praisesCount >= 10 },
+            { id: 'veterano', title: 'Veterano', desc: 'Alcançou 500 XP', icon: '👑', condition: totalXp >= 500 }
+        ];
+
+        const list = document.getElementById('achievementsList');
+        if (!list) return;
+
+        list.innerHTML = achievements.map(ach => `
+            <div class="achievement-badge ${ach.condition ? 'unlocked' : ''}">
+                <div class="achievement-icon">${ach.condition ? ach.icon : '🔒'}</div>
+                <div>
+                    <div class="achievement-title">${ach.condition ? ach.title : 'Secreto'}</div>
+                    <div class="achievement-desc">${ach.condition ? ach.desc : 'Continue no app...'}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
     function showToast(message, type = 'success') {
         let container = document.querySelector('.toast-container');
         if (!container) {
@@ -471,10 +651,54 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${entry.observations ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Obs</label><p>${entry.observations}</p></div>` : ''}
                     ${entry.energy_level ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Nível de Energia</label><p style="font-weight: bold; display: flex; align-items: center; gap: 8px;">${entry.energy_level}</p></div>` : ''}
                 </div>
+                ${generateReactionBar(entry.id, 'kickoffs', entry.reactions || {})}
             </div>`;
         }).join('');
         if (window.lucide) window.lucide.createIcons();
     }
+
+    function generateReactionBar(id, table, reactions) {
+        const emojis = ['👏', '🔥', '💡', '🚀', '✅'];
+        const barHtml = emojis.map(emoji => {
+            const count = reactions[emoji] || 0;
+            const hasReacted = localStorage.getItem(`reacted_${id}_${emoji}`);
+            return `<button class="reaction-btn ${hasReacted ? 'active' : ''}" onclick="toggleReaction('${id}', '${table}', '${emoji}')">
+                ${emoji} <span style="font-weight: bold; ${count === 0 ? 'opacity: 0.5' : ''}">${count > 0 ? count : ''}</span>
+            </button>`;
+        }).join('');
+        return `<div class="reaction-bar" id="reactions_${id}">${barHtml}</div>`;
+    }
+
+    window.toggleReaction = async (id, table, emoji) => {
+        const localKey = `reacted_${id}_${emoji}`;
+        const hasReacted = localStorage.getItem(localKey);
+        
+        let entriesList = table === 'kickoffs' ? allEntries : allSucessos;
+        let entry = entriesList.find(e => e.id.toString() === id.toString());
+        if (!entry) return;
+        
+        if (!entry.reactions) entry.reactions = {};
+        if (!entry.reactions[emoji]) entry.reactions[emoji] = 0;
+
+        if (hasReacted) {
+            entry.reactions[emoji] = Math.max(0, entry.reactions[emoji] - 1);
+            localStorage.removeItem(localKey);
+        } else {
+            entry.reactions[emoji] += 1;
+            localStorage.setItem(localKey, 'true');
+        }
+
+        const reactionBar = document.getElementById(`reactions_${id}`);
+        if (reactionBar) {
+            reactionBar.outerHTML = generateReactionBar(id, table, entry.reactions);
+        }
+
+        try {
+            await supabaseClient.from(table).update({ reactions: entry.reactions }).eq('id', id);
+        } catch (error) {
+            console.error('Erro ao atualizar reação', error);
+        }
+    };
 
     async function loadEntries() {
         if (!supabaseClient) {
@@ -491,9 +715,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const u = decodeUser(entry.username);
                     if (!userColors[u.name]) userColors[u.name] = u.color;
                 });
+                if (currentUser) applyCurrentUser(); // Atualiza cor do form
                 updateStats(data); 
                 updatePresence(data); 
-                applyFilters(); 
+                applyFilters();
+                calculateXP(); // Calcula XP ao carregar os dados
             }
         } catch (error) { 
             console.error(error);
@@ -533,7 +759,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     editingId = null;
                 } else {
                     await supabaseClient.from('kickoffs').insert([entry]);
-                    successSound.play(); if (window.confetti) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                    successSound.play(); 
+                    if (window.showStreakPopup) {
+                        // Re-calcular a streak rapidinho e somar 1 para mostrar o novo valor na hora
+                        const myCheckins = allEntries.filter(e => decodeUser(e.username).name.toUpperCase() === currentUser);
+                        const currentStreak = calculateStreak(myCheckins);
+                        showStreakPopup(currentStreak + 1);
+                    }
                     await sendTeamsAlert(entry); showToast("Enviado!");
                 }
                 form.reset();
@@ -569,12 +801,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data, error } = await supabaseClient.from('sucessos').select('*').order('created_at', { ascending: false });
             if (error) throw error;
             if (data) { 
-                allSucessos = data;
-                renderSucessos(data);
+                allSucessos = data; 
+                renderSucessos(data); 
+                calculateXP(); // Calcula XP ao carregar os dados de sucesso
             }
-        } catch (error) { 
-            console.error(error);
-        }
+        } catch (error) { showToast('Erro ao carregar sucessos: ' + error.message, 'error'); }
     }
 
     function renderSucessos(entries) {
@@ -625,6 +856,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">O que aprendi (Ou quero aprender)</label><p>🏆 ${entry.insight}</p></div>
                     ${entry.monthly_goal_progress ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">Meta do Mês (Evolução)</label><p>🎯 ${entry.monthly_goal_progress}</p></div>` : ''}
                 </div>
+                ${generateReactionBar(entry.id, 'sucessos', entry.reactions || {})}
             </div>`;
         }).join('');
         if (window.lucide) window.lucide.createIcons();

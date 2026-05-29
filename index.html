@@ -28,6 +28,34 @@
     <div class="background-blob"></div>
     <div class="background-blob blob-2"></div>
 
+    <!-- MODAL DE BOAS VINDAS (LOGIN) -->
+    <div id="welcomeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 10, 30, 0.95); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(10px);">
+        <div class="glass-card" style="width: 90%; max-width: 400px; text-align: center; padding: 40px;">
+            <i data-lucide="rocket" style="width: 48px; height: 48px; color: #02ceff; margin-bottom: 20px;"></i>
+            <h2 style="font-size: 1.8em; margin-bottom: 10px;">Quem é você?</h2>
+            <p style="color: #a0aec0; margin-bottom: 30px; font-size: 0.9em;">Identifique-se para carregar seu perfil e suas conquistas.</p>
+            
+            <div class="input-group" style="text-align: left; margin-bottom: 25px;">
+                <label for="loginName"><i data-lucide="user"></i> Selecione seu nome</label>
+                <select id="loginName" style="width: 100%;">
+                    <option value="" disabled selected>Escolha na lista...</option>
+                    <option value="LEANDRO">LEANDRO</option>
+                    <option value="IGOR">IGOR</option>
+                    <option value="YASMIM">YASMIM</option>
+                    <option value="KAMILLE">KAMILLE</option>
+                    <option value="JOÃO">JOÃO</option>
+                    <option value="EDSON">EDSON</option>
+                    <option value="LUIZ">LUIZ</option>
+                    <option value="JORGE">JORGE</option>
+                    <option value="MARIANA">MARIANA</option>
+                    <option value="VANESSA">VANESSA</option>
+                    <option value="BRUNO">BRUNO</option>
+                </select>
+            </div>
+            <button id="enterAppBtn" class="btn-primary" style="width: 100%;">Entrar no App <i data-lucide="arrow-right"></i></button>
+        </div>
+    </div>
+
     <header>
         <div class="container"
             style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; gap: 20px;">
@@ -47,7 +75,10 @@
 
     <main class="container">
         <!-- SAUDAÇÃO E PRESENÇA -->
-        <section class="greeting-section" style="margin-bottom: 30px; text-align: center;">
+        <section class="greeting-section" style="margin-bottom: 30px; text-align: center; position: relative;">
+            <div id="streakBadge" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-bottom: 15px; background: rgba(255, 65, 108, 0.1); border: 1px solid rgba(255, 65, 108, 0.3); color: #ff416c; padding: 5px 15px; border-radius: 20px; font-weight: bold; width: fit-content; margin-left: auto; margin-right: auto; cursor: pointer; transition: transform 0.3s;">
+                <i data-lucide="flame"></i> <span id="streakCountDisplay">0 Dias de Ofensiva</span>
+            </div>
             <h2 id="dynamicGreeting"
                 style="font-size: 1.8em; margin-bottom: 10px; font-weight: 800; background: linear-gradient(to right, #fff, #8e6eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                 Bom dia, Time! 🚀</h2>
@@ -55,6 +86,15 @@
                 <!-- Avatares de quem já postou hoje entrarão aqui -->
             </div>
         </section>
+
+        <!-- EFEITO DOPAMINOSO (STREAK POPUP) -->
+        <div id="streakPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; justify-content: center; align-items: center; pointer-events: none;">
+            <div id="streakPopupContent" style="transform: scale(0); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; background: radial-gradient(circle, rgba(255,65,108,0.9) 0%, rgba(15,10,30,0.8) 100%); padding: 50px; border-radius: 50%; width: 300px; height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 0 50px rgba(255,65,108,0.5);">
+                <i data-lucide="flame" style="width: 80px; height: 80px; color: #ffd700; margin-bottom: 10px;"></i>
+                <h1 id="streakPopupNumber" style="font-size: 4em; color: white; margin: 0; line-height: 1;">0</h1>
+                <p style="color: #ffd700; font-weight: bold; font-size: 1.2em; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px;">Dias Seguidos!</p>
+            </div>
+        </div>
         
         <!-- TABS DE NAVEGAÇÃO -->
         <div class="tabs-container" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; flex-wrap: wrap;">
@@ -66,6 +106,9 @@
             </button>
             <button class="tab-btn" data-target="tab-feedback" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="message-circle"></i> Feedback Anônimo
+            </button>
+            <button class="tab-btn" data-target="tab-ajuda" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
+                <i data-lucide="help-circle"></i> Ajuda & Perfil
             </button>
             <button onclick="toggleAdmin()" style="padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(104, 65, 241, 0.3); font-weight: bold; cursor: pointer; transition: all 0.3s; background: rgba(104, 65, 241, 0.1); color: #8e6eff;">
                 <i data-lucide="shield"></i> Área do Gestor
@@ -136,9 +179,8 @@
                 <form id="kickoffForm">
                 <div class="grid-2">
                     <div class="input-group">
-                        <label for="userName"><i data-lucide="user"></i> Membro da Equipe</label>
-                        <select id="userName" name="userName" required>
-                            <option value="" disabled selected>Selecione seu nome...</option>
+                        <label for="userName"><i data-lucide="user"></i> Seu Nome (Identificado Automaticamente)</label>
+                        <select id="userName" name="userName" disabled style="opacity: 0.7;">
                             <option value="LEANDRO">LEANDRO</option>
                             <option value="IGOR">IGOR</option>
                             <option value="YASMIM">YASMIM</option>
@@ -153,7 +195,7 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="userColor"><i data-lucide="palette"></i> Sua Cor</label>
+                        <label for="userColor"><i data-lucide="palette"></i> Sua Cor de Identificação</label>
                         <input type="color" id="userColor" value="#6841f1">
                     </div>
                 </div>
@@ -276,9 +318,8 @@
                     <form id="sucessoForm">
                     <div class="grid-2">
                         <div class="input-group">
-                            <label for="sucessoUserName"><i data-lucide="user"></i> Membro da Equipe</label>
-                            <select id="sucessoUserName" name="sucessoUserName" required>
-                                <option value="" disabled selected>Selecione seu nome...</option>
+                            <label for="sucessoUserName"><i data-lucide="user"></i> Seu Nome (Identificado Automaticamente)</label>
+                            <select id="sucessoUserName" name="sucessoUserName" disabled style="opacity: 0.7;">
                                 <option value="LEANDRO">LEANDRO</option>
                                 <option value="IGOR">IGOR</option>
                                 <option value="YASMIM">YASMIM</option>
@@ -335,8 +376,7 @@
                 </div>
             </section>
         </div> <!-- FIM TAB SUCESSO -->
-    </main>
-
+    
     <!-- INÍCIO TAB FEEDBACK ANÔNIMO -->
     <div id="tab-feedback" class="tab-pane" style="display: none; max-width: 800px; margin: 0 auto; padding: 0 20px;">
         <section class="form-section">
@@ -392,6 +432,61 @@
             </div>
         </section>
     </div> <!-- FIM TAB FEEDBACK -->
+
+    <!-- TAB AJUDA E PERFIL -->
+    <section id="tab-ajuda" class="tab-pane" style="display: none;">
+        <div class="glass-card" style="margin-bottom: 40px; text-align: center;">
+            <div class="card-header">
+                <h2>Meu Perfil & Conquistas 🏆</h2>
+                <p>Você é: <strong id="profileNameDisplay" style="color: #02ceff;">---</strong></p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: inline-block; min-width: 250px;">
+                <p style="text-transform: uppercase; font-size: 0.8em; letter-spacing: 2px; color: #a0aec0; margin-bottom: 10px;">XP Total Acumulado</p>
+                <h1 id="userXpDisplay" style="font-size: 4em; font-weight: 800; margin: 0; background: linear-gradient(135deg, #02ceff, #6841f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">0</h1>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3 style="margin-bottom: 20px;"><i data-lucide="award"></i> Medalhas Desbloqueadas</h3>
+                <div id="achievementsList" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <!-- JS vai injetar aqui -->
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <button id="logoutBtn" style="background: transparent; color: #ff416c; border: 1px solid rgba(255,65,108,0.3); padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-size: 0.8em;">Trocar de Usuário (Sair)</button>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <h2>Guia do App 📚</h2>
+                <p>Entenda para que serve cada funcionalidade deste sistema.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #6841f1;">
+                    <h4 style="color: #6841f1; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="activity"></i> Radar Diário</h4>
+                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Seu check-in diário. Serve para substituir reuniões chatas. Diga o que fez, o que vai fazer e se está travado. <strong>Gera +10 XP por envio.</strong></p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #ffd700;">
+                    <h4 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="star"></i> Sucesso Semanal</h4>
+                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Sua celebração na sexta-feira. Compartilhe suas vitórias e elogie colegas. <strong>Ser citado por um colega gera +30 XP!</strong> Se for citado 3x, você vira Destaque da Semana 🔥.</p>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #02ceff;">
+                    <h4 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="message-circle"></i> Feedback Anônimo</h4>
+                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Um canal direto e 100% secreto com a gestão. Fale sobre processos, ferramentas ou sobrecarga. <strong>(Não gera XP para manter o anonimato absoluto).</strong></p>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #ff416c;">
+                    <h4 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="battery-charging"></i> Nível de Energia</h4>
+                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Essencial para o Mapa de Carga de Trabalho do Gestor. Se você marcar "Explodindo", ele tentará repriorizar suas demandas. Se marcar "Livre", pode receber novos projetos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- MODAL MEU RELATÓRIO MENSAL -->
     <div id="monthlyReportModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
@@ -555,7 +650,7 @@
         </div>
     </footer>
 
-    <script src="app.js?v=3.1"></script>
+    <script src="app.js?v=3.9"></script>
     <script>
         lucide.createIcons();
     </script>
