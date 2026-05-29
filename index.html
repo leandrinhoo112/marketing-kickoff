@@ -196,6 +196,24 @@
                         placeholder="Algo mais que o time precise saber?"></textarea>
                 </div>
 
+                <div class="input-group" style="margin-bottom: 20px;">
+                    <label><i data-lucide="battery-charging"></i> Nível de Energia Diário</label>
+                    <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                            <input type="radio" name="energyLevel" value="😄 Energizado" required>
+                            <span style="font-size: 1.2em;">😄</span> Energizado
+                        </label>
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                            <input type="radio" name="energyLevel" value="😐 Normal">
+                            <span style="font-size: 1.2em;">😐</span> Normal
+                        </label>
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                            <input type="radio" name="energyLevel" value="😫 Sobrecarregado">
+                            <span style="font-size: 1.2em;">😫</span> Sobrecarregado
+                        </label>
+                    </div>
+                </div>
+
                 <div style="display: flex; gap: 10px; margin-top: 15px;">
                     <button type="submit" class="btn-primary" style="flex: 2;">
                         Enviar Radar <i data-lucide="send"></i>
@@ -271,6 +289,11 @@
                     <div class="input-group" style="margin-bottom: 20px;">
                         <label for="sucessoInsight"><i data-lucide="lightbulb"></i> O que aprendi (Ou quero aprender)</label>
                         <textarea id="sucessoInsight" name="sucessoInsight" placeholder="Um insight que tive ou algo que pretendo estudar..." required></textarea>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label for="sucessoGoal"><i data-lucide="target"></i> Meta do Mês: Você evoluiu nisso?</label>
+                        <textarea id="sucessoGoal" name="sucessoGoal" placeholder="Descreva como você avançou na sua meta mensal..." required></textarea>
                     </div>
 
                     <div style="display: flex; gap: 10px; margin-top: 15px;">
@@ -373,6 +396,35 @@
                     </div>
                 </div>
             </div>
+
+            <!-- NOVO: Mapa de Carga de Trabalho -->
+            <div style="margin-top: 40px;">
+                <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="brain"></i> Mapa de Carga de Trabalho (Visualização Semanal)</h4>
+                <div id="workloadMap" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="glass-card" style="padding: 20px; border-top: 3px solid #ff416c;">
+                        <h5 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="flame" style="width: 16px; height: 16px;"></i> Sobrecarregados</h5>
+                        <ul id="overloadedList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
+                    </div>
+                    <div class="glass-card" style="padding: 20px; border-top: 3px solid #02ceff;">
+                        <h5 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="wind" style="width: 16px; height: 16px;"></i> Leves</h5>
+                        <ul id="lightloadList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
+                    </div>
+                    <div class="glass-card" style="padding: 20px; border-top: 3px solid #ffd700;">
+                        <h5 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="alert-triangle" style="width: 16px; height: 16px;"></i> Impedidos</h5>
+                        <ul id="blockedList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOVO: Detector de Gargalos -->
+            <div style="margin-top: 40px;">
+                <h4 style="margin-bottom: 20px; color: #ff4b2b;"><i data-lucide="search"></i> Detector de Gargalos Repetidos</h4>
+                <div id="bottleneckAlerts" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="glass-card" style="padding: 15px; background: rgba(255, 65, 108, 0.1); border-left: 4px solid #ff416c;">
+                        <p style="margin: 0; color: #ff416c;">Analisando padrões na semana...</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -387,7 +439,7 @@
         </div>
     </footer>
 
-    <script src="app.js?v=2.0"></script>
+    <script src="app.js?v=2.4"></script>
     <script>
         lucide.createIcons();
     </script>

@@ -173,6 +173,89 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }).join('');
 
+        // 5. MAPA DE CARGA DE TRABALHO (SEMANAL)
+        const thisWeekEntries = filterByRange(allEntries, 'thisWeek');
+        const userStats = {};
+        TEAM_MEMBERS.forEach(m => userStats[m] = { tasks: 0, blockers: 0 });
+
+        thisWeekEntries.forEach(e => {
+            const uName = decodeUser(e.username).name.toUpperCase();
+            if (!userStats[uName]) userStats[uName] = { tasks: 0, blockers: 0 };
+            const taskCount = (e.today_tasks || '').split('\n').filter(l => l.trim().length > 0).length || 1;
+            userStats[uName].tasks += taskCount;
+            const b = (e.blockers || '').toLowerCase().trim();
+            if (b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b)) {
+                userStats[uName].blockers += 1;
+            }
+        });
+
+        const activeUsers = Object.keys(userStats).filter(u => userStats[u].tasks > 0 || userStats[u].blockers > 0);
+        let totalTasksWeek = 0;
+        activeUsers.forEach(u => totalTasksWeek += userStats[u].tasks);
+        const avgTasks = activeUsers.length ? totalTasksWeek / activeUsers.length : 0;
+
+        const overloaded = [];
+        const lightload = [];
+        const heavilyBlocked = [];
+
+        activeUsers.forEach(u => {
+            if (userStats[u].tasks > avgTasks * 1.3 && userStats[u].tasks > 3) overloaded.push({ name: u, count: userStats[u].tasks });
+            else if (userStats[u].tasks < avgTasks * 0.7) lightload.push({ name: u, count: userStats[u].tasks });
+            if (userStats[u].blockers >= 1) heavilyBlocked.push({ name: u, count: userStats[u].blockers });
+        });
+
+        overloaded.sort((a,b) => b.count - a.count);
+        lightload.sort((a,b) => a.count - b.count);
+        heavilyBlocked.sort((a,b) => b.count - a.count);
+
+        const renderList = (arr, label) => arr.length ? arr.map(x => `<li style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px;"><strong>${x.name}</strong>: ${x.count} ${label}</li>`).join('') : '<li style="opacity: 0.5;">Ninguém! 🎉</li>';
+
+        const olList = document.getElementById('overloadedList');
+        const llList = document.getElementById('lightloadList');
+        const blList = document.getElementById('blockedList');
+
+        if(olList) olList.innerHTML = renderList(overloaded, 'tarefas');
+        if(llList) llList.innerHTML = renderList(lightload, 'tarefas');
+        if(blList) blList.innerHTML = renderList(heavilyBlocked, 'impedimentos');
+
+        // 6. DETECTOR DE GARGALOS REPETIDOS
+        const bottleneckAlertsContainer = document.getElementById('bottleneckAlerts');
+        if (bottleneckAlertsContainer) {
+            const commonBlockers = {};
+            thisWeekEntries.forEach(e => {
+                const b = (e.blockers || '').toLowerCase().trim();
+                if (b !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(b)) {
+                    const keywords = ['aprovação', 'aprovacao', 'cliente', 'criativo', 'ti', 'sistema', 'acesso', 'reunião', 'reuniao', 'briefing', 'pagamento'];
+                    keywords.forEach(kw => {
+                        if (b.includes(kw)) {
+                            commonBlockers[kw] = (commonBlockers[kw] || 0) + 1;
+                        }
+                    });
+                }
+            });
+
+            const alertsHTML = [];
+            for (const [kw, count] of Object.entries(commonBlockers)) {
+                if (count >= 2) {
+                    alertsHTML.push(`
+                        <div class="glass-card" style="padding: 15px; background: rgba(255, 65, 108, 0.1); border-left: 4px solid #ff416c;">
+                            <p style="margin: 0; color: #ff416c;">⚠️ <strong>${kw.toUpperCase()}</strong> está sendo um gargalo recorrente (${count} ocorrências nesta semana).</p>
+                        </div>
+                    `);
+                }
+            }
+
+            if (alertsHTML.length > 0) {
+                bottleneckAlertsContainer.innerHTML = alertsHTML.join('');
+            } else {
+                bottleneckAlertsContainer.innerHTML = `
+                    <div class="glass-card" style="padding: 15px; background: rgba(2, 206, 255, 0.1); border-left: 4px solid #02ceff;">
+                        <p style="margin: 0; color: #02ceff;">✅ Nenhum padrão de gargalo repetido detectado na semana.</p>
+                    </div>
+                `;
+            }
+        }
+
         updateIndividualAnalysis();
         if (window.lucide) window.lucide.createIcons();
     }
@@ -243,6 +326,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('whoHelp').value = entry.who_help || '';
         document.getElementById('blockers').value = entry.blockers || '';
         document.getElementById('observations').value = entry.observations || '';
+        if (entry.energy_level) {
+            const radio = form.querySelector(`input[name="energyLevel"][value="${entry.energy_level}"]`);
+            if (radio) radio.checked = true;
+        }
         const submitBtn = form.querySelector('button[type="submit"]');
         submitBtn.innerHTML = 'Atualizar Radar <i data-lucide="save"></i>';
         if (window.lucide) window.lucide.createIcons();
@@ -379,6 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Hoje</label><p>${entry.today_tasks || '-'}</p></div>
                     ${entry.help_needed ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ajuda</label><p style="color: #02ceff; font-weight: 500;">${entry.help_needed} ${entry.who_help ? `(${entry.who_help})` : ''}</p></div>` : ''}
                     ${entry.observations ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Obs</label><p>${entry.observations}</p></div>` : ''}
+                    ${entry.energy_level ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Nível de Energia</label><p style="font-weight: bold; display: flex; align-items: center; gap: 8px;">${entry.energy_level}</p></div>` : ''}
                 </div>
             </div>`;
         }).join('');
@@ -423,6 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
+            const energyChecked = form.querySelector('input[name="energyLevel"]:checked');
             const entry = {
                 username: `${userNameInput.value}|${userColorInput.value}`,
                 yesterday_tasks: document.getElementById('yesterdayTasks').value,
@@ -431,6 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 who_help: document.getElementById('whoHelp').value,
                 blockers: document.getElementById('blockers').value,
                 observations: document.getElementById('observations').value,
+                energy_level: energyChecked ? energyChecked.value : '😐 Normal',
                 created_at: new Date().toISOString()
             };
             try {
@@ -490,16 +580,34 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) window.lucide.createIcons();
             return; 
         }
+
+        const praiseCounts = {};
+        entries.forEach(e => {
+            const praiseText = (e.praise || '').toLowerCase();
+            TEAM_MEMBERS.forEach(m => {
+                const nameLow = m.toLowerCase();
+                const regex = new RegExp(`\\b${nameLow}\\b`, 'g');
+                const matches = praiseText.match(regex);
+                if (matches) {
+                    praiseCounts[m] = (praiseCounts[m] || 0) + matches.length;
+                }
+            });
+        });
+
         sucessoList.innerHTML = entries.map(entry => {
             const u = decodeUser(entry.username);
             const displayColor = '#ffd700';
+            
+            const isDestaque = (praiseCounts[u.name.toUpperCase()] >= 3);
+            const destaqueBadge = isDestaque ? `<span style="background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.6em; margin-left: 8px; text-transform: uppercase; font-weight: bold; vertical-align: middle;">🔥 Destaque da Semana</span>` : '';
+
             return `
             <div class="kickoff-item" style="border-left: 4px solid ${displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <div class="avatar" style="background: ${displayColor}; color: #0f0a1e;">${getInitials(u.name)}</div>
                         <div class="user-info">
-                            <h4 style="color: ${displayColor}; font-size: 1.2em; margin: 0;">${u.name}</h4>
+                            <h4 style="color: ${displayColor}; font-size: 1.2em; margin: 0; display: flex; align-items: center;">${u.name} ${destaqueBadge}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${new Date(entry.created_at).toLocaleDateString('pt-BR')}</span>
                         </div>
                     </div>
@@ -512,6 +620,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">A Minha Vitória</label><p>🏆 ${entry.victory}</p></div>
                     <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">Elogio ao Colega</label><p>🏆 ${entry.praise}</p></div>
                     <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">O que aprendi (Ou quero aprender)</label><p>🏆 ${entry.insight}</p></div>
+                    ${entry.monthly_goal_progress ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #ffd700;">Meta do Mês (Evolução)</label><p>🎯 ${entry.monthly_goal_progress}</p></div>` : ''}
                 </div>
             </div>`;
         }).join('');
@@ -528,6 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 victory: document.getElementById('sucessoVictory').value,
                 praise: document.getElementById('sucessoPraise').value,
                 insight: document.getElementById('sucessoInsight').value,
+                monthly_goal_progress: document.getElementById('sucessoGoal').value,
                 created_at: new Date().toISOString()
             };
             try {
