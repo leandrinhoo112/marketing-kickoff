@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 b.style.color = '#a0aec0';
                 b.classList.remove('active');
             });
-            btn.style.background = btn.dataset.target === 'tab-radar' ? '#6841f1' : '#ffd700';
+            btn.style.background = btn.dataset.target === 'tab-radar' ? '#6841f1' : (btn.dataset.target === 'tab-sucesso' ? '#ffd700' : '#02ceff');
             btn.style.color = btn.dataset.target === 'tab-radar' ? 'white' : '#0f0a1e';
             btn.classList.add('active');
 
@@ -101,12 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle Admin Panel with Password
     window.toggleAdmin = () => {
         if (adminArea.style.display === 'none') {
-            const password = prompt("Por favor, digite a senha de acesso administrativo:");
+            const password = prompt("Senha do Gestor:");
             if (password === "CampeãoInspirar") {
                 adminArea.style.display = 'block';
-                adminArea.scrollIntoView({ behavior: 'smooth' });
                 updateAdminPanel();
-                showToast('Acesso Administrador Liberado', 'success');
+                loadFeedbacks();
+                setTimeout(() => {
+                    adminArea.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
             } else if (password !== null) {
                 showToast('Senha Incorreta!', 'error');
             }
@@ -291,6 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label style="font-size: 0.7em; color: var(--text-muted);">ÚLTIMO STATUS (${timeAgo(lastEntry.created_at)}):</label>
                     <p style="font-size: 0.9em; margin-top: 5px;">"${lastEntry.today_tasks.substring(0, 100)}${lastEntry.today_tasks.length > 100 ? '...' : ''}"</p>
                 </div>
+                <button onclick="document.getElementById('myReportBtn').click(); setTimeout(() => { document.getElementById('reportUserName').value='${selectedMember}'; document.getElementById('reportUserName').dispatchEvent(new Event('change')); }, 100);" class="btn-primary" style="margin-top: 15px; background: #02ceff; color: #0f0a1e; font-size: 0.85em; padding: 10px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; width: 100%;">
+                    <i data-lucide="file-text"></i> Abrir Relatório Mensal Detalhado
+                </button>
             </div>
         `;
     }
@@ -699,4 +704,138 @@ document.addEventListener('DOMContentLoaded', () => {
         loadEntries();
         loadSucessos();
     }, 10000);
+
+    // FEEDBACK ANÔNIMO E RELATÓRIO MENSAL
+    const feedbackForm = document.getElementById('feedbackForm');
+    if (feedbackForm) {
+        feedbackForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            const sobreChecked = feedbackForm.querySelector('input[name="fbSobrecarregado"]:checked');
+            
+            const entry = {
+                desempenho: document.getElementById('fbDesempenho').value,
+                melhorar_marketing: document.getElementById('fbMelhorar').value,
+                sugestao: document.getElementById('fbSugestao') ? document.getElementById('fbSugestao').value : '',
+                sobrecarregado: sobreChecked ? sobreChecked.value : 'Não informado',
+                created_at: new Date().toISOString()
+            };
+            try {
+                if (!supabaseClient) throw new Error("Supabase não inicializado.");
+                await supabaseClient.from('feedbacks').insert([entry]);
+                showToast("Feedback enviado com sucesso! Obrigado.", "success");
+                feedbackForm.reset();
+                if (window.confetti) confetti({ particleCount: 100, spread: 60, origin: { y: 0.8 }, colors: ['#02ceff', '#ffffff'] });
+            } catch (error) { 
+                showToast('Erro: A tabela feedbacks foi criada com as colunas certas? (' + error.message + ')', 'error'); 
+            } finally { 
+                submitBtn.disabled = false; 
+            }
+        });
+    }
+
+    window.loadFeedbacks = async () => {
+        if (!supabaseClient) return;
+        try {
+            const { data, error } = await supabaseClient.from('feedbacks').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            const container = document.getElementById('adminFeedbacksContainer');
+            if (data && container) {
+                if (data.length === 0) {
+                    container.innerHTML = `<div class="glass-card" style="padding: 15px; text-align: center; opacity: 0.5;">Nenhum feedback recebido ainda.</div>`;
+                    return;
+                }
+                container.innerHTML = data.map(fb => `
+                    <div class="glass-card" style="padding: 15px; border-left: 4px solid #02ceff; margin-bottom: 15px; background: rgba(2, 206, 255, 0.05);">
+                        <span style="font-size: 0.7em; color: #a0aec0; display: block; margin-bottom: 10px;">Enviado em: ${new Date(fb.created_at).toLocaleDateString('pt-BR')} às ${new Date(fb.created_at).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}</span>
+                        <div style="margin-bottom: 10px;">
+                            <strong style="color: #02ceff; font-size: 0.8em; text-transform: uppercase;">Travando o Desempenho:</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 0.9em;">${fb.desempenho || '-'}</p>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <strong style="color: #02ceff; font-size: 0.8em; text-transform: uppercase;">Poderia Melhorar:</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 0.9em;">${fb.melhorar_marketing || '-'}</p>
+                        </div>
+                        ${fb.sugestao ? `
+                        <div style="margin-bottom: 10px;">
+                            <strong style="color: #ffd700; font-size: 0.8em; text-transform: uppercase;">Sugestão de Solução:</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 0.9em;">${fb.sugestao}</p>
+                        </div>
+                        ` : ''}
+                        <div>
+                            <strong style="color: #02ceff; font-size: 0.8em; text-transform: uppercase;">Sobrecarregado:</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 0.9em;">${fb.sobrecarregado || '-'}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        } catch (error) { console.error(error); }
+    };
+
+    const myReportBtn = document.getElementById('myReportBtn');
+    const monthlyReportModal = document.getElementById('monthlyReportModal');
+    const closeReportModal = document.getElementById('closeReportModal');
+    const reportUserName = document.getElementById('reportUserName');
+    const monthlyReportContent = document.getElementById('monthlyReportContent');
+
+    if (myReportBtn) {
+        myReportBtn.addEventListener('click', () => {
+            monthlyReportModal.style.display = 'flex';
+            if (userNameInput && userNameInput.value) {
+                reportUserName.value = userNameInput.value;
+                reportUserName.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+
+    if (closeReportModal) {
+        closeReportModal.addEventListener('click', () => {
+            monthlyReportModal.style.display = 'none';
+        });
+    }
+
+    if (reportUserName) {
+        reportUserName.addEventListener('change', () => {
+            const selected = reportUserName.value;
+            if (!selected) return;
+            const now = new Date();
+            const monthEntries = allEntries.filter(e => {
+                const u = decodeUser(e.username);
+                const d = new Date(e.created_at);
+                return u.name.toUpperCase() === selected && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+            });
+
+            if (monthEntries.length === 0) {
+                monthlyReportContent.innerHTML = `<p style="opacity: 0.5; text-align: center; padding: 20px;">Nenhuma entrega encontrada para ${selected} neste mês.</p>`;
+                return;
+            }
+
+            const monthName = now.toLocaleString('pt-BR', { month: 'long' });
+            let html = `<h4 style="color: #02ceff; margin-bottom: 15px; text-align: center;">🚀 Entregas de ${selected} em ${monthName.charAt(0).toUpperCase() + monthName.slice(1)}</h4>`;
+            
+            // Só pegar o "Ontem" (que é o que foi concluído)
+            monthEntries.sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).forEach(e => {
+                const yt = (e.yesterday_tasks || '').trim();
+                if(yt !== '' && yt !== '-' && yt !== 'nada' && yt !== 'nao' && yt !== 'não') {
+                    // Como a data do checkin representa o dia do envio, a tarefa concluída ontem se refere ao dia anterior, mas vamos exibir a data do checkin mesmo
+                    html += `
+                        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid #02ceff;">
+                            <span style="font-size: 0.7em; color: #a0aec0; display: block; margin-bottom: 5px;">Relatado em: ${new Date(e.created_at).toLocaleDateString('pt-BR')}</span>
+                            <p style="margin: 0; font-size: 0.9em; white-space: pre-wrap;">${yt}</p>
+                        </div>
+                    `;
+                }
+            });
+
+            monthlyReportContent.innerHTML = html;
+        });
+    }
+
+    window.addEventListener('click', (e) => {
+        if (e.target === monthlyReportModal) {
+            monthlyReportModal.style.display = 'none';
+        }
+    });
+
 });

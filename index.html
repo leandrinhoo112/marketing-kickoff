@@ -57,9 +57,19 @@
         </section>
         
         <!-- TABS DE NAVEGAÇÃO -->
-        <div class="tabs-container" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto;">
-            <button class="tab-btn active" data-target="tab-radar" style="padding: 12px 24px; border-radius: 12px; border: none; background: #6841f1; color: white; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;"><i data-lucide="target"></i> Radar Diário</button>
-            <button class="tab-btn" data-target="tab-sucesso" style="padding: 12px 24px; border-radius: 12px; border: none; background: transparent; color: #a0aec0; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;"><i data-lucide="star"></i> Sucesso Semanal</button>
+        <div class="tabs-container" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; flex-wrap: wrap;">
+            <button class="tab-btn active" data-target="tab-radar" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: #6841f1; color: white;">
+                <i data-lucide="activity"></i> Radar Diário
+            </button>
+            <button class="tab-btn" data-target="tab-sucesso" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
+                <i data-lucide="star"></i> Sucesso Semanal
+            </button>
+            <button class="tab-btn" data-target="tab-feedback" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
+                <i data-lucide="message-circle"></i> Feedback Anônimo
+            </button>
+            <button onclick="toggleAdmin()" style="padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(104, 65, 241, 0.3); font-weight: bold; cursor: pointer; transition: all 0.3s; background: rgba(104, 65, 241, 0.1); color: #8e6eff;">
+                <i data-lucide="shield"></i> Área do Gestor
+            </button>
         </div>
 
         <!-- BARRA DE BUSCA E FILTRO -->
@@ -113,9 +123,14 @@
 
         <section class="form-section">
             <div class="glass-card">
-                <div class="card-header">
-                    <h2>Novo Check-in Diário</h2>
-                    <p>Preencha suas metas e atualizações para o dia de hoje.</p>
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h2>Novo Check-in Diário</h2>
+                        <p>Preencha suas metas e atualizações para o dia de hoje.</p>
+                    </div>
+                    <button type="button" id="myReportBtn" class="btn-secondary" style="background: rgba(104, 65, 241, 0.1); border: 1px solid rgba(104, 65, 241, 0.3); color: #8e6eff; padding: 8px 16px; border-radius: 8px; font-size: 0.85em; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;">
+                        <i data-lucide="file-text"></i> Meu Relatório Mensal
+                    </button>
                 </div>
 
                 <form id="kickoffForm">
@@ -292,7 +307,7 @@
                     </div>
 
                     <div class="input-group" style="margin-bottom: 20px;">
-                        <label for="sucessoGoal"><i data-lucide="target"></i> Meta do Mês: Você evoluiu nisso?</label>
+                        <label for="sucessoGoal"><i data-lucide="target"></i> Meta do Mês</label>
                         <textarea id="sucessoGoal" name="sucessoGoal" placeholder="Descreva como você avançou na sua meta mensal..." required></textarea>
                     </div>
 
@@ -318,6 +333,91 @@
             </section>
         </div> <!-- FIM TAB SUCESSO -->
     </main>
+
+    <!-- INÍCIO TAB FEEDBACK ANÔNIMO -->
+    <div id="tab-feedback" class="tab-pane" style="display: none; max-width: 800px; margin: 0 auto; padding: 0 20px;">
+        <section class="form-section">
+            <div class="glass-card" style="border-color: rgba(2, 206, 255, 0.3); box-shadow: 0 10px 30px -5px rgba(2, 206, 255, 0.1);">
+                <div class="card-header">
+                    <h2 style="background: linear-gradient(to right, #fff, #02ceff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"><i data-lucide="message-circle"></i> Feedback Anônimo Inteligente</h2>
+                    <p>Sua opinião importa. Compartilhe o que está travando o seu dia a dia e ajude o Marketing a evoluir. 100% sigiloso.</p>
+                </div>
+
+                <form id="feedbackForm">
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label for="fbDesempenho"><i data-lucide="alert-circle"></i> O que está travando seu desempenho?</label>
+                        <textarea id="fbDesempenho" name="fbDesempenho" placeholder="Sistemas lentos, falta de processo, muitas reuniões..." required></textarea>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label for="fbMelhorar"><i data-lucide="trending-up"></i> O que poderia melhorar no marketing?</label>
+                        <textarea id="fbMelhorar" name="fbMelhorar" placeholder="Novas ferramentas, organização de demandas..." required></textarea>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label for="fbSugestao"><i data-lucide="lightbulb"></i> Tem alguma sugestão?</label>
+                        <textarea id="fbSugestao" name="fbSugestao" placeholder="Deixe aqui sua ideia para resolver os pontos acima..."></textarea>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label><i data-lucide="battery-charging"></i> Você se sente sobrecarregado?</label>
+                        <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
+                            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                                <input type="radio" name="fbSobrecarregado" value="Sim, muito" required>
+                                Sim, muito 😫
+                            </label>
+                            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                                <input type="radio" name="fbSobrecarregado" value="Um pouco">
+                                Um pouco 😐
+                            </label>
+                            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                                <input type="radio" name="fbSobrecarregado" value="Não, está tranquilo">
+                                Não, está tranquilo 😄
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
+                        <button type="submit" class="btn-primary" style="flex: 2; background: #02ceff; color: #0f0a1e; box-shadow: 0 4px 15px rgba(2, 206, 255, 0.3);">
+                            Enviar Feedback Anônimo <i data-lucide="send"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div> <!-- FIM TAB FEEDBACK -->
+
+    <!-- MODAL MEU RELATÓRIO MENSAL -->
+    <div id="monthlyReportModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
+        <div class="modal-content glass-card" style="background: #1a152e; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #8e6eff;"><i data-lucide="shield"></i> Meu Registro de Entregas Invisíveis</h3>
+                <span class="close-modal" id="closeReportModal" style="color: #a0aec0; cursor: pointer; font-size: 1.5em; font-weight: bold;">&times;</span>
+            </div>
+            
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label for="reportUserName"><i data-lucide="user"></i> Selecione seu nome para ver suas entregas no mês atual</label>
+                <select id="reportUserName" name="reportUserName">
+                    <option value="" disabled selected>Selecione seu nome...</option>
+                    <option value="LEANDRO">LEANDRO</option>
+                    <option value="IGOR">IGOR</option>
+                    <option value="YASMIM">YASMIM</option>
+                    <option value="KAMILLE">KAMILLE</option>
+                    <option value="JOÃO">JOÃO</option>
+                    <option value="EDSON">EDSON</option>
+                    <option value="LUIZ">LUIZ</option>
+                    <option value="JORGE">JORGE</option>
+                    <option value="MARIANA">MARIANA</option>
+                    <option value="VANESSA">VANESSA</option>
+                    <option value="BRUNO">BRUNO</option>
+                </select>
+            </div>
+
+            <div id="monthlyReportContent" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <p style="opacity: 0.5; text-align: center;">Selecione seu nome acima para carregar suas entregas.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- ÁREA DO ADMINISTRADOR (ESCONDIDA POR PADRÃO) -->
     <section id="adminArea" class="container"
@@ -425,6 +525,16 @@
                     </div>
                 </div>
             </div>
+
+            <!-- NOVO: Caixa de Sugestões Anônimas -->
+            <div style="margin-top: 40px;">
+                <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="message-square"></i> Feedbacks Anônimos Recebidos</h4>
+                <div id="adminFeedbacksContainer" style="display: flex; flex-direction: column; gap: 15px; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                    <div class="glass-card" style="padding: 15px;">
+                        <p style="margin: 0; opacity: 0.5;">Carregando feedbacks...</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -439,7 +549,7 @@
         </div>
     </footer>
 
-    <script src="app.js?v=2.4"></script>
+    <script src="app.js?v=2.6"></script>
     <script>
         lucide.createIcons();
     </script>
