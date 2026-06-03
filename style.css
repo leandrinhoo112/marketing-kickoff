@@ -190,7 +190,7 @@ input, textarea, select {
     width: 100%;
 }
 
-input[type="radio"], input[type="color"] {
+input[type="radio"], input[type="color"], input[type="checkbox"] {
     width: auto;
     min-height: 0;
     padding: 0;
@@ -206,6 +206,49 @@ input[type="radio"] {
     padding: 0 !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
+}
+
+.checkbox-group {
+    max-height: 150px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.tag-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: normal;
+    transition: var(--transition);
+    text-transform: uppercase;
+}
+
+.tag-checkbox:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.tag-checkbox:has(input[type="checkbox"]:checked) {
+    background: rgba(104, 65, 241, 0.3);
+    border-color: var(--primary);
+    color: #fff;
+    font-weight: bold !important;
+}
+
+.tag-checkbox input[type="checkbox"] {
+    display: none;
 }
 
 .radio-card:hover {
