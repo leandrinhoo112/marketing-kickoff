@@ -118,6 +118,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
     successSound.volume = 0.5;
+    const xaropinhoSound = new Audio('vinheta-xaropinho-rapaz-cut-mp3.mp3');
+    xaropinhoSound.volume = 0.8;
+    const tomeSound = new Audio('tome-rodrigo-faro_xDXKGwq.mp3');
+    tomeSound.volume = 0.8;
+    const uiiiSound = new Audio('uiiiii.mp3');
+    uiiiSound.volume = 0.8;
+    const startSound = new Audio('audio inicio.wav');
+    startSound.volume = 0.8;
+    
+    // Tocar o áudio de início. Tratar bloqueio de autoplay do navegador
+    startSound.play().catch(() => {
+        // Se o navegador bloquear, toca no primeiro clique do usuário em qualquer lugar
+        document.body.addEventListener('click', () => {
+            startSound.play().catch(() => {});
+        }, { once: true });
+    });
 
     const statTotal = document.getElementById('statTotal');
     const statHelp = document.getElementById('statHelp');
@@ -826,7 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     editingId = null;
                 } else {
                     await supabaseClient.from('kickoffs').insert([entry]);
-                    successSound.play(); 
+                    xaropinhoSound.play(); 
                     if (window.showStreakPopup) {
                         // Re-calcular a streak rapidinho e somar 1 para mostrar o novo valor na hora
                         const myCheckins = allEntries.filter(e => decodeUser(e.username).name.toUpperCase() === currentUser);
@@ -957,7 +973,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     editingSucessoId = null;
                 } else {
                     await supabaseClient.from('sucessos').insert([entry]);
-                    successSound.play(); 
+                    tomeSound.play(); 
                     if (window.confetti) confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#ffd700', '#ffffff', '#6841f1'] });
                     showToast("Sucesso Celebrado! 🎉");
                 }
@@ -1048,6 +1064,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast("Feedback enviado com sucesso! Obrigado.", "success");
                 feedbackForm.reset();
                 if (window.confetti) confetti({ particleCount: 100, spread: 60, origin: { y: 0.8 }, colors: ['#02ceff', '#ffffff'] });
+                uiiiSound.play();
             } catch (error) { 
                 showToast('Erro: A tabela feedbacks foi criada com as colunas certas? (' + error.message + ')', 'error'); 
             } finally { 
