@@ -262,38 +262,58 @@ document.addEventListener('DOMContentLoaded', () => {
         const number = document.getElementById('streakPopupNumber');
         if (!popup) return;
 
-        number.innerText = streak;
         popup.style.display = 'flex';
+        number.innerText = '0';
         
         if (window.motion && window.motion.animate) {
-            window.motion.animate(content, { scale: [0.5, 1], y: [50, 0] }, { type: "spring", stiffness: 300, damping: 20 });
+            // Efeito de mola pulando e balançando!
+            window.motion.animate(content, 
+                { scale: [0.3, 1.2, 0.9, 1.05, 1], rotate: [-10, 10, -5, 5, 0] }, 
+                { duration: 0.8, type: "spring", stiffness: 400, damping: 15 }
+            );
+            
+            // Contador animado de zero até a streak
+            window.motion.animate(0, streak, {
+                duration: 1.5,
+                ease: "circOut",
+                onUpdate: latest => { number.innerText = Math.round(latest); }
+            });
         } else {
-            setTimeout(() => { content.style.transform = 'scale(1)'; }, 10);
+            setTimeout(() => { content.style.transform = 'scale(1)'; number.innerText = streak; }, 10);
         }
 
-        // Efeito de confete explosivo
+        // Efeito de confete explosivo MEGA dopaminoso
         if (window.confetti) {
-            const end = Date.now() + 1.5 * 1000;
-            const colors = ['#ff416c', '#ff4b2b', '#ffd700'];
+            const duration = 2000;
+            const end = Date.now() + duration;
+            const colors = ['#ff416c', '#ff4b2b', '#ffd700', '#02ceff', '#6841f1'];
+            
+            // Explosão central inicial GIGANTE
+            setTimeout(() => {
+                confetti({ particleCount: 200, spread: 160, origin: { y: 0.6 }, colors: colors, startVelocity: 55 });
+            }, 100);
+
+            // Confetes saindo dos cantos continuamente
             (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+                confetti({ particleCount: 10, angle: 60, spread: 80, origin: { x: 0, y: 0.8 }, colors: colors });
+                confetti({ particleCount: 10, angle: 120, spread: 80, origin: { x: 1, y: 0.8 }, colors: colors });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
 
-        // Esconde depois de 3 segundos
+        // Esconde depois de 4 segundos para a pessoa aproveitar a glória
         setTimeout(() => {
             if (window.motion && window.motion.animate) {
-                window.motion.animate(content, { scale: [1, 0.5], opacity: [1, 0] }, { duration: 0.3 }).finished.then(() => {
+                window.motion.animate(content, { scale: [1, 0.5], opacity: [1, 0], y: [0, -50] }, { duration: 0.4 }).finished.then(() => {
                     popup.style.display = 'none';
                     content.style.opacity = '1'; // reset
+                    content.style.transform = 'scale(1) translateY(0)';
                 });
             } else {
                 content.style.transform = 'scale(0)';
                 setTimeout(() => popup.style.display = 'none', 500);
             }
-        }, 3000);
+        }, 4000);
     };
 
     function renderAchievements(checkinsCount, praisesCount, totalXp) {
@@ -747,14 +767,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const barHtml = emojis.map(emoji => {
             const count = reactions[emoji] || 0;
             const hasReacted = localStorage.getItem(`reacted_${id}_${emoji}`);
-            return `<button class="reaction-btn ${hasReacted ? 'active' : ''}" onclick="toggleReaction('${id}', '${table}', '${emoji}')">
+            return `<button class="reaction-btn ${hasReacted ? 'active' : ''}" onclick="toggleReaction('${id}', '${table}', '${emoji}', event)">
                 ${emoji} <span style="font-weight: bold; ${count === 0 ? 'opacity: 0.5' : ''}">${count > 0 ? count : ''}</span>
             </button>`;
         }).join('');
         return `<div class="reaction-bar" id="reactions_${id}">${barHtml}</div>`;
     }
 
-    window.toggleReaction = async (id, table, emoji) => {
+    window.toggleReaction = async (id, table, emoji, event) => {
+        // Animação super dopamine do botão
+        if (event && event.currentTarget && window.motion && window.motion.animate) {
+            const btn = event.currentTarget;
+            window.motion.animate(btn, { scale: [1, 1.4, 0.9, 1] }, { type: "spring", stiffness: 500, damping: 15 });
+        }
+
         const localKey = `reacted_${id}_${emoji}`;
         const hasReacted = localStorage.getItem(localKey);
         
