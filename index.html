@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=5.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6841f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,6 +22,23 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        /* Correção essencial para as bolinhas de seleção não ficarem gigantes */
+        .radio-card input[type="radio"] {
+            -webkit-appearance: radio !important;
+            appearance: radio !important;
+            width: 20px !important;
+            height: 20px !important;
+            min-height: 20px !important;
+            min-width: 20px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            flex-shrink: 0 !important;
+        }
+        .tag-checkbox input[type="checkbox"] {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -176,7 +193,6 @@
                         <i data-lucide="file-text"></i> Meu Relatório Mensal
                     </button>
                 </div>
-
                 <form id="kickoffForm">
                 <div class="grid-2">
                     <div class="input-group">
@@ -198,7 +214,10 @@
                     </div>
                     <div class="input-group">
                         <label for="userColor"><i data-lucide="palette"></i> Sua Cor de Identificação</label>
-                        <input type="color" id="userColor" value="#6841f1">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <input type="color" id="userColor" value="#6841f1" style="width: 40px; height: 40px; padding: 0; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; cursor: pointer; background: none; -webkit-appearance: none; appearance: none; overflow: hidden;">
+                            <span id="colorHexDisplay" style="font-size: 0.85em; opacity: 0.6; font-family: monospace;">#6841f1</span>
+                        </div>
                     </div>
                 </div>
 
@@ -211,7 +230,7 @@
                         </div>
                         <ul id="taskListUI" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
                         <!-- Hidden input to store serialized tasks -->
-                        <input type="hidden" id="todayTasks" name="todayTasks" required>
+                        <input type="hidden" id="todayTasks" name="todayTasks">
                     </div>
                 </div>
 
@@ -247,41 +266,40 @@
                         placeholder="Ex: Aguardando aprovação, problema técnico..."></textarea>
                 </div>
 
-                <div class="input-group">
-                    <label for="observations"><i data-lucide="message-square"></i> Observações Diárias</label>
-                    <textarea id="observations" name="observations"
-                        placeholder="Algo mais que o time precise saber?"></textarea>
-                </div>
-
-                <div class="input-group" style="margin-bottom: 20px;">
-                    <label><i data-lucide="battery-charging"></i> Nível de Energia Diário</label>
-                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-                        <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
-                            <input type="radio" name="energyLevel" value="🟢 Livre: Pode me mandar coisa nova." required style="margin: 0;">
-                            <span style="font-size: 1.2em;">🟢</span>
-                            <span style="font-weight: 500; font-size: 0.95em;">Livre: Pode me mandar coisa nova.</span>
-                        </label>
-                        <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
-                            <input type="radio" name="energyLevel" value="🟡 No limite: Finalizando o que tenho, mas aceito demandas." style="margin: 0;">
-                            <span style="font-size: 1.2em;">🟡</span>
-                            <span style="font-weight: 500; font-size: 0.95em;">No limite: Finalizando o que tenho, mas aceito demandas.</span>
-                        </label>
-                        <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
-                            <input type="radio" name="energyLevel" value="🔴 Explodindo: Preciso de ajuda ou repriorização." style="margin: 0;">
-                            <span style="font-size: 1.2em;">🔴</span>
-                            <span style="font-weight: 500; font-size: 0.95em;">Explodindo: Preciso de ajuda ou repriorização.</span>
-                        </label>
+                
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label><i data-lucide="battery-charging"></i> Nível de Energia Diário</label>
+                        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                            <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
+                                <input type="radio" name="energyLevel" value="🟢 Livre: Pode me mandar coisa nova." required style="margin: 0;">
+                                <span style="font-size: 1.2em;">🟢</span>
+                                <span style="font-weight: 500; font-size: 0.95em;">Livre: Pode me mandar coisa nova.</span>
+                            </label>
+                            <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
+                                <input type="radio" name="energyLevel" value="🟡 No limite: Finalizando o que tenho, mas aceito demandas." style="margin: 0;">
+                                <span style="font-size: 1.2em;">🟡</span>
+                                <span style="font-weight: 500; font-size: 0.95em;">No limite: Aceito demandas.</span>
+                            </label>
+                            <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
+                                <input type="radio" name="energyLevel" value="🔴 Explodindo: Preciso de ajuda ou repriorização." style="margin: 0;">
+                                <span style="font-size: 1.2em;">🔴</span>
+                                <span style="font-weight: 500; font-size: 0.95em;">Explodindo: Preciso de ajuda.</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
-
-                <div style="display: flex; gap: 10px; margin-top: 15px;">
-                    <button type="submit" class="btn-primary" style="flex: 2;">
-                        Enviar Radar <i data-lucide="send"></i>
-                    </button>
-                    <button type="button" id="testTeamsBtn" class="btn-secondary"
-                        style="flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
-                        Testar Teams <i data-lucide="zap"></i>
-                    </button>
+                    
+                    <div class="input-group" style="justify-content: center;">
+                        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 300px; margin: 0 auto;">
+                            <button type="submit" class="btn-primary" style="width: 100%; padding: 18px; font-size: 1.1em;">
+                                Enviar Radar <i data-lucide="send"></i>
+                            </button>
+                            <button type="button" id="testTeamsBtn" class="btn-secondary"
+                                style="width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 16px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 12px;">
+                                Testar Teams <i data-lucide="zap"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 </form>
             </div>
@@ -670,11 +688,7 @@
         </div>
     </footer>
 
-    <script type="module">
-        import { animate, stagger, spring } from "https://cdn.jsdelivr.net/npm/motion@11.11.11/+esm";
-        window.motion = { animate, stagger, spring };
-    </script>
-    <script src="app.js?v=4.0"></script>
+    <script src="app.js?v=5.0" defer></script>
     <script>
         lucide.createIcons();
     </script>

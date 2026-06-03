@@ -30,9 +30,7 @@ body {
 h1, h2, h3, h4, h5, h6, .logo {
     font-family: 'Outfit', sans-serif;
 }
-    overflow-x: hidden;
-    min-height: 100vh;
-}
+
 
 .container {
     max-width: 1200px;
@@ -154,7 +152,7 @@ header .container {
 form {
     display: flex;
     flex-direction: column;
-    gap: 0; /* Vamos usar margens nos grupos para ter mais controle */
+    gap: 20px;
 }
 
 .grid-2 {
@@ -210,6 +208,33 @@ input[type="radio"], input[type="color"], input[type="checkbox"] {
     width: auto;
     min-height: 0;
     padding: 0;
+}
+
+input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    cursor: pointer;
+    background: none;
+    overflow: hidden;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
+
+input[type="color"]::-moz-color-swatch {
+    border: none;
+    border-radius: 50%;
 }
 
 input[type="radio"] {
@@ -270,6 +295,18 @@ input[type="radio"] {
 .radio-card:hover {
     background: rgba(255,255,255,0.08) !important;
     border-color: rgba(255,255,255,0.3) !important;
+}
+
+.radio-card input[type="radio"] {
+    -webkit-appearance: radio !important;
+    appearance: radio !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    min-width: 20px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 .radio-card input[type="radio"]:checked + span + span {

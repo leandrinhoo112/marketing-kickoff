@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const dynamicGreeting = document.getElementById('dynamicGreeting');
     const userNameInput = document.getElementById('userName');
     const userColorInput = document.getElementById('userColor');
+    const colorHexDisplay = document.getElementById('colorHexDisplay');
+
+    // Sync color input with hex display
+    if (userColorInput && colorHexDisplay) {
+        userColorInput.addEventListener('input', () => {
+            colorHexDisplay.textContent = userColorInput.value;
+        });
+    }
 
     // Task List Builder logic
     let currentTasks = [];
@@ -133,14 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!currentUser && welcomeModal) {
         welcomeModal.style.display = 'flex';
-        const modalContent = welcomeModal.querySelector('.glass-card');
-        if (modalContent) {
-            setTimeout(() => {
-                if (window.motion && window.motion.animate) {
-                    window.motion.animate(modalContent, { y: [50, 0], opacity: [0, 1], scale: [0.9, 1] }, { type: "spring", stiffness: 300, damping: 20 });
-                }
-            }, 50);
-        }
     } else if (currentUser) {
         applyCurrentUser();
     }
@@ -263,56 +263,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!popup) return;
 
         popup.style.display = 'flex';
-        number.innerText = '0';
+        number.innerText = streak;
         
-        if (window.motion && window.motion.animate) {
-            // Efeito de mola pulando e balançando!
-            window.motion.animate(content, 
-                { scale: [0.3, 1.2, 0.9, 1.05, 1], rotate: [-10, 10, -5, 5, 0] }, 
-                { duration: 0.8, type: "spring", stiffness: 400, damping: 15 }
-            );
-            
-            // Contador animado de zero até a streak
-            window.motion.animate(0, streak, {
-                duration: 1.5,
-                ease: "circOut",
-                onUpdate: latest => { number.innerText = Math.round(latest); }
-            });
-        } else {
-            setTimeout(() => { content.style.transform = 'scale(1)'; number.innerText = streak; }, 10);
-        }
+        setTimeout(() => {
+            content.style.transform = 'scale(1)';
+            number.style.opacity = '1';
+        }, 10);
 
-        // Efeito de confete explosivo MEGA dopaminoso
         if (window.confetti) {
-            const duration = 2000;
-            const end = Date.now() + duration;
-            const colors = ['#ff416c', '#ff4b2b', '#ffd700', '#02ceff', '#6841f1'];
-            
-            // Explosão central inicial GIGANTE
-            setTimeout(() => {
-                confetti({ particleCount: 200, spread: 160, origin: { y: 0.6 }, colors: colors, startVelocity: 55 });
-            }, 100);
-
-            // Confetes saindo dos cantos continuamente
-            (function frame() {
-                confetti({ particleCount: 10, angle: 60, spread: 80, origin: { x: 0, y: 0.8 }, colors: colors });
-                confetti({ particleCount: 10, angle: 120, spread: 80, origin: { x: 1, y: 0.8 }, colors: colors });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#6841f1', '#ff5470', '#00e676', '#fdd835']
+            });
         }
 
         // Esconde depois de 4 segundos para a pessoa aproveitar a glória
         setTimeout(() => {
-            if (window.motion && window.motion.animate) {
-                window.motion.animate(content, { scale: [1, 0.5], opacity: [1, 0], y: [0, -50] }, { duration: 0.4 }).finished.then(() => {
-                    popup.style.display = 'none';
-                    content.style.opacity = '1'; // reset
-                    content.style.transform = 'scale(1) translateY(0)';
-                });
-            } else {
-                content.style.transform = 'scale(0)';
-                setTimeout(() => popup.style.display = 'none', 500);
-            }
+            content.style.transform = 'scale(0.8)';
+            content.style.opacity = '0';
+            setTimeout(() => {
+                popup.style.display = 'none';
+                content.style.opacity = '1';
+                content.style.transform = 'scale(1)';
+            }, 300);
         }, 4000);
     };
 
@@ -596,7 +571,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         document.getElementById('blockers').value = entry.blockers || '';
-        document.getElementById('observations').value = entry.observations || '';
         if (entry.energy_level) {
             const radio = form.querySelector(`input[name="energyLevel"][value="${entry.energy_level}"]`);
             if (radio) radio.checked = true;
@@ -741,25 +715,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div>${formattedTasks}</div>
                     </div>
                     ${entry.help_needed ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ajuda</label><p style="color: #02ceff; font-weight: 500;">${entry.help_needed} ${entry.who_help ? `(${entry.who_help})` : ''}</p></div>` : ''}
-                    ${entry.observations ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Obs</label><p>${entry.observations}</p></div>` : ''}
                     ${entry.energy_level ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Nível de Energia</label><p style="font-weight: bold; display: flex; align-items: center; gap: 8px;">${entry.energy_level}</p></div>` : ''}
                 </div>
                 ${generateReactionBar(entry.id, 'kickoffs', entry.reactions || {})}
             </div>`;
         }).join('');
         if (window.lucide) window.lucide.createIcons();
-        
-        // Motion Animation
-        if (window.motion && window.motion.animate) {
-            // Pequeno delay para garantir que o DOM atualizou
-            setTimeout(() => {
-                window.motion.animate(
-                    "#kickoffList .kickoff-item",
-                    { opacity: [0, 1], y: [20, 0], scale: [0.98, 1] },
-                    { delay: window.motion.stagger(0.05), duration: 0.4 }
-                );
-            }, 50);
-        }
     }
 
     function generateReactionBar(id, table, reactions) {
@@ -775,12 +736,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.toggleReaction = async (id, table, emoji, event) => {
-        // Animação super dopamine do botão
-        if (event && event.currentTarget && window.motion && window.motion.animate) {
-            const btn = event.currentTarget;
-            window.motion.animate(btn, { scale: [1, 1.4, 0.9, 1] }, { type: "spring", stiffness: 500, damping: 15 });
-        }
-
         const localKey = `reacted_${id}_${emoji}`;
         const hasReacted = localStorage.getItem(localKey);
         
@@ -860,7 +815,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 help_needed: document.getElementById('helpNeeded').value,
                 who_help: checkedHelpers,
                 blockers: document.getElementById('blockers').value,
-                observations: document.getElementById('observations').value,
+                observations: '',
                 energy_level: energyChecked ? energyChecked.value : '😐 Normal',
                 created_at: new Date().toISOString()
             };
@@ -975,17 +930,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         }).join('');
         if (window.lucide) window.lucide.createIcons();
-        
-        // Motion Animation
-        if (window.motion && window.motion.animate) {
-            setTimeout(() => {
-                window.motion.animate(
-                    "#sucessoList .kickoff-item",
-                    { opacity: [0, 1], y: [20, 0], scale: [0.98, 1] },
-                    { delay: window.motion.stagger(0.05), duration: 0.4 }
-                );
-            }, 50);
-        }
     }
 
     if (sucessoForm) {
