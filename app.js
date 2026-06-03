@@ -1,7 +1,7 @@
 const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
 
-const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "KAMILLE", "JOÃO", "EDSON", "LUIZ", "JORGE", "MARIANA", "VANESSA", "BRUNO"];
+const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "KAMILLE", "JOÃO", "EDSON", "LUIZ", "JORGE", "MARIANA", "VANESSA", "BRUNO", "VITOR"];
 
 let supabaseClient;
 try {
@@ -28,6 +28,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const dynamicGreeting = document.getElementById('dynamicGreeting');
     const userNameInput = document.getElementById('userName');
     const userColorInput = document.getElementById('userColor');
+
+    // Task List Builder logic
+    let currentTasks = [];
+    const taskInput = document.getElementById('taskInput');
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const taskListUI = document.getElementById('taskListUI');
+    const todayTasksHidden = document.getElementById('todayTasks');
+
+    if (addTaskBtn) {
+        addTaskBtn.addEventListener('click', () => {
+            if(taskInput.value.trim() !== '') {
+                currentTasks.push(taskInput.value.trim());
+                taskInput.value = '';
+                renderTaskBuilder();
+            }
+        });
+    }
+    if (taskInput) {
+        taskInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                addTaskBtn.click();
+            }
+        });
+    }
+    function renderTaskBuilder() {
+        if (!taskListUI) return;
+        taskListUI.innerHTML = currentTasks.map((t, index) => `
+            <li style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                <span><i data-lucide="circle" style="width: 14px; height: 14px; margin-right: 5px; color: #8e6eff;"></i> ${t}</span>
+                <button type="button" onclick="removeTask(${index})" style="background: none; border: none; color: #ff416c; cursor: pointer;"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
+            </li>
+        `).join('');
+        if (window.lucide) window.lucide.createIcons();
+        todayTasksHidden.value = currentTasks.map(t => `• ${t}`).join('\n');
+    }
+    window.removeTask = function(index) {
+        currentTasks.splice(index, 1);
+        renderTaskBuilder();
+    };
 
     // Tabs
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -93,6 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!currentUser && welcomeModal) {
         welcomeModal.style.display = 'flex';
+        const modalContent = welcomeModal.querySelector('.glass-card');
+        if (modalContent) {
+            setTimeout(() => {
+                if (window.motion && window.motion.animate) {
+                    window.motion.animate(modalContent, { y: [50, 0], opacity: [0, 1], scale: [0.9, 1] }, { type: "spring", stiffness: 300, damping: 20 });
+                }
+            }, 50);
+        }
     } else if (currentUser) {
         applyCurrentUser();
     }
@@ -217,6 +265,12 @@ document.addEventListener('DOMContentLoaded', () => {
         number.innerText = streak;
         popup.style.display = 'flex';
         
+        if (window.motion && window.motion.animate) {
+            window.motion.animate(content, { scale: [0.5, 1], y: [50, 0] }, { type: "spring", stiffness: 300, damping: 20 });
+        } else {
+            setTimeout(() => { content.style.transform = 'scale(1)'; }, 10);
+        }
+
         // Efeito de confete explosivo
         if (window.confetti) {
             const end = Date.now() + 1.5 * 1000;
@@ -228,14 +282,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }());
         }
 
-        setTimeout(() => {
-            content.style.transform = 'scale(1)';
-        }, 100);
-
         // Esconde depois de 3 segundos
         setTimeout(() => {
-            content.style.transform = 'scale(0)';
-            setTimeout(() => popup.style.display = 'none', 500);
+            if (window.motion && window.motion.animate) {
+                window.motion.animate(content, { scale: [1, 0.5], opacity: [1, 0] }, { duration: 0.3 }).finished.then(() => {
+                    popup.style.display = 'none';
+                    content.style.opacity = '1'; // reset
+                });
+            } else {
+                content.style.transform = 'scale(0)';
+                setTimeout(() => popup.style.display = 'none', 500);
+            }
         }, 3000);
     };
 
@@ -503,10 +560,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const u = decodeUser(entry.username);
         userNameInput.value = u.name;
         userColorInput.value = u.color;
-        document.getElementById('yesterdayTasks').value = entry.yesterday_tasks;
-        document.getElementById('todayTasks').value = entry.today_tasks;
+        
+        todayTasksHidden.value = entry.today_tasks || '';
+        currentTasks = (entry.today_tasks || '').split('\n').map(t => t.replace('• ', '')).filter(t => t.trim() !== '');
+        renderTaskBuilder();
+
         document.getElementById('helpNeeded').value = entry.help_needed || '';
-        document.getElementById('whoHelp').value = entry.who_help || '';
+        
+        document.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => cb.checked = false);
+        if (entry.who_help) {
+            entry.who_help.split(', ').forEach(val => {
+                const cb = document.querySelector(`input[name="whoHelpCheck"][value="${val}"]`);
+                if (cb) cb.checked = true;
+            });
+        }
+
         document.getElementById('blockers').value = entry.blockers || '';
         document.getElementById('observations').value = entry.observations || '';
         if (entry.energy_level) {
@@ -544,7 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let summary = `*🚀 RESUMO DO RADAR DIÁRIO - ${todayStr}*\n\n`;
         todayEntries.forEach(e => {
             const u = decodeUser(e.username);
-            summary += `👤 *${u.name}*\n✅ Ontem: ${e.yesterday_tasks}\n🎯 Hoje: ${e.today_tasks}\n`;
+            summary += `👤 *${u.name}*\n🎯 Hoje: \n${e.today_tasks}\n`;
             if (e.help_needed) summary += `🆘 Ajuda: ${e.help_needed} (com ${e.who_help || '?'})\n`;
             const blk = (e.blockers || '').toLowerCase();
             if (blk && !['não','nao','nada'].includes(blk)) summary += `⚠️ Impedimento: ${e.blockers}\n`;
@@ -623,6 +691,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
+            const formattedTasks = (entry.today_tasks || '').split('\n').map(t => `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><i data-lucide="check-square" style="width:14px;height:14px;color:#8e6eff;flex-shrink:0;margin-top:3px;"></i> <span style="flex:1;">${t.replace('• ', '')}</span></div>`).join('');
+
             return `
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
@@ -645,8 +715,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="item-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                    <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ontem</label><p>${entry.yesterday_tasks || '-'}</p></div>
-                    <div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Hoje</label><p>${entry.today_tasks || '-'}</p></div>
+                    ${entry.yesterday_tasks ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ontem</label><p>${entry.yesterday_tasks}</p></div>` : ''}
+                    <div class="content-block" style="background: rgba(0,0,0,0.1); padding: 15px; border-radius: 8px; grid-column: 1/-1;">
+                        <label style="font-size: 0.75em; text-transform: uppercase; color: #8e6eff; font-weight: bold; margin-bottom: 10px; display: block;"><i data-lucide="target" style="width: 14px; height: 14px; margin-right: 5px;"></i> O que farei hoje</label>
+                        <div>${formattedTasks}</div>
+                    </div>
                     ${entry.help_needed ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ajuda</label><p style="color: #02ceff; font-weight: 500;">${entry.help_needed} ${entry.who_help ? `(${entry.who_help})` : ''}</p></div>` : ''}
                     ${entry.observations ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Obs</label><p>${entry.observations}</p></div>` : ''}
                     ${entry.energy_level ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Nível de Energia</label><p style="font-weight: bold; display: flex; align-items: center; gap: 8px;">${entry.energy_level}</p></div>` : ''}
@@ -655,6 +728,18 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         }).join('');
         if (window.lucide) window.lucide.createIcons();
+        
+        // Motion Animation
+        if (window.motion && window.motion.animate) {
+            // Pequeno delay para garantir que o DOM atualizou
+            setTimeout(() => {
+                window.motion.animate(
+                    "#kickoffList .kickoff-item",
+                    { opacity: [0, 1], y: [20, 0], scale: [0.98, 1] },
+                    { delay: window.motion.stagger(0.05), duration: 0.4 }
+                );
+            }, 50);
+        }
     }
 
     function generateReactionBar(id, table, reactions) {
@@ -741,12 +826,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             const energyChecked = form.querySelector('input[name="energyLevel"]:checked');
+            const checkedHelpers = Array.from(document.querySelectorAll('input[name="whoHelpCheck"]:checked')).map(cb => cb.value).join(', ');
+
             const entry = {
                 username: `${userNameInput.value}|${userColorInput.value}`,
-                yesterday_tasks: document.getElementById('yesterdayTasks').value,
-                today_tasks: document.getElementById('todayTasks').value,
+                today_tasks: todayTasksHidden.value,
                 help_needed: document.getElementById('helpNeeded').value,
-                who_help: document.getElementById('whoHelp').value,
+                who_help: checkedHelpers,
                 blockers: document.getElementById('blockers').value,
                 observations: document.getElementById('observations').value,
                 energy_level: energyChecked ? energyChecked.value : '😐 Normal',
@@ -769,6 +855,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     await sendTeamsAlert(entry); showToast("Enviado!");
                 }
                 form.reset();
+                currentTasks = [];
+                renderTaskBuilder();
+                document.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => cb.checked = false);
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>'; loadEntries();
             } catch (error) { showToast('Erro: ' + error.message, 'error'); } 
             finally { submitBtn.disabled = false; if (window.lucide) window.lucide.createIcons(); }
@@ -841,7 +930,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <div class="avatar" style="background: ${displayColor}; color: #0f0a1e;">${getInitials(u.name)}</div>
                         <div class="user-info">
-                            <h4 style="color: ${displayColor}; font-size: 1.2em; margin: 0; display: flex; align-items: center;">${u.name} ${destaqueBadge}</h4>
+                            <h4 style="color: ${displayColor}; font-size: 1.2em; margin: 0;">${u.name} ${destaqueBadge}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${new Date(entry.created_at).toLocaleDateString('pt-BR')}</span>
                         </div>
                     </div>
@@ -860,6 +949,17 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         }).join('');
         if (window.lucide) window.lucide.createIcons();
+        
+        // Motion Animation
+        if (window.motion && window.motion.animate) {
+            setTimeout(() => {
+                window.motion.animate(
+                    "#sucessoList .kickoff-item",
+                    { opacity: [0, 1], y: [20, 0], scale: [0.98, 1] },
+                    { delay: window.motion.stagger(0.05), duration: 0.4 }
+                );
+            }, 50);
+        }
     }
 
     if (sucessoForm) {
@@ -867,10 +967,15 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = sucessoForm.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
+            
+            const praiseTo = document.getElementById('sucessoPraiseTo').value;
+            const praiseText = document.getElementById('sucessoPraiseText').value;
+            const finalPraise = praiseTo ? `Para [${praiseTo}]: ${praiseText}` : praiseText;
+
             const entry = {
                 username: `${sucessoUserName.value}|#ffd700`,
                 victory: document.getElementById('sucessoVictory').value,
-                praise: document.getElementById('sucessoPraise').value,
+                praise: finalPraise,
                 insight: document.getElementById('sucessoInsight').value,
                 monthly_goal_progress: document.getElementById('sucessoGoal').value,
                 created_at: new Date().toISOString()
@@ -913,7 +1018,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const u = decodeUser(entry.username);
         sucessoUserName.value = u.name;
         document.getElementById('sucessoVictory').value = entry.victory || '';
-        document.getElementById('sucessoPraise').value = entry.praise || '';
+        
+        const pTo = document.getElementById('sucessoPraiseTo');
+        const pText = document.getElementById('sucessoPraiseText');
+        if (entry.praise && entry.praise.startsWith('Para [')) {
+            const match = entry.praise.match(/^Para \[([^\]]+)\]:\s*(.*)/);
+            if (match) {
+                pTo.value = match[1];
+                pText.value = match[2];
+            } else {
+                pTo.value = '';
+                pText.value = entry.praise;
+            }
+        } else {
+            pTo.value = '';
+            pText.value = entry.praise || '';
+        }
+
         document.getElementById('sucessoInsight').value = entry.insight || '';
         
         sucessoForm.scrollIntoView({ behavior: 'smooth' });
@@ -1059,15 +1180,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const monthName = now.toLocaleString('pt-BR', { month: 'long' });
             let html = `<h4 style="color: #02ceff; margin-bottom: 15px; text-align: center;">🚀 Entregas de ${selected} em ${monthName.charAt(0).toUpperCase() + monthName.slice(1)}</h4>`;
             
-            // Só pegar o "Ontem" (que é o que foi concluído)
+            // Usar o "Hoje" (que agora é a base principal)
             monthEntries.sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).forEach(e => {
-                const yt = (e.yesterday_tasks || '').trim();
-                if(yt !== '' && yt !== '-' && yt !== 'nada' && yt !== 'nao' && yt !== 'não') {
-                    // Como a data do checkin representa o dia do envio, a tarefa concluída ontem se refere ao dia anterior, mas vamos exibir a data do checkin mesmo
+                const tt = (e.today_tasks || '').trim();
+                if(tt !== '' && tt !== '-' && tt !== 'nada' && tt !== 'nao' && tt !== 'não') {
+                    const formattedTasks = tt.split('\n').map(t => `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><i data-lucide="check-square" style="width:14px;height:14px;color:#8e6eff;flex-shrink:0;margin-top:3px;"></i> <span style="flex:1;">${t.replace('• ', '')}</span></div>`).join('');
+                    
                     html += `
-                        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid #02ceff;">
-                            <span style="font-size: 0.7em; color: #a0aec0; display: block; margin-bottom: 5px;">Relatado em: ${new Date(e.created_at).toLocaleDateString('pt-BR')}</span>
-                            <p style="margin: 0; font-size: 0.9em; white-space: pre-wrap;">${yt}</p>
+                        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid #02ceff; margin-bottom: 15px;">
+                            <span style="font-size: 0.7em; color: #a0aec0; display: block; margin-bottom: 10px;">Planejado/Executado em: ${new Date(e.created_at).toLocaleDateString('pt-BR')}</span>
+                            <div style="margin: 0; font-size: 0.9em; white-space: normal;">${formattedTasks}</div>
                         </div>
                     `;
                 }

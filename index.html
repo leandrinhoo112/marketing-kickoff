@@ -50,6 +50,7 @@
                     <option value="MARIANA">MARIANA</option>
                     <option value="VANESSA">VANESSA</option>
                     <option value="BRUNO">BRUNO</option>
+                    <option value="VITOR">VITOR</option>
                 </select>
             </div>
             <button id="enterAppBtn" class="btn-primary" style="width: 100%;">Entrar no App <i data-lucide="arrow-right"></i></button>
@@ -192,6 +193,7 @@
                             <option value="MARIANA">MARIANA</option>
                             <option value="VANESSA">VANESSA</option>
                             <option value="BRUNO">BRUNO</option>
+                            <option value="VITOR">VITOR</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -200,17 +202,16 @@
                     </div>
                 </div>
 
-                <div class="grid-2">
+                <div class="grid-1">
                     <div class="input-group">
-                        <label for="yesterdayTasks"><i data-lucide="check-circle"></i> O que foi concluído
-                            ontem?</label>
-                        <textarea id="yesterdayTasks" name="yesterdayTasks"
-                            placeholder="Liste as tarefas finalizadas..." required></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label for="todayTasks"><i data-lucide="target"></i> O que você fará hoje?</label>
-                        <textarea id="todayTasks" name="todayTasks" placeholder="Quais são as metas para hoje?"
-                            required></textarea>
+                        <label><i data-lucide="target"></i> O que você fará hoje?</label>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <input type="text" id="taskInput" placeholder="Digite uma tarefa..." style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                            <button type="button" id="addTaskBtn" class="btn-primary" style="padding: 12px 20px;">+ Adicionar</button>
+                        </div>
+                        <ul id="taskListUI" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
+                        <!-- Hidden input to store serialized tasks -->
+                        <input type="hidden" id="todayTasks" name="todayTasks" required>
                     </div>
                 </div>
 
@@ -221,22 +222,21 @@
                             placeholder="Descreva onde o progresso travou..."></textarea>
                     </div>
                     <div class="input-group">
-                        <label for="whoHelp"><i data-lucide="users"></i> De quem você precisa de ajuda?</label>
-                        <select id="whoHelp" name="whoHelp">
-                            <option value="">Ninguém (Progresso OK)</option>
-                            <option value="LEANDRO">LEANDRO</option>
-                            <option value="IGOR">IGOR</option>
-                            <option value="YASMIM">YASMIM</option>
-                            <option value="KAMILLE">KAMILLE</option>
-                            <option value="JOÃO">JOÃO</option>
-                            <option value="EDSON">EDSON</option>
-                            <option value="LUIZ">LUIZ</option>
-                            <option value="JORGE">JORGE</option>
-                            <option value="MARIANA">MARIANA</option>
-                            <option value="VANESSA">VANESSA</option>
-                            <option value="BRUNO">BRUNO</option>
-                            <option value="OUTRO">OUTRO / TIME</option>
-                        </select>
+                        <label><i data-lucide="users"></i> De quem você precisa de ajuda?</label>
+                        <div class="checkbox-group" style="max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="LEANDRO"> LEANDRO</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="IGOR"> IGOR</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="YASMIM"> YASMIM</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="KAMILLE"> KAMILLE</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="JOÃO"> JOÃO</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="EDSON"> EDSON</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="LUIZ"> LUIZ</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="JORGE"> JORGE</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="MARIANA"> MARIANA</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="VANESSA"> VANESSA</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="BRUNO"> BRUNO</label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.9em; cursor: pointer;"><input type="checkbox" name="whoHelpCheck" value="VITOR"> VITOR</label>
+                        </div>
                     </div>
                 </div>
 
@@ -331,6 +331,7 @@
                                 <option value="MARIANA">MARIANA</option>
                                 <option value="VANESSA">VANESSA</option>
                                 <option value="BRUNO">BRUNO</option>
+                                <option value="VITOR">VITOR</option>
                             </select>
                         </div>
                     </div>
@@ -341,8 +342,27 @@
                     </div>
 
                     <div class="input-group" style="margin-bottom: 20px;">
-                        <label for="sucessoPraise"><i data-lucide="heart"></i> Elogio ao Colega</label>
-                        <textarea id="sucessoPraise" name="sucessoPraise" placeholder="Um elogio público a um colega..." required></textarea>
+                        <label><i data-lucide="heart"></i> Elogio ao Colega</label>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <select id="sucessoPraiseTo" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                                <option value="" disabled selected>Escolha o colega...</option>
+                                <option value="LEANDRO">LEANDRO</option>
+                                <option value="IGOR">IGOR</option>
+                                <option value="YASMIM">YASMIM</option>
+                                <option value="KAMILLE">KAMILLE</option>
+                                <option value="JOÃO">JOÃO</option>
+                                <option value="EDSON">EDSON</option>
+                                <option value="LUIZ">LUIZ</option>
+                                <option value="JORGE">JORGE</option>
+                                <option value="MARIANA">MARIANA</option>
+                                <option value="VANESSA">VANESSA</option>
+                                <option value="BRUNO">BRUNO</option>
+                                <option value="VITOR">VITOR</option>
+                                <option value="TIME">TODO O TIME</option>
+                            </select>
+                            <textarea id="sucessoPraiseText" placeholder="Escreva o seu elogio aqui..." required></textarea>
+                            <input type="hidden" id="sucessoPraise" name="sucessoPraise">
+                        </div>
                     </div>
 
                     <div class="input-group" style="margin-bottom: 20px;">
@@ -650,7 +670,11 @@
         </div>
     </footer>
 
-    <script src="app.js?v=3.9"></script>
+    <script type="module">
+        import { animate, stagger, spring } from "https://cdn.jsdelivr.net/npm/motion@11.11.11/+esm";
+        window.motion = { animate, stagger, spring };
+    </script>
+    <script src="app.js?v=4.0"></script>
     <script>
         lucide.createIcons();
     </script>

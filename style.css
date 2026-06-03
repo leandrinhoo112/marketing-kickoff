@@ -99,16 +99,22 @@ header .container {
     font-weight: 600;
 }
 
-/* Glass Card */
+/* Glass Card - Pro Max Guidelines */
 .glass-card {
-    background: var(--bg-card);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-    padding: 50px; /* Aumentado para dar mais respiro */
-    box-shadow: var(--shadow);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 40px 50px; /* Mais respiro vertical */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     margin-bottom: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .card-header {
