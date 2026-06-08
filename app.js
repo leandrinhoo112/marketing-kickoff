@@ -141,10 +141,19 @@ document.addEventListener('DOMContentLoaded', () => {
     runawayPhone.style.cssText = 'position: fixed; font-size: 60px; cursor: pointer; z-index: 9999; transition: left 0.25s ease-out, top 0.25s ease-out, transform 0.25s ease-out; user-select: none; top: 80px; left: 80px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));';
     document.body.appendChild(runawayPhone);
 
-    const telefone1Sound = new Audio('telefone1.MP3');
+    // Ajustando extensões para suportar servidores case-sensitive (Vercel)
+    const telefone1Sound = new Audio('telefone1.mp3');
     telefone1Sound.volume = 0.8;
-    const telefone2Sound = new Audio('telefone2.MP3');
+    const telefone2Sound = new Audio('telefone2.mp3');
     telefone2Sound.volume = 1.0;
+    
+    // Desbloqueador de áudio para Safari/Mobile: forçar o load/play no primeiro clique
+    document.body.addEventListener('click', () => {
+        telefone1Sound.play().then(() => {
+            telefone1Sound.pause();
+            telefone1Sound.currentTime = 0;
+        }).catch(() => {});
+    }, { once: true });
 
     let phoneCaught = false;
     let escapeTimeout = null;
