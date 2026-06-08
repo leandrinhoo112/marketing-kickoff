@@ -153,6 +153,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const statHelp = document.getElementById('statHelp');
     const statBlockers = document.getElementById('statBlockers');
 
+    // Easter Egg Logo Audios
+    const headerLogo = document.getElementById('headerLogo');
+    let logoAudioIndex = 1;
+    const maxLogoAudios = 6;
+    
+    if (headerLogo) {
+        headerLogo.addEventListener('click', () => {
+            const secretSound = new Audio(`logo audio${logoAudioIndex}.wav`);
+            secretSound.volume = 0.8;
+            secretSound.play().catch(e => console.log('Erro no easter egg:', e));
+            
+            // Incrementa o índice pra tocar o próximo no próximo clique
+            logoAudioIndex++;
+            if (logoAudioIndex > maxLogoAudios) {
+                logoAudioIndex = 1; // Reseta pro primeiro se passar do limite
+            }
+            
+            // Efeito visual maroto no clique
+            headerLogo.style.transform = 'scale(0.9)';
+            setTimeout(() => headerLogo.style.transform = 'scale(1)', 100);
+        });
+    }
+
     let allEntries = [];
     let editingId = null;
     let userColors = {};
