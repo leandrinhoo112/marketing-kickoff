@@ -141,30 +141,17 @@ document.addEventListener('DOMContentLoaded', () => {
     runawayPhone.style.cssText = 'position: fixed; font-size: 60px; cursor: pointer; z-index: 9999; transition: left 0.25s ease-out, top 0.25s ease-out, transform 0.25s ease-out; user-select: none; top: 80px; left: 80px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));';
     document.body.appendChild(runawayPhone);
 
-    // Ajustando extensões de volta para .MP3 (Git no Windows ignora case, Vercel quebra)
     const telefone1Sound = new Audio('telefone1.MP3');
     telefone1Sound.volume = 0.8;
     const telefone2Sound = new Audio('telefone2.MP3');
     telefone2Sound.volume = 1.0;
 
-    // Desbloquear áudio no primeiro clique na página (muta, toca e pausa rapidinho)
-    document.body.addEventListener('click', () => {
-        telefone1Sound.muted = true;
-        const p = telefone1Sound.play();
-        if (p !== undefined) {
-            p.then(() => {
-                telefone1Sound.pause();
-                telefone1Sound.currentTime = 0;
-                telefone1Sound.muted = false;
-            }).catch(() => {});
-        }
-    }, { once: true });
-
     let phoneCaught = false;
+    let phoneActivated = false; // Garante que o áudio seja liberado num clique real
     let escapeTimeout = null;
 
     runawayPhone.addEventListener('mouseover', () => {
-        if (phoneCaught) return;
+        if (!phoneActivated || phoneCaught) return; // Só foge DEPOIS que for ativado com um clique inicial
         
         // Toca audio 1
         telefone1Sound.currentTime = 0;
@@ -173,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Foge com um pequeno atraso para dar chance de clicar
         clearTimeout(escapeTimeout);
         escapeTimeout = setTimeout(() => {
-            if (phoneCaught) return; // Se clicou nesse meio tempo, não foge
+            if (phoneCaught) return;
             
             const maxX = window.innerWidth - 100;
             const maxY = window.innerHeight - 100;
@@ -183,10 +170,26 @@ document.addEventListener('DOMContentLoaded', () => {
             runawayPhone.style.left = `${newX}px`;
             runawayPhone.style.top = `${newY}px`;
             runawayPhone.style.transform = `rotate(${Math.random() * 360}deg)`;
-        }, 70); // 70ms de janela (nível médio/difícil)
+        }, 70); 
     });
 
     runawayPhone.addEventListener('click', () => {
+        // Primeiro clique: Ativa o modo fujão e foge a primeira vez
+        if (!phoneActivated) {
+            phoneActivated = true;
+            telefone1Sound.currentTime = 0;
+            telefone1Sound.play().catch(() => {});
+            
+            // Foge imediatamente para mostrar que começou
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            runawayPhone.style.left = `${Math.max(20, Math.random() * maxX)}px`;
+            runawayPhone.style.top = `${Math.max(20, Math.random() * maxY)}px`;
+            runawayPhone.style.transform = `rotate(${Math.random() * 360}deg)`;
+            return;
+        }
+
+        // Cliques subsequentes (se conseguir): Captura o telefone
         if (phoneCaught) return;
         phoneCaught = true;
         clearTimeout(escapeTimeout);
@@ -203,27 +206,20 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('phoneHunter', 'true');
         
         if (window.confetti) {
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.6 },
-                zIndex: 10000
-            });
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, zIndex: 10000 });
         }
         if (typeof showToast === 'function') {
             showToast("🏆 Conquista Desbloqueada: Caçador de Telefones!", "success");
         }
         
-        // Re-render achievements to show the new badge immediately (se currentUser estiver logado)
         const currentUser = localStorage.getItem('radarMarketingUser');
         if (currentUser && typeof applyCurrentUser === 'function') {
-            // Recalcula só se já estiver na tela de checkin
             const btn = document.getElementById('submitBtn');
-            if (btn) loadEntries(); // Isso forçará um update de tudo inclusive profile
+            if (btn) loadEntries(); 
         }
         // -----------------
 
-        // Depois de 6 segundos, ele volta a fugir
+        // Depois de 6 segundos, ele volta a fugir (mas já ativado)
         setTimeout(() => {
             phoneCaught = false;
             runawayPhone.style.transform = 'rotate(0deg) scale(1)';
