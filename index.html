@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=6.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css?v=12.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6841f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -604,6 +605,14 @@
                 </div>
             </div>
 
+            <!-- NOVO: Gráfico de Saúde da Equipe -->
+            <div style="margin-top: 20px; margin-bottom: 40px;" class="glass-card">
+                <h4 style="margin-bottom: 20px; color: #a78bfa;"><i data-lucide="trending-up"></i> Curva de Energia do Time</h4>
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="energyChart"></canvas>
+                </div>
+            </div>
+
             <div class="grid-2" style="margin-top: 20px; gap: 40px;">
                 <div class="content-block">
                     <h4 style="margin-bottom: 20px; color: #6841f1;"><i data-lucide="bar-chart-2"></i> Análise
@@ -688,7 +697,7 @@
         </div>
     </footer>
 
-    <script src="app.js?v=11.0" defer></script>
+    <script src="app.js?v=17.0" defer></script>
     <script>
         lucide.createIcons();
     </script>

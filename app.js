@@ -135,6 +135,89 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
     });
 
+    // --- BRINCADEIRA DO TELEFONE FUJÃO ---
+    const runawayPhone = document.createElement('div');
+    runawayPhone.innerHTML = '📞';
+    runawayPhone.style.cssText = 'position: fixed; font-size: 60px; cursor: pointer; z-index: 9999; transition: left 0.25s ease-out, top 0.25s ease-out, transform 0.25s ease-out; user-select: none; top: 80px; left: 80px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));';
+    document.body.appendChild(runawayPhone);
+
+    const telefone1Sound = new Audio('telefone1.MP3');
+    telefone1Sound.volume = 0.8;
+    const telefone2Sound = new Audio('telefone2.MP3');
+    telefone2Sound.volume = 1.0;
+
+    let phoneCaught = false;
+    let escapeTimeout = null;
+
+    runawayPhone.addEventListener('mouseover', () => {
+        if (phoneCaught) return;
+        
+        // Toca audio 1
+        telefone1Sound.currentTime = 0;
+        telefone1Sound.play().catch(() => {});
+        
+        // Foge com um pequeno atraso para dar chance de clicar
+        clearTimeout(escapeTimeout);
+        escapeTimeout = setTimeout(() => {
+            if (phoneCaught) return; // Se clicou nesse meio tempo, não foge
+            
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            const newX = Math.max(20, Math.random() * maxX);
+            const newY = Math.max(20, Math.random() * maxY);
+            
+            runawayPhone.style.left = `${newX}px`;
+            runawayPhone.style.top = `${newY}px`;
+            runawayPhone.style.transform = `rotate(${Math.random() * 360}deg)`;
+        }, 70); // 70ms de janela (nível médio/difícil)
+    });
+
+    runawayPhone.addEventListener('click', () => {
+        if (phoneCaught) return;
+        phoneCaught = true;
+        clearTimeout(escapeTimeout);
+        
+        // Para o audio 1 e toca o 2
+        telefone1Sound.pause();
+        telefone2Sound.play().catch(() => {});
+        
+        // Efeito visual de capturado
+        runawayPhone.style.transform = 'rotate(0deg) scale(1.3)';
+        runawayPhone.style.filter = 'drop-shadow(0 0 20px #22c55e)';
+        
+        // --- CONQUISTA ---
+        localStorage.setItem('phoneHunter', 'true');
+        
+        if (window.confetti) {
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 },
+                zIndex: 10000
+            });
+        }
+        if (typeof showToast === 'function') {
+            showToast("🏆 Conquista Desbloqueada: Caçador de Telefones!", "success");
+        }
+        
+        // Re-render achievements to show the new badge immediately (se currentUser estiver logado)
+        const currentUser = localStorage.getItem('radarMarketingUser');
+        if (currentUser && typeof applyCurrentUser === 'function') {
+            // Recalcula só se já estiver na tela de checkin
+            const btn = document.getElementById('submitBtn');
+            if (btn) loadEntries(); // Isso forçará um update de tudo inclusive profile
+        }
+        // -----------------
+
+        // Depois de 6 segundos, ele volta a fugir
+        setTimeout(() => {
+            phoneCaught = false;
+            runawayPhone.style.transform = 'rotate(0deg) scale(1)';
+            runawayPhone.style.filter = 'drop-shadow(0 0 10px rgba(255,255,255,0.5))';
+        }, 6000);
+    });
+    // --- FIM BRINCADEIRA DO TELEFONE ---
+
     function playNameSound(nameStr) {
         if (!nameStr) return;
         // Pega só o primeiro nome e limpa acentos (ex: JOÃO -> JOAO)
@@ -359,11 +442,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderAchievements(checkinsCount, praisesCount, totalXp) {
         const achievements = [
-            { id: 'primeiros_passos', title: 'Primeiros Passos', desc: '1º check-in realizado', icon: '🌱', condition: checkinsCount >= 1 },
+            { id: 'primeiros_passos', title: 'Primeiros Passos', desc: '1º check-in realizado', icon: '🚀', condition: checkinsCount >= 1 },
             { id: 'em_chamas', title: 'Em Chamas', desc: '5 check-ins (Consistência)', icon: '🔥', condition: checkinsCount >= 5 },
-            { id: 'mente_brilhante', title: 'Mente Brilhante', desc: 'Citado 3x em Elogios', icon: '🧠', condition: praisesCount >= 3 },
+            { id: 'mente_brilhante', title: 'Mente Brilhante', desc: 'Citado 3x em Elogios', icon: '💡', condition: praisesCount >= 3 },
             { id: 'coluna_time', title: 'Coluna do Time', desc: 'Citado 10x em Elogios', icon: '🤝', condition: praisesCount >= 10 },
-            { id: 'veterano', title: 'Veterano', desc: 'Alcançou 500 XP', icon: '👑', condition: totalXp >= 500 }
+            { id: 'veterano', title: 'Veterano', desc: 'Alcançou 500 XP', icon: '🏅', condition: totalXp >= 500 },
+            { id: 'phone_hunter', title: 'Caçador de Telefones', desc: 'Pegou o telefone fujão', icon: '📞', condition: localStorage.getItem('phoneHunter') === 'true' }
         ];
 
         const list = document.getElementById('achievementsList');
@@ -551,6 +635,102 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p style="margin: 0; color: #02ceff;">✅ Nenhum padrão de gargalo repetido detectado na semana.</p>
                     </div>
                 `;
+            }
+        }
+
+        // 7. ATUALIZAR GRÁFICO DE ENERGIA (CHART.JS)
+        const ctx = document.getElementById('energyChart');
+        if (ctx) {
+            // Agrupar dados por data (DD/MM)
+            const datesMap = {};
+            // filtered está ordenado desc, vamos reverter pra plotar do mais antigo pro mais novo (esq -> dir)
+            const chartEntries = [...filtered].reverse(); 
+            
+            chartEntries.forEach(e => {
+                const dateObj = new Date(e.created_at);
+                const dateStr = `${String(dateObj.getDate()).padStart(2, '0')}/${String(dateObj.getMonth() + 1).padStart(2, '0')}`;
+                
+                if (!datesMap[dateStr]) {
+                    datesMap[dateStr] = { explodindo: 0, intenso: 0, normal: 0, livre: 0 };
+                }
+                
+                const en = e.energy_level || '';
+                if (en.includes('Explodindo')) datesMap[dateStr].explodindo++;
+                else if (en.includes('Intenso')) datesMap[dateStr].intenso++;
+                else if (en.includes('Livre')) datesMap[dateStr].livre++;
+                else datesMap[dateStr].normal++;
+            });
+
+            const labels = Object.keys(datesMap);
+            const dataExplodindo = labels.map(l => datesMap[l].explodindo);
+            const dataLivre = labels.map(l => datesMap[l].livre);
+            const dataNormal = labels.map(l => datesMap[l].normal);
+            const dataIntenso = labels.map(l => datesMap[l].intenso);
+
+            if (window.energyChartInstance) {
+                window.energyChartInstance.destroy();
+            }
+
+            // Apenas renderiza se a biblioteca Chart existir no window (carregada do CDN)
+            if (window.Chart) {
+                window.energyChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Explodindo 🔴',
+                                data: dataExplodindo,
+                                borderColor: '#ef4444',
+                                backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                                tension: 0.4,
+                                fill: true
+                            },
+                            {
+                                label: 'Intenso 🟠',
+                                data: dataIntenso,
+                                borderColor: '#f97316',
+                                backgroundColor: 'transparent',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Normal 🟡',
+                                data: dataNormal,
+                                borderColor: '#eab308',
+                                backgroundColor: 'transparent',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Livre 🟢',
+                                data: dataLivre,
+                                borderColor: '#22c55e',
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#e2e8f0', font: { family: 'Inter' } }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: '#94a3b8', stepSize: 1 },
+                                grid: { color: 'rgba(255,255,255,0.05)' }
+                            },
+                            x: {
+                                ticks: { color: '#94a3b8' },
+                                grid: { color: 'rgba(255,255,255,0.05)' }
+                            }
+                        }
+                    }
+                });
             }
         }
 
