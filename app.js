@@ -135,6 +135,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
     });
 
+    function playNameSound(nameStr) {
+        if (!nameStr) return;
+        // Pega só o primeiro nome e limpa acentos (ex: JOÃO -> JOAO)
+        const firstName = nameStr.split(' ')[0].toUpperCase();
+        const normalized = firstName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const validNames = ['BRUNO', 'EDSON', 'IGOR', 'JOAO', 'JORGE', 'KAMILLE', 'LEANDRO', 'LUIZ', 'MARIANA', 'VANESSA', 'VITOR', 'YASMIM'];
+        
+        if (validNames.includes(normalized)) {
+            const sound = new Audio(`${normalized}.wav`);
+            sound.volume = 0.8;
+            sound.play().catch(e => console.log('Erro ao tocar som:', e));
+        }
+    }
+
     const statTotal = document.getElementById('statTotal');
     const statHelp = document.getElementById('statHelp');
     const statBlockers = document.getElementById('statBlockers');
@@ -160,6 +174,19 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (currentUser) {
         applyCurrentUser();
     }
+
+    if (loginName) {
+        loginName.addEventListener('change', (e) => {
+            playNameSound(e.target.value);
+        });
+    }
+
+    // Tocar som também quando marcar a caixinha de "quem precisa de ajuda"
+    document.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+            if (e.target.checked) playNameSound(e.target.value);
+        });
+    });
 
     if (enterAppBtn) {
         enterAppBtn.addEventListener('click', () => {
@@ -1002,6 +1029,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!entry) return;
         editingSucessoId = id;
         const u = decodeUser(entry.username);
+        // Popular options de elogio
+        const praiseToSelect = document.getElementById('sucessoPraiseTo');
+        if (praiseToSelect) {
+            praiseToSelect.innerHTML = '<option value="">(Opcional) Elogiar alguém?</option>' + 
+                TEAM_MEMBERS.map(member => `<option value="${member}">${member}</option>`).join('');
+                
+            praiseToSelect.addEventListener('change', (e) => {
+                playNameSound(e.target.value);
+            });
+        };
         sucessoUserName.value = u.name;
         document.getElementById('sucessoVictory').value = entry.victory || '';
         
