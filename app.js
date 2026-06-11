@@ -124,16 +124,27 @@ document.addEventListener('DOMContentLoaded', () => {
     tomeSound.volume = 0.8;
     const uiiiSound = new Audio('uiiiii.mp3');
     uiiiSound.volume = 0.8;
-    const startSound = new Audio('audio inicio.wav');
+    const startSound = new Audio();
     startSound.volume = 0.8;
-    
-    // Tocar o áudio de início. Tratar bloqueio de autoplay do navegador
-    startSound.play().catch(() => {
-        // Se o navegador bloquear, toca no primeiro clique do usuário em qualquer lugar
-        document.body.addEventListener('click', () => {
-            startSound.play().catch(() => {});
-        }, { once: true });
-    });
+    let hasPlayedStartSound = false;
+
+    // Função para tocar o áudio correto de início
+    function playStartSoundForUser(userName) {
+        if (hasPlayedStartSound) return;
+        hasPlayedStartSound = true;
+        
+        if (userName && userName.toUpperCase() === 'VANESSA') {
+            startSound.src = 'boas vindas vanessa.wav';
+        } else {
+            startSound.src = 'audio inicio.wav';
+        }
+        
+        startSound.play().catch(() => {
+            document.body.addEventListener('click', () => {
+                startSound.play().catch(() => {});
+            }, { once: true });
+        });
+    }
 
     // --- BRINCADEIRA DO TELEFONE FUJÃO ---
     const runawayPhone = document.createElement('div');
@@ -334,6 +345,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Puxa a cor do usuário se já existir, senão mantém a padrão
         if (userColors[currentUser] && userColorInput) {
             userColorInput.value = userColors[currentUser];
+        }
+        
+        // Tocar o som de início agora que sabemos quem é o usuário
+        if (typeof playStartSoundForUser === 'function') {
+            playStartSoundForUser(currentUser);
         }
     }
 
