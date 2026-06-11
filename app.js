@@ -359,8 +359,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sucessoUserName) sucessoUserName.value = currentUser;
         if (profileNameDisplay) profileNameDisplay.innerText = currentUser;
         
-        // Puxa a cor do usuário se já existir, senão mantém a padrão
-        if (userColors[currentUser] && userColorInput) {
+        // Puxa a cor do usuário: prioriza preferência salva no localStorage
+        const savedColorPref = localStorage.getItem(`userColorPref_${currentUser}`);
+        if (savedColorPref) {
+            userColors[currentUser] = savedColorPref;
+            if (userColorInput) userColorInput.value = savedColorPref;
+        } else if (userColors[currentUser] && userColorInput) {
             userColorInput.value = userColors[currentUser];
         }
         
@@ -974,9 +978,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <div class="avatar" style="background: ${isUrgent ? 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)' : displayColor}">${getInitials(u.name)}</div>
+                        <div class="avatar" style="background: ${displayColor}">${getInitials(u.name)}</div>
                         <div class="user-info">
-                            <h4 style="color: ${isUrgent ? '#ff416c' : displayColor}; font-size: 1.2em; margin: 0;">${u.name}</h4>
+                            <h4 style="color: ${displayColor}; font-size: 1.2em; margin: 0;">${u.name}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
                         </div>
                     </div>
@@ -1064,6 +1068,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const u = decodeUser(entry.username);
                     if (!userColors[u.name]) userColors[u.name] = u.color;
                 });
+                // Override com preferência salva no localStorage (cor escolhida pelo usuário)
+                Object.keys(userColors).forEach(name => {
+                    const saved = localStorage.getItem(`userColorPref_${name}`);
+                    if (saved) userColors[name] = saved;
+                });
                 if (currentUser) applyCurrentUser(); // Atualiza cor do form
                 updateStats(data); 
                 updatePresence(data); 
@@ -1142,7 +1151,10 @@ document.addEventListener('DOMContentLoaded', () => {
         userColorInput.addEventListener('input', (e) => {
             const selectedName = userNameInput.value;
             if (!selectedName) return;
-            userColors[selectedName] = e.target.value;
+            const chosenColor = e.target.value;
+            userColors[selectedName] = chosenColor;
+            // Salvar preferência de cor no localStorage para persistir entre sessões
+            localStorage.setItem(`userColorPref_${selectedName}`, chosenColor);
             updatePresence(allEntries);
             applyFilters();
         });
