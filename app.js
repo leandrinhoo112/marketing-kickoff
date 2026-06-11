@@ -143,6 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
     uiiiSound.volume = 0.8;
     const olhaSoSound = new Audio('olha-so-olha-la.mp3');
     olhaSoSound.volume = 0.8;
+    const incansavelSound = new Audio('incansavel.MP3');
+    incansavelSound.volume = 0.8;
     const startSound = new Audio();
     startSound.volume = 0.8;
     let hasPlayedStartSound = false;
@@ -537,6 +539,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateAdminPanel();
                 loadFeedbacks();
                 if (typeof loadAdminSugestoes === 'function') loadAdminSugestoes();
+                if (typeof loadAdminNovidades === 'function') loadAdminNovidades();
                 setTimeout(() => {
                     adminArea.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
@@ -1115,6 +1118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (editingId) {
                     await supabaseClient.from('kickoffs').update(entry).eq('id', editingId);
                     showToast("Atualizado!"); 
+                    incansavelSound.play().catch(e => console.log('Erro ao tocar incansavel:', e));
                     // Não enviar alerta do Teams ao editar (isUpdate = true)
                     editingId = null;
                 } else {
@@ -1346,6 +1350,37 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSugestoes();
     }
 
+    // --- CARREGAR FEED DE NOVIDADES ---
+    window.loadNovidades = async () => {
+        const container = document.getElementById('novidadesFeedContainer');
+        if (!container) return;
+        try {
+            const { data, error } = await supabaseClient.from('novidades').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            if (data && data.length > 0) {
+                container.innerHTML = data.map(item => `
+                    <div class="glass-card" style="padding: 25px; border-left: 4px solid #22c55e; background: rgba(34, 197, 94, 0.05); text-align: left;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; align-items: center;">
+                            <h3 style="color: #22c55e; margin: 0; font-size: 1.4em;">${item.titulo}</h3>
+                            <span style="font-size: 0.85em; color: #a0aec0; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px;">
+                                <i data-lucide="calendar" style="width: 12px; height: 12px;"></i> ${new Date(item.created_at).toLocaleDateString('pt-BR')}
+                            </span>
+                        </div>
+                        <p style="margin: 0; line-height: 1.6; color: white; font-size: 1.05em;">${item.descricao.replace(/\n/g, '<br>')}</p>
+                    </div>
+                `).join('');
+                if (window.lucide) window.lucide.createIcons();
+            } else {
+                container.innerHTML = '<div class="glass-card" style="padding: 30px; text-align: center;"><p style="margin: 0; opacity: 0.5;">Nenhuma novidade publicada ainda.</p></div>';
+            }
+        } catch (e) {
+            container.innerHTML = '<div class="glass-card" style="padding: 30px; text-align: center;"><p style="margin: 0; color: #ff416c;">Erro ao carregar novidades.</p></div>';
+        }
+    };
+    if (document.getElementById('novidadesFeedContainer')) {
+        loadNovidades();
+    }
+
     window.deleteSucesso = async (id) => {
         if (!confirm('Certeza que deseja apagar este sucesso?')) return;
         try {
@@ -1519,6 +1554,78 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error(error);
             showToast("Erro ao apagar sugestão", "error");
+        }
+    };
+
+    // NOVIDADES ADMIN LOGIC
+    const adminNovidadeForm = document.getElementById('adminNovidadeForm');
+    if (adminNovidadeForm) {
+        adminNovidadeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const titulo = document.getElementById('novidadeTitulo').value;
+            const descricao = document.getElementById('novidadeDescricao').value;
+            const btn = document.getElementById('submitNovidadeBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Enviando...';
+            btn.disabled = true;
+
+            try {
+                const entry = { titulo, descricao, autor: 'Gestor' };
+                const { error } = await supabaseClient.from('novidades').insert([entry]);
+                if (error) throw error;
+                showToast("Novidade publicada com sucesso!");
+                adminNovidadeForm.reset();
+                if (typeof loadAdminNovidades === 'function') loadAdminNovidades();
+                if (typeof loadNovidades === 'function') loadNovidades();
+            } catch (error) {
+                console.error(error);
+                showToast("Erro ao publicar novidade", "error");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    }
+
+    window.loadAdminNovidades = async () => {
+        if (!supabaseClient) return;
+        try {
+            const { data, error } = await supabaseClient.from('novidades').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            const container = document.getElementById('adminNovidadesContainer');
+            if (data && container) {
+                if (data.length === 0) {
+                    container.innerHTML = `<div class="glass-card" style="padding: 15px; text-align: center; opacity: 0.5;">Nenhuma novidade cadastrada ainda.</div>`;
+                    return;
+                }
+                container.innerHTML = data.map(n => `
+                    <div class="glass-card" style="padding: 15px; border-left: 4px solid #22c55e; margin-bottom: 15px; background: rgba(34, 197, 94, 0.05); position: relative;">
+                        <button onclick="deleteNovidade('${n.id}')" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 65, 108, 0.1); border: none; color: #ff416c; padding: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s;" title="Apagar Novidade">
+                            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                        </button>
+                        <span style="font-size: 0.7em; color: #a0aec0; display: block; margin-bottom: 5px;">Publicado em: ${new Date(n.created_at).toLocaleDateString('pt-BR')}</span>
+                        <h4 style="margin: 0 0 5px 0; color: #22c55e;">${n.titulo}</h4>
+                        <div style="margin-bottom: 10px; padding-right: 25px;">
+                            <p style="margin: 5px 0 0 0; font-size: 0.9em;">${n.descricao}</p>
+                        </div>
+                    </div>
+                `).join('');
+                if (window.lucide) window.lucide.createIcons();
+            }
+        } catch (error) { console.error(error); }
+    };
+
+    window.deleteNovidade = async (id) => {
+        if (!confirm('Certeza que deseja apagar esta novidade?')) return;
+        try {
+            const { error } = await supabaseClient.from('novidades').delete().eq('id', id);
+            if (error) throw error;
+            showToast("Novidade removida!", "error");
+            loadAdminNovidades();
+            if (typeof loadNovidades === 'function') loadNovidades();
+        } catch (error) {
+            console.error(error);
+            showToast("Erro ao apagar novidade", "error");
         }
     };
 

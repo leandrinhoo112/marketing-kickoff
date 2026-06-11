@@ -132,6 +132,9 @@
             <button class="tab-btn" data-target="tab-sugestao" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="lightbulb"></i> Sugestões
             </button>
+            <button class="tab-btn" data-target="tab-novidades" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
+                <i data-lucide="bell-ring"></i> Novidades
+            </button>
             <button onclick="toggleAdmin()" style="padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(104, 65, 241, 0.3); font-weight: bold; cursor: pointer; transition: all 0.3s; background: rgba(104, 65, 241, 0.1); color: #8e6eff;">
                 <i data-lucide="shield"></i> Área do Gestor
             </button>
@@ -559,6 +562,24 @@
         </div>
     </section>
 
+    <!-- TAB NOVIDADES -->
+    <section id="tab-novidades" class="tab-pane" style="display: none;">
+        <div style="max-width: 800px; margin: 0 auto; margin-bottom: 40px; text-align: center;">
+            <h2 style="color: #22c55e; margin-bottom: 10px;">O que há de novo? 🚀</h2>
+            <p style="opacity: 0.7;">Fique por dentro das últimas atualizações, novos recursos e melhorias da nossa plataforma.</p>
+        </div>
+        
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div id="novidadesFeedContainer" style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- Feed carregado via JS -->
+                <div class="glass-card" style="padding: 30px; text-align: center;">
+                    <i data-lucide="loader-2" class="spin" style="margin-bottom: 15px; color: #22c55e;"></i>
+                    <p style="margin: 0; opacity: 0.5;">Carregando atualizações...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- MODAL MEU RELATÓRIO MENSAL -->
     <div id="monthlyReportModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
         <div class="modal-content glass-card" style="background: #1a152e; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1);">
@@ -725,6 +746,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- NOVO: Publicar e Gerenciar Novidades -->
+            <div style="margin-top: 40px;">
+                <h4 style="margin-bottom: 20px; color: #22c55e;"><i data-lucide="megaphone"></i> Publicar Novidade / Atualização</h4>
+                <div class="glass-card" style="padding: 20px; margin-bottom: 20px; border: 1px solid rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.05);">
+                    <form id="adminNovidadeForm" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div class="input-group">
+                            <label>Título / Versão</label>
+                            <input type="text" id="novidadeTitulo" required placeholder="Ex: Versão 35.0 - Novas cores" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                        </div>
+                        <div class="input-group">
+                            <label>Descrição da Atualização</label>
+                            <textarea id="novidadeDescricao" required rows="3" placeholder="O que mudou? Quais os novos recursos?" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; resize: vertical;"></textarea>
+                        </div>
+                        <button type="submit" id="submitNovidadeBtn" class="pulse-button" style="padding: 12px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                            Publicar Novidade <i data-lucide="send"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <h5 style="margin-bottom: 15px; color: #a0aec0;">Novidades Publicadas</h5>
+                <div id="adminNovidadesContainer" style="display: flex; flex-direction: column; gap: 15px; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                    <div class="glass-card" style="padding: 15px;">
+                        <p style="margin: 0; opacity: 0.5;">Carregando...</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -740,7 +788,7 @@
     </footer>
 
     <script src="phone_audio.js"></script>
-    <script src="app.js?v=33.0" defer></script>
+    <script src="app.js?v=35.0" defer></script>
     <script>
         lucide.createIcons();
     </script>
