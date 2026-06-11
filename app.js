@@ -143,8 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     uiiiSound.volume = 0.8;
     const olhaSoSound = new Audio('olha-so-olha-la.mp3');
     olhaSoSound.volume = 0.8;
-    const incansavelSound = new Audio('incansavel.MP3');
-    incansavelSound.volume = 0.8;
     const startSound = new Audio();
     startSound.volume = 0.8;
     let hasPlayedStartSound = false;
@@ -1118,7 +1116,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (editingId) {
                     await supabaseClient.from('kickoffs').update(entry).eq('id', editingId);
                     showToast("Atualizado!"); 
-                    incansavelSound.play().catch(e => console.log('Erro ao tocar incansavel:', e));
                     // Não enviar alerta do Teams ao editar (isUpdate = true)
                     editingId = null;
                 } else {
