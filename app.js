@@ -141,6 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
     tomeSound.volume = 0.8;
     const uiiiSound = new Audio('uiiiii.mp3');
     uiiiSound.volume = 0.8;
+    const olhaSoSound = new Audio('olha-so-olha-la.mp3');
+    olhaSoSound.volume = 0.8;
     const startSound = new Audio();
     startSound.volume = 0.8;
     let hasPlayedStartSound = false;
@@ -312,12 +314,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logoutBtn');
     const profileNameDisplay = document.getElementById('profileNameDisplay');
     
-    let currentUser = localStorage.getItem('currentUser');
+    let currentUser = null; // Modificado para sempre mostrar o modal de login
 
-    if (!currentUser && welcomeModal) {
+    if (welcomeModal) {
         welcomeModal.style.display = 'flex';
-    } else if (currentUser) {
-        applyCurrentUser();
     }
 
     if (loginName) {
@@ -532,6 +532,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 adminArea.style.display = 'block';
                 updateAdminPanel();
                 loadFeedbacks();
+                if (typeof loadAdminSugestoes === 'function') loadAdminSugestoes();
                 setTimeout(() => {
                     adminArea.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
@@ -695,12 +696,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dateStr = `${String(dateObj.getDate()).padStart(2, '0')}/${String(dateObj.getMonth() + 1).padStart(2, '0')}`;
                 
                 if (!datesMap[dateStr]) {
-                    datesMap[dateStr] = { explodindo: 0, intenso: 0, normal: 0, livre: 0 };
+                    datesMap[dateStr] = { explodindo: 0, normal: 0, livre: 0 };
                 }
                 
                 const en = e.energy_level || '';
                 if (en.includes('Explodindo')) datesMap[dateStr].explodindo++;
-                else if (en.includes('Intenso')) datesMap[dateStr].intenso++;
                 else if (en.includes('Livre')) datesMap[dateStr].livre++;
                 else datesMap[dateStr].normal++;
             });
@@ -709,7 +709,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const dataExplodindo = labels.map(l => datesMap[l].explodindo);
             const dataLivre = labels.map(l => datesMap[l].livre);
             const dataNormal = labels.map(l => datesMap[l].normal);
-            const dataIntenso = labels.map(l => datesMap[l].intenso);
 
             if (window.energyChartInstance) {
                 window.energyChartInstance.destroy();
@@ -729,13 +728,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 backgroundColor: 'rgba(239, 68, 68, 0.2)',
                                 tension: 0.4,
                                 fill: true
-                            },
-                            {
-                                label: 'Intenso 🟠',
-                                data: dataIntenso,
-                                borderColor: '#f97316',
-                                backgroundColor: 'transparent',
-                                tension: 0.4
                             },
                             {
                                 label: 'Normal 🟡',
@@ -1265,6 +1257,83 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- LÓGICA DA ABA DE SUGESTÕES ---
+    const sugestaoForm = document.getElementById('sugestaoForm');
+    const sugestaoText = document.getElementById('sugestaoText');
+    const submitSugestaoBtn = document.getElementById('submitSugestaoBtn');
+
+    if (sugestaoForm) {
+        sugestaoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = sugestaoText.value.trim();
+            if (!text) return;
+            
+            submitSugestaoBtn.innerHTML = 'Enviando... <i data-lucide="loader-2" class="spin"></i>';
+            submitSugestaoBtn.disabled = true;
+
+            try {
+                const entry = {
+                    username: currentUser || 'Anônimo',
+                    sugestao: text,
+                    created_at: new Date().toISOString()
+                };
+
+                const { error } = await supabaseClient.from('sugestoes').insert([entry]);
+                
+                if (error) throw error;
+                
+                olhaSoSound.play().catch(() => {});
+                
+                if (typeof showToast === 'function') {
+                    showToast('Sugestão enviada com sucesso! Muito obrigado ❤️', 'success');
+                } else {
+                    alert('Sugestão enviada com sucesso!');
+                }
+                sugestaoForm.reset();
+                if (typeof loadSugestoes === 'function') loadSugestoes();
+            } catch (err) {
+                if (typeof showToast === 'function') {
+                    showToast('Erro ao enviar sugestão.', 'error');
+                } else {
+                    alert('Erro ao enviar sugestão.');
+                }
+            } finally {
+                submitSugestaoBtn.innerHTML = 'Enviar Sugestão <i data-lucide="send"></i>';
+                submitSugestaoBtn.disabled = false;
+                if (window.lucide) window.lucide.createIcons();
+            }
+        });
+    }
+
+    // --- CARREGAR FEED DE SUGESTÕES ---
+    window.loadSugestoes = async () => {
+        const container = document.getElementById('sugestoesFeedContainer');
+        if (!container) return;
+        try {
+            const { data, error } = await supabaseClient.from('sugestoes').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            if (data && data.length > 0) {
+                container.innerHTML = data.map(item => `
+                    <div class="glass-card" style="padding: 15px; border-left: 4px solid #02ceff; background: rgba(2, 206, 255, 0.05);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong style="color: #02ceff;"><i data-lucide="user" style="width: 14px; height: 14px;"></i> ${item.username}</strong>
+                            <span style="font-size: 0.8em; color: #a0aec0;">${new Date(item.created_at).toLocaleDateString('pt-BR')}</span>
+                        </div>
+                        <p style="margin: 0; line-height: 1.5; color: white;">${item.sugestao.replace(/\n/g, '<br>')}</p>
+                    </div>
+                `).join('');
+                if (window.lucide) window.lucide.createIcons();
+            } else {
+                container.innerHTML = '<div class="glass-card" style="padding: 15px; text-align: center;"><p style="margin: 0; opacity: 0.5;">Nenhuma sugestão enviada ainda. Seja o primeiro!</p></div>';
+            }
+        } catch (e) {
+            container.innerHTML = '<div class="glass-card" style="padding: 15px; text-align: center;"><p style="margin: 0; color: #ff416c;">Erro ao carregar sugestões.</p></div>';
+        }
+    };
+    if (document.getElementById('sugestoesFeedContainer')) {
+        loadSugestoes();
+    }
+
     window.deleteSucesso = async (id) => {
         if (!confirm('Certeza que deseja apagar este sucesso?')) return;
         try {
@@ -1398,6 +1467,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 `).join('');
             }
         } catch (error) { console.error(error); }
+    };
+
+    window.loadAdminSugestoes = async () => {
+        if (!supabaseClient) return;
+        try {
+            const { data, error } = await supabaseClient.from('sugestoes').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            const container = document.getElementById('adminSugestoesContainer');
+            if (data && container) {
+                if (data.length === 0) {
+                    container.innerHTML = `<div class="glass-card" style="padding: 15px; text-align: center; opacity: 0.5;">Nenhuma sugestão recebida ainda.</div>`;
+                    return;
+                }
+                container.innerHTML = data.map(sg => `
+                    <div class="glass-card" style="padding: 15px; border-left: 4px solid #facc15; margin-bottom: 15px; background: rgba(250, 204, 21, 0.05); position: relative;">
+                        <button onclick="deleteSugestao('${sg.id}')" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 65, 108, 0.1); border: none; color: #ff416c; padding: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s;" title="Apagar Sugestão">
+                            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                        </button>
+                        <span style="font-size: 0.7em; color: #a0aec0; display: block; margin-bottom: 10px;">Enviado por <strong>${sg.username}</strong> em: ${new Date(sg.created_at).toLocaleDateString('pt-BR')} às ${new Date(sg.created_at).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}</span>
+                        <div style="margin-bottom: 10px; padding-right: 25px;">
+                            <p style="margin: 5px 0 0 0; font-size: 0.9em;">${sg.sugestao}</p>
+                        </div>
+                    </div>
+                `).join('');
+                if (window.lucide) window.lucide.createIcons();
+            }
+        } catch (error) { console.error(error); }
+    };
+
+    window.deleteSugestao = async (id) => {
+        if (!confirm('Certeza que deseja apagar esta sugestão?')) return;
+        try {
+            const { error } = await supabaseClient.from('sugestoes').delete().eq('id', id);
+            if (error) throw error;
+            showToast("Sugestão removida!", "error");
+            loadAdminSugestoes();
+            if (typeof loadSugestoes === 'function') loadSugestoes();
+        } catch (error) {
+            console.error(error);
+            showToast("Erro ao apagar sugestão", "error");
+        }
     };
 
     window.deleteFeedback = async (id) => {
