@@ -63,17 +63,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function renderTaskBuilder() {
         if (!taskListUI) return;
-        taskListUI.innerHTML = currentTasks.map((t, index) => `
-            <li style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
-                <span><i data-lucide="circle" style="width: 14px; height: 14px; margin-right: 5px; color: #8e6eff;"></i> ${t}</span>
-                <button type="button" onclick="removeTask(${index})" style="background: none; border: none; color: #ff416c; cursor: pointer;"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
+        taskListUI.innerHTML = currentTasks.map((t, index) => {
+            const isDone = t.startsWith('✅ ');
+            const textStyle = isDone ? 'text-decoration: line-through; opacity: 0.6;' : '';
+            const iconName = isDone ? 'check-circle' : 'circle';
+            const iconColor = isDone ? '#22c55e' : '#8e6eff';
+            return `
+            <li style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px;">
+                <span style="${textStyle} flex: 1;"><i data-lucide="${iconName}" style="width: 14px; height: 14px; margin-right: 5px; color: ${iconColor};"></i> ${t}</span>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" onclick="toggleTaskDone(${index})" style="background: none; border: none; color: #22c55e; cursor: pointer;" title="Concluir Tarefa"><i data-lucide="check" style="width: 16px; height: 16px;"></i></button>
+                    <button type="button" onclick="removeTask(${index})" style="background: none; border: none; color: #ff416c; cursor: pointer;" title="Remover Tarefa"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
+                </div>
             </li>
-        `).join('');
+            `;
+        }).join('');
         if (window.lucide) window.lucide.createIcons();
         todayTasksHidden.value = currentTasks.map(t => `• ${t}`).join('\n');
     }
     window.removeTask = function(index) {
         currentTasks.splice(index, 1);
+        renderTaskBuilder();
+    };
+    window.toggleTaskDone = function(index) {
+        if (currentTasks[index].startsWith('✅ ')) {
+            currentTasks[index] = currentTasks[index].replace('✅ ', '');
+        } else {
+            currentTasks[index] = '✅ ' + currentTasks[index];
+        }
         renderTaskBuilder();
     };
 
@@ -830,7 +847,8 @@ document.addEventListener('DOMContentLoaded', () => {
         userColorInput.value = u.color;
         
         todayTasksHidden.value = entry.today_tasks || '';
-        currentTasks = (entry.today_tasks || '').split('\n').map(t => t.replace('• ', '')).filter(t => t.trim() !== '');
+        // Tratar o "• " ou "  " e limpar
+        currentTasks = (entry.today_tasks || '').split('\n').map(t => t.replace(/^• |^  /, '')).filter(t => t.trim() !== '');
         renderTaskBuilder();
 
         document.getElementById('helpNeeded').value = entry.help_needed || '';
@@ -1095,7 +1113,8 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 if (editingId) {
                     await supabaseClient.from('kickoffs').update(entry).eq('id', editingId);
-                    showToast("Atualizado!"); await sendTeamsAlert(entry, true);
+                    showToast("Atualizado!"); 
+                    // Não enviar alerta do Teams ao editar (isUpdate = true)
                     editingId = null;
                 } else {
                     await supabaseClient.from('kickoffs').insert([entry]);
