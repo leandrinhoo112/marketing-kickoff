@@ -368,11 +368,155 @@ document.addEventListener('DOMContentLoaded', () => {
             userColorInput.value = userColors[currentUser];
         }
         
+        checkPreviousDayTasks();
+        
         // Tocar o som de início agora que sabemos quem é o usuário
         if (typeof playStartSoundForUser === 'function') {
             playStartSoundForUser(currentUser);
         }
     }
+
+    let previousTasksData = null; // Store radar entry to edit later
+
+    function checkPreviousDayTasks() {
+        if (!currentUser) return;
+        
+        const norm = (str) => str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : "";
+        const currentUserNorm = norm(currentUser);
+        
+        const myCheckins = allEntries.filter(e => norm(decodeUser(e.username).name) === currentUserNorm);
+        if (!myCheckins.length) return;
+
+        const todayStr = new Date().toLocaleDateString('pt-BR');
+        // Pega o último checkin que não seja de hoje
+        const pastCheckins = myCheckins.filter(e => new Date(e.created_at).toLocaleDateString('pt-BR') !== todayStr);
+        if (!pastCheckins.length) return;
+
+        const lastRadar = pastCheckins[0]; // já ordenado DESC por created_at
+        const allTasks = (lastRadar.today_tasks || '').split('\n').map(t => t.trim()).filter(t => t);
+        const pendingTasks = allTasks.filter(t => !t.includes('✅'));
+
+        // Se tem pendentes e ainda não exibiu nesta sessão
+        if (pendingTasks.length > 0 && !sessionStorage.getItem(`previousTasksShown_${lastRadar.id}`)) {
+            previousTasksData = { radar: lastRadar, pending: pendingTasks, all: allTasks };
+            
+            const listEl = document.getElementById('previousTasksList');
+            if (listEl) {
+                listEl.innerHTML = pendingTasks.map((t, idx) => `
+                    <div style="display:flex; align-items: flex-start; gap:8px; margin-bottom:12px;">
+                        <input type="checkbox" id="prevTask_${idx}" style="width:16px; height:16px; accent-color:#22c55e; cursor:pointer; margin-top:2px;">
+                        <label for="prevTask_${idx}" style="cursor:pointer; flex:1;">${t}</label>
+                    </div>
+                `).join('');
+                if (window.lucide) window.lucide.createIcons();
+            }
+
+            const modal = document.getElementById('previousTasksModal');
+            if (modal) modal.style.display = 'flex';
+            
+            sessionStorage.setItem(`previousTasksShown_${lastRadar.id}`, 'true');
+        }
+    }
+
+    // Modal de Tarefas Anteriores - Eventos
+    const prevTasksModal = document.getElementById('previousTasksModal');
+    
+    document.getElementById('btnIgnorePreviousTasks')?.addEventListener('click', () => {
+        if (prevTasksModal) prevTasksModal.style.display = 'none';
+        previousTasksData = null;
+    });
+
+    document.getElementById('btnPassToTodayTasks')?.addEventListener('click', () => {
+        if (prevTasksModal) prevTasksModal.style.display = 'none';
+        if (!previousTasksData) return;
+        
+        // Joga as que NÃO foram marcadas para a lista atual
+        previousTasksData.pending.forEach((t, idx) => {
+            const checkbox = document.getElementById(`prevTask_${idx}`);
+            if (!checkbox || !checkbox.checked) {
+                currentTasks.push(t);
+            }
+        });
+        renderTaskBuilder();
+        
+        showToast("Tarefas pendentes passadas para hoje!");
+        previousTasksData = null;
+    });
+
+    document.getElementById('btnCompleteSelectedTasks')?.addEventListener('click', async () => {
+        if (!previousTasksData || !supabaseClient) return;
+        
+        const btn = document.getElementById('btnCompleteSelectedTasks');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = 'Atualizando...';
+        btn.disabled = true;
+
+        try {
+            // Quais foram marcadas no modal?
+            const checkedIndexes = new Set();
+            previousTasksData.pending.forEach((t, idx) => {
+                const checkbox = document.getElementById(`prevTask_${idx}`);
+                if (checkbox && checkbox.checked) {
+                    checkedIndexes.add(idx);
+                }
+            });
+
+            if (checkedIndexes.size === 0) {
+                showToast("Selecione pelo menos uma tarefa!", "error");
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                return;
+            }
+
+            let pendingCount = 0;
+            const newTasksText = previousTasksData.all.map(t => {
+                if (!t.includes('✅')) {
+                    if (checkedIndexes.has(pendingCount)) {
+                        pendingCount++;
+                        return '✅ ' + t;
+                    }
+                    pendingCount++;
+                }
+                return t;
+            }).join('\n');
+
+            const entryToUpdate = { ...previousTasksData.radar, today_tasks: newTasksText };
+            
+            const { error } = await supabaseClient.from('kickoffs').update(entryToUpdate).eq('id', previousTasksData.radar.id);
+            if (error) throw error;
+            
+            showToast("Radar anterior atualizado com as concluídas!", "success");
+            loadEntries(); // recarrega o feed
+            
+            // Remove the checked ones from the modal list visually so they can pass the rest if they want
+            previousTasksData.all = newTasksText.split('\n').map(t => t.trim()).filter(t => t);
+            previousTasksData.pending = previousTasksData.all.filter(t => !t.includes('✅'));
+            
+            if (previousTasksData.pending.length === 0) {
+                if (prevTasksModal) prevTasksModal.style.display = 'none';
+                previousTasksData = null;
+            } else {
+                // Re-render the remaining tasks in the modal
+                const listEl = document.getElementById('previousTasksList');
+                if (listEl) {
+                    listEl.innerHTML = previousTasksData.pending.map((t, idx) => `
+                        <div style="display:flex; align-items: flex-start; gap:8px; margin-bottom:12px;">
+                            <input type="checkbox" id="prevTask_${idx}" style="width:16px; height:16px; accent-color:#22c55e; cursor:pointer; margin-top:2px;">
+                            <label for="prevTask_${idx}" style="cursor:pointer; flex:1;">${t}</label>
+                        </div>
+                    `).join('');
+                }
+            }
+        } catch (e) {
+            console.error(e);
+            showToast("Erro ao atualizar o radar passado.", "error");
+        } finally {
+            if (btn) {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+    });
 
     // Gamificação (Cálculo de XP)
     function calculateXP() {
@@ -380,14 +524,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let xp = 0;
         
+        const norm = (str) => str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : "";
+        const currentUserNorm = norm(currentUser);
+
         // +10 XP por cada Check-in (Radar)
-        const myCheckins = allEntries.filter(e => decodeUser(e.username).name.toUpperCase() === currentUser);
+        const myCheckins = allEntries.filter(e => norm(decodeUser(e.username).name) === currentUserNorm);
         xp += myCheckins.length * 10;
 
         // +30 XP por cada Elogio Recebido no Sucesso Semanal
         const myPraises = allSucessos.filter(e => {
-            const praiseText = (e.praise || '').toUpperCase();
-            return praiseText.includes(currentUser);
+            const praiseText = norm(e.praise || '');
+            return praiseText.includes(currentUserNorm);
         });
         xp += myPraises.length * 30;
 

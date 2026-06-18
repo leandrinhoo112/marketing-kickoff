@@ -612,6 +612,33 @@
         </div>
     </div>
 
+    <!-- MODAL TAREFAS ANTERIORES -->
+    <div id="previousTasksModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
+        <div class="modal-content glass-card" style="background: #1a152e; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
+            <div style="margin-bottom: 20px;">
+                <i data-lucide="alert-circle" style="color: #facc15; width: 40px; height: 40px;"></i>
+                <h3 style="color: #facc15; margin: 10px 0;">Tarefas Pendentes do Último Radar</h3>
+                <p style="opacity: 0.8; font-size: 0.9em;">Você deixou as seguintes tarefas sem o check (✅) no seu último preenchimento:</p>
+            </div>
+            
+            <div id="previousTasksList" style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; text-align: left; max-height: 200px; overflow-y: auto; margin-bottom: 25px; font-size: 0.9em; border: 1px solid rgba(255,255,255,0.05);">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="btnCompleteSelectedTasks" style="padding: 12px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s;">
+                    <i data-lucide="check-square"></i> Concluir Selecionadas (No Radar Passado)
+                </button>
+                <button id="btnPassToTodayTasks" style="padding: 12px; background: rgba(104, 65, 241, 0.2); border: 1px solid #6841f1; border-radius: 8px; color: #b19cf9; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s;">
+                    <i data-lucide="arrow-right-circle"></i> Passar Restantes para Hoje
+                </button>
+                <button id="btnIgnorePreviousTasks" style="padding: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #a0aec0; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s;">
+                    <i data-lucide="x"></i> Fechar / Ignorar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ÁREA DO ADMINISTRADOR (ESCONDIDA POR PADRÃO) -->
     <section id="adminArea" class="container"
         style="display: none; margin-top: 50px; padding-top: 30px; border-top: 2px dashed rgba(104, 65, 241, 0.3);">
@@ -788,7 +815,7 @@
     </footer>
 
     <script src="phone_audio.js"></script>
-    <script src="app.js?v=36.0" defer></script>
+    <script src="app.js?v=43.0" defer></script>
     <script>
         lucide.createIcons();
     </script>
