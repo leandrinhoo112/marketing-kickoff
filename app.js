@@ -85,11 +85,20 @@ document.addEventListener('DOMContentLoaded', () => {
         currentTasks.splice(index, 1);
         renderTaskBuilder();
     };
+    window.playSatisfyingCheckSound = function() {
+        try {
+            const audio = new Audio('som concluido.MP3');
+            audio.volume = 0.5; // Ajuste de volume se necessário
+            audio.play().catch(e => console.error("Audio error", e));
+        } catch(e) { console.error("Audio error", e); }
+    };
+
     window.toggleTaskDone = function(index) {
         if (currentTasks[index].startsWith('✅ ')) {
             currentTasks[index] = currentTasks[index].replace('✅ ', '');
         } else {
             currentTasks[index] = '✅ ' + currentTasks[index];
+            window.playSatisfyingCheckSound(); // Toca o som ao marcar
         }
         renderTaskBuilder();
     };
@@ -404,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (listEl) {
                 listEl.innerHTML = pendingTasks.map((t, idx) => `
                     <div style="display:flex; align-items: flex-start; gap:8px; margin-bottom:12px;">
-                        <input type="checkbox" id="prevTask_${idx}" style="width:16px; height:16px; accent-color:#22c55e; cursor:pointer; margin-top:2px;">
+                        <input type="checkbox" id="prevTask_${idx}" onchange="if(this.checked) window.playSatisfyingCheckSound && window.playSatisfyingCheckSound()" style="width:16px; height:16px; accent-color:#22c55e; cursor:pointer; margin-top:2px;">
                         <label for="prevTask_${idx}" style="cursor:pointer; flex:1;">${t}</label>
                     </div>
                 `).join('');
@@ -501,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (listEl) {
                     listEl.innerHTML = previousTasksData.pending.map((t, idx) => `
                         <div style="display:flex; align-items: flex-start; gap:8px; margin-bottom:12px;">
-                            <input type="checkbox" id="prevTask_${idx}" style="width:16px; height:16px; accent-color:#22c55e; cursor:pointer; margin-top:2px;">
+                            <input type="checkbox" id="prevTask_${idx}" onchange="if(this.checked) window.playSatisfyingCheckSound && window.playSatisfyingCheckSound()" style="width:16px; height:16px; accent-color:#22c55e; cursor:pointer; margin-top:2px;">
                             <label for="prevTask_${idx}" style="cursor:pointer; flex:1;">${t}</label>
                         </div>
                     `).join('');
