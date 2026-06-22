@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Tabs
+    let latestNovidadeId = null;
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
 
@@ -122,6 +123,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 pane.style.display = 'none';
             });
             document.getElementById(btn.dataset.target).style.display = 'block';
+
+            // Se o usuário clicar na aba de Novidades, marcar como visto e remover a notificação
+            if (btn.dataset.target === 'tab-novidades' && latestNovidadeId) {
+                const _d = new Date();
+                const _key = 'novidadeNotified_' + latestNovidadeId + '_' + _d.getFullYear() + '-' + (_d.getMonth()+1) + '-' + _d.getDate();
+                localStorage.setItem(_key, 'true');
+                const toastContainer = document.querySelector('.toast-container');
+                if (toastContainer) {
+                    const toasts = toastContainer.querySelectorAll('.toast');
+                    toasts.forEach(toast => {
+                        if (toast.textContent.includes("Tem atualização nova na plataforma!")) {
+                            toast.remove();
+                        }
+                    });
+                }
+            }
         });
     });
 
@@ -668,7 +685,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
-    function showToast(message, type = 'success') {
+    function showToast(message, type = 'success', duration = 4000, onClose = null) {
         let container = document.querySelector('.toast-container');
         if (!container) {
             container = document.createElement('div');
@@ -678,10 +695,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         const icon = type === 'success' ? 'check-circle' : 'alert-circle';
-        toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
+        
+        if (duration === 0) {
+            toast.innerHTML = `<i data-lucide="${icon}"></i> <span style="flex:1;">${message}</span> <button class="toast-close-btn" style="background:transparent;border:none;color:inherit;cursor:pointer;opacity:0.7;"><i data-lucide="x" style="width:16px;height:16px;"></i></button>`;
+            const closeBtn = toast.querySelector('.toast-close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    toast.remove();
+                    if (typeof onClose === 'function') onClose();
+                });
+            }
+        } else {
+            toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
+        }
+
         container.appendChild(toast);
         if (window.lucide) window.lucide.createIcons();
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
+        
+        if (duration > 0) {
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, duration);
+        }
     }
 
     // Toggle Admin Panel with Password
@@ -1131,6 +1164,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const isUrgent = hasBlockers || needsHelp;
             const formattedTasks = (entry.today_tasks || '').split('\n').map(t => `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><i data-lucide="check-square" style="width:14px;height:14px;color:#8e6eff;flex-shrink:0;margin-top:3px;"></i> <span style="flex:1;">${t.replace('• ', '')}</span></div>`).join('');
 
+            const normStr = (s) => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : "";
+            const currentU = normStr(currentUser || '');
+            const isException = ['VANESSA', 'BRUNO', 'VITOR', 'LEANDRO'].includes(currentU);
+            const canEdit = normStr(u.name) === currentU || isException;
+
             return `
             <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
@@ -1142,10 +1180,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
+                        ${canEdit ? `
                         <div class="item-actions">
                             <button class="action-btn edit" onclick="editEntry('${entry.id}')" title="Editar"><i data-lucide="edit-3"></i></button>
                             <button class="action-btn delete" onclick="deleteEntry('${entry.id}')" title="Remover"><i data-lucide="trash-2"></i></button>
                         </div>
+                        ` : ''}
                         <div style="display: flex; gap: 8px;">
                             ${needsHelp ? '<span class="help-badge" style="background: rgba(2, 206, 255, 0.1); color: #02ceff; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">🆘 Ajuda</span>' : ''}
                             ${hasBlockers ? '<span class="help-badge blocker-badge" style="background: rgba(255, 65, 108, 0.1); color: #ff416c; padding: 4px 10px; border-radius: 6px; font-size: 0.7em; font-weight: bold;">⛔ Impedido</span>' : ''}
@@ -1511,6 +1551,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data, error } = await supabaseClient.from('novidades').select('*').order('created_at', { ascending: false });
             if (error) throw error;
             if (data && data.length > 0) {
+                const latest = data[0];
+                latestNovidadeId = latest.id;
+                const latestDateObj = new Date(latest.created_at);
+                const todayObj = new Date();
+                const isToday = latestDateObj.getFullYear() === todayObj.getFullYear() &&
+                                latestDateObj.getMonth() === todayObj.getMonth() &&
+                                latestDateObj.getDate() === todayObj.getDate();
+                const todayKey = todayObj.getFullYear() + '-' + (todayObj.getMonth()+1) + '-' + todayObj.getDate();
+                const storageKey = 'novidadeNotified_' + latest.id + '_' + todayKey;
+                
+                if (isToday && !localStorage.getItem(storageKey)) {
+                    setTimeout(() => {
+                        if (typeof showToast === 'function') {
+                            showToast(
+                                "✨ Tem atualização nova na plataforma! Vá na aba 'Novidades' para conferir.", 
+                                "success", 
+                                0,
+                                () => {
+                                    localStorage.setItem(storageKey, 'true');
+                                }
+                            );
+                        }
+                    }, 2500);
+                }
+
                 container.innerHTML = data.map(item => `
                     <div class="glass-card" style="padding: 25px; border-left: 4px solid #22c55e; background: rgba(34, 197, 94, 0.05); text-align: left;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 15px; align-items: center;">
@@ -1711,6 +1776,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // NOVIDADES ADMIN LOGIC
+    let editingAdminNovidadeId = null;
+    let allAdminNovidadesList = [];
     const adminNovidadeForm = document.getElementById('adminNovidadeForm');
     if (adminNovidadeForm) {
         adminNovidadeForm.addEventListener('submit', async (e) => {
@@ -1724,10 +1791,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const entry = { titulo, descricao, autor: 'Gestor' };
-                const { error } = await supabaseClient.from('novidades').insert([entry]);
-                if (error) throw error;
-                showToast("Novidade publicada com sucesso!");
+                if (editingAdminNovidadeId) {
+                    const { error } = await supabaseClient.from('novidades').update(entry).eq('id', editingAdminNovidadeId);
+                    if (error) throw error;
+                    showToast("Novidade atualizada com sucesso!");
+                    editingAdminNovidadeId = null;
+                } else {
+                    const { error } = await supabaseClient.from('novidades').insert([entry]);
+                    if (error) throw error;
+                    showToast("Novidade publicada com sucesso!");
+                }
                 adminNovidadeForm.reset();
+                btn.innerHTML = 'Publicar Novidade <i data-lucide="send"></i>';
                 if (typeof loadAdminNovidades === 'function') loadAdminNovidades();
                 if (typeof loadNovidades === 'function') loadNovidades();
             } catch (error) {
@@ -1740,22 +1815,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    window.editAdminNovidade = (id) => {
+        const n = allAdminNovidadesList.find(x => x.id === id);
+        if (!n) return;
+        editingAdminNovidadeId = id;
+        document.getElementById('novidadeTitulo').value = n.titulo;
+        document.getElementById('novidadeDescricao').value = n.descricao;
+        document.getElementById('submitNovidadeBtn').innerHTML = 'Atualizar Novidade <i data-lucide="refresh-cw"></i>';
+        adminNovidadeForm.scrollIntoView({ behavior: 'smooth' });
+    };
+
     window.loadAdminNovidades = async () => {
         if (!supabaseClient) return;
         try {
             const { data, error } = await supabaseClient.from('novidades').select('*').order('created_at', { ascending: false });
             if (error) throw error;
+            allAdminNovidadesList = data || [];
             const container = document.getElementById('adminNovidadesContainer');
-            if (data && container) {
-                if (data.length === 0) {
+            if (allAdminNovidadesList && container) {
+                if (allAdminNovidadesList.length === 0) {
                     container.innerHTML = `<div class="glass-card" style="padding: 15px; text-align: center; opacity: 0.5;">Nenhuma novidade cadastrada ainda.</div>`;
                     return;
                 }
-                container.innerHTML = data.map(n => `
+                container.innerHTML = allAdminNovidadesList.map(n => `
                     <div class="glass-card" style="padding: 15px; border-left: 4px solid #22c55e; margin-bottom: 15px; background: rgba(34, 197, 94, 0.05); position: relative;">
-                        <button onclick="deleteNovidade('${n.id}')" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 65, 108, 0.1); border: none; color: #ff416c; padding: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s;" title="Apagar Novidade">
-                            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
-                        </button>
+                        <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 8px;">
+                            <button onclick="editAdminNovidade('${n.id}')" style="background: rgba(255, 255, 255, 0.1); border: none; color: white; padding: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s;" title="Editar Novidade">
+                                <i data-lucide="edit-3" style="width: 16px; height: 16px;"></i>
+                            </button>
+                            <button onclick="deleteNovidade('${n.id}')" style="background: rgba(255, 65, 108, 0.1); border: none; color: #ff416c; padding: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s;" title="Apagar Novidade">
+                                <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
                         <span style="font-size: 0.7em; color: #a0aec0; display: block; margin-bottom: 5px;">Publicado em: ${new Date(n.created_at).toLocaleDateString('pt-BR')}</span>
                         <h4 style="margin: 0 0 5px 0; color: #22c55e;">${n.titulo}</h4>
                         <div style="margin-bottom: 10px; padding-right: 25px;">
