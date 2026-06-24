@@ -2125,3 +2125,310 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// =============================================
+// TERMO DO DIA - Wordle-style Mini-Game
+// =============================================
+(function() {
+    // ----- Banco de palavras (5 letras, sem acento) -----
+    const WORDBANK = [
+        "ABRIR","ACOES","AJUDA","ALTOS","AINDA","AMBOS","ANTES","ARGOS","ARTES","ASSAZ",
+        "BALDE","BANCO","BARCO","BATER","BEIRA","BELAS","BISPO","BOLSA","BOLSO","BORDA",
+        "CABER","CABO","CALDO","CAMPO","CANTO","CAPAZ","CARGA","CARGO","CARRO","CARTA",
+        "CENAS","CHAVE","CIELO","CINCO","CIRCO","CLUBE","COBRA","COISA","COLOR","CONTA",
+        "CORTE","COURO","COUVE","CRIOU","CRIVO","CRUEL","CURTO","CURVA","DATAS","DELTA",
+        "DENSO","DESDE","DEVER","DIANA","DISCO","DISSE","DITAR","DOCES","DONNA","DOSIL",
+        "DUPLO","ECLAT","EDUCA","EMITE","ENJOY","ENTRE","ENVIO","EPICA","EQUIP","ERROS",
+        "ESCOA","ESCOP","ETAPA","EVENT","EXTRA","FACAO","FALAR","FALTA","FAMIL","FASES",
+        "FECHA","FENDA","FESTA","FIQUE","FIRMA","FITAR","FORCA","FORMA","FORTE","FREAR",
+        "FRUTO","FUNDO","GANHA","GERAL","GESTO","GLOBO","GOLPE","GOSTO","GRAFO","GREVE",
+        "GRUPO","GUIAR","HABIL","HONRA","HOTEL","HUMOR","IDEAL","IDEIA","IGUAL","IMPAR",
+        "INICIO","INOVA","INPUT","INTER","ISOLA","JOGAR","JOINT","JUIZO","JUNTO","JUROS",
+        "LANCE","LAPIS","LENTA","LICAO","LIDAR","LIGAR","LIGHT","LIMITE","LINDA","LINHA",
+        "LOCAL","LOGICA","LUCRO","LUGAR","LONGO","MACRO","MANOS","MARCA","MARCA","MASSA",
+        "MEDIA","MELHOR","METAS","METODO","MEIOS","MISTO","MODAL","MOEDA","MORAR","MOTOR",
+        "MUNDO","NIVEL","NORMA","NOTAR","NOVAS","NOVOS","OBTER","ORDEM","OTIMO","NOSSA",
+        "PACTO","PAPEL","PARTE","PASSO","PEDIR","PERDA","PESAR","PILHA","PILOT","PISTA",
+        "PLANO","PODER","PONTO","PRECO","PRIMO","PROVA","PULSO","RENDA","RISCO","RITMO",
+        "RIVAL","RODAS","ROLHA","ROTINA","SAIDA","SALDO","SETOR","SIGLA","SINAP","SLIDE",
+        "SMART","SOBRE","SOFRE","SOLVE","SORTE","SUCESSO","SUITE","SUPER","TABELA","TARDE",
+        "TARIFA","TAXA","TEMPO","TEXTO","TIMES","TITULO","TOMAR","TOQUE","TOTAL","TREINO",
+        "TURNO","ULTRA","UNION","VALOR","VENDA","VERDE","VIGOR","VIRAL","VISAO","VISTA",
+        "VOTAR","YIELD","ZERAR","AGORA","AMBOS","AMIGO","AMPLO","ANDAR","ANTES","APOIO",
+        "BREVE","CAPAZ","CAUSA","CERTO","CICLO","COMBO","DIRETO","EQUIPE","FISCO","FOCAR",
+        "FOREM","FUSAO","GERAR","GRADE","IMPOR","INERCIA","INOVAR","JOGO","LANCE","LIDERAR",
+        "LOGAR","LUCRAR","MAPEAR","MARCO","NICHO","OPERAR","OTIMIZAR","PARTES","PERSONA","PILAR",
+        "PRAZO","PRECO","PROPOR","RANKEAR","RATIO","REAGIR","SEGMENTO","SINTESE","SPARK","SPRINT",
+        "STRAT","SUGERIR","TARGET","TICKET","TIRAR","TRACAR","TREINAR","UNICA","UNIR","URGENTE",
+        "VALIDAR","VENCER","VERTER","VIRAR","VOAR","VOLTAR","ZAPP"
+    ].map(w => w.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase())
+     .filter(w => w.length === 5);
+
+    const UNIQUE_WORDS = [...new Set(WORDBANK)];
+
+    // Escolhe palavra do dia baseado na data (todos usam a mesma!)
+    function getTodayWord() {
+        const now = new Date();
+        const dayIndex = Math.floor((now - new Date('2025-01-01')) / 86400000);
+        return UNIQUE_WORDS[dayIndex % UNIQUE_WORDS.length];
+    }
+
+    const MAX_TRIES = 6;
+    const WORD_LEN = 5;
+    let targetWord = '';
+    let guesses = [];
+    let currentGuess = '';
+    let gameOver = false;
+    const TODAY_KEY = 'wordleState_' + new Date().toLocaleDateString('pt-BR');
+
+    function saveState() {
+        localStorage.setItem(TODAY_KEY, JSON.stringify({ guesses, gameOver, won: guesses.some(g => g === targetWord) }));
+    }
+
+    function loadState() {
+        const raw = localStorage.getItem(TODAY_KEY);
+        if (!raw) return false;
+        try {
+            const st = JSON.parse(raw);
+            guesses = st.guesses || [];
+            gameOver = st.gameOver || false;
+            return true;
+        } catch { return false; }
+    }
+
+    function evaluateGuess(guess) {
+        const result = Array(WORD_LEN).fill('absent');
+        const targetArr = targetWord.split('');
+        const guessArr = guess.split('');
+        const used = Array(WORD_LEN).fill(false);
+
+        // First pass: correct positions
+        for (let i = 0; i < WORD_LEN; i++) {
+            if (guessArr[i] === targetArr[i]) {
+                result[i] = 'correct';
+                used[i] = true;
+            }
+        }
+        // Second pass: present but wrong position
+        for (let i = 0; i < WORD_LEN; i++) {
+            if (result[i] === 'correct') continue;
+            for (let j = 0; j < WORD_LEN; j++) {
+                if (!used[j] && guessArr[i] === targetArr[j]) {
+                    result[i] = 'present';
+                    used[j] = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    function colorForState(state) {
+        if (state === 'correct') return '#22c55e';
+        if (state === 'present') return '#facc15';
+        return 'rgba(255,255,255,0.15)';
+    }
+
+    function renderGrid() {
+        const grid = document.getElementById('wordleGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        for (let r = 0; r < MAX_TRIES; r++) {
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex;gap:8px;';
+            for (let c = 0; c < WORD_LEN; c++) {
+                const cell = document.createElement('div');
+                cell.style.cssText = `
+                    width:58px;height:58px;border-radius:8px;display:flex;
+                    align-items:center;justify-content:center;font-size:1.6em;
+                    font-weight:900;letter-spacing:0;transition:background 0.3s, transform 0.15s;
+                    border:2px solid rgba(255,255,255,0.15);color:white;
+                    user-select:none;
+                `;
+                if (r < guesses.length) {
+                    const guess = guesses[r];
+                    const result = evaluateGuess(guess);
+                    cell.textContent = guess[c] || '';
+                    cell.style.background = colorForState(result[c]);
+                    cell.style.borderColor = colorForState(result[c]);
+                } else if (r === guesses.length && !gameOver) {
+                    // Current input row
+                    cell.textContent = currentGuess[c] || '';
+                    cell.style.borderColor = currentGuess[c] ? '#8e6eff' : 'rgba(255,255,255,0.2)';
+                    cell.style.background = currentGuess[c] ? 'rgba(142,110,255,0.15)' : 'rgba(255,255,255,0.04)';
+                } else {
+                    cell.style.background = 'rgba(255,255,255,0.04)';
+                }
+                row.appendChild(cell);
+            }
+            grid.appendChild(row);
+        }
+    }
+
+    function renderKeyboard() {
+        const kb = document.getElementById('wordleKeyboard');
+        if (!kb) return;
+        const rows = [
+            ['Q','W','E','R','T','Y','U','I','O','P'],
+            ['A','S','D','F','G','H','J','K','L'],
+            ['ENTER','Z','X','C','V','B','N','M','⌫']
+        ];
+        // Track letter states
+        const letterState = {};
+        guesses.forEach(guess => {
+            const result = evaluateGuess(guess);
+            guess.split('').forEach((ch, i) => {
+                const cur = letterState[ch];
+                if (result[i] === 'correct') letterState[ch] = 'correct';
+                else if (result[i] === 'present' && cur !== 'correct') letterState[ch] = 'present';
+                else if (!cur) letterState[ch] = 'absent';
+            });
+        });
+        kb.innerHTML = '';
+        rows.forEach(row => {
+            const rowEl = document.createElement('div');
+            rowEl.style.cssText = 'display:flex;gap:6px;justify-content:center;';
+            row.forEach(key => {
+                const btn = document.createElement('button');
+                const st = letterState[key];
+                btn.textContent = key;
+                btn.type = 'button';
+                btn.setAttribute('data-key', key);
+                btn.style.cssText = `
+                    min-width:${key.length > 1 ? '62px' : '38px'};height:52px;
+                    border-radius:8px;border:none;font-weight:bold;font-size:${key.length > 1 ? '0.7em' : '1em'};
+                    cursor:pointer;transition:all 0.2s;
+                    background:${st === 'correct' ? '#22c55e' : st === 'present' ? '#facc15' : st === 'absent' ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.18)'};
+                    color:${st === 'present' ? '#1a152e' : 'white'};
+                    box-shadow:0 2px 8px rgba(0,0,0,0.2);
+                `;
+                btn.addEventListener('click', () => handleKey(key));
+                rowEl.appendChild(btn);
+            });
+            kb.appendChild(rowEl);
+        });
+    }
+
+    function showMessage(msg, color) {
+        const el = document.getElementById('wordleMessage');
+        if (!el) return;
+        el.textContent = msg;
+        el.style.color = color || 'white';
+    }
+
+    function startCountdown() {
+        const timerEl = document.getElementById('wordleNextTimer');
+        const countdownEl = document.getElementById('wordleCountdown');
+        if (!timerEl || !countdownEl) return;
+        timerEl.style.display = 'block';
+        function update() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            const diff = tomorrow - now;
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            countdownEl.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+        update();
+        setInterval(update, 1000);
+    }
+
+    function updateStatusBar() {
+        const bar = document.getElementById('gameStatusBar');
+        if (!bar) return;
+        const won = guesses.some(g => g === targetWord);
+        bar.innerHTML = `
+            <div style="background:rgba(255,255,255,0.08);padding:8px 18px;border-radius:20px;text-align:center;">
+                <div style="font-size:0.7em;opacity:0.6;text-transform:uppercase;letter-spacing:1px;">Tentativas</div>
+                <div style="font-size:1.3em;font-weight:bold;color:#facc15;">${guesses.length} / ${MAX_TRIES}</div>
+            </div>
+            ${gameOver ? `<div style="background:${won?'rgba(34,197,94,0.15)':'rgba(255,65,108,0.15)'};padding:8px 18px;border-radius:20px;text-align:center;border:1px solid ${won?'#22c55e':'#ff416c'};">
+                <div style="font-size:0.7em;opacity:0.6;text-transform:uppercase;letter-spacing:1px;">${won?'Parabéns!':'Game Over'}</div>
+                <div style="font-size:1em;font-weight:bold;color:${won?'#22c55e':'#ff416c'};">${won?'🏆 Você venceu!':'A palavra era: '+targetWord}</div>
+            </div>` : ''}
+        `;
+    }
+
+    function handleKey(key) {
+        if (gameOver) return;
+        if (key === '⌫' || key === 'BACKSPACE') {
+            currentGuess = currentGuess.slice(0, -1);
+            renderGrid();
+            return;
+        }
+        if (key === 'ENTER') {
+            if (currentGuess.length < WORD_LEN) {
+                showMessage('A palavra precisa ter 5 letras!', '#facc15');
+                setTimeout(() => showMessage(''), 1500);
+                return;
+            }
+            guesses.push(currentGuess);
+            const won = currentGuess === targetWord;
+            if (won || guesses.length >= MAX_TRIES) {
+                gameOver = true;
+                saveState();
+                renderGrid();
+                renderKeyboard();
+                updateStatusBar();
+                if (won) {
+                    showMessage('🎉 Incrível! Você acertou!', '#22c55e');
+                    // +XP bônus — salva no localStorage
+                    const xpKey = 'wordleXP_' + new Date().toLocaleDateString('pt-BR');
+                    if (!localStorage.getItem(xpKey)) {
+                        localStorage.setItem(xpKey, 'won');
+                    }
+                } else {
+                    showMessage(`😔 Era: ${targetWord}`, '#ff416c');
+                }
+                startCountdown();
+            } else {
+                saveState();
+                currentGuess = '';
+                renderGrid();
+                renderKeyboard();
+            }
+            return;
+        }
+        if (/^[A-Z]$/.test(key) && currentGuess.length < WORD_LEN) {
+            currentGuess += key;
+            renderGrid();
+            renderKeyboard();
+        }
+    }
+
+    function initWordle() {
+        if (!document.getElementById('wordleGrid')) return;
+        targetWord = getTodayWord();
+        currentGuess = '';
+        loadState();
+        renderGrid();
+        renderKeyboard();
+        updateStatusBar();
+        if (gameOver) {
+            const won = guesses.some(g => g === targetWord);
+            showMessage(won ? '🎉 Você já venceu hoje!' : `😔 Palavra era: ${targetWord}`, won ? '#22c55e' : '#ff416c');
+            startCountdown();
+        }
+    }
+
+    // Keyboard listener
+    document.addEventListener('keydown', (e) => {
+        // Only active when mini-game tab is visible
+        const tab = document.getElementById('tab-minigame');
+        if (!tab || tab.style.display === 'none') return;
+        const key = e.key.toUpperCase();
+        if (key === 'BACKSPACE') handleKey('BACKSPACE');
+        else if (key === 'ENTER') handleKey('ENTER');
+        else if (/^[A-Z]$/.test(key)) handleKey(key);
+    });
+
+    // Init immediately since script is deferred and DOM is ready
+    initWordle();
+    
+    // Export globally just in case
+    window.initWordle = initWordle;
+
+})();
