@@ -135,6 +135,9 @@
             <button class="tab-btn" data-target="tab-novidades" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="bell-ring"></i> Novidades
             </button>
+            <button class="tab-btn" data-target="tab-minigame" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
+                <i data-lucide="gamepad-2"></i> Mini-game
+            </button>
             <button onclick="toggleAdmin()" style="padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(104, 65, 241, 0.3); font-weight: bold; cursor: pointer; transition: all 0.3s; background: rgba(104, 65, 241, 0.1); color: #8e6eff;">
                 <i data-lucide="shield"></i> Área do Gestor
             </button>
@@ -584,6 +587,33 @@
         </div>
     </section>
 
+    <!-- MINI-GAME: TERMO DO DIA -->
+    <section id="tab-minigame" class="tab-pane" style="display: none;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 0 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="color: #facc15; margin-bottom: 8px;"><i data-lucide="gamepad-2" style="width:28px;height:28px;vertical-align:middle;"></i> Termo do Dia</h2>
+                <p style="opacity: 0.7; margin: 0;">Adivinhe a palavra em 6 tentativas. As letras ficam verdes quando estão no lugar certo, amarelas quando estão na palavra mas fora do lugar.</p>
+            </div>
+
+            <!-- Status / Record -->
+            <div id="gameStatusBar" style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;"></div>
+
+            <!-- GRID de tentativas -->
+            <div id="wordleGrid" style="display: flex; flex-direction: column; gap: 8px; align-items: center; margin-bottom: 24px;"></div>
+
+            <!-- Mensagem de resultado -->
+            <div id="wordleMessage" style="text-align: center; font-size: 1.1em; font-weight: bold; min-height: 30px; margin-bottom: 16px;"></div>
+
+            <!-- Teclado virtual -->
+            <div id="wordleKeyboard" style="display: flex; flex-direction: column; align-items: center; gap: 8px;"></div>
+
+            <!-- Volta amanhã -->
+            <div id="wordleNextTimer" style="text-align: center; margin-top: 24px; display: none;">
+                <p style="opacity: 0.6; font-size: 0.9em;">Próxima palavra em: <span id="wordleCountdown" style="color: #facc15; font-weight: bold;"></span></p>
+            </div>
+        </div>
+    </section>
+
     <!-- MODAL MEU RELATÓRIO MENSAL -->
     <div id="monthlyReportModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
         <div class="modal-content glass-card" style="background: #1a152e; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1);">
@@ -819,7 +849,7 @@
     </footer>
 
     <script src="phone_audio.js"></script>
-    <script src="app.js?v=57.0" defer></script>
+    <script src="app.js?v=58.0" defer></script>
     <script>
         lucide.createIcons();
     </script>
