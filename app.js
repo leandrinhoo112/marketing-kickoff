@@ -37,6 +37,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Funções de Rascunho (Draft)
+    function saveRadarDraft() {
+        const u = typeof currentUser !== 'undefined' && currentUser ? currentUser : localStorage.getItem('currentUser');
+        if (!u) return;
+        const formEl = document.getElementById('kickoffForm');
+        if (!formEl) return;
+        const energyChecked = formEl.querySelector('input[name="energyLevel"]:checked');
+        const checkedHelpers = Array.from(formEl.querySelectorAll('input[name="whoHelpCheck"]:checked')).map(cb => cb.value);
+        
+        const draft = {
+            tasks: typeof currentTasks !== 'undefined' ? currentTasks : [],
+            helpNeeded: document.getElementById('helpNeeded') ? document.getElementById('helpNeeded').value : '',
+            whoHelpCheck: checkedHelpers,
+            blockers: document.getElementById('blockers') ? document.getElementById('blockers').value : '',
+            energyLevel: energyChecked ? energyChecked.value : null,
+            editingId: typeof editingId !== 'undefined' ? editingId : null
+        };
+        localStorage.setItem('radarDraft_' + u, JSON.stringify(draft));
+    }
+
+    function loadRadarDraft() {
+        const u = typeof currentUser !== 'undefined' && currentUser ? currentUser : localStorage.getItem('currentUser');
+        if (!u) return;
+        const draftStr = localStorage.getItem('radarDraft_' + u);
+        if (!draftStr) return;
+        
+        try {
+            const draft = JSON.parse(draftStr);
+            if (draft.editingId) {
+                if (typeof editingId !== 'undefined') editingId = draft.editingId;
+                const formEl = document.getElementById('kickoffForm');
+                if (formEl) {
+                    const submitBtn = formEl.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.innerHTML = 'Atualizar Radar <i data-lucide="save"></i>';
+                    }
+                }
+            }
+            if (draft.tasks && typeof currentTasks !== 'undefined') {
+                currentTasks = draft.tasks;
+                // Só renderiza se tiver algo pra não sobrescrever reset inicial atoa
+                if (currentTasks.length > 0 && typeof renderTaskBuilder === 'function') renderTaskBuilder();
+            }
+            if (draft.helpNeeded && document.getElementById('helpNeeded')) document.getElementById('helpNeeded').value = draft.helpNeeded;
+            if (draft.blockers && document.getElementById('blockers')) document.getElementById('blockers').value = draft.blockers;
+            if (draft.whoHelpCheck && draft.whoHelpCheck.length > 0) {
+                const formEl = document.getElementById('kickoffForm');
+                if (formEl) {
+                    formEl.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => {
+                        cb.checked = draft.whoHelpCheck.includes(cb.value);
+                    });
+                }
+            }
+            if (draft.energyLevel) {
+                const formEl = document.getElementById('kickoffForm');
+                if (formEl) {
+                    const radio = formEl.querySelector(`input[name="energyLevel"][value="${draft.energyLevel}"]`);
+                    if (radio) radio.checked = true;
+                }
+            }
+        } catch(e) { console.error("Erro ao carregar rascunho", e); }
+    }
+
+    function clearRadarDraft() {
+        const u = typeof currentUser !== 'undefined' && currentUser ? currentUser : localStorage.getItem('currentUser');
+        if (u) localStorage.removeItem('radarDraft_' + u);
+    }
+
     // Task List Builder logic
     let currentTasks = [];
     const taskInput = document.getElementById('taskInput');
@@ -80,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
         if (window.lucide) window.lucide.createIcons();
         todayTasksHidden.value = currentTasks.map(t => `• ${t}`).join('\n');
+        if (typeof saveRadarDraft === 'function') saveRadarDraft();
     }
     window.removeTask = function(index) {
         currentTasks.splice(index, 1);
@@ -175,6 +244,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função para tocar o áudio correto de início
     function playStartSoundForUser(userName) {
+        const d = new Date();
+        const todayKey = 'startSound_' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+        if (localStorage.getItem(todayKey)) return;
+        localStorage.setItem(todayKey, 'true');
+        
         if (hasPlayedStartSound) return;
         hasPlayedStartSound = true;
         
@@ -347,9 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (loginName) {
-        loginName.addEventListener('change', (e) => {
-            playNameSound(e.target.value);
-        });
+        // name sound removed on login
     }
 
     // Tocar som também quando marcar a caixinha de "quem precisa de ajuda"
@@ -395,6 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         checkPreviousDayTasks();
+        
+        if (typeof loadRadarDraft === 'function') loadRadarDraft();
         
         // Tocar o som de início agora que sabemos quem é o usuário
         if (typeof playStartSoundForUser === 'function') {
@@ -1056,6 +1130,8 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.innerHTML = 'Atualizar Radar <i data-lucide="save"></i>';
         if (window.lucide) window.lucide.createIcons();
         window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
+        
+        if (typeof saveRadarDraft === 'function') saveRadarDraft();
     };
 
     function updatePresence(entries) {
@@ -1291,6 +1367,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (form) {
+        form.addEventListener('input', () => { if (typeof saveRadarDraft === 'function') saveRadarDraft(); });
+        form.addEventListener('change', () => { if (typeof saveRadarDraft === 'function') saveRadarDraft(); });
+        
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = form.querySelector('button[type="submit"]');
@@ -1330,6 +1409,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderTaskBuilder();
                 document.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => cb.checked = false);
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>'; loadEntries();
+                if (typeof clearRadarDraft === 'function') clearRadarDraft();
             } catch (error) { showToast('Erro: ' + error.message, 'error'); } 
             finally { submitBtn.disabled = false; if (window.lucide) window.lucide.createIcons(); }
         });
