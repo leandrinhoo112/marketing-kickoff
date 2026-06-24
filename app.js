@@ -1965,25 +1965,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 adminNovidadeForm.reset();
                 btn.innerHTML = 'Publicar Novidade <i data-lucide="send"></i>';
+                if (window.lucide) window.lucide.createIcons();
                 if (typeof loadAdminNovidades === 'function') loadAdminNovidades();
                 if (typeof loadNovidades === 'function') loadNovidades();
             } catch (error) {
                 console.error(error);
                 showToast("Erro ao publicar novidade", "error");
-            } finally {
                 btn.innerHTML = originalText;
+            } finally {
                 btn.disabled = false;
             }
         });
     }
 
     window.editAdminNovidade = (id) => {
-        const n = allAdminNovidadesList.find(x => x.id === id);
+        const n = allAdminNovidadesList.find(x => x.id.toString() === id.toString());
         if (!n) return;
-        editingAdminNovidadeId = id;
+        editingAdminNovidadeId = n.id;
         document.getElementById('novidadeTitulo').value = n.titulo;
         document.getElementById('novidadeDescricao').value = n.descricao;
         document.getElementById('submitNovidadeBtn').innerHTML = 'Atualizar Novidade <i data-lucide="refresh-cw"></i>';
+        if (window.lucide) window.lucide.createIcons();
         adminNovidadeForm.scrollIntoView({ behavior: 'smooth' });
     };
 
