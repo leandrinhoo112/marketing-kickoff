@@ -112,15 +112,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskListUI = document.getElementById('taskListUI');
     const todayTasksHidden = document.getElementById('todayTasks');
 
+    const urgentTaskCheck = document.getElementById('urgentTaskCheck');
     if (addTaskBtn) {
         addTaskBtn.addEventListener('click', () => {
             if(taskInput.value.trim() !== '') {
-                currentTasks.push(taskInput.value.trim());
+                let text = taskInput.value.trim();
+                if (urgentTaskCheck && urgentTaskCheck.checked) {
+                    text = '🚨 ' + text;
+                    currentTasks.unshift(text);
+                } else {
+                    currentTasks.push(text);
+                }
                 taskInput.value = '';
+                if (urgentTaskCheck) urgentTaskCheck.checked = false;
                 renderTaskBuilder();
             }
         });
     }
+
+    window.toggleTaskUrgent = function(index) {
+        let task = currentTasks[index];
+        currentTasks.splice(index, 1);
+        if (task.includes('🚨 ')) {
+            task = task.replace('🚨 ', '');
+            currentTasks.push(task);
+        } else {
+            task = '🚨 ' + task;
+            currentTasks.unshift(task);
+        }
+        renderTaskBuilder();
+    };
     if (taskInput) {
         taskInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') {
@@ -129,17 +150,68 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    let draggedTaskIndex = null;
+
+    window.dragTaskStart = function(e, index) {
+        draggedTaskIndex = index;
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => e.target.style.opacity = '0.4', 0);
+    };
+
+    window.dragTaskOver = function(e, index) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (draggedTaskIndex !== null && draggedTaskIndex !== index) {
+            const targetItem = e.currentTarget;
+            targetItem.style.background = 'rgba(142, 110, 255, 0.2)';
+            targetItem.style.transform = 'scale(1.02)';
+        }
+    };
+
+    window.dragTaskLeave = function(e) {
+        const targetItem = e.currentTarget;
+        targetItem.style.background = 'rgba(255,255,255,0.05)';
+        targetItem.style.transform = 'scale(1)';
+    };
+
+    window.dropTask = function(e, targetIndex) {
+        e.preventDefault();
+        if (draggedTaskIndex !== null && draggedTaskIndex !== targetIndex) {
+            const taskToMove = currentTasks.splice(draggedTaskIndex, 1)[0];
+            currentTasks.splice(targetIndex, 0, taskToMove);
+            renderTaskBuilder();
+        } else {
+            const targetItem = e.currentTarget;
+            targetItem.style.background = 'rgba(255,255,255,0.05)';
+            targetItem.style.transform = 'scale(1)';
+            targetItem.style.opacity = '1';
+        }
+        draggedTaskIndex = null;
+    };
+
     function renderTaskBuilder() {
         if (!taskListUI) return;
         taskListUI.innerHTML = currentTasks.map((t, index) => {
             const isDone = t.startsWith('✅ ');
-            const textStyle = isDone ? 'text-decoration: line-through; opacity: 0.6;' : '';
+            let isUrgent = t.includes('🚨 ');
+            let textStyle = isDone ? 'text-decoration: line-through; opacity: 0.6;' : '';
+            if (isUrgent && !isDone) textStyle += 'color: #ff416c; font-weight: bold; ';
             const iconName = isDone ? 'check-circle' : 'circle';
             const iconColor = isDone ? '#22c55e' : '#8e6eff';
             return `
-            <li style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px;">
-                <span style="${textStyle} flex: 1;"><i data-lucide="${iconName}" style="width: 14px; height: 14px; margin-right: 5px; color: ${iconColor};"></i> ${t}</span>
+            <li draggable="true" 
+                ondragstart="dragTaskStart(event, ${index})" 
+                ondragover="dragTaskOver(event, ${index})" 
+                ondragleave="dragTaskLeave(event)" 
+                ondrop="dropTask(event, ${index})"
+                style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px; cursor: grab; transition: transform 0.2s, background 0.2s;">
+                <span style="${textStyle} flex: 1; display: flex; align-items: center;">
+                    <i data-lucide="grip-vertical" style="width: 14px; height: 14px; margin-right: 8px; color: rgba(255,255,255,0.3);"></i>
+                    <i data-lucide="${iconName}" style="width: 14px; height: 14px; margin-right: 5px; color: ${iconColor};"></i> 
+                    ${t}
+                </span>
                 <div style="display: flex; gap: 8px;">
+                    <button type="button" onclick="toggleTaskUrgent(${index})" style="background: none; border: none; color: ${isUrgent ? '#ff416c' : 'rgba(255,255,255,0.4)'}; cursor: pointer;" title="Alternar Urgência"><i data-lucide="siren" style="width: 16px; height: 16px;"></i></button>
                     <button type="button" onclick="toggleTaskDone(${index})" style="background: none; border: none; color: #22c55e; cursor: pointer;" title="Concluir Tarefa"><i data-lucide="check" style="width: 16px; height: 16px;"></i></button>
                     <button type="button" onclick="removeTask(${index})" style="background: none; border: none; color: #ff416c; cursor: pointer;" title="Remover Tarefa"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
                 </div>
@@ -1238,7 +1310,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
             const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
             const isUrgent = hasBlockers || needsHelp;
-            const formattedTasks = (entry.today_tasks || '').split('\n').map(t => `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><i data-lucide="check-square" style="width:14px;height:14px;color:#8e6eff;flex-shrink:0;margin-top:3px;"></i> <span style="flex:1;">${t.replace('• ', '')}</span></div>`).join('');
+            const formattedTasks = (entry.today_tasks || '').split('\n').map(t => {
+                let tClean = t.replace('• ', '').trim();
+                if (!tClean) return '';
+                const isDone = tClean.startsWith('✅ ');
+                const isUrgent = tClean.includes('🚨 ');
+                let spanStyle = 'flex:1;';
+                if (isUrgent && !isDone) spanStyle += 'color: #ff416c; font-weight: bold;';
+                if (isDone) spanStyle += 'text-decoration: line-through; opacity: 0.6;';
+                return `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><i data-lucide="check-square" style="width:14px;height:14px;color:#8e6eff;flex-shrink:0;margin-top:3px;"></i> <span style="${spanStyle}">${tClean}</span></div>`;
+            }).join('');
 
             const normStr = (s) => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : "";
             const currentU = normStr(currentUser || '');
@@ -1389,6 +1470,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             try {
                 if (editingId) {
+                    delete entry.created_at; // Mantém a data original do relatório
                     await supabaseClient.from('kickoffs').update(entry).eq('id', editingId);
                     showToast("Atualizado!"); 
                     // Não enviar alerta do Teams ao editar (isUpdate = true)
@@ -2010,7 +2092,16 @@ document.addEventListener('DOMContentLoaded', () => {
             monthEntries.sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).forEach(e => {
                 const tt = (e.today_tasks || '').trim();
                 if(tt !== '' && tt !== '-' && tt !== 'nada' && tt !== 'nao' && tt !== 'não') {
-                    const formattedTasks = tt.split('\n').map(t => `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><i data-lucide="check-square" style="width:14px;height:14px;color:#8e6eff;flex-shrink:0;margin-top:3px;"></i> <span style="flex:1;">${t.replace('• ', '')}</span></div>`).join('');
+                    const formattedTasks = tt.split('\n').map(t => {
+                        let tClean = t.replace('• ', '').trim();
+                        if (!tClean) return '';
+                        const isDone = tClean.startsWith('✅ ');
+                        const isUrgent = tClean.includes('🚨 ');
+                        let spanStyle = 'flex:1;';
+                        if (isUrgent && !isDone) spanStyle += 'color: #ff416c; font-weight: bold;';
+                        if (isDone) spanStyle += 'text-decoration: line-through; opacity: 0.6;';
+                        return `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><i data-lucide="check-square" style="width:14px;height:14px;color:#8e6eff;flex-shrink:0;margin-top:3px;"></i> <span style="${spanStyle}">${tClean}</span></div>`;
+                    }).join('');
                     
                     html += `
                         <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid #02ceff; margin-bottom: 15px;">
