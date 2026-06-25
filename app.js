@@ -2484,6 +2484,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const won = guesses.some(g => g === targetWord);
             showMessage(won ? '🎉 Você já venceu hoje!' : `😔 Palavra era: ${targetWord}`, won ? '#22c55e' : '#ff416c');
             startCountdown();
+            // Tenta salvar no banco caso o usuário tenha jogado antes de lançarmos o ranking
+            saveScoreToDB(won, guesses.length);
         }
         fetchMinigameScores();
         
