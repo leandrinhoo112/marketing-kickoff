@@ -2606,3 +2606,403 @@ document.addEventListener('DOMContentLoaded', () => {
     window.initWordle = initWordle;
 
 })();
+
+// =============================================
+// CAÇA-PALAVRAS DIÁRIO
+// =============================================
+(function() {
+    const ALL_WORDS = [
+        "LEAD", "FUNIL", "VENDA", "METRICA", "CLIENTE", "RETORNO", "LUCRO", "EQUIPE", 
+        "PROJETO", "AGIL", "FUTURO", "DADOS", "CLOUD", "SISTEMA", "REDE", "INOVACAO",
+        "MARCA", "DESIGN", "CODIGO", "TESTE", "ACESSO", "IMPACTO", "VALOR", "CUSTO",
+        "IDEIA", "TEMPO", "METAS", "FOCO", "PLANO", "MERCADO", "NUVEM", "BUSCA",
+        "CANAL", "AUDIO", "VIDEO", "MIDIA", "TEXTO", "EMAIL", "SITE", "APP", "MOBILE"
+    ];
+
+    const GRID_SIZE = 10;
+    let grid = [];
+    let wordsToFind = [];
+    let foundWords = [];
+    let isSelecting = false;
+    let startCell = null;
+    let currentPath = [];
+
+    function randomSeed(seed) {
+        var x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
+
+    function generateDailyGame() {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('pt-BR');
+        let seed = dateStr.split('/').reduce((a, b) => a + parseInt(b), 0) + 1234;
+
+        wordsToFind = [];
+        let tempWords = [...ALL_WORDS];
+        for (let i = 0; i < 5; i++) {
+            const idx = Math.floor(randomSeed(seed++) * tempWords.length);
+            wordsToFind.push(tempWords.splice(idx, 1)[0]);
+        }
+
+        grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(''));
+
+        wordsToFind.forEach(word => {
+            let placed = false;
+            let attempts = 0;
+            while (!placed && attempts < 100) {
+                attempts++;
+                const dir = Math.floor(randomSeed(seed++) * 3); 
+                const row = Math.floor(randomSeed(seed++) * GRID_SIZE);
+                const col = Math.floor(randomSeed(seed++) * GRID_SIZE);
+
+                let dRow = dir === 1 || dir === 2 ? 1 : 0;
+                let dCol = dir === 0 || dir === 2 ? 1 : 0;
+
+                let fits = true;
+                for (let i = 0; i < word.length; i++) {
+                    let r = row + dRow * i;
+                    let c = col + dCol * i;
+                    if (r >= GRID_SIZE || c >= GRID_SIZE || (grid[r][c] !== '' && grid[r][c] !== word[i])) {
+                        fits = false;
+                        break;
+                    }
+                }
+
+                if (fits) {
+                    for (let i = 0; i < word.length; i++) {
+                        grid[row + dRow * i][col + dCol * i] = word[i];
+                    }
+                    placed = true;
+                }
+            }
+        });
+
+        const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (let r = 0; r < GRID_SIZE; r++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+                if (grid[r][c] === '') {
+                    grid[r][c] = LETTERS[Math.floor(randomSeed(seed++) * LETTERS.length)];
+                }
+            }
+        }
+    }
+
+    function loadState() {
+        const todayKey = 'cacaPalavras_' + new Date().toLocaleDateString('pt-BR');
+        const state = JSON.parse(localStorage.getItem(todayKey) || '{}');
+        if (state && state.foundWords) {
+            foundWords = state.foundWords;
+        } else {
+            foundWords = [];
+        }
+    }
+
+    function saveState() {
+        const todayKey = 'cacaPalavras_' + new Date().toLocaleDateString('pt-BR');
+        localStorage.setItem(todayKey, JSON.stringify({ foundWords }));
+    }
+
+    function renderGrid() {
+        const container = document.getElementById('wordSearchGrid');
+        if (!container) return;
+        container.innerHTML = '';
+        
+        for (let r = 0; r < GRID_SIZE; r++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+                const div = document.createElement('div');
+                div.textContent = grid[r][c];
+                div.dataset.row = r;
+                div.dataset.col = c;
+                div.style.cssText = `
+                    width: 30px; height: 30px; 
+                    display: flex; align-items: center; justify-content: center; 
+                    background: rgba(255,255,255,0.05); border-radius: 4px;
+                    font-weight: bold; cursor: pointer; transition: all 0.2s;
+                    color: white; border: 1px solid rgba(255,255,255,0.1);
+                `;
+
+                div.addEventListener('mousedown', (e) => startSelection(r, c, e));
+                div.addEventListener('mouseenter', (e) => updateSelection(r, c, e));
+                div.addEventListener('touchstart', (e) => { e.preventDefault(); startSelection(r, c, e); });
+                div.addEventListener('touchmove', (e) => handleTouchMove(e));
+                
+                container.appendChild(div);
+            }
+        }
+        document.addEventListener('mouseup', endSelection);
+        document.addEventListener('touchend', endSelection);
+        updateHighlights();
+    }
+
+    function renderWords() {
+        const container = document.getElementById('wordSearchWords');
+        if (!container) return;
+        container.innerHTML = '';
+        wordsToFind.forEach(word => {
+            const isFound = foundWords.includes(word);
+            const div = document.createElement('div');
+            
+            // Dica: primeira letra e underlines para o resto
+            div.textContent = isFound ? word : word[0] + " " + Array(word.length - 1).fill('_').join(' ');
+            
+            div.style.cssText = `
+                padding: 5px 12px; border-radius: 15px; font-weight: bold; font-size: 0.9em;
+                background: ${isFound ? 'rgba(34,197,94,0.2)' : 'rgba(255,255,255,0.05)'};
+                color: ${isFound ? '#22c55e' : '#a0aec0'};
+                border: 1px solid ${isFound ? '#22c55e' : 'rgba(255,255,255,0.1)'};
+                letter-spacing: ${isFound ? 'normal' : '2px'};
+            `;
+            container.appendChild(div);
+        });
+
+        const winMsg = document.getElementById('wordSearchWinMsg');
+        if (winMsg) {
+            if (foundWords.length === wordsToFind.length && wordsToFind.length > 0) {
+                winMsg.style.display = 'block';
+            } else {
+                winMsg.style.display = 'none';
+            }
+        }
+    }
+
+    function updateHighlights() {
+        const cells = document.querySelectorAll('#wordSearchGrid div');
+        cells.forEach(c => {
+            c.style.background = 'rgba(255,255,255,0.05)';
+            c.style.color = 'white';
+            c.style.borderColor = 'rgba(255,255,255,0.1)';
+        });
+
+        foundWords.forEach(word => {
+            let painted = false;
+            for (let r = 0; r < GRID_SIZE && !painted; r++) {
+                for (let c = 0; c < GRID_SIZE && !painted; c++) {
+                    for (let dir = 0; dir < 3 && !painted; dir++) {
+                        let dRow = dir === 1 || dir === 2 ? 1 : 0;
+                        let dCol = dir === 0 || dir === 2 ? 1 : 0;
+                        
+                        let match = true;
+                        let path = [];
+                        for (let i = 0; i < word.length; i++) {
+                            let currR = r + dRow * i;
+                            let currC = c + dCol * i;
+                            if (currR >= GRID_SIZE || currC >= GRID_SIZE || grid[currR][currC] !== word[i]) {
+                                match = false;
+                                break;
+                            }
+                            path.push({r: currR, c: currC});
+                        }
+                        if (match) {
+                            path.forEach(p => {
+                                const el = document.querySelector(`#wordSearchGrid div[data-row="${p.r}"][data-col="${p.c}"]`);
+                                if (el) {
+                                    el.style.background = 'rgba(34,197,94,0.3)';
+                                    el.style.borderColor = '#22c55e';
+                                }
+                            });
+                            painted = true;
+                        }
+                    }
+                }
+            }
+        });
+
+        currentPath.forEach(p => {
+            const el = document.querySelector(`#wordSearchGrid div[data-row="${p.r}"][data-col="${p.c}"]`);
+            if (el) {
+                el.style.background = '#8e6eff';
+                el.style.borderColor = '#8e6eff';
+            }
+        });
+    }
+
+    function startSelection(r, c, e) {
+        if (foundWords.length === wordsToFind.length) return;
+        isSelecting = true;
+        startCell = {r, c};
+        currentPath = [{r, c}];
+        updateHighlights();
+    }
+
+    function handleTouchMove(e) {
+        if (!isSelecting) return;
+        const touch = e.touches[0];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (el && el.dataset.row) {
+            updateSelection(parseInt(el.dataset.row), parseInt(el.dataset.col), e);
+        }
+    }
+
+    function updateSelection(r, c, e) {
+        if (!isSelecting || !startCell) return;
+        
+        let dRow = Math.sign(r - startCell.r);
+        let dCol = Math.sign(c - startCell.c);
+        let dist = Math.max(Math.abs(r - startCell.r), Math.abs(c - startCell.c));
+
+        if (dRow !== 0 && dCol !== 0 && Math.abs(r - startCell.r) !== Math.abs(c - startCell.c)) {
+            return; 
+        }
+
+        currentPath = [];
+        for (let i = 0; i <= dist; i++) {
+            currentPath.push({ r: startCell.r + dRow * i, c: startCell.c + dCol * i });
+        }
+        updateHighlights();
+    }
+
+    function endSelection() {
+        if (!isSelecting) return;
+        isSelecting = false;
+        
+        let selectedWord = currentPath.map(p => grid[p.r][p.c]).join('');
+        let reversedWord = selectedWord.split('').reverse().join('');
+        let wordWasFound = false;
+
+        if (wordsToFind.includes(selectedWord) && !foundWords.includes(selectedWord)) {
+            foundWords.push(selectedWord);
+            wordWasFound = true;
+        } else if (wordsToFind.includes(reversedWord) && !foundWords.includes(reversedWord)) {
+            foundWords.push(reversedWord);
+            wordWasFound = true;
+        }
+
+        if (wordWasFound) {
+            if (window.xaropinhoSound) window.xaropinhoSound.play();
+            saveState();
+            saveCacaPalavrasScoreToDB(foundWords.length);
+        }
+
+        currentPath = [];
+        updateHighlights();
+        renderWords();
+    }
+
+    async function fetchCacaPalavrasScores() {
+        const list = document.getElementById('cacaPalavrasLeaderboardList');
+        if (!window.supabaseClient) {
+            if (list) list.innerHTML = '<p style="color: #f59e0b; text-align: center; margin: 0; font-size: 0.9em;">⚠️ Banco não conectado. Verifique a tabela <strong>cacapalavras_scores</strong> no Supabase.</p>';
+            return;
+        }
+        try {
+            if (list) list.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>';
+            const todayStr = new Date().toLocaleDateString('pt-BR');
+            const { data, error } = await window.supabaseClient
+                .from('cacapalavras_scores')
+                .select('*')
+                .eq('data_jogo', todayStr)
+                .order('palavras_achadas', { ascending: false });
+            
+            if (error) throw error;
+            renderCacaPalavrasLeaderboard(data);
+        } catch (e) {
+            console.error("Erro ao carregar ranking", e);
+            if (list) {
+                list.innerHTML = `<p style="color: #ff416c; text-align: center; margin: 0; font-size: 0.9em;">❌ Erro: Crie a tabela 'cacapalavras_scores' no Supabase.</p>`;
+            }
+        }
+    }
+
+    function renderCacaPalavrasLeaderboard(scores) {
+        const list = document.getElementById('cacaPalavrasLeaderboardList');
+        if (!list) return;
+        if (!scores || scores.length === 0) {
+            list.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Ninguém jogou hoje ainda. Seja o primeiro!</p>';
+            return;
+        }
+
+        let html = '';
+        scores.forEach((s, i) => {
+            let icon = s.palavras_achadas === 5 ? '🎉' : '🔍';
+            if (i === 0 && s.palavras_achadas === 5) icon = '🥇';
+            else if (i === 1 && s.palavras_achadas === 5) icon = '🥈';
+            else if (i === 2 && s.palavras_achadas === 5) icon = '🥉';
+
+            html += `
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <span style="font-weight: bold; color: white;">${icon} ${s.usuario}</span>
+                    <span style="color: ${s.palavras_achadas === 5 ? '#22c55e' : '#facc15'}; font-size: 0.9em;">${s.palavras_achadas}/5 achadas</span>
+                </div>
+            `;
+        });
+        list.innerHTML = html;
+    }
+
+    async function saveCacaPalavrasScoreToDB(count) {
+        if (!window.supabaseClient) return;
+        const loggedInUser = localStorage.getItem('currentUser');
+        if (!loggedInUser) return;
+        
+        try {
+            const todayStr = new Date().toLocaleDateString('pt-BR');
+            const { data } = await window.supabaseClient
+                .from('cacapalavras_scores')
+                .select('id, palavras_achadas')
+                .eq('usuario', loggedInUser)
+                .eq('data_jogo', todayStr);
+
+            if (data && data.length > 0) {
+                if (data[0].palavras_achadas < count) {
+                    await window.supabaseClient.from('cacapalavras_scores').update({ palavras_achadas: count }).eq('id', data[0].id);
+                }
+            } else {
+                await window.supabaseClient.from('cacapalavras_scores').insert([{
+                    usuario: loggedInUser,
+                    data_jogo: todayStr,
+                    palavras_achadas: count
+                }]);
+            }
+            fetchCacaPalavrasScores();
+        } catch (e) {
+            console.error("Erro ao salvar pontuacao caça-palavras", e);
+        }
+    }
+
+    function initCacaPalavras() {
+        if (!document.getElementById('wordSearchGrid')) return;
+        generateDailyGame();
+        loadState();
+        renderGrid();
+        renderWords();
+        
+        // Sincroniza dados locais antigos no banco (caso o usuário tenha jogado antes de criarmos o ranking)
+        if (foundWords.length > 0) {
+            saveCacaPalavrasScoreToDB(foundWords.length);
+        }
+        
+        fetchCacaPalavrasScores();
+
+        const leaderboard = document.getElementById('cacaPalavrasLeaderboard');
+        if (leaderboard && !document.getElementById('refreshCacaBtn')) {
+            const btn = document.createElement('button');
+            btn.id = 'refreshCacaBtn';
+            btn.textContent = '🔄 Atualizar Ranking';
+            btn.style.cssText = 'margin-top: 15px; width: 100%; padding: 8px; background: rgba(142,110,255,0.2); border: 1px solid #8e6eff; border-radius: 8px; color: #8e6eff; cursor: pointer; font-size: 0.9em;';
+            btn.onclick = fetchCacaPalavrasScores;
+            leaderboard.appendChild(btn);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initCacaPalavras();
+        
+        const gameBtns = document.querySelectorAll('.game-tab-btn');
+        gameBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                gameBtns.forEach(b => {
+                    b.classList.remove('active');
+                    b.style.background = 'rgba(255,255,255,0.1)';
+                    b.style.color = '#a0aec0';
+                });
+                btn.classList.add('active');
+                btn.style.background = '#6841f1';
+                btn.style.color = 'white';
+                
+                const gameId = btn.getAttribute('data-game');
+                document.getElementById('game-wordle').style.display = gameId === 'wordle' ? 'block' : 'none';
+                document.getElementById('game-cacaPalavras').style.display = gameId === 'cacaPalavras' ? 'block' : 'none';
+            });
+        });
+    });
+
+})();
