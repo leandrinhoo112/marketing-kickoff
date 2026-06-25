@@ -2124,6 +2124,75 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // =============================================
+    // SISTEMA DE NOTIFICAÇÕES DE AJUDA EM TEMPO REAL
+    // =============================================
+    function playNotificationSound() {
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0, ctx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.5);
+        } catch (e) { console.warn("Audio not supported"); }
+    }
+
+    let notifiedHelpIds = JSON.parse(localStorage.getItem('notifiedHelpIds') || '[]');
+
+    function showHelpNotification(entry) {
+        document.getElementById('helpNotificationText').innerHTML = `<strong>${entry.nome}</strong> marcou você agora mesmo:<br><br><span style="color: white; font-style: italic;">"${entry.ajuda_texto}"</span>`;
+        const popup = document.getElementById('helpNotificationPopup');
+        popup.style.display = 'block';
+        if (window.lucide) window.lucide.createIcons();
+        playNotificationSound();
+    }
+
+    window.pollHelpRequests = async () => {
+        if (!supabaseClient) return;
+        const myName = localStorage.getItem('radarUser');
+        if (!myName) return;
+
+        const todayStr = new Date().toLocaleDateString('pt-BR');
+        
+        try {
+            const { data, error } = await supabaseClient
+                .from('kickoffs')
+                .select('id, nome, ajuda_texto, data_kickoff')
+                .eq('data_kickoff', todayStr)
+                .eq('precisa_ajuda', true)
+                .ilike('ajuda_quem', `%${myName}%`);
+            
+            if (error) throw error;
+            if (data && data.length > 0) {
+                data.forEach(entry => {
+                    // Se não foi notificado ainda e não foi o próprio usuário que criou
+                    if (!notifiedHelpIds.includes(entry.id) && entry.nome !== myName) {
+                        notifiedHelpIds.push(entry.id);
+                        localStorage.setItem('notifiedHelpIds', JSON.stringify(notifiedHelpIds));
+                        showHelpNotification(entry);
+                    }
+                });
+            }
+        } catch (e) {
+            console.error("Erro ao fazer polling de ajudas", e);
+        }
+    };
+
+    // Polling a cada 30 segundos
+    setInterval(window.pollHelpRequests, 30000);
+    // Checa assim que carregar (espera 5s pra não conflitar com loadEntries)
+    setTimeout(window.pollHelpRequests, 5000);
+
 });
 
 // =============================================
@@ -2384,6 +2453,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showMessage(`😔 Era: ${targetWord}`, '#ff416c');
                 }
                 startCountdown();
+                saveScoreToDB(won, guesses.length);
             } else {
                 saveState();
                 currentGuess = '';
@@ -2411,6 +2481,86 @@ document.addEventListener('DOMContentLoaded', () => {
             const won = guesses.some(g => g === targetWord);
             showMessage(won ? '🎉 Você já venceu hoje!' : `😔 Palavra era: ${targetWord}`, won ? '#22c55e' : '#ff416c');
             startCountdown();
+        }
+        fetchMinigameScores();
+    }
+
+    async function fetchMinigameScores() {
+        if (!window.supabaseClient) return;
+        try {
+            const todayStr = new Date().toLocaleDateString('pt-BR');
+            const { data, error } = await supabaseClient
+                .from('minigame_scores')
+                .select('*')
+                .eq('data_jogo', todayStr)
+                .order('tentativas', { ascending: true });
+            
+            if (error) throw error;
+            renderLeaderboard(data);
+        } catch (e) {
+            console.error("Erro ao carregar ranking", e);
+        }
+    }
+
+    function renderLeaderboard(scores) {
+        const list = document.getElementById('wordleLeaderboardList');
+        if (!list) return;
+        if (!scores || scores.length === 0) {
+            list.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Ninguém jogou hoje ainda. Seja o primeiro!</p>';
+            return;
+        }
+
+        // Ordenar: primeiro quem venceu, depois por tentativas, depois quem perdeu
+        const sorted = [...scores].sort((a, b) => {
+            if (a.venceu && !b.venceu) return -1;
+            if (!a.venceu && b.venceu) return 1;
+            if (a.venceu && b.venceu) return a.tentativas - b.tentativas;
+            return 0; // ambos perderam
+        });
+
+        let html = '';
+        sorted.forEach((s, i) => {
+            let icon = s.venceu ? '🎉' : '🔴';
+            if (i === 0 && s.venceu) icon = '🥇';
+            else if (i === 1 && s.venceu) icon = '🥈';
+            else if (i === 2 && s.venceu) icon = '🥉';
+
+            let desc = s.venceu ? `${s.tentativas} tentativa(s)` : `Não acertou`;
+            html += `
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <span style="font-weight: bold; color: white;">${icon} ${s.usuario}</span>
+                    <span style="color: ${s.venceu ? '#22c55e' : '#ff416c'}; font-size: 0.9em;">${desc}</span>
+                </div>
+            `;
+        });
+        list.innerHTML = html;
+    }
+
+    async function saveScoreToDB(won, attempts) {
+        if (!window.supabaseClient) return;
+        const loggedInUser = localStorage.getItem('radarUser');
+        if (!loggedInUser) return;
+        
+        try {
+            const todayStr = new Date().toLocaleDateString('pt-BR');
+            // Check se já salvou hoje
+            const { data } = await supabaseClient
+                .from('minigame_scores')
+                .select('id')
+                .eq('usuario', loggedInUser)
+                .eq('data_jogo', todayStr);
+
+            if (data && data.length > 0) return; // Ja salvou
+
+            await supabaseClient.from('minigame_scores').insert([{
+                usuario: loggedInUser,
+                data_jogo: todayStr,
+                tentativas: attempts,
+                venceu: won
+            }]);
+            fetchMinigameScores(); // Recarrega placar
+        } catch (e) {
+            console.error("Erro ao salvar pontuacao", e);
         }
     }
 
