@@ -2162,7 +2162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.pollHelpRequests = async () => {
         if (!supabaseClient) return;
-        const myName = localStorage.getItem('radarUser');
+        const myName = localStorage.getItem('currentUser'); // chave correta
         if (!myName) return;
 
         try {
@@ -2500,10 +2500,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchMinigameScores() {
-        if (!window.supabaseClient) return;
+        const list = document.getElementById('wordleLeaderboardList');
+        if (!window.supabaseClient) {
+            if (list) list.innerHTML = '<p style="color: #f59e0b; text-align: center; margin: 0; font-size: 0.9em;">⚠️ Banco de dados não conectado. Verifique a tabela <strong>minigame_scores</strong> no Supabase.</p>';
+            return;
+        }
         try {
+            if (list) list.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>';
             const todayStr = new Date().toLocaleDateString('pt-BR');
-            const { data, error } = await supabaseClient
+            const { data, error } = await window.supabaseClient
                 .from('minigame_scores')
                 .select('*')
                 .eq('data_jogo', todayStr)
@@ -2513,9 +2518,8 @@ document.addEventListener('DOMContentLoaded', () => {
             renderLeaderboard(data);
         } catch (e) {
             console.error("Erro ao carregar ranking", e);
-            const list = document.getElementById('wordleLeaderboardList');
             if (list) {
-                list.innerHTML = `<p style="color: #ff416c; text-align: center; margin: 0; font-size: 0.9em;">Erro ao conectar com o banco. O Ranking requer a tabela 'minigame_scores'.</p>`;
+                list.innerHTML = `<p style="color: #ff416c; text-align: center; margin: 0; font-size: 0.9em;">❌ Erro: ${e.message}. Crie a tabela 'minigame_scores' no Supabase.</p>`;
             }
         }
     }
@@ -2556,7 +2560,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function saveScoreToDB(won, attempts) {
         if (!window.supabaseClient) return;
-        const loggedInUser = localStorage.getItem('radarUser');
+        const loggedInUser = localStorage.getItem('currentUser'); // chave correta
         if (!loggedInUser) return;
         
         try {
