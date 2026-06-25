@@ -2983,6 +2983,81 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function fetchMonthlyRankings() {
+        if (!window.supabaseClient) return;
+        const termoList = document.getElementById('monthlyTermoList');
+        const cacaList = document.getElementById('monthlyCacaList');
+        if (termoList) termoList.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>';
+        if (cacaList) cacaList.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>';
+
+        const now = new Date();
+        const monthStr = String(now.getMonth() + 1).padStart(2, '0');
+        const yearStr = String(now.getFullYear());
+        const monthSuffix = `/${monthStr}/${yearStr}`;
+
+        try {
+            const { data: termoData } = await window.supabaseClient
+                .from('minigame_scores')
+                .select('usuario, data_jogo')
+                .like('data_jogo', `%${monthSuffix}`);
+            
+            if (termoData) {
+                const termoCounts = {};
+                termoData.forEach(row => {
+                    if (!termoCounts[row.usuario]) termoCounts[row.usuario] = new Set();
+                    termoCounts[row.usuario].add(row.data_jogo);
+                });
+                renderMonthlyList(termoList, termoCounts, '#6841f1');
+            }
+
+            const { data: cacaData } = await window.supabaseClient
+                .from('cacapalavras_scores')
+                .select('usuario, data_jogo, palavras_achadas')
+                .like('data_jogo', `%${monthSuffix}`)
+                .gt('palavras_achadas', 0);
+
+            if (cacaData) {
+                const cacaCounts = {};
+                cacaData.forEach(row => {
+                    if (!cacaCounts[row.usuario]) cacaCounts[row.usuario] = new Set();
+                    cacaCounts[row.usuario].add(row.data_jogo);
+                });
+                renderMonthlyList(cacaList, cacaCounts, '#facc15');
+            }
+        } catch (e) {
+            console.error("Erro ao carregar ranking mensal", e);
+        }
+    }
+
+    function renderMonthlyList(container, countsObj, color) {
+        if (!container) return;
+        const arr = Object.keys(countsObj).map(u => ({
+            usuario: u,
+            dias: countsObj[u].size
+        })).sort((a, b) => b.dias - a.dias);
+
+        if (arr.length === 0) {
+            container.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Ninguém jogou neste mês ainda.</p>';
+            return;
+        }
+
+        let html = '';
+        arr.forEach((item, i) => {
+            let icon = '🔥';
+            if (i === 0) icon = '🥇';
+            else if (i === 1) icon = '🥈';
+            else if (i === 2) icon = '🥉';
+
+            html += `
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <span style="font-weight: bold; color: white;">${icon} ${item.usuario}</span>
+                    <span style="color: ${color}; font-size: 0.9em; font-weight: bold;">${item.dias} dias</span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         initCacaPalavras();
         
@@ -3001,6 +3076,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const gameId = btn.getAttribute('data-game');
                 document.getElementById('game-wordle').style.display = gameId === 'wordle' ? 'block' : 'none';
                 document.getElementById('game-cacaPalavras').style.display = gameId === 'cacaPalavras' ? 'block' : 'none';
+                const mensalContainer = document.getElementById('game-mensal');
+                if (mensalContainer) mensalContainer.style.display = gameId === 'mensal' ? 'block' : 'none';
+                
+                if (gameId === 'mensal') {
+                    fetchMonthlyRankings();
+                }
             });
         });
     });

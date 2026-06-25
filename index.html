@@ -595,6 +595,7 @@
                 <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
                     <button class="game-tab-btn active" data-game="wordle" style="padding: 8px 16px; border-radius: 20px; border: none; background: #6841f1; color: white; cursor: pointer; font-weight: bold; transition: all 0.2s;">Termo</button>
                     <button class="game-tab-btn" data-game="cacaPalavras" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;">Caça-Palavras</button>
+                    <button class="game-tab-btn" data-game="mensal" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;"><i data-lucide="calendar" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i>Mensal</button>
                 </div>
             </div>
 
@@ -652,6 +653,27 @@
                 </div>
 
             </div> <!-- FIM DO CONTAINER DO CAÇA-PALAVRAS -->
+
+            <!-- CONTAINER DO RANKING MENSAL -->
+            <div id="game-mensal" style="display: none;">
+                <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">Quem tem mais constância no mês? Ranking baseado em dias jogados.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div style="padding: 20px; border-radius: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
+                        <h3 style="color: #6841f1; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">🗓️ Termo do Mês</h3>
+                        <div id="monthlyTermoList" style="display: flex; flex-direction: column; gap: 10px;">
+                            <p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 20px; border-radius: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
+                        <h3 style="color: #facc15; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">🗓️ Caça-Palavras do Mês</h3>
+                        <div id="monthlyCacaList" style="display: flex; flex-direction: column; gap: 10px;">
+                            <p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- FIM DO CONTAINER DO RANKING MENSAL -->
 
         </div>
     </section>
@@ -904,7 +926,7 @@
     </footer>
 
     <script src="phone_audio.js"></script>
-    <script src="app.js?v=69.0" defer></script>
+    <script src="app.js?v=70.0" defer></script>
     <script>
         lucide.createIcons();
     </script>
