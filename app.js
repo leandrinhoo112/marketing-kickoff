@@ -7,6 +7,7 @@ let supabaseClient;
 try {
     if (window.supabase) {
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        window.supabaseClient = supabaseClient; // Expõe globalmente para o IIFE do minigame
     }
 } catch (e) { console.error(e); }
 
@@ -2147,7 +2148,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.warn("Audio not supported"); }
     }
 
-    let notifiedHelpIds = JSON.parse(localStorage.getItem('notifiedHelpIds') || '[]');
+    // Chave com data para resetar automaticamente todo dia
+    const todayKey = 'notifiedHelpIds_' + new Date().toLocaleDateString('pt-BR');
+    let notifiedHelpIds = JSON.parse(localStorage.getItem(todayKey) || '[]');
 
     function showHelpNotification(entry) {
         document.getElementById('helpNotificationText').innerHTML = `<strong>${entry.nome}</strong> marcou você agora mesmo:<br><br><span style="color: white; font-style: italic;">"${entry.ajuda_texto}"</span>`;
@@ -2162,24 +2165,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const myName = localStorage.getItem('radarUser');
         if (!myName) return;
 
-        const todayStr = new Date().toLocaleDateString('pt-BR');
-        
         try {
+            const todayStart = new Date();
+            todayStart.setHours(0, 0, 0, 0);
+            
             const { data, error } = await supabaseClient
                 .from('kickoffs')
-                .select('id, nome, ajuda_texto, data_kickoff')
-                .eq('data_kickoff', todayStr)
-                .eq('precisa_ajuda', true)
-                .ilike('ajuda_quem', `%${myName}%`);
+                .select('id, username, help_needed, who_help, created_at')
+                .gte('created_at', todayStart.toISOString())
+                .ilike('who_help', `%${myName}%`);
             
             if (error) throw error;
             if (data && data.length > 0) {
                 data.forEach(entry => {
-                    // Se não foi notificado ainda e não foi o próprio usuário que criou
-                    if (!notifiedHelpIds.includes(entry.id) && entry.nome !== myName) {
+                    const u = entry.username.split('|')[0];
+                    if (!notifiedHelpIds.includes(entry.id) && u !== myName) {
                         notifiedHelpIds.push(entry.id);
-                        localStorage.setItem('notifiedHelpIds', JSON.stringify(notifiedHelpIds));
-                        showHelpNotification(entry);
+                        localStorage.setItem(todayKey, JSON.stringify(notifiedHelpIds));
+                        showHelpNotification({ nome: u, ajuda_texto: entry.help_needed || 'Precisa de ajuda com o radar de hoje.' });
                     }
                 });
             }
@@ -2190,8 +2193,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Polling a cada 30 segundos
     setInterval(window.pollHelpRequests, 30000);
-    // Checa assim que carregar (espera 5s pra não conflitar com loadEntries)
-    setTimeout(window.pollHelpRequests, 5000);
+    // Checa imediatamente ao carregar (sem delay)
+    window.pollHelpRequests();
 
 });
 
@@ -2483,6 +2486,17 @@ document.addEventListener('DOMContentLoaded', () => {
             startCountdown();
         }
         fetchMinigameScores();
+        
+        // Adiciona botão de refresh no ranking
+        const leaderboard = document.getElementById('wordleLeaderboard');
+        if (leaderboard && !document.getElementById('refreshRankingBtn')) {
+            const btn = document.createElement('button');
+            btn.id = 'refreshRankingBtn';
+            btn.textContent = '🔄 Atualizar Ranking';
+            btn.style.cssText = 'margin-top: 15px; width: 100%; padding: 8px; background: rgba(142,110,255,0.2); border: 1px solid #8e6eff; border-radius: 8px; color: #8e6eff; cursor: pointer; font-size: 0.9em;';
+            btn.onclick = fetchMinigameScores;
+            leaderboard.appendChild(btn);
+        }
     }
 
     async function fetchMinigameScores() {
@@ -2499,6 +2513,10 @@ document.addEventListener('DOMContentLoaded', () => {
             renderLeaderboard(data);
         } catch (e) {
             console.error("Erro ao carregar ranking", e);
+            const list = document.getElementById('wordleLeaderboardList');
+            if (list) {
+                list.innerHTML = `<p style="color: #ff416c; text-align: center; margin: 0; font-size: 0.9em;">Erro ao conectar com o banco. O Ranking requer a tabela 'minigame_scores'.</p>`;
+            }
         }
     }
 
