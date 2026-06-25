@@ -725,6 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
             streakBadge.style.display = 'none';
         }
 
+        window.currentStats = { checkins: myCheckins.length, praises: myPraises.length, xp: xp };
         renderAchievements(myCheckins.length, myPraises.length, xp);
 
         // Efeito Dopaminoso (Mostrar apenas 1x por sessão)
@@ -808,6 +809,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     };
 
+    window.updateMinigameAchievements = function(game) {
+        localStorage.setItem(`achv_${game}`, 'true');
+        if (window.currentStats) {
+            renderAchievements(window.currentStats.checkins, window.currentStats.praises, window.currentStats.xp);
+        }
+    };
+
     function renderAchievements(checkinsCount, praisesCount, totalXp) {
         const achievements = [
             { id: 'primeiros_passos', title: 'Primeiros Passos', desc: '1º check-in realizado', icon: '🚀', condition: checkinsCount >= 1 },
@@ -815,7 +823,9 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'mente_brilhante', title: 'Mente Brilhante', desc: 'Citado 3x em Elogios', icon: '💡', condition: praisesCount >= 3 },
             { id: 'coluna_time', title: 'Coluna do Time', desc: 'Citado 10x em Elogios', icon: '🤝', condition: praisesCount >= 10 },
             { id: 'veterano', title: 'Veterano', desc: 'Alcançou 500 XP', icon: '🏅', condition: totalXp >= 500 },
-            { id: 'phone_hunter', title: 'Caçador de Telefones', desc: 'Pegou o telefone fujão', icon: '📞', condition: localStorage.getItem('phoneHunter') === 'true' }
+            { id: 'phone_hunter', title: 'Caçador de Telefones', desc: 'Pegou o telefone fujão', icon: '📞', condition: localStorage.getItem('phoneHunter') === 'true' },
+            { id: 'termo_master', title: 'Sabe-Tudo', desc: 'Jogou o Termo diário', icon: '🧠', condition: localStorage.getItem('achv_termo') === 'true' },
+            { id: 'caca_palavras', title: 'Olho de Águia', desc: 'Jogou o Caça-Palavras', icon: '🦅', condition: localStorage.getItem('achv_caca') === 'true' }
         ];
 
         const list = document.getElementById('achievementsList');
@@ -1328,10 +1338,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const canEdit = normStr(u.name) === currentU || isException;
 
             return `
-            <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border-left: 4px solid ${isUrgent ? '#ff416c' : displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
+            <div class="kickoff-item ${isUrgent ? 'urgent-item' : ''}" style="border: 2px solid ${isUrgent ? '#ff416c' : displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <div class="avatar" style="background: ${displayColor}">${getInitials(u.name)}</div>
+                        <div style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background-color: rgba(255,255,255,0.05);">
+                            <img src="${u.name.toLowerCase()}.png" alt="${u.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'color:${displayColor};font-weight:bold;font-size:1.1em;\\'>'+getInitials('${u.name}')+'</span>';">
+                        </div>
                         <div class="user-info">
                             <h4 style="color: ${displayColor}; font-size: 1.2em; margin: 0;">${u.name}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${timeAgo(entry.created_at)}</span>
@@ -1562,10 +1574,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const destaqueBadge = isDestaque ? `<span style="background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.6em; margin-left: 8px; text-transform: uppercase; font-weight: bold; vertical-align: middle;">🔥 Destaque da Semana</span>` : '';
 
             return `
-            <div class="kickoff-item" style="border-left: 4px solid ${displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
+            <div class="kickoff-item" style="border: 2px solid ${displayColor}; margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease;">
                 <div class="item-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <div class="avatar" style="background: ${displayColor}; color: #0f0a1e;">${getInitials(u.name)}</div>
+                        <div style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background-color: rgba(255,255,255,0.05);">
+                            <img src="${u.name.toLowerCase()}.png" alt="${u.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'color:${displayColor};font-weight:bold;font-size:1.1em;\\'>'+getInitials('${u.name}')+'</span>';">
+                        </div>
                         <div class="user-info">
                             <h4 style="color: ${displayColor}; font-size: 1.2em; margin: 0;">${u.name} ${destaqueBadge}</h4>
                             <span style="opacity: 0.5; font-size: 0.85em;">${new Date(entry.created_at).toLocaleDateString('pt-BR')}</span>
@@ -2583,6 +2597,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 venceu: won
             }]);
             fetchMinigameScores(); // Recarrega placar
+            if (window.updateMinigameAchievements) window.updateMinigameAchievements('termo');
         } catch (e) {
             console.error("Erro ao salvar pontuacao", e);
         }
@@ -2953,6 +2968,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }]);
             }
             fetchCacaPalavrasScores();
+            if (window.updateMinigameAchievements) window.updateMinigameAchievements('caca');
         } catch (e) {
             console.error("Erro ao salvar pontuacao caça-palavras", e);
         }
