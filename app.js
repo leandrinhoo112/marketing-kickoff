@@ -1252,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (myEntryToday) {
                 editShortcutBtn.style.display = 'flex';
-                editShortcutBtn.onclick = () => window.editEntry(myEntryToday);
+                editShortcutBtn.onclick = () => window.editEntry(myEntryToday.id);
             } else {
                 editShortcutBtn.style.display = 'none';
             }
