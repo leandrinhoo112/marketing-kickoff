@@ -1244,6 +1244,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         presenceBar.innerHTML = uniqueUsers.map(u => `<div class="presence-avatar" title="${u.name}" style="border: 2px solid ${u.color}; background: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 0;"><img src="${u.name.toLowerCase()}.png" alt="${u.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-size:0.8em;font-weight:bold;color:${u.color};\\'>'+getInitials('${u.name}')+'</span>';"></div>`).join('');
+
+        const editShortcutBtn = document.getElementById('editMyReportShortcutBtn');
+        if (editShortcutBtn) {
+            const currentUser = localStorage.getItem('currentUser');
+            const myEntryToday = todayEntries.find(e => decodeUser(e.username).name.toLowerCase() === (currentUser || '').toLowerCase());
+            
+            if (myEntryToday) {
+                editShortcutBtn.style.display = 'flex';
+                editShortcutBtn.onclick = () => window.editEntry(myEntryToday);
+            } else {
+                editShortcutBtn.style.display = 'none';
+            }
+        }
     }
 
     function copyDailySummary() {
