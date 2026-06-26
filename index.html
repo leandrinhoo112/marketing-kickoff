@@ -104,8 +104,10 @@
             <div id="presenceBar" style="display: flex; justify-content: center; gap: -10px; margin-top: 15px;">
                 <!-- Avatares de quem já postou hoje entrarão aqui -->
             </div>
-            <button id="editMyReportShortcutBtn" class="btn-secondary" style="display: none; margin: 15px auto 0; gap: 8px; font-size: 0.85em; border-radius: 20px; padding: 6px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #a0aec0;">
-                <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i> Editar meu radar de hoje
+            <button id="editMyReportShortcutBtn" style="display: none; margin: 18px auto 0; gap: 8px; font-size: 0.82em; border-radius: 25px; padding: 8px 22px; background: linear-gradient(135deg, rgba(142,110,255,0.15), rgba(2,206,255,0.1)); border: 1px solid rgba(142,110,255,0.35); color: #c4aaff; cursor: pointer; align-items: center; transition: all 0.25s ease; font-family: inherit; font-weight: 600; letter-spacing: 0.5px; backdrop-filter: blur(6px);"
+                onmouseover="this.style.background='linear-gradient(135deg,rgba(142,110,255,0.3),rgba(2,206,255,0.2))'; this.style.borderColor='rgba(142,110,255,0.7)'; this.style.transform='translateY(-1px)';"
+                onmouseout="this.style.background='linear-gradient(135deg,rgba(142,110,255,0.15),rgba(2,206,255,0.1))'; this.style.borderColor='rgba(142,110,255,0.35)'; this.style.transform='translateY(0)';">
+                <i data-lucide="edit-3" style="width: 13px; height: 13px;"></i> Editar meu radar de hoje
             </button>
         </section>
 
@@ -929,7 +931,7 @@
     </footer>
 
     <script src="phone_audio.js"></script>
-    <script src="app.js?v=77.0" defer></script>
+    <script src="app.js?v=79.0" defer></script>
     <script>
         lucide.createIcons();
     </script>

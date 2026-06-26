@@ -1247,12 +1247,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const editShortcutBtn = document.getElementById('editMyReportShortcutBtn');
         if (editShortcutBtn) {
-            const currentUser = localStorage.getItem('currentUser');
-            const myEntryToday = todayEntries.find(e => decodeUser(e.username).name.toLowerCase() === (currentUser || '').toLowerCase());
-            
-            if (myEntryToday) {
+            // Mostra o botão apenas se o usuário logado já fez o radar hoje
+            const rawCurrent = localStorage.getItem('currentUser') || '';
+            const normName = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();
+            const currentNorm = normName(rawCurrent);
+            const iAlreadyPosted = currentNorm && todayEntries.some(e => normName(decodeUser(e.username).name) === currentNorm);
+
+            if (iAlreadyPosted) {
                 editShortcutBtn.style.display = 'flex';
-                editShortcutBtn.onclick = () => window.editEntry(myEntryToday.id);
+                // Busca o ID no momento do clique (quando allEntries está certamente carregado)
+                editShortcutBtn.onclick = () => {
+                    const todayStr = new Date().toLocaleDateString('pt-BR');
+                    const me = allEntries.find(e => {
+                        const d = new Date(e.created_at).toLocaleDateString('pt-BR');
+                        return d === todayStr && normName(decodeUser(e.username).name) === currentNorm;
+                    });
+                    if (me) {
+                        window.editEntry(me.id);
+                    } else {
+                        showToast('Não encontramos seu radar de hoje. Recarregando...', 'error');
+                        loadEntries();
+                    }
+                };
             } else {
                 editShortcutBtn.style.display = 'none';
             }
