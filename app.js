@@ -2220,33 +2220,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const WORDBANK = [
         "ABRIR","ACOES","AJUDA","ALTOS","AINDA","AMBOS","ANTES","ARGOS","ARTES","ASSAZ",
         "BALDE","BANCO","BARCO","BATER","BEIRA","BELAS","BISPO","BOLSA","BOLSO","BORDA",
-        "CABER","CABO","CALDO","CAMPO","CANTO","CAPAZ","CARGA","CARGO","CARRO","CARTA",
-        "CENAS","CHAVE","CIELO","CINCO","CIRCO","CLUBE","COBRA","COISA","COLOR","CONTA",
+        "CABER","CALDO","CAMPO","CANTO","CAPAZ","CARGA","CARGO","CARRO","CARTA",
+        "CENAS","CHAVE","CINCO","CIRCO","CLUBE","COBRA","COISA","CONTA",
         "CORTE","COURO","COUVE","CRIOU","CRIVO","CRUEL","CURTO","CURVA","DATAS","DELTA",
-        "DENSO","DESDE","DEVER","DIANA","DISCO","DISSE","DITAR","DOCES","DONNA","DOSIL",
-        "DUPLO","ECLAT","EDUCA","EMITE","ENJOY","ENTRE","ENVIO","EPICA","EQUIP","ERROS",
-        "ESCOA","ESCOP","ETAPA","EVENT","EXTRA","FACAO","FALAR","FALTA","FAMIL","FASES",
+        "DENSO","DESDE","DEVER","DIANA","DISCO","DISSE","DITAR","DOCES",
+        "DUPLO","EDUCA","EMITE","ENTRE","ENVIO","EPICO","ERROS",
+        "ESCOA","ETAPA","EXTRA","FACAO","FALAR","FALTA","FASES",
         "FECHA","FENDA","FESTA","FIQUE","FIRMA","FITAR","FORCA","FORMA","FORTE","FREAR",
         "FRUTO","FUNDO","GANHA","GERAL","GESTO","GLOBO","GOLPE","GOSTO","GRAFO","GREVE",
         "GRUPO","GUIAR","HABIL","HONRA","HOTEL","HUMOR","IDEAL","IDEIA","IGUAL","IMPAR",
-        "INICIO","INOVA","INPUT","INTER","ISOLA","JOGAR","JOINT","JUIZO","JUNTO","JUROS",
-        "LANCE","LAPIS","LENTA","LICAO","LIDAR","LIGAR","LIGHT","LIMITE","LINDA","LINHA",
-        "LOCAL","LOGICA","LUCRO","LUGAR","LONGO","MACRO","MANOS","MARCA","MARCA","MASSA",
+        "INICIO","INOVA","ISOLA","JOGAR","JUIZO","JUNTO","JUROS",
+        "LANCE","LAPIS","LENTA","LICAO","LIDAR","LIGAR","LIMITE","LINDA","LINHA",
+        "LOCAL","LOGICA","LUCRO","LUGAR","LONGO","MANOS","MARCA","MASSA",
         "MEDIA","MELHOR","METAS","METODO","MEIOS","MISTO","MODAL","MOEDA","MORAR","MOTOR",
         "MUNDO","NIVEL","NORMA","NOTAR","NOVAS","NOVOS","OBTER","ORDEM","OTIMO","NOSSA",
-        "PACTO","PAPEL","PARTE","PASSO","PEDIR","PERDA","PESAR","PILHA","PILOT","PISTA",
+        "PACTO","PAPEL","PARTE","PASSO","PEDIR","PERDA","PESAR","PILHA","PISTA",
         "PLANO","PODER","PONTO","PRECO","PRIMO","PROVA","PULSO","RENDA","RISCO","RITMO",
-        "RIVAL","RODAS","ROLHA","ROTINA","SAIDA","SALDO","SETOR","SIGLA","SINAP","SLIDE",
-        "SMART","SOBRE","SOFRE","SOLVE","SORTE","SUCESSO","SUITE","SUPER","TABELA","TARDE",
+        "RIVAL","RODAS","ROLHA","ROTINA","SAIDA","SALDO","SETOR","SIGLA","SOBRE","SOFRE",
+        "SOLVE","SORTE","SUCESSO","SUITE","SUPER","TABELA","TARDE",
         "TARIFA","TAXA","TEMPO","TEXTO","TIMES","TITULO","TOMAR","TOQUE","TOTAL","TREINO",
-        "TURNO","ULTRA","UNION","VALOR","VENDA","VERDE","VIGOR","VIRAL","VISAO","VISTA",
-        "VOTAR","YIELD","ZERAR","AGORA","AMBOS","AMIGO","AMPLO","ANDAR","ANTES","APOIO",
-        "BREVE","CAPAZ","CAUSA","CERTO","CICLO","COMBO","DIRETO","EQUIPE","FISCO","FOCAR",
-        "FOREM","FUSAO","GERAR","GRADE","IMPOR","INERCIA","INOVAR","JOGO","LANCE","LIDERAR",
+        "TURNO","ULTRA","VALOR","VENDA","VERDE","VIGOR","VIRAL","VISAO","VISTA",
+        "VOTAR","ZERAR","AGORA","AMIGO","AMPLO","ANDAR","APOIO",
+        "BREVE","CAUSA","CERTO","CICLO","COMBO","DIRETO","EQUIPE","FISCO","FOCAR",
+        "FOREM","FUSAO","GERAR","GRADE","IMPOR","INERCIA","INOVAR","JOGO","LIDERAR",
         "LOGAR","LUCRAR","MAPEAR","MARCO","NICHO","OPERAR","OTIMIZAR","PARTES","PERSONA","PILAR",
-        "PRAZO","PRECO","PROPOR","RANKEAR","RATIO","REAGIR","SEGMENTO","SINTESE","SPARK","SPRINT",
-        "STRAT","SUGERIR","TARGET","TICKET","TIRAR","TRACAR","TREINAR","UNICA","UNIR","URGENTE",
-        "VALIDAR","VENCER","VERTER","VIRAR","VOAR","VOLTAR","ZAPP"
+        "PRAZO","PROPOR","RANKEAR","REAGIR","SEGMENTO","SINTESE","SUGERIR",
+        "TIRAR","TRACAR","TREINAR","UNICA","UNIR","URGENTE",
+        "VALIDAR","VENCER","VERTER","VIRAR","VOAR","VOLTAR"
     ].map(w => w.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase())
      .filter(w => w.length === 5);
 
@@ -2631,8 +2631,24 @@ document.addEventListener('DOMContentLoaded', () => {
         "PROJETO", "AGIL", "FUTURO", "DADOS", "CLOUD", "SISTEMA", "REDE", "INOVACAO",
         "MARCA", "DESIGN", "CODIGO", "TESTE", "ACESSO", "IMPACTO", "VALOR", "CUSTO",
         "IDEIA", "TEMPO", "METAS", "FOCO", "PLANO", "MERCADO", "NUVEM", "BUSCA",
-        "CANAL", "AUDIO", "VIDEO", "MIDIA", "TEXTO", "EMAIL", "SITE", "APP", "MOBILE"
-    ];
+        "CANAL", "AUDIO", "VIDEO", "MIDIA", "TEXTO", "EMAIL", "SITE", "APP", "MOBILE",
+        // Novas palavras gerais (portugues)
+        "AMOR", "NATUREZA", "SORRISO", "FAMILIA", "VIAGEM", "SONHO", "AMIGO",
+        "ALEGRIA", "CORAGEM", "SUCESSO", "TRABALHO", "ESTUDO", "LIVRO", "MUSICA", "ARTE",
+        "ESPORTE", "SAUDE", "VIDA", "MUNDO", "CIDADE", "PRAIA", "ESTRELA",
+        "CRIANCA", "ESCOLA", "FLOR", "ANIMAL", "GATO", "CACHORRO", "CARRO", "AVIAO",
+        "BARCO", "FESTA", "BOLO", "DOCE", "AGUA", "FOGO", "TERRA", "VENTO", "LUZ", "SOM",
+        "ROUPA", "SAPATO", "RELOGIO", "FOTO", "CINEMA", "TEATRO", "MUSEU", "PARQUE",
+        "ARVORE", "MONTANHA", "OCEANO", "NUVEM", "CHUVA", "NEVE",
+        "FRIO", "CALOR", "INVERNO", "VERAO", "OUTONO", "PRIMAVERA", "NOITE",
+        "MANHA", "TARDE", "HOJE", "AMANHA", "ONTEM", "SEMANA", "SECULO",
+        "HISTORIA", "CIENCIA", "FISICA", "QUIMICA", "BIOLOGIA", "GEOGRAFIA",
+        "SABEDORIA", "VERDADE", "MENTIRA", "RESPEITO", "LIBERDADE", "EMPATIA",
+        "CORACAO", "ESPERANCA", "FUTURO", "PASSADO", "PRESENTE", "VITORIA",
+        "PODER", "FORCA", "ENERGIA", "CAMINHO", "DESTINO", "SORTE", "VIAGEM",
+        "INVERNO", "ESTRADA", "FLORESTA", "DESERTO", "PLANETA", "UNIVERSO",
+        "AMIZADE", "CARINHO", "ABRACO", "SAUDADE", "LEMBRANCA", "MEMORIA"
+    ].map(w => w.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase());
 
     const GRID_SIZE = 10;
     let grid = [];
@@ -2650,7 +2666,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateDailyGame() {
         const now = new Date();
         const dateStr = now.toLocaleDateString('pt-BR');
-        let seed = dateStr.split('/').reduce((a, b) => a + parseInt(b), 0) + 1234;
+        let hash = 0;
+        for (let i = 0; i < dateStr.length; i++) {
+            hash = (hash << 5) - hash + dateStr.charCodeAt(i);
+            hash |= 0; // Convert to 32bit integer
+        }
+        let seed = Math.abs(hash) + 1234;
 
         wordsToFind = [];
         let tempWords = [...ALL_WORDS];
