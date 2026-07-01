@@ -1352,7 +1352,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const customDate = new Date(customDateInput.value + 'T00:00:00').toLocaleDateString('pt-BR');
                 matchesDate = entryDateStr === customDate;
             }
-            return matchesSearch && matchesDate;
+            
+            let matchesGlobal = true;
+            if (window.globalStatFilter === 'help') {
+                const needsHelp = entry.help_needed && entry.help_needed.trim() !== '';
+                matchesGlobal = needsHelp;
+            } else if (window.globalStatFilter === 'blocker') {
+                const blockersVal = (entry.blockers || '').toLowerCase().trim();
+                const hasBlockers = blockersVal !== '' && !['não', 'nao', 'nada', 'n/a', 'no'].includes(blockersVal);
+                matchesGlobal = hasBlockers;
+            }
+
+            return matchesSearch && matchesDate && matchesGlobal;
         };
 
         const filteredRadar = allEntries.filter(e => filterFn(e, ['today_tasks', 'yesterday_tasks', 'observations']));
@@ -1874,14 +1885,30 @@ document.addEventListener('DOMContentLoaded', () => {
         sucessoForm.querySelector('button[type="submit"]').innerHTML = 'Atualizar Sucesso <i data-lucide="refresh-cw"></i>';
     }
 
-    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (searchInput) searchInput.addEventListener('input', () => { window.globalStatFilter = 'all'; applyFilters(); });
     if (dateFilter) {
         dateFilter.addEventListener('change', () => {
+            window.globalStatFilter = 'all';
             if (dateFilter.value === 'custom') customDateInput.style.display = 'block';
             else { customDateInput.style.display = 'none'; applyFilters(); }
         });
     }
-    if (customDateInput) customDateInput.addEventListener('change', applyFilters);
+    if (customDateInput) customDateInput.addEventListener('change', () => { window.globalStatFilter = 'all'; applyFilters(); });
+
+    window.goToReportsAndFilter = function(filter) {
+        window.globalStatFilter = filter;
+        if (dateFilter) dateFilter.value = 'today';
+        if (searchInput) searchInput.value = '';
+        
+        const radarBtn = document.querySelector('[data-target="tab-radar"]');
+        if (radarBtn) radarBtn.click();
+        
+        setTimeout(() => {
+            const list = document.getElementById('kickoffList');
+            if (list) list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            applyFilters();
+        }, 50);
+    };
     loadEntries(); 
     loadSucessos();
     setInterval(() => {

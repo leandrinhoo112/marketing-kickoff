@@ -192,18 +192,18 @@
         <!-- DASHBOARD DE ESTATÍSTICAS -->
         <section class="stats-dashboard"
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 40px;">
-            <div class="glass-card"
-                style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #6841f1;">
+            <div class="glass-card" onclick="window.goToReportsAndFilter('all')"
+                style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #6841f1; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
                 <h3 id="statTotal" style="font-size: 2em; margin-bottom: 5px;">0</h3>
                 <p style="font-size: 0.8em; opacity: 0.6; text-transform: uppercase;">Check-ins Hoje</p>
             </div>
-            <div class="glass-card"
-                style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #02ceff;">
+            <div class="glass-card" onclick="window.goToReportsAndFilter('help')"
+                style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #02ceff; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
                 <h3 id="statHelp" style="font-size: 2em; margin-bottom: 5px; color: #02ceff;">0</h3>
                 <p style="font-size: 0.8em; opacity: 0.6; text-transform: uppercase;">Pedidos de Ajuda</p>
             </div>
-            <div class="glass-card"
-                style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #ff416c;">
+            <div class="glass-card" onclick="window.goToReportsAndFilter('blocker')"
+                style="padding: 20px; margin-bottom: 0; text-align: center; border-bottom: 3px solid #ff416c; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
                 <h3 id="statBlockers" style="font-size: 2em; margin-bottom: 5px; color: #ff416c;">0</h3>
                 <p style="font-size: 0.8em; opacity: 0.6; text-transform: uppercase;">Impedimentos</p>
             </div>
