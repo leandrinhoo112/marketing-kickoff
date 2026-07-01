@@ -12,7 +12,7 @@ if (!localStorage.getItem('reset_26_06_2026_v3')) {
     localStorage.setItem('reset_26_06_2026_v3', 'true');
 }
 
-const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "KAMILLE", "JOÃO", "EDSON", "LUIZ", "JORGE", "MARIANA", "VANESSA", "BRUNO", "VITOR"];
+const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "JOÃO", "EDSON", "LUIZ", "JORGE", "MARIANA", "VANESSA", "BRUNO", "VITOR"];
 
 const COPA_TEAMS = [
     "África do Sul", "Alemanha", "Arábia Saudita", "Argélia", "Argentina", "Austrália", "Áustria", "Bélgica", "Bósnia e Herzegovina", "Brasil", "Cabo Verde", "Canadá", "Catar", "Colômbia", "Coreia do Sul", "Costa do Marfim", "Croácia", "Curaçau", "Egito", "Equador", "Escócia", "Espanha", "Estados Unidos", "França", "Gana", "Haiti", "Holanda", "Inglaterra", "Irã", "Iraque", "Japão", "Jordânia", "Marrocos", "México", "Nova Zelândia", "Noruega", "Panamá", "Paraguai", "Portugal", "RD do Congo", "República Tcheca", "Senegal", "Suécia", "Suíça", "Turquia", "Tunísia", "Uruguai", "Uzbequistão"
@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Pega só o primeiro nome e limpa acentos (ex: JOÃO -> JOAO)
         const firstName = nameStr.split(' ')[0].toUpperCase();
         const normalized = firstName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        const validNames = ['BRUNO', 'EDSON', 'IGOR', 'JOAO', 'JORGE', 'KAMILLE', 'LEANDRO', 'LUIZ', 'MARIANA', 'VANESSA', 'VITOR', 'YASMIM'];
+        const validNames = ['BRUNO', 'EDSON', 'IGOR', 'JOAO', 'JORGE', 'LEANDRO', 'LUIZ', 'MARIANA', 'VANESSA', 'VITOR', 'YASMIM'];
         
         if (validNames.includes(normalized)) {
             const sound = new Audio(`${normalized}.wav`);
