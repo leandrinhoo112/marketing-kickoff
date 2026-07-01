@@ -3227,8 +3227,12 @@ document.addEventListener('DOMContentLoaded', () => {
     adminBolaoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const date = bolaoDateInput.value;
+        const timeInput = document.getElementById('bolaoTime');
+        const timeVal = timeInput ? timeInput.value : '';
         const ta = bolaoTeamA.value;
         const tb = bolaoTeamB.value;
+        const specialInput = document.getElementById('bolaoSpecialCondition');
+        const specialVal = specialInput ? specialInput.value : '';
         if (ta === tb) { alert("Os times devem ser diferentes!"); return; }
 
         if (window.supabaseClient) {
@@ -3236,9 +3240,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Adicionando...';
             const { error } = await window.supabaseClient.from('bolao_matches').insert([{
                 match_date: date,
+                match_time: timeVal,
                 team_a: ta,
                 team_b: tb,
-                status: 'pending'
+                status: 'pending',
+                special_condition: specialVal
             }]);
             btn.innerHTML = 'Adicionar Jogo <i data-lucide="plus-circle"></i>';
             if (window.lucide) window.lucide.createIcons();
@@ -3296,8 +3302,17 @@ document.addEventListener('DOMContentLoaded', () => {
         matches.forEach(m => {
             const matchPreds = allPredictions.filter(p => p.match_id === m.id);
             const pred = currentUser ? matchPreds.find(p => p.username === currentUser) : null;
+            let isStarted = false;
+            if (m.match_time) {
+                const now = new Date();
+                const matchDate = new Date(`${m.match_date}T${m.match_time}:00`);
+                if (now >= matchDate) {
+                    isStarted = true;
+                }
+            }
+            
             const isFinished = m.status === 'finished';
-            const disableInput = isFinished || pred ? 'disabled' : '';
+            const disableInput = isFinished || isStarted || pred ? 'disabled' : '';
             const valA = pred ? pred.guess_a : (isFinished ? m.score_a : '');
             const valB = pred ? pred.guess_b : (isFinished ? m.score_b : '');
 
@@ -3309,16 +3324,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
             } else if (pred && !isFinished) {
                 pointsMsg = `<div style="text-align: center; margin-top: 15px; color: #a0aec0; font-size: 0.9em;">Palpite registrado! Boa sorte! 🍀</div>`;
+            } else if (isStarted && !isFinished && !pred) {
+                pointsMsg = `<div style="text-align: center; margin-top: 15px; color: #ff416c; font-size: 0.9em; font-weight: bold;"><i data-lucide="lock" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> Apostas encerradas (O jogo já começou)</div>`;
             }
 
             let finalScoreHtml = '';
             if (isFinished) {
                 finalScoreHtml = `<div style="text-align: center; margin-bottom: 15px; font-weight: bold; color: #22c55e; font-size: 1.1em; background: rgba(34, 197, 94, 0.1); padding: 5px; border-radius: 5px;">🏆 Placar Final: ${m.score_a} x ${m.score_b}</div>`;
             }
+            
+            const matchTimeDisplay = m.match_time ? `<div style="text-align: center; font-size: 0.85em; opacity: 0.6; margin-bottom: 15px;"><i data-lucide="clock" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> ${m.match_time}</div>` : '';
+
+            let specialQuestionHtml = '';
+            let valSpecial = pred && pred.guess_special !== null ? (pred.guess_special ? 'true' : 'false') : 'none';
+            if (m.special_condition) {
+                specialQuestionHtml = `
+                    <div style="margin-top: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                        <strong style="color: #facc15; font-size: 0.9em; text-transform: uppercase;">Aposta Bônus (+10pts)</strong>
+                        <p style="margin: 5px 0 10px; font-size: 0.95em;">${m.special_condition}</p>
+                        <div style="display: flex; justify-content: center; gap: 15px;">
+                            <label style="cursor: pointer; opacity: ${disableInput ? '0.6' : '1'}; display: flex; align-items: center; gap: 5px;">
+                                <input type="radio" name="guess_special_${m.id}" value="true" ${valSpecial === 'true' ? 'checked' : ''} ${disableInput}> Sim
+                            </label>
+                            <label style="cursor: pointer; opacity: ${disableInput ? '0.6' : '1'}; display: flex; align-items: center; gap: 5px;">
+                                <input type="radio" name="guess_special_${m.id}" value="false" ${valSpecial === 'false' ? 'checked' : ''} ${disableInput}> Não
+                            </label>
+                        </div>
+                    </div>
+                `;
+            }
 
             html += `
             <div class="glass-card" style="padding: 25px; transition: transform 0.2s;">
                 ${finalScoreHtml}
+                ${matchTimeDisplay}
                 <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
                     <div style="flex: 1; text-align: right; font-weight: bold; font-size: 1.2em; color: white;">${m.team_a}</div>
                     <input type="number" id="guess_a_${m.id}" value="${valA}" ${disableInput} style="width: 60px; height: 60px; text-align: center; font-size: 1.5em; border-radius: 12px; border: 2px solid ${pred?'transparent':'rgba(255,255,255,0.2)'}; background: ${pred?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.05)'}; color: white; padding: 0; box-sizing: border-box;" min="0">
@@ -3326,7 +3365,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="number" id="guess_b_${m.id}" value="${valB}" ${disableInput} style="width: 60px; height: 60px; text-align: center; font-size: 1.5em; border-radius: 12px; border: 2px solid ${pred?'transparent':'rgba(255,255,255,0.2)'}; background: ${pred?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.05)'}; color: white; padding: 0; box-sizing: border-box;" min="0">
                     <div style="flex: 1; text-align: left; font-weight: bold; font-size: 1.2em; color: white;">${m.team_b}</div>
                 </div>
-                ${!pred && !isFinished ? `<div style="text-align: center; margin-top: 20px;"><button class="pulse-button" onclick="window.submitBolaoPrediction(${m.id})" style="padding: 10px 25px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; width: 100%;">Confirmar Palpite</button></div>` : ''}
+                ${specialQuestionHtml}
+                ${!pred && !isFinished && !isStarted ? `<div style="text-align: center; margin-top: 20px;"><button class="pulse-button" onclick="window.submitBolaoPrediction(${m.id})" style="padding: 10px 25px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; width: 100%;">Confirmar Palpite</button></div>` : ''}
                 ${pointsMsg}
                 ${matchPreds.length > 0 ? `
                 <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85em;">
@@ -3355,6 +3395,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (ga === '' || gb === '') { alert("Preencha o placar dos dois times!"); return; }
 
+        let guessSpecial = null;
+        const specialRadios = document.getElementsByName('guess_special_'+matchId);
+        if (specialRadios && specialRadios.length > 0) {
+            let selected = false;
+            for (let r of specialRadios) {
+                if (r.checked) {
+                    guessSpecial = r.value === 'true';
+                    selected = true;
+                    break;
+                }
+            }
+            if (!selected) {
+                alert("Por favor, responda a Aposta Bônus (Sim ou Não)!");
+                return;
+            }
+        }
+
         const btn = event.target;
         const originalText = btn.innerHTML;
         btn.innerHTML = 'Enviando...';
@@ -3365,7 +3422,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 match_id: matchId,
                 username: currentUser,
                 guess_a: parseInt(ga),
-                guess_b: parseInt(gb)
+                guess_b: parseInt(gb),
+                guess_special: guessSpecial
             }]);
             if (error) { 
                 console.error(error); 
@@ -3387,11 +3445,28 @@ document.addEventListener('DOMContentLoaded', () => {
         matches.forEach(m => {
             // format date
             const d = m.match_date.split('-').reverse().join('/');
+            const t = m.match_time ? ` às ${m.match_time}` : '';
+            
+            let specialHtml = '';
+            if (m.special_condition) {
+                specialHtml = `
+                    <div style="margin-top: 10px; font-size: 0.85em; opacity: 0.9;">
+                        <strong>Condição:</strong> ${m.special_condition}
+                        <select id="special_result_${m.id}" style="margin-left: 10px; background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 2px 5px;">
+                            <option value="none">-- Escolha --</option>
+                            <option value="true">Sim (+10pts)</option>
+                            <option value="false">Não</option>
+                        </select>
+                    </div>
+                `;
+            }
+            
             html += `
             <div class="glass-card" style="padding: 15px; display: flex; align-items: center; justify-content: space-between; border-left: 3px solid #facc15;">
                 <div style="flex: 1;">
-                    <div style="font-size: 0.75em; opacity: 0.6; margin-bottom: 4px;"><i data-lucide="calendar"></i> ${d}</div>
+                    <div style="font-size: 0.75em; opacity: 0.6; margin-bottom: 4px;"><i data-lucide="calendar"></i> ${d}${t}</div>
                     <strong style="color: white;">${m.team_a} <span style="opacity:0.5;">x</span> ${m.team_b}</strong>
+                    ${specialHtml}
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center;">
                     <input type="number" id="final_a_${m.id}" style="width: 45px; height: 35px; text-align: center; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; padding: 0; box-sizing: border-box;" placeholder="A">
@@ -3411,13 +3486,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const fb = parseInt(document.getElementById('final_b_'+matchId).value);
         if (isNaN(fa) || isNaN(fb)) { alert("Preencha o placar final corretamente!"); return; }
 
+        let specialResult = null;
+        const specialSelect = document.getElementById('special_result_'+matchId);
+        if (specialSelect) {
+            if (specialSelect.value === 'none') {
+                alert("Selecione se a condição especial aconteceu ou não!"); return;
+            }
+            specialResult = specialSelect.value === 'true';
+        }
+
         if (confirm(`Confirmar o resultado de ${fa} x ${fb}? Esta ação encerrará o jogo e distribuirá os pontos.`)) {
             const btn = event.target.closest('button');
             btn.disabled = true;
             btn.innerHTML = '...';
 
             if (window.supabaseClient) {
-                await window.supabaseClient.from('bolao_matches').update({ status: 'finished', score_a: fa, score_b: fb }).eq('id', matchId);
+                await window.supabaseClient.from('bolao_matches').update({ status: 'finished', score_a: fa, score_b: fb, special_result: specialResult }).eq('id', matchId);
                 
                 const { data: preds } = await window.supabaseClient.from('bolao_predictions').select('*').eq('match_id', matchId);
                 if (preds) {
@@ -3430,6 +3514,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             const guessResult = Math.sign(p.guess_a - p.guess_b);
                             if (matchResult === guessResult) pts = 15;
                         }
+                        
+                        if (specialResult !== null && p.guess_special !== null && p.guess_special === specialResult) {
+                            pts += 10;
+                        }
+
                         if (pts > 0) {
                             await window.supabaseClient.from('bolao_predictions').update({ points_awarded: pts }).eq('id', p.id);
                         }

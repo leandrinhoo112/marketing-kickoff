@@ -920,7 +920,10 @@
                                 <label>Data do Jogo</label>
                                 <input type="date" id="bolaoDate" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                             </div>
-                            <div></div>
+                            <div class="input-group">
+                                <label>Horário do Jogo</label>
+                                <input type="time" id="bolaoTime" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                            </div>
                             <div class="input-group">
                                 <label>Time A</label>
                                 <select id="bolaoTeamA" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;"></select>
@@ -929,6 +932,10 @@
                                 <label>Time B</label>
                                 <select id="bolaoTeamB" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;"></select>
                             </div>
+                        </div>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label>Condição Especial (+10pts) <span style="opacity:0.6; font-size:0.8em;">(Opcional)</span></label>
+                            <input type="text" id="bolaoSpecialCondition" placeholder="Ex: Vini Jr marca gol?" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 100%; box-sizing: border-box;">
                         </div>
                         <button type="submit" class="pulse-button" style="padding: 12px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
                             Adicionar Jogo <i data-lucide="plus-circle"></i>
