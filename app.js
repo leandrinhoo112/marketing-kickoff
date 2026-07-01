@@ -3258,18 +3258,17 @@ document.addEventListener('DOMContentLoaded', () => {
             .order('id', { ascending: true });
 
         const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
-        let myPredictions = [];
-        if (currentUser && matches && matches.length > 0) {
+        let allPredictions = [];
+        if (matches && matches.length > 0) {
             const matchIds = matches.map(m => m.id);
             const { data: preds } = await window.supabaseClient
                 .from('bolao_predictions')
                 .select('*')
-                .eq('username', currentUser)
                 .in('match_id', matchIds);
-            if (preds) myPredictions = preds;
+            if (preds) allPredictions = preds;
         }
 
-        renderBolaoMatches(matches || [], myPredictions);
+        renderBolaoMatches(matches || [], allPredictions, currentUser);
 
         const { data: pendingMatches } = await window.supabaseClient
             .from('bolao_matches')
@@ -3285,7 +3284,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderBolaoLeaderboard(ranking || []);
     }
 
-    function renderBolaoMatches(matches, myPredictions) {
+    function renderBolaoMatches(matches, allPredictions, currentUser) {
         if (!bolaoMatchesCount || !bolaoMatchesList) return;
         bolaoMatchesCount.textContent = `${matches.length} jogo(s)`;
         if (matches.length === 0) {
@@ -3295,7 +3294,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let html = '';
         matches.forEach(m => {
-            const pred = myPredictions.find(p => p.match_id === m.id);
+            const matchPreds = allPredictions.filter(p => p.match_id === m.id);
+            const pred = currentUser ? matchPreds.find(p => p.username === currentUser) : null;
             const isFinished = m.status === 'finished';
             const disableInput = isFinished || pred ? 'disabled' : '';
             const valA = pred ? pred.guess_a : (isFinished ? m.score_a : '');
@@ -3328,6 +3328,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 ${!pred && !isFinished ? `<div style="text-align: center; margin-top: 20px;"><button class="pulse-button" onclick="window.submitBolaoPrediction(${m.id})" style="padding: 10px 25px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; width: 100%;">Confirmar Palpite</button></div>` : ''}
                 ${pointsMsg}
+                ${matchPreds.length > 0 ? `
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85em;">
+                    <div style="opacity: 0.6; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; font-size: 0.9em;"><i data-lucide="users" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> Palpites do Time:</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${matchPreds.map(p => {
+                            const isMe = currentUser && p.username === currentUser;
+                            return `<span style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); color: ${isMe ? '#02ceff' : '#e2e8f0'};">
+                                <strong>${p.username}</strong>: ${p.guess_a}x${p.guess_b}
+                            </span>`;
+                        }).join('')}
+                    </div>
+                </div>` : ''}
             </div>
             `;
         });
