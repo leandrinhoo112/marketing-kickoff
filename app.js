@@ -14,6 +14,10 @@ if (!localStorage.getItem('reset_26_06_2026_v3')) {
 
 const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "KAMILLE", "JOÃO", "EDSON", "LUIZ", "JORGE", "MARIANA", "VANESSA", "BRUNO", "VITOR"];
 
+const COPA_TEAMS = [
+    "África do Sul", "Alemanha", "Arábia Saudita", "Argélia", "Argentina", "Austrália", "Áustria", "Bélgica", "Bósnia e Herzegovina", "Brasil", "Cabo Verde", "Canadá", "Catar", "Colômbia", "Coreia do Sul", "Costa do Marfim", "Croácia", "Curaçau", "Egito", "Equador", "Escócia", "Espanha", "Estados Unidos", "França", "Gana", "Haiti", "Holanda", "Inglaterra", "Irã", "Iraque", "Japão", "Jordânia", "Marrocos", "México", "Nova Zelândia", "Noruega", "Panamá", "Paraguai", "Portugal", "RD do Congo", "República Tcheca", "Senegal", "Suécia", "Suíça", "Turquia", "Tunísia", "Uruguai", "Uzbequistão"
+].sort();
+
 let supabaseClient;
 try {
     if (window.supabase) {
@@ -268,8 +272,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 b.style.color = '#a0aec0';
                 b.classList.remove('active');
             });
-            btn.style.background = btn.dataset.target === 'tab-radar' ? '#6841f1' : (btn.dataset.target === 'tab-sucesso' ? '#ffd700' : '#02ceff');
-            btn.style.color = btn.dataset.target === 'tab-radar' ? 'white' : '#0f0a1e';
+            let activeBg = '#02ceff';
+            if (btn.dataset.target === 'tab-radar') activeBg = '#6841f1';
+            else if (btn.dataset.target === 'tab-sucesso') activeBg = '#ffd700';
+            else if (btn.dataset.target === 'tab-minigame') activeBg = '#ff416c';
+            else if (btn.dataset.target === 'tab-bolao') activeBg = '#22c55e';
+            
+            btn.style.background = activeBg;
+            btn.style.color = (btn.dataset.target === 'tab-radar' || btn.dataset.target === 'tab-minigame') ? 'white' : '#0f0a1e';
             btn.classList.add('active');
 
             tabPanes.forEach(pane => {
@@ -3164,3 +3174,273 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 })();
+
+// --- BOLÃO DA COPA ---
+document.addEventListener('DOMContentLoaded', () => {
+    const adminBolaoForm = document.getElementById('adminBolaoForm');
+    const bolaoTeamA = document.getElementById('bolaoTeamA');
+    const bolaoTeamB = document.getElementById('bolaoTeamB');
+    const bolaoMatchesList = document.getElementById('bolaoMatchesList');
+    const bolaoMatchesCount = document.getElementById('bolaoMatchesCount');
+    const adminBolaoPendingContainer = document.getElementById('adminBolaoPendingContainer');
+    const bolaoLeaderboardList = document.getElementById('bolaoLeaderboardList');
+
+    if (!adminBolaoForm) return;
+
+    // Popula seleções
+    COPA_TEAMS.forEach(team => {
+        bolaoTeamA.add(new Option(team, team));
+        bolaoTeamB.add(new Option(team, team));
+    });
+
+    const todayISO = new Date().toISOString().split('T')[0];
+    const bolaoDateInput = document.getElementById('bolaoDate');
+    if(bolaoDateInput) bolaoDateInput.value = todayISO;
+
+    adminBolaoForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const date = bolaoDateInput.value;
+        const ta = bolaoTeamA.value;
+        const tb = bolaoTeamB.value;
+        if (ta === tb) { alert("Os times devem ser diferentes!"); return; }
+
+        if (window.supabaseClient) {
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Adicionando...';
+            const { error } = await window.supabaseClient.from('bolao_matches').insert([{
+                match_date: date,
+                team_a: ta,
+                team_b: tb,
+                status: 'pending'
+            }]);
+            btn.innerHTML = 'Adicionar Jogo <i data-lucide="plus-circle"></i>';
+            if (window.lucide) window.lucide.createIcons();
+
+            if (error) { console.error(error); alert("Erro ao criar jogo"); }
+            else { alert("Jogo adicionado!"); initBolao(); }
+        }
+    });
+
+    async function initBolao() {
+        if (!window.supabaseClient) return;
+
+        const { data: matches } = await window.supabaseClient
+            .from('bolao_matches')
+            .select('*')
+            .eq('match_date', todayISO)
+            .order('id', { ascending: true });
+
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        let myPredictions = [];
+        if (currentUser && matches && matches.length > 0) {
+            const matchIds = matches.map(m => m.id);
+            const { data: preds } = await window.supabaseClient
+                .from('bolao_predictions')
+                .select('*')
+                .eq('username', currentUser)
+                .in('match_id', matchIds);
+            if (preds) myPredictions = preds;
+        }
+
+        renderBolaoMatches(matches || [], myPredictions);
+
+        const { data: pendingMatches } = await window.supabaseClient
+            .from('bolao_matches')
+            .select('*')
+            .eq('status', 'pending')
+            .order('match_date', { ascending: false });
+        renderBolaoAdminPending(pendingMatches || []);
+
+        const { data: ranking } = await window.supabaseClient
+            .from('bolao_predictions')
+            .select('username, points_awarded')
+            .gt('points_awarded', 0);
+        renderBolaoLeaderboard(ranking || []);
+    }
+
+    function renderBolaoMatches(matches, myPredictions) {
+        if (!bolaoMatchesCount || !bolaoMatchesList) return;
+        bolaoMatchesCount.textContent = `${matches.length} jogo(s)`;
+        if (matches.length === 0) {
+            bolaoMatchesList.innerHTML = `<div class="glass-card" style="text-align: center; padding: 20px;"><p style="opacity: 0.6; margin: 0;">Nenhum jogo agendado para hoje.</p></div>`;
+            return;
+        }
+        
+        let html = '';
+        matches.forEach(m => {
+            const pred = myPredictions.find(p => p.match_id === m.id);
+            const isFinished = m.status === 'finished';
+            const disableInput = isFinished || pred ? 'disabled' : '';
+            const valA = pred ? pred.guess_a : (isFinished ? m.score_a : '');
+            const valB = pred ? pred.guess_b : (isFinished ? m.score_b : '');
+
+            let pointsMsg = '';
+            if (isFinished && pred) {
+                const color = pred.points_awarded === 50 ? '#22c55e' : (pred.points_awarded === 15 ? '#facc15' : '#ff416c');
+                pointsMsg = `<div style="text-align: center; margin-top: 15px; background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; color: ${color}; font-weight: bold; border: 1px solid ${color};">
+                    Você ganhou ${pred.points_awarded} pontos!
+                </div>`;
+            } else if (pred && !isFinished) {
+                pointsMsg = `<div style="text-align: center; margin-top: 15px; color: #a0aec0; font-size: 0.9em;">Palpite registrado! Boa sorte! 🍀</div>`;
+            }
+
+            let finalScoreHtml = '';
+            if (isFinished) {
+                finalScoreHtml = `<div style="text-align: center; margin-bottom: 15px; font-weight: bold; color: #22c55e; font-size: 1.1em; background: rgba(34, 197, 94, 0.1); padding: 5px; border-radius: 5px;">🏆 Placar Final: ${m.score_a} x ${m.score_b}</div>`;
+            }
+
+            html += `
+            <div class="glass-card" style="padding: 25px; transition: transform 0.2s;">
+                ${finalScoreHtml}
+                <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+                    <div style="flex: 1; text-align: right; font-weight: bold; font-size: 1.2em; color: white;">${m.team_a}</div>
+                    <input type="number" id="guess_a_${m.id}" value="${valA}" ${disableInput} style="width: 60px; height: 60px; text-align: center; font-size: 1.5em; border-radius: 12px; border: 2px solid ${pred?'transparent':'rgba(255,255,255,0.2)'}; background: ${pred?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.05)'}; color: white; padding: 0; box-sizing: border-box;" min="0">
+                    <span style="font-weight: bold; color: rgba(255,255,255,0.3); font-size: 1.2em;">X</span>
+                    <input type="number" id="guess_b_${m.id}" value="${valB}" ${disableInput} style="width: 60px; height: 60px; text-align: center; font-size: 1.5em; border-radius: 12px; border: 2px solid ${pred?'transparent':'rgba(255,255,255,0.2)'}; background: ${pred?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.05)'}; color: white; padding: 0; box-sizing: border-box;" min="0">
+                    <div style="flex: 1; text-align: left; font-weight: bold; font-size: 1.2em; color: white;">${m.team_b}</div>
+                </div>
+                ${!pred && !isFinished ? `<div style="text-align: center; margin-top: 20px;"><button class="pulse-button" onclick="window.submitBolaoPrediction(${m.id})" style="padding: 10px 25px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; width: 100%;">Confirmar Palpite</button></div>` : ''}
+                ${pointsMsg}
+            </div>
+            `;
+        });
+        bolaoMatchesList.innerHTML = html;
+    }
+
+    window.submitBolaoPrediction = async function(matchId) {
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        if (!currentUser) { alert("Ops! Você precisa se identificar (selecione seu nome na aba Radar) para poder dar palpites."); return; }
+        
+        const ga = document.getElementById('guess_a_'+matchId).value;
+        const gb = document.getElementById('guess_b_'+matchId).value;
+        
+        if (ga === '' || gb === '') { alert("Preencha o placar dos dois times!"); return; }
+
+        const btn = event.target;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Enviando...';
+        btn.disabled = true;
+
+        if (window.supabaseClient) {
+            const { error } = await window.supabaseClient.from('bolao_predictions').insert([{
+                match_id: matchId,
+                username: currentUser,
+                guess_a: parseInt(ga),
+                guess_b: parseInt(gb)
+            }]);
+            if (error) { 
+                console.error(error); 
+                alert("Erro ao enviar palpite"); 
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+            else { initBolao(); }
+        }
+    }
+
+    function renderBolaoAdminPending(matches) {
+        if (!adminBolaoPendingContainer) return;
+        if (matches.length === 0) {
+            adminBolaoPendingContainer.innerHTML = '<div class="glass-card" style="padding: 15px;"><p style="margin: 0; opacity: 0.5;">Nenhum jogo pendente.</p></div>';
+            return;
+        }
+        let html = '';
+        matches.forEach(m => {
+            // format date
+            const d = m.match_date.split('-').reverse().join('/');
+            html += `
+            <div class="glass-card" style="padding: 15px; display: flex; align-items: center; justify-content: space-between; border-left: 3px solid #facc15;">
+                <div style="flex: 1;">
+                    <div style="font-size: 0.75em; opacity: 0.6; margin-bottom: 4px;"><i data-lucide="calendar"></i> ${d}</div>
+                    <strong style="color: white;">${m.team_a} <span style="opacity:0.5;">x</span> ${m.team_b}</strong>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="number" id="final_a_${m.id}" style="width: 45px; height: 35px; text-align: center; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; padding: 0; box-sizing: border-box;" placeholder="A">
+                    <span style="opacity:0.5; font-size:0.8em;">x</span>
+                    <input type="number" id="final_b_${m.id}" style="width: 45px; height: 35px; text-align: center; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; padding: 0; box-sizing: border-box;" placeholder="B">
+                    <button class="btn-primary" onclick="window.resolveBolaoMatch(${m.id})" style="padding: 8px 12px; background: #facc15; color: #0f0a1e; margin-left: 5px;"><i data-lucide="check"></i></button>
+                </div>
+            </div>
+            `;
+        });
+        adminBolaoPendingContainer.innerHTML = html;
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    window.resolveBolaoMatch = async function(matchId) {
+        const fa = parseInt(document.getElementById('final_a_'+matchId).value);
+        const fb = parseInt(document.getElementById('final_b_'+matchId).value);
+        if (isNaN(fa) || isNaN(fb)) { alert("Preencha o placar final corretamente!"); return; }
+
+        if (confirm(`Confirmar o resultado de ${fa} x ${fb}? Esta ação encerrará o jogo e distribuirá os pontos.`)) {
+            const btn = event.target.closest('button');
+            btn.disabled = true;
+            btn.innerHTML = '...';
+
+            if (window.supabaseClient) {
+                await window.supabaseClient.from('bolao_matches').update({ status: 'finished', score_a: fa, score_b: fb }).eq('id', matchId);
+                
+                const { data: preds } = await window.supabaseClient.from('bolao_predictions').select('*').eq('match_id', matchId);
+                if (preds) {
+                    for (let p of preds) {
+                        let pts = 0;
+                        if (p.guess_a === fa && p.guess_b === fb) {
+                            pts = 50; 
+                        } else {
+                            const matchResult = Math.sign(fa - fb);
+                            const guessResult = Math.sign(p.guess_a - p.guess_b);
+                            if (matchResult === guessResult) pts = 15;
+                        }
+                        if (pts > 0) {
+                            await window.supabaseClient.from('bolao_predictions').update({ points_awarded: pts }).eq('id', p.id);
+                        }
+                    }
+                }
+                alert("Resultado salvo! Pontos do bolão calculados e distribuídos.");
+                initBolao();
+            }
+        }
+    }
+
+    function renderBolaoLeaderboard(rankingData) {
+        if (!bolaoLeaderboardList) return;
+        const scores = {};
+        rankingData.forEach(r => {
+            // Normalizar o nome para juntar pontuações da mesma pessoa (evita erros de case)
+            let name = (r.username || "Desconhecido").toUpperCase();
+            scores[name] = (scores[name] || 0) + (r.points_awarded || 0);
+        });
+
+        const arr = Object.keys(scores).map(u => ({ username: u, pts: scores[u] })).sort((a,b) => b.pts - a.pts);
+
+        if (arr.length === 0) {
+            bolaoLeaderboardList.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Nenhum ponto registrado ainda na copa.</p>';
+            return;
+        }
+
+        let html = '';
+        arr.forEach((item, i) => {
+            let icon = '⚽';
+            let style = '';
+            if (i === 0) { icon = '🥇'; style = 'border: 1px solid #ffd700; background: rgba(255, 215, 0, 0.1); transform: scale(1.02);'; }
+            else if (i === 1) { icon = '🥈'; style = 'border: 1px solid #c0c0c0; background: rgba(192, 192, 192, 0.1);'; }
+            else if (i === 2) { icon = '🥉'; style = 'border: 1px solid #cd7f32; background: rgba(205, 127, 50, 0.1);'; }
+
+            html += `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 5px; ${style}">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.2em;">${icon}</span>
+                        <span style="font-weight: bold; color: white;">${item.username}</span>
+                    </div>
+                    <div style="background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 0.9em; box-shadow: 0 0 10px rgba(34,197,94,0.2);">
+                        ${item.pts} pts
+                    </div>
+                </div>
+            `;
+        });
+        bolaoLeaderboardList.innerHTML = html;
+    }
+
+    // Chama a renderizacao inicial
+    setTimeout(initBolao, 1000);
+});
