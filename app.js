@@ -124,8 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (u) localStorage.removeItem('radarDraft_' + u);
     }
 
-    // Task List Builder logic
+    // Task & Help list state
     let currentTasks = [];
+    let currentHelps = [];
     const taskInput = document.getElementById('taskInput');
     const addTaskBtn = document.getElementById('addTaskBtn');
     const taskListUI = document.getElementById('taskListUI');
@@ -247,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Help Builder logic
-    let currentHelps = [];
     const helpInput = document.getElementById('helpInput');
     const addHelpBtn = document.getElementById('addHelpBtn');
     const helpListUI = document.getElementById('helpListUI');
@@ -3488,6 +3488,54 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         });
         bolaoMatchesList.innerHTML = html;
+        
+        let missingCount = 0;
+        matches.forEach(m => {
+            const matchPreds = allPredictions.filter(p => p.match_id === m.id);
+            const pred = currentUser ? matchPreds.find(p => p.username === currentUser) : null;
+            let isStarted = false;
+            if (m.match_time) {
+                const now = new Date();
+                const matchDate = new Date(`${m.match_date}T${m.match_time}:00`);
+                if (now >= matchDate) isStarted = true;
+            }
+            if (m.status !== 'finished' && !isStarted && !pred) missingCount++;
+        });
+
+        const existingPopup = document.getElementById('bolaoReminderPopup');
+        if (missingCount > 0 && currentUser) {
+            if (!existingPopup) {
+                const popup = document.createElement('div');
+                popup.id = 'bolaoReminderPopup';
+                popup.style = "position: fixed; bottom: 20px; right: 20px; background: rgba(34, 197, 94, 0.95); color: white; padding: 15px 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); transition: transform 0.3s; animation: slideUp 0.3s ease-out;";
+                popup.innerHTML = `
+                    <style>
+                    @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+                    #bolaoReminderPopup:hover { transform: scale(1.05); }
+                    </style>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i data-lucide="alert-circle" style="width: 24px; height: 24px; color: #0f0a1e;"></i>
+                        <div>
+                            <h4 style="margin: 0; font-size: 1.1em; color: #0f0a1e; font-weight: 800; text-transform: uppercase;">Bolão da Copa</h4>
+                            <p id="bolaoReminderText" style="margin: 3px 0 0; font-size: 0.9em; color: #0f0a1e; font-weight: 600;">Faltam ${missingCount} palpite(s) de hoje!</p>
+                        </div>
+                    </div>
+                `;
+                popup.onclick = () => {
+                    const bolaoTabBtn = document.querySelector('.tab-btn[data-target="tab-bolao"]');
+                    if (bolaoTabBtn) bolaoTabBtn.click();
+                    popup.style.transform = 'scale(0.9)';
+                    setTimeout(() => popup.style.transform = 'scale(1)', 150);
+                };
+                document.body.appendChild(popup);
+                if (window.lucide) window.lucide.createIcons();
+            } else {
+                document.getElementById('bolaoReminderText').innerText = `Faltam ${missingCount} palpite(s) de hoje!`;
+                existingPopup.style.display = 'block';
+            }
+        } else if (existingPopup) {
+            existingPopup.style.display = 'none';
+        }
     }
 
     window.submitBolaoPrediction = async function(matchId) {
