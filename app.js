@@ -3576,13 +3576,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="number" id="final_a_${m.id}" style="width: 45px; height: 35px; text-align: center; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; padding: 0; box-sizing: border-box;" placeholder="A">
                     <span style="opacity:0.5; font-size:0.8em;">x</span>
                     <input type="number" id="final_b_${m.id}" style="width: 45px; height: 35px; text-align: center; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; padding: 0; box-sizing: border-box;" placeholder="B">
-                    <button class="btn-primary" onclick="window.resolveBolaoMatch(${m.id})" style="padding: 8px 12px; background: #facc15; color: #0f0a1e; margin-left: 5px;"><i data-lucide="check"></i></button>
+                    <button class="btn-primary" onclick="window.resolveBolaoMatch(${m.id})" style="padding: 8px 12px; background: #facc15; color: #0f0a1e; margin-left: 5px;" title="Resolver"><i data-lucide="check"></i></button>
+                    <button class="btn-primary" onclick="window.deleteBolaoMatch(${m.id})" style="padding: 8px 12px; background: #ff416c; color: #fff; margin-left: 5px;" title="Excluir"><i data-lucide="trash-2"></i></button>
                 </div>
             </div>
             `;
         });
         adminBolaoPendingContainer.innerHTML = html;
         if (window.lucide) window.lucide.createIcons();
+    }
+
+    window.deleteBolaoMatch = async function(matchId) {
+        if (confirm("Tem certeza que deseja excluir este jogo? Todos os palpites atrelados a ele também poderão ser perdidos.")) {
+            if (window.supabaseClient) {
+                const { error } = await window.supabaseClient.from('bolao_matches').delete().eq('id', matchId);
+                if (error) {
+                    alert("Erro ao excluir: " + error.message);
+                } else {
+                    alert("Jogo excluído com sucesso.");
+                    initBolao();
+                }
+            }
+        }
     }
 
     window.resolveBolaoMatch = async function(matchId) {
