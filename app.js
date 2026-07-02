@@ -1538,9 +1538,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateReactionBar(id, table, reactions) {
         const emojis = ['👏', '🔥', '💡', '🚀', '✅'];
         const barHtml = emojis.map(emoji => {
-            const count = reactions[emoji] || 0;
+            let data = reactions[emoji] || [];
+            let count = 0;
+            let names = '';
+            if (typeof data === 'number') {
+                count = data;
+                names = `${count} pessoa(s)`;
+            } else if (Array.isArray(data)) {
+                count = data.length;
+                names = data.join(', ');
+            }
             const hasReacted = localStorage.getItem(`reacted_${id}_${emoji}`);
-            return `<button class="reaction-btn ${hasReacted ? 'active' : ''}" onclick="toggleReaction('${id}', '${table}', '${emoji}', event)">
+            return `<button class="reaction-btn ${hasReacted ? 'active' : ''}" title="${names || 'Reagir'}" onclick="toggleReaction('${id}', '${table}', '${emoji}', event)">
                 ${emoji} <span style="font-weight: bold; ${count === 0 ? 'opacity: 0.5' : ''}">${count > 0 ? count : ''}</span>
             </button>`;
         }).join('');
@@ -1555,14 +1564,30 @@ document.addEventListener('DOMContentLoaded', () => {
         let entry = entriesList.find(e => e.id.toString() === id.toString());
         if (!entry) return;
         
+        const user = typeof currentUser !== 'undefined' && currentUser ? currentUser : localStorage.getItem('currentUser') || 'Anônimo';
+
         if (!entry.reactions) entry.reactions = {};
-        if (!entry.reactions[emoji]) entry.reactions[emoji] = 0;
+        
+        // Migrate number to array for backward compatibility
+        if (typeof entry.reactions[emoji] === 'number') {
+            entry.reactions[emoji] = Array(entry.reactions[emoji]).fill('Alguém');
+        } else if (!Array.isArray(entry.reactions[emoji])) {
+            entry.reactions[emoji] = [];
+        }
 
         if (hasReacted) {
-            entry.reactions[emoji] = Math.max(0, entry.reactions[emoji] - 1);
+            const idx = entry.reactions[emoji].indexOf(user);
+            if (idx > -1) {
+                entry.reactions[emoji].splice(idx, 1);
+            } else {
+                const anonIdx = entry.reactions[emoji].indexOf('Alguém');
+                if (anonIdx > -1) entry.reactions[emoji].splice(anonIdx, 1);
+            }
             localStorage.removeItem(localKey);
         } else {
-            entry.reactions[emoji] += 1;
+            if (!entry.reactions[emoji].includes(user)) {
+                entry.reactions[emoji].push(user);
+            }
             localStorage.setItem(localKey, 'true');
         }
 
@@ -1572,7 +1597,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            await supabaseClient.from(table).update({ reactions: entry.reactions }).eq('id', id);
+            await window.supabaseClient.from(table).update({ reactions: entry.reactions }).eq('id', id);
         } catch (error) {
             console.error('Erro ao atualizar reação', error);
         }
