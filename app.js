@@ -637,6 +637,8 @@ document.addEventListener('DOMContentLoaded', () => {
             applyCurrentUser();
             welcomeModal.style.display = 'none';
             calculateXP(); // Recalcular ao entrar
+            // Dispara o aviso do Bolão imediatamente ao entrar
+            if (typeof window.initBolao === 'function') window.initBolao();
         });
     }
 
@@ -3316,8 +3318,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminBolaoPendingContainer = document.getElementById('adminBolaoPendingContainer');
     const bolaoLeaderboardList = document.getElementById('bolaoLeaderboardList');
 
-    if (!adminBolaoForm) return;
-
     // Popula seleções
     COPA_TEAMS.forEach(team => {
         bolaoTeamA.add(new Option(team, team));
@@ -3358,7 +3358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    async function initBolao() {
+    window.initBolao = async function initBolao() {
         if (!window.supabaseClient) return;
 
         const { data: matches } = await window.supabaseClient
@@ -3737,5 +3737,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Chama a renderizacao inicial
-    setTimeout(initBolao, 1000);
+    window.initBolao();
 });
