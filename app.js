@@ -60,7 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const formEl = document.getElementById('kickoffForm');
         if (!formEl) return;
         const energyChecked = formEl.querySelector('input[name="energyLevel"]:checked');
-        const checkedHelpers = Array.from(formEl.querySelectorAll('input[name="whoHelpCheck"]:checked')).map(cb => cb.value);
+        const mentioned = [];
+        if (typeof currentHelps !== 'undefined') {
+            currentHelps.forEach(h => {
+                const matches = h.match(/\(@([^)]+)\)/g);
+                if (matches) matches.forEach(m => mentioned.push(m.replace('(@', '').replace(')', '')));
+            });
+        }
+        const checkedHelpers = [...new Set(mentioned)];
         
         const draft = {
             tasks: typeof currentTasks !== 'undefined' ? currentTasks : [],
@@ -96,16 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Só renderiza se tiver algo pra não sobrescrever reset inicial atoa
                 if (currentTasks.length > 0 && typeof renderTaskBuilder === 'function') renderTaskBuilder();
             }
-            if (draft.helpNeeded && document.getElementById('helpNeeded')) document.getElementById('helpNeeded').value = draft.helpNeeded;
-            if (draft.blockers && document.getElementById('blockers')) document.getElementById('blockers').value = draft.blockers;
-            if (draft.whoHelpCheck && draft.whoHelpCheck.length > 0) {
-                const formEl = document.getElementById('kickoffForm');
-                if (formEl) {
-                    formEl.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => {
-                        cb.checked = draft.whoHelpCheck.includes(cb.value);
-                    });
-                }
+            if (draft.helpNeeded && document.getElementById('helpNeeded')) {
+                document.getElementById('helpNeeded').value = draft.helpNeeded;
+                currentHelps = (draft.helpNeeded || '').split('\n').map(h => h.replace(/^• /, '')).filter(h => h.trim() !== '');
+                if (typeof renderHelpBuilder === 'function') renderHelpBuilder();
             }
+            if (draft.blockers && document.getElementById('blockers')) document.getElementById('blockers').value = draft.blockers;
             if (draft.energyLevel) {
                 const formEl = document.getElementById('kickoffForm');
                 if (formEl) {
@@ -242,6 +245,103 @@ document.addEventListener('DOMContentLoaded', () => {
         currentTasks.splice(index, 1);
         renderTaskBuilder();
     };
+
+    // Help Builder logic
+    let currentHelps = [];
+    const helpInput = document.getElementById('helpInput');
+    const addHelpBtn = document.getElementById('addHelpBtn');
+    const helpListUI = document.getElementById('helpListUI');
+    const helpNeededHidden = document.getElementById('helpNeeded');
+
+    if (addHelpBtn) {
+        addHelpBtn.addEventListener('click', () => {
+            if(helpInput.value.trim() !== '') {
+                let text = helpInput.value.trim();
+                const personSelect = document.getElementById('helpPersonSelect');
+                if (personSelect && personSelect.value !== '') {
+                    text += ` (@${personSelect.value})`;
+                }
+                currentHelps.push(text);
+                helpInput.value = '';
+                if (personSelect) personSelect.value = '';
+                renderHelpBuilder();
+            }
+        });
+    }
+
+    if (helpInput) {
+        helpInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                addHelpBtn.click();
+            }
+        });
+    }
+
+    function renderHelpBuilder() {
+        if (!helpListUI) return;
+        helpListUI.innerHTML = currentHelps.map((h, index) => {
+            return `
+            <li draggable="true" 
+                ondragstart="dragHelpStart(event, ${index})" 
+                ondragover="dragHelpOver(event, ${index})" 
+                ondragleave="dragHelpLeave(event)" 
+                ondrop="dropHelp(event, ${index})"
+                style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px; cursor: grab; transition: transform 0.2s, background 0.2s;">
+                <span style="flex: 1; display: flex; align-items: center;">
+                    <i data-lucide="grip-vertical" style="width: 14px; height: 14px; margin-right: 8px; color: rgba(255,255,255,0.3);"></i>
+                    <i data-lucide="help-circle" style="width: 14px; height: 14px; margin-right: 5px; color: #facc15;"></i> 
+                    ${h}
+                </span>
+                <button type="button" onclick="removeHelp(${index})" style="background: none; border: none; color: #ff416c; cursor: pointer;" title="Remover"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
+            </li>
+            `;
+        }).join('');
+        if (window.lucide) window.lucide.createIcons();
+        helpNeededHidden.value = currentHelps.map(h => `• ${h}`).join('\n');
+        if (typeof saveRadarDraft === 'function') saveRadarDraft();
+    }
+    
+    let draggedHelpIndex = null;
+    window.dragHelpStart = function(e, index) {
+        draggedHelpIndex = index;
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => e.target.style.opacity = '0.4', 0);
+    };
+    window.dragHelpOver = function(e, index) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (draggedHelpIndex !== null && draggedHelpIndex !== index) {
+            const targetItem = e.currentTarget;
+            targetItem.style.background = 'rgba(142, 110, 255, 0.2)';
+            targetItem.style.transform = 'scale(1.02)';
+        }
+    };
+    window.dragHelpLeave = function(e) {
+        const targetItem = e.currentTarget;
+        targetItem.style.background = 'rgba(255,255,255,0.05)';
+        targetItem.style.transform = 'scale(1)';
+    };
+    window.dropHelp = function(e, targetIndex) {
+        e.preventDefault();
+        if (draggedHelpIndex !== null && draggedHelpIndex !== targetIndex) {
+            const helpToMove = currentHelps.splice(draggedHelpIndex, 1)[0];
+            currentHelps.splice(targetIndex, 0, helpToMove);
+            renderHelpBuilder();
+        } else {
+            const targetItem = e.currentTarget;
+            targetItem.style.background = 'rgba(255,255,255,0.05)';
+            targetItem.style.transform = 'scale(1)';
+            targetItem.style.opacity = '1';
+        }
+        draggedHelpIndex = null;
+    };
+    
+    window.removeHelp = function(index) {
+        currentHelps.splice(index, 1);
+        renderHelpBuilder();
+    };
+
     window.playSatisfyingCheckSound = function() {
         try {
             const audio = new Audio('som concluido.MP3');
@@ -519,11 +619,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Tocar som também quando marcar a caixinha de "quem precisa de ajuda"
-    document.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => {
-        cb.addEventListener('change', (e) => {
-            if (e.target.checked) playNameSound(e.target.value);
+    const helpPersonSelectElement = document.getElementById('helpPersonSelect');
+    if (helpPersonSelectElement) {
+        helpPersonSelectElement.addEventListener('change', (e) => {
+            if (e.target.value !== '') playNameSound(e.target.value);
         });
-    });
+    }
 
     if (enterAppBtn) {
         enterAppBtn.addEventListener('click', () => {
@@ -1216,14 +1317,8 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTaskBuilder();
 
         document.getElementById('helpNeeded').value = entry.help_needed || '';
-        
-        document.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => cb.checked = false);
-        if (entry.who_help) {
-            entry.who_help.split(', ').forEach(val => {
-                const cb = document.querySelector(`input[name="whoHelpCheck"][value="${val}"]`);
-                if (cb) cb.checked = true;
-            });
-        }
+        currentHelps = (entry.help_needed || '').split('\n').map(h => h.replace(/^• /, '')).filter(h => h.trim() !== '');
+        if (typeof renderHelpBuilder === 'function') renderHelpBuilder();
 
         document.getElementById('blockers').value = entry.blockers || '';
         if (entry.energy_level) {
@@ -1530,7 +1625,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             const energyChecked = form.querySelector('input[name="energyLevel"]:checked');
-            const checkedHelpers = Array.from(document.querySelectorAll('input[name="whoHelpCheck"]:checked')).map(cb => cb.value).join(', ');
+            
+            const mentioned = [];
+            if (typeof currentHelps !== 'undefined') {
+                currentHelps.forEach(h => {
+                    const matches = h.match(/\(@([^)]+)\)/g);
+                    if (matches) matches.forEach(m => mentioned.push(m.replace('(@', '').replace(')', '')));
+                });
+            }
+            const checkedHelpers = [...new Set(mentioned)].join(', ');
 
             const entry = {
                 username: `${userNameInput.value}|${userColorInput.value}`,
@@ -1563,7 +1666,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 form.reset();
                 currentTasks = [];
                 renderTaskBuilder();
-                document.querySelectorAll('input[name="whoHelpCheck"]').forEach(cb => cb.checked = false);
+                currentHelps = [];
+                if (typeof renderHelpBuilder === 'function') renderHelpBuilder();
                 submitBtn.innerHTML = 'Enviar Radar <i data-lucide="send"></i>'; loadEntries();
                 if (typeof clearRadarDraft === 'function') clearRadarDraft();
             } catch (error) { showToast('Erro: ' + error.message, 'error'); } 

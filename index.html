@@ -263,27 +263,29 @@
                     </div>
                 </div>
 
-                <div class="grid-2">
+                <div class="grid-1">
                     <div class="input-group">
-                        <label for="helpNeeded"><i data-lucide="help-circle"></i> Precisa de ajuda com algo?</label>
-                        <textarea id="helpNeeded" name="helpNeeded"
-                            placeholder="Descreva onde o progresso travou..."></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label><i data-lucide="users"></i> De quem você precisa de ajuda?</label>
-                        <div class="checkbox-group">
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="LEANDRO"> LEANDRO</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="IGOR"> IGOR</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="YASMIM"> YASMIM</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="JOÃO"> JOÃO</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="EDSON"> EDSON</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="LUIZ"> LUIZ</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="JORGE"> JORGE</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="MARIANA"> MARIANA</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="VANESSA"> VANESSA</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="BRUNO"> BRUNO</label>
-                            <label class="tag-checkbox"><input type="checkbox" name="whoHelpCheck" value="VITOR"> VITOR</label>
+                        <label><i data-lucide="help-circle"></i> Precisa de ajuda com algo?</label>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                            <input type="text" id="helpInput" placeholder="Descreva onde o progresso travou..." style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                            <select id="helpPersonSelect" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 160px;">
+                                <option value="">Sem marcação</option>
+                                <option value="LEANDRO">LEANDRO</option>
+                                <option value="IGOR">IGOR</option>
+                                <option value="YASMIM">YASMIM</option>
+                                <option value="JOÃO">JOÃO</option>
+                                <option value="EDSON">EDSON</option>
+                                <option value="LUIZ">LUIZ</option>
+                                <option value="JORGE">JORGE</option>
+                                <option value="MARIANA">MARIANA</option>
+                                <option value="VANESSA">VANESSA</option>
+                                <option value="BRUNO">BRUNO</option>
+                                <option value="VITOR">VITOR</option>
+                            </select>
+                            <button type="button" id="addHelpBtn" class="btn-primary" style="padding: 12px 20px;">+ Adicionar</button>
                         </div>
+                        <ul id="helpListUI" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
+                        <input type="hidden" id="helpNeeded" name="helpNeeded">
                     </div>
                 </div>
 
@@ -694,7 +696,7 @@
     <section id="tab-bolao" class="tab-pane" style="display: none;">
         <div style="background: rgba(0,0,0,0.3); margin: -30px -30px 30px -30px; padding: 25px 30px; border-radius: 20px 20px 0 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center;">
             <h2 style="color: #22c55e; margin-bottom: 8px;"><i data-lucide="trophy" style="width:28px;height:28px;vertical-align:middle;"></i> Bolão da Copa</h2>
-            <p style="opacity: 0.8; font-size: 0.95em;">Palpite nos jogos do dia! Acertar o placar exato vale <strong style="color: #22c55e;">50 pontos</strong>. Acertar o vencedor ou empate vale <strong style="color: #facc15;">15 pontos</strong>.</p>
+            <p style="opacity: 0.8; font-size: 0.95em;">Palpite nos jogos do dia! Acertar o placar exato vale <strong style="color: #22c55e;">50 pontos</strong>. Acertar o vencedor ou empate vale <strong style="color: #facc15;">15 pontos</strong>.<br><span style="font-size: 0.9em; opacity: 0.8;">* O resultado válido é apenas o do tempo normal (não conta prorrogação e pênaltis).</span></p>
         </div>
 
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;" class="bolao-grid">
