@@ -3389,8 +3389,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const { data: matches } = await window.supabaseClient
             .from('bolao_matches')
             .select('*')
-            .eq('match_date', todayISO)
-            .order('id', { ascending: true });
+            .order('match_date', { ascending: false })
+            .order('id', { ascending: false });
 
         const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
         let allPredictions = [];
@@ -3462,7 +3462,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 finalScoreHtml = `<div style="text-align: center; margin-bottom: 15px; font-weight: bold; color: #22c55e; font-size: 1.1em; background: rgba(34, 197, 94, 0.1); padding: 5px; border-radius: 5px;">🏆 Placar Final: ${m.score_a} x ${m.score_b}</div>`;
             }
             
-            const matchTimeDisplay = m.match_time ? `<div style="text-align: center; font-size: 0.85em; opacity: 0.6; margin-bottom: 15px;"><i data-lucide="clock" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> ${m.match_time}</div>` : '';
+            const dStr = m.match_date ? m.match_date.split('-').reverse().join('/') : '';
+            const matchTimeDisplay = m.match_time ? `<div style="text-align: center; font-size: 0.85em; opacity: 0.6; margin-bottom: 15px;"><i data-lucide="clock" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> ${dStr} às ${m.match_time}</div>` : (dStr ? `<div style="text-align: center; font-size: 0.85em; opacity: 0.6; margin-bottom: 15px;"><i data-lucide="calendar" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> ${dStr}</div>` : '');
 
             let specialQuestionHtml = '';
             let valSpecial = pred && pred.guess_special !== null ? (pred.guess_special ? 'true' : 'false') : 'none';
@@ -3503,8 +3504,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                         ${matchPreds.map(p => {
                             const isMe = currentUser && p.username === currentUser;
+                            let specialLabel = '';
+                            if (m.special_condition && p.guess_special !== null) {
+                                specialLabel = p.guess_special ? ' <span style="color:#facc15;font-size:0.85em;margin-left:4px;">(Bônus: Sim)</span>' : ' <span style="opacity:0.6;font-size:0.85em;margin-left:4px;">(Bônus: Não)</span>';
+                            }
                             return `<span style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); color: ${isMe ? '#02ceff' : '#e2e8f0'};">
-                                <strong>${p.username}</strong>: ${p.guess_a}x${p.guess_b}
+                                <strong>${p.username}</strong>: ${p.guess_a}x${p.guess_b}${specialLabel}
                             </span>`;
                         }).join('')}
                     </div>
