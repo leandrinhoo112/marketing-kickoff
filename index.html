@@ -768,6 +768,32 @@
 
     <!-- ABA MURAL DE FOTOS -->
     <section id="tab-fotos" class="tab-pane" style="display: none;">
+        <style>
+            .polaroid-card .reaction-btn {
+                background: rgba(0,0,0,0.03);
+                border: 1px solid rgba(0,0,0,0.08);
+                color: #555;
+            }
+            .polaroid-card .reaction-btn:hover {
+                background: rgba(0,0,0,0.08);
+                border-color: rgba(0,0,0,0.15);
+                transform: scale(1.1);
+            }
+            .polaroid-card .reaction-btn:active {
+                transform: scale(0.95);
+            }
+            .polaroid-card .reaction-btn.active {
+                background: rgba(244, 114, 182, 0.15);
+                border-color: rgba(244, 114, 182, 0.4);
+                color: #f472b6;
+                box-shadow: 0 0 10px rgba(244, 114, 182, 0.2);
+            }
+            .polaroid-card div[id^="reactions_"] {
+                border-top: 1px dashed rgba(0,0,0,0.1) !important;
+                margin-top: 10px !important;
+                padding-top: 10px !important;
+            }
+        </style>
         <div style="background: rgba(0,0,0,0.3); margin: -30px -30px 30px -30px; padding: 25px 30px; border-radius: 20px 20px 0 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center;">
             <h2 style="color: #f472b6; margin-bottom: 8px;"><i data-lucide="camera" style="width:28px;height:28px;vertical-align:middle;"></i> Mural de Fotos</h2>
             <p style="opacity: 0.8; font-size: 0.95em;">Registros do dia a dia do setor! Café, prints engraçados, reuniões, caretas... tudo vale! 📸</p>

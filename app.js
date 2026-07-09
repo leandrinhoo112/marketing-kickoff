@@ -3987,10 +3987,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
                         transform: rotate(${rotation}deg);
                         transition: all 0.3s ease;
-                        cursor: pointer;
                         position: relative;
-                    " onmouseenter="this.style.transform='rotate(0deg) scale(1.05)'; this.style.zIndex='10';"
-                       onmouseleave="this.style.transform='rotate(${rotation}deg) scale(1)'; this.style.zIndex='1';">
+                    " onmouseenter="this.style.zIndex='10';"
+                       onmouseleave="this.style.zIndex='1';">
                         <img src="${photo.photo}" alt="${photo.caption}" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; border-radius: 2px;">
                         <div style="padding: 10px 4px 0; font-family: 'Segoe UI', sans-serif;">
                             ${photo.caption ? `<p style="color: #333; font-size: 0.9em; margin: 0 0 6px; font-style: italic; word-wrap: break-word;">"${photo.caption}"</p>` : ''}
@@ -3998,6 +3997,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span style="color: #888; font-size: 0.75em;">${item.username} • ${dateStr} ${timeStr}</span>
                                 ${canDelete ? `<button onclick="window.deletePhoto(${item.id})" style="background: none; border: none; color: #ff416c; cursor: pointer; font-size: 0.75em; padding: 2px 6px;">✕</button>` : ''}
                             </div>
+                            ${generateReactionBar(item.id, 'sugestoes', item.reactions || {})}
                         </div>
                     </div>`;
                 } catch (e) {
