@@ -69,12 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const checkedHelpers = [...new Set(mentioned)];
         
+        const moodChecked = formEl.querySelector('input[name="moodEmoji"]:checked');
+        
         const draft = {
             tasks: typeof currentTasks !== 'undefined' ? currentTasks : [],
             helpNeeded: document.getElementById('helpNeeded') ? document.getElementById('helpNeeded').value : '',
             whoHelpCheck: checkedHelpers,
             blockers: document.getElementById('blockers') ? document.getElementById('blockers').value : '',
             energyLevel: energyChecked ? energyChecked.value : null,
+            mood: moodChecked ? moodChecked.value : null,
             editingId: typeof editingId !== 'undefined' ? editingId : null
         };
         localStorage.setItem('radarDraft_' + u, JSON.stringify(draft));
@@ -114,6 +117,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (formEl) {
                     const radio = formEl.querySelector(`input[name="energyLevel"][value="${draft.energyLevel}"]`);
                     if (radio) radio.checked = true;
+                }
+            }
+            if (draft.mood) {
+                const formEl2 = document.getElementById('kickoffForm');
+                if (formEl2) {
+                    const mRadio = formEl2.querySelector(`input[name="moodEmoji"][value="${draft.mood}"]`);
+                    if (mRadio) {
+                        mRadio.checked = true;
+                        const label = mRadio.closest('.mood-option');
+                        if (label) {
+                            label.style.border = '2px solid #f472b6';
+                            label.style.background = 'rgba(244, 114, 182, 0.15)';
+                            label.style.transform = 'scale(1.15)';
+                        }
+                    }
                 }
             }
         } catch(e) { console.error("Erro ao carregar rascunho", e); }
@@ -1340,6 +1358,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const radio = form.querySelector(`input[name="energyLevel"][value="${entry.energy_level}"]`);
             if (radio) radio.checked = true;
         }
+        // Restore mood
+        if (entry.observations) {
+            const moodRadio = form.querySelector(`input[name="moodEmoji"][value="${entry.observations}"]`);
+            if (moodRadio) {
+                moodRadio.checked = true;
+                const label = moodRadio.closest('.mood-option');
+                if (label) {
+                    document.querySelectorAll('.mood-option').forEach(o => {
+                        o.style.border = '2px solid transparent';
+                        o.style.background = 'rgba(255,255,255,0.05)';
+                        o.style.transform = 'scale(1)';
+                    });
+                    label.style.border = '2px solid #f472b6';
+                    label.style.background = 'rgba(244, 114, 182, 0.15)';
+                    label.style.transform = 'scale(1.15)';
+                }
+            }
+        }
         const submitBtn = form.querySelector('button[type="submit"]');
         submitBtn.innerHTML = 'Atualizar Radar <i data-lucide="save"></i>';
         if (window.lucide) window.lucide.createIcons();
@@ -1542,6 +1578,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div>${formattedTasks}</div>
                     </div>
                     ${entry.help_needed ? `<div class="content-block"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Ajuda</label><p style="color: #02ceff; font-weight: 500;">${entry.help_needed} ${entry.who_help ? `(${entry.who_help})` : ''}</p></div>` : ''}
+                    ${entry.observations ? `<div class="content-block" style="grid-column: 1/-1; text-align: center;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Humor do Dia</label><p style="font-size: 2.5em; margin: 5px 0;">${entry.observations}</p></div>` : ''}
                     ${entry.energy_level ? `<div class="content-block" style="grid-column: 1/-1;"><label style="font-size: 0.7em; text-transform: uppercase; color: #a0aec0;">Nível de Energia</label><p style="font-weight: bold; display: flex; align-items: center; gap: 8px;">${entry.energy_level}</p></div>` : ''}
                 </div>
                 ${generateReactionBar(entry.id, 'kickoffs', entry.reactions || {})}
@@ -1677,13 +1714,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const checkedHelpers = [...new Set(mentioned)].join(', ');
 
+            const moodChecked = form.querySelector('input[name="moodEmoji"]:checked');
+
             const entry = {
                 username: `${userNameInput.value}|${userColorInput.value}`,
                 today_tasks: todayTasksHidden.value,
                 help_needed: document.getElementById('helpNeeded').value,
                 who_help: checkedHelpers,
                 blockers: document.getElementById('blockers').value,
-                observations: '',
+                observations: moodChecked ? moodChecked.value : '',
                 energy_level: energyChecked ? energyChecked.value : '😐 Normal',
                 created_at: new Date().toISOString()
             };
@@ -1905,8 +1944,9 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const { data, error } = await supabaseClient.from('sugestoes').select('*').order('created_at', { ascending: false });
             if (error) throw error;
-            if (data && data.length > 0) {
-                container.innerHTML = data.map(item => `
+            const filtered = data ? data.filter(item => !item.sugestao.startsWith('FOTO:')) : [];
+            if (filtered.length > 0) {
+                container.innerHTML = filtered.map(item => `
                     <div class="glass-card" style="padding: 15px; border-left: 4px solid #02ceff; background: rgba(2, 206, 255, 0.05);">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                             <strong style="color: #02ceff;"><i data-lucide="user" style="width: 14px; height: 14px;"></i> ${item.username}</strong>
@@ -2141,11 +2181,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             const container = document.getElementById('adminSugestoesContainer');
             if (data && container) {
-                if (data.length === 0) {
+                const filtered = data.filter(sg => !sg.sugestao.startsWith('FOTO:'));
+                if (filtered.length === 0) {
                     container.innerHTML = `<div class="glass-card" style="padding: 15px; text-align: center; opacity: 0.5;">Nenhuma sugestão recebida ainda.</div>`;
                     return;
                 }
-                container.innerHTML = data.map(sg => `
+                container.innerHTML = filtered.map(sg => `
                     <div class="glass-card" style="padding: 15px; border-left: 4px solid #facc15; margin-bottom: 15px; background: rgba(250, 204, 21, 0.05); position: relative;">
                         <button onclick="deleteSugestao('${sg.id}')" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 65, 108, 0.1); border: none; color: #ff416c; padding: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s;" title="Apagar Sugestão">
                             <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
@@ -3783,4 +3824,207 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Chama a renderizacao inicial
     window.initBolao();
+});
+
+// --- MOOD PICKER INTERACTIVITY ---
+document.addEventListener('DOMContentLoaded', () => {
+    const moodOptions = document.querySelectorAll('.mood-option');
+    moodOptions.forEach(opt => {
+        opt.addEventListener('click', () => {
+            moodOptions.forEach(o => {
+                o.style.border = '2px solid transparent';
+                o.style.background = 'rgba(255,255,255,0.05)';
+                o.style.transform = 'scale(1)';
+            });
+            opt.style.border = '2px solid #f472b6';
+            opt.style.background = 'rgba(244, 114, 182, 0.15)';
+            opt.style.transform = 'scale(1.15)';
+        });
+    });
+});
+
+// --- MURAL DE FOTOS ---
+document.addEventListener('DOMContentLoaded', () => {
+    const photoDropzone = document.getElementById('photoDropzone');
+    const photoFileInput = document.getElementById('photoFileInput');
+    const photoPreview = document.getElementById('photoPreview');
+    const photoCaption = document.getElementById('photoCaption');
+    const photoSubmitBtn = document.getElementById('photoSubmitBtn');
+    const photoGallery = document.getElementById('photoGallery');
+
+    if (!photoDropzone || !photoGallery) return;
+
+    let selectedPhotoBase64 = null;
+
+    // Dropzone click
+    photoDropzone.addEventListener('click', () => photoFileInput.click());
+
+    // Dropzone drag events
+    photoDropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        photoDropzone.style.borderColor = '#f472b6';
+        photoDropzone.style.background = 'rgba(244, 114, 182, 0.1)';
+    });
+    photoDropzone.addEventListener('dragleave', () => {
+        photoDropzone.style.borderColor = 'rgba(244, 114, 182, 0.4)';
+        photoDropzone.style.background = 'rgba(255,255,255,0.02)';
+    });
+    photoDropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        photoDropzone.style.borderColor = 'rgba(244, 114, 182, 0.4)';
+        photoDropzone.style.background = 'rgba(255,255,255,0.02)';
+        if (e.dataTransfer.files.length > 0) {
+            handlePhotoFile(e.dataTransfer.files[0]);
+        }
+    });
+
+    photoFileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) handlePhotoFile(e.target.files[0]);
+    });
+
+    function handlePhotoFile(file) {
+        if (!file.type.startsWith('image/')) {
+            alert('Por favor, selecione uma imagem.');
+            return;
+        }
+        // Resize and compress
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX = 600;
+                let w = img.width, h = img.height;
+                if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
+                else { if (h > MAX) { w = w * MAX / h; h = MAX; } }
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                selectedPhotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                photoPreview.src = selectedPhotoBase64;
+                photoPreview.style.display = 'block';
+                photoSubmitBtn.disabled = false;
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Submit photo
+    photoSubmitBtn.addEventListener('click', async () => {
+        if (!selectedPhotoBase64 || !window.supabaseClient) return;
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        if (!currentUser) { alert('Faça login primeiro!'); return; }
+
+        photoSubmitBtn.disabled = true;
+        photoSubmitBtn.textContent = 'Enviando...';
+
+        try {
+            const entry = {
+                username: currentUser,
+                sugestao: 'FOTO:' + JSON.stringify({
+                    photo: selectedPhotoBase64,
+                    caption: photoCaption.value.trim() || '',
+                    timestamp: new Date().toISOString()
+                }),
+                created_at: new Date().toISOString()
+            };
+            const { error } = await window.supabaseClient.from('sugestoes').insert([entry]);
+            if (error) throw error;
+            
+            if (typeof showToast === 'function') showToast('Foto publicada no mural! 📸', 'success');
+            selectedPhotoBase64 = null;
+            photoPreview.style.display = 'none';
+            photoCaption.value = '';
+            photoFileInput.value = '';
+            loadPhotoGallery();
+        } catch (err) {
+            alert('Erro ao publicar foto: ' + err.message);
+        } finally {
+            photoSubmitBtn.disabled = false;
+            photoSubmitBtn.innerHTML = '<i data-lucide="send" style="width:16px;height:16px;vertical-align:middle;"></i> Publicar no Mural';
+            if (window.lucide) window.lucide.createIcons();
+        }
+    });
+
+    // Load and render gallery
+    async function loadPhotoGallery() {
+        if (!window.supabaseClient) return;
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('sugestoes')
+                .select('*')
+                .like('sugestao', 'FOTO:%')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                photoGallery.innerHTML = '<div style="text-align: center; padding: 40px; opacity: 0.5; grid-column: 1/-1;">Nenhuma foto ainda. Seja o primeiro a postar! 📷</div>';
+                return;
+            }
+
+            const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+            const normStr = (s) => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : "";
+            const currentU = normStr(currentUser || '');
+            const isAdmin = ['VANESSA', 'BRUNO', 'VITOR', 'LEANDRO'].includes(currentU);
+
+            photoGallery.innerHTML = data.map(item => {
+                try {
+                    const jsonStr = item.sugestao.replace('FOTO:', '');
+                    const photo = JSON.parse(jsonStr);
+                    const date = new Date(photo.timestamp || item.created_at);
+                    const dateStr = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+                    const timeStr = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    const rotation = (Math.random() * 6 - 3).toFixed(1);
+                    const canDelete = normStr(item.username) === currentU || isAdmin;
+
+                    return `
+                    <div class="polaroid-card" style="
+                        background: white;
+                        padding: 12px 12px 40px 12px;
+                        border-radius: 4px;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+                        transform: rotate(${rotation}deg);
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                        position: relative;
+                    " onmouseenter="this.style.transform='rotate(0deg) scale(1.05)'; this.style.zIndex='10';"
+                       onmouseleave="this.style.transform='rotate(${rotation}deg) scale(1)'; this.style.zIndex='1';">
+                        <img src="${photo.photo}" alt="${photo.caption}" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; border-radius: 2px;">
+                        <div style="padding: 10px 4px 0; font-family: 'Segoe UI', sans-serif;">
+                            ${photo.caption ? `<p style="color: #333; font-size: 0.9em; margin: 0 0 6px; font-style: italic; word-wrap: break-word;">"${photo.caption}"</p>` : ''}
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: #888; font-size: 0.75em;">${item.username} • ${dateStr} ${timeStr}</span>
+                                ${canDelete ? `<button onclick="window.deletePhoto(${item.id})" style="background: none; border: none; color: #ff416c; cursor: pointer; font-size: 0.75em; padding: 2px 6px;">✕</button>` : ''}
+                            </div>
+                        </div>
+                    </div>`;
+                } catch (e) {
+                    return '';
+                }
+            }).join('');
+        } catch (err) {
+            photoGallery.innerHTML = '<div style="text-align: center; padding: 40px; opacity: 0.5; grid-column: 1/-1;">Erro ao carregar fotos.</div>';
+        }
+    }
+
+    window.deletePhoto = async function(id) {
+        if (!confirm('Remover esta foto do mural?')) return;
+        try {
+            await window.supabaseClient.from('sugestoes').delete().eq('id', id);
+            if (typeof showToast === 'function') showToast('Foto removida!', 'error');
+            loadPhotoGallery();
+        } catch (e) {
+            alert('Erro ao remover: ' + e.message);
+        }
+    };
+
+    // Initial load
+    loadPhotoGallery();
+    // Refresh when tab is clicked
+    const fotosTabBtn = document.querySelector('[data-target="tab-fotos"]');
+    if (fotosTabBtn) {
+        fotosTabBtn.addEventListener('click', loadPhotoGallery);
+    }
 });
