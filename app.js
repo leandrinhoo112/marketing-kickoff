@@ -1607,16 +1607,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
         return `<div class="reaction-bar" id="reactions_${id}">${barHtml}</div>`;
     }
+    window.generateReactionBar = generateReactionBar;
 
     window.toggleReaction = async (id, table, emoji, event) => {
+        if (event) event.stopPropagation();
+        const userStr = localStorage.getItem('currentUser');
+        if (!userStr) return;
+        const user = decodeUser(userStr).name;
         const localKey = `reacted_${id}_${emoji}`;
         const hasReacted = localStorage.getItem(localKey);
         
-        let entriesList = table === 'kickoffs' ? allEntries : allSucessos;
-        let entry = entriesList.find(e => e.id.toString() === id.toString());
-        if (!entry) return;
+        let entry = null;
+        let isPhoto = false;
+
+        if (table === 'kickoffs') entry = allEntries.find(e => e.id == id);
+        else if (table === 'sucessos') entry = allSucessos.find(e => e.id == id);
+        else if (table === 'sugestoes') {
+            try {
+                const { data } = await window.supabaseClient.from('sugestoes').select('*').eq('id', id).single();
+                if (data) {
+                    entry = data;
+                    isPhoto = true;
+                    let parsed = {};
+                    try {
+                        const jsonStr = entry.sugestao.replace('FOTO:', '');
+                        parsed = JSON.parse(jsonStr).reactions || {};
+                    } catch(e) {}
+                    entry.reactions = parsed;
+                }
+            } catch(e) { console.error(e); }
+        }
         
-        const user = typeof currentUser !== 'undefined' && currentUser ? currentUser : localStorage.getItem('currentUser') || 'Anônimo';
+        if (!entry) return;
 
         if (!entry.reactions) entry.reactions = {};
         
@@ -1649,7 +1671,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            await window.supabaseClient.from(table).update({ reactions: entry.reactions }).eq('id', id);
+            if (isPhoto) {
+                let photoObj = {};
+                try {
+                    const jsonStr = entry.sugestao.replace('FOTO:', '');
+                    photoObj = JSON.parse(jsonStr);
+                } catch(e) {}
+                photoObj.reactions = entry.reactions;
+                const newSugestao = 'FOTO:' + JSON.stringify(photoObj);
+                await window.supabaseClient.from('sugestoes').update({ sugestao: newSugestao }).eq('id', id);
+            } else {
+                await window.supabaseClient.from(table).update({ reactions: entry.reactions }).eq('id', id);
+            }
         } catch (error) {
             console.error('Erro ao atualizar reação', error);
         }
@@ -3996,12 +4029,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <span style="color: #888; font-size: 0.75em;">${item.username} • ${dateStr} ${timeStr}</span>
                                 ${canDelete ? `<button onclick="window.deletePhoto(${item.id})" style="background: none; border: none; color: #ff416c; cursor: pointer; font-size: 0.75em; padding: 2px 6px;">✕</button>` : ''}
-                            </div>
-                            ${generateReactionBar(item.id, 'sugestoes', item.reactions || {})}
+                             </div>
+                            ${window.generateReactionBar(item.id, 'sugestoes', photo.reactions || {})}
                         </div>
                     </div>`;
                 } catch (e) {
-                    return '';
+                    console.error("Error rendering photo:", e);
+                    return `<div style="color:red; background:white; padding:10px;">Erro: ${e.message}</div>`;
                 }
             }).join('');
         } catch (err) {
