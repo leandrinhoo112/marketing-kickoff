@@ -408,9 +408,10 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (btn.dataset.target === 'tab-sucesso') activeBg = '#ffd700';
             else if (btn.dataset.target === 'tab-minigame') activeBg = '#ff416c';
             else if (btn.dataset.target === 'tab-bolao') activeBg = '#22c55e';
+            else if (btn.dataset.target === 'tab-enquetes') activeBg = '#8e6eff';
             
             btn.style.background = activeBg;
-            btn.style.color = (btn.dataset.target === 'tab-radar' || btn.dataset.target === 'tab-minigame') ? 'white' : '#0f0a1e';
+            btn.style.color = (btn.dataset.target === 'tab-radar' || btn.dataset.target === 'tab-minigame' || btn.dataset.target === 'tab-enquetes') ? 'white' : '#0f0a1e';
             btn.classList.add('active');
 
             tabPanes.forEach(pane => {
@@ -998,6 +999,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showToast(message, type = 'success', duration = 4000, onClose = null) {
+        window.showToast = showToast;
         let container = document.querySelector('.toast-container');
         if (!container) {
             container = document.createElement('div');
@@ -1977,7 +1979,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const { data, error } = await supabaseClient.from('sugestoes').select('*').order('created_at', { ascending: false });
             if (error) throw error;
-            const filtered = data ? data.filter(item => !item.sugestao.startsWith('FOTO:')) : [];
+            const filtered = data ? data.filter(item => !item.sugestao.startsWith('FOTO:') && !item.sugestao.startsWith('ENQUETE:')) : [];
             if (filtered.length > 0) {
                 container.innerHTML = filtered.map(item => `
                     <div class="glass-card" style="padding: 15px; border-left: 4px solid #02ceff; background: rgba(2, 206, 255, 0.05);">
@@ -2214,7 +2216,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             const container = document.getElementById('adminSugestoesContainer');
             if (data && container) {
-                const filtered = data.filter(sg => !sg.sugestao.startsWith('FOTO:'));
+                const filtered = data.filter(sg => !sg.sugestao.startsWith('FOTO:') && !sg.sugestao.startsWith('ENQUETE:'));
                 if (filtered.length === 0) {
                     container.innerHTML = `<div class="glass-card" style="padding: 15px; text-align: center; opacity: 0.5;">Nenhuma sugestão recebida ainda.</div>`;
                     return;
@@ -4061,4 +4063,452 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fotosTabBtn) {
         fotosTabBtn.addEventListener('click', loadPhotoGallery);
     }
+
+    // ==========================================
+    // ENQUETES GLOBAIS E NOTIFICAÇÃO DE FOTOS
+    // ==========================================
+
+    const addPollOptionBtn = document.getElementById('addPollOptionBtn');
+    const extraPollOptions = document.getElementById('extraPollOptions');
+    if (addPollOptionBtn && extraPollOptions) {
+        addPollOptionBtn.addEventListener('click', () => {
+            const inputsCount = document.querySelectorAll('.poll-option-input').length;
+            if (inputsCount >= 10) {
+                if (typeof window.showToast === 'function') window.showToast('Máximo de 10 opções atingido!', 'error');
+                return;
+            }
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'poll-option-input';
+            input.placeholder = `Opção ${inputsCount + 1}`;
+            input.required = true;
+            input.style.cssText = 'padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;';
+            extraPollOptions.appendChild(input);
+        });
+    }
+
+    const pollCreationForm = document.getElementById('pollCreationForm');
+    if (pollCreationForm) {
+        pollCreationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = pollCreationForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            
+            const questionVal = document.getElementById('pollQuestion').value;
+            const optionInputs = document.querySelectorAll('.poll-option-input');
+            const optionsArr = Array.from(optionInputs).map(inp => inp.value.trim()).filter(val => val !== '');
+            
+            if (optionsArr.length < 2) {
+                if (typeof window.showToast === 'function') window.showToast('Insira pelo menos 2 opções!', 'error');
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            const votesObj = {};
+            optionsArr.forEach(opt => {
+                votesObj[opt] = [];
+            });
+            
+            const expiry = new Date();
+            expiry.setHours(23, 59, 59, 999);
+            
+            const pollData = {
+                pergunta: questionVal,
+                opcoes: optionsArr,
+                votos: votesObj,
+                criado_em: new Date().toISOString(),
+                expira_em: expiry.toISOString()
+            };
+            
+            const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser') || 'Anônimo';
+            
+            try {
+                const { error } = await window.supabaseClient.from('sugestoes').insert({
+                    username: currentUser,
+                    sugestao: 'ENQUETE:' + JSON.stringify(pollData)
+                });
+                
+                if (error) throw error;
+                
+                if (typeof window.showToast === 'function') window.showToast('Enquete lançada com sucesso! 🗳️', 'success');
+                pollCreationForm.reset();
+                if (extraPollOptions) extraPollOptions.innerHTML = '';
+                loadEnquetes();
+            } catch(err) {
+                alert('Erro ao criar enquete: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    let activePoll = null;
+    
+    async function loadEnquetes() {
+        if (!window.supabaseClient) return;
+        
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        const normStr = (s) => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : "";
+        const currentU = normStr(currentUser || '');
+        
+        const creatorCard = document.getElementById('creatorPollCard');
+        if (creatorCard) {
+            creatorCard.style.display = 'block';
+        }
+        
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('sugestoes')
+                .select('*')
+                .like('sugestao', 'ENQUETE:%')
+                .order('created_at', { ascending: false });
+                
+            if (error) throw error;
+            
+            const activePollContainer = document.getElementById('activePollContainer');
+            const expiredPollsContainer = document.getElementById('expiredPollsContainer');
+            
+            const activeList = [];
+            const expiredList = [];
+            const now = new Date();
+            
+            if (data) {
+                data.forEach(item => {
+                    try {
+                        const jsonStr = item.sugestao.replace('ENQUETE:', '');
+                        const poll = JSON.parse(jsonStr);
+                        poll.id = item.id;
+                        
+                        const expDate = new Date(poll.expira_em);
+                        if (expDate > now) {
+                            activeList.push(poll);
+                        } else {
+                            expiredList.push(poll);
+                        }
+                    } catch(e) {}
+                });
+            }
+            
+            if (activeList.length > 0) {
+                activePoll = activeList[0];
+                
+                let userVoted = false;
+                let userVoteChoice = '';
+                for (const opt in activePoll.votos) {
+                    if (activePoll.votos[opt].includes(currentUser)) {
+                        userVoted = true;
+                        userVoteChoice = opt;
+                        break;
+                    }
+                }
+                
+                let totalVotes = 0;
+                for (const opt in activePoll.votos) {
+                    totalVotes += activePoll.votos[opt].length;
+                }
+                
+                let activeHtml = `
+                    <div class="glass-card" style="padding: 30px; border-left: 4px solid #8e6eff;">
+                        <span style="background: rgba(142, 110, 255, 0.2); color: #8e6eff; padding: 4px 10px; border-radius: 20px; font-size: 0.75em; font-weight: bold; text-transform: uppercase;">Enquete Ativa</span>
+                        <h3 style="color: white; margin: 15px 0; font-size: 1.4em;">${activePoll.pergunta}</h3>
+                `;
+                
+                if (userVoted) {
+                    activeHtml += `<div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">`;
+                    activePoll.opcoes.forEach(opt => {
+                        const votes = activePoll.votos[opt] || [];
+                        const pct = totalVotes > 0 ? Math.round((votes.length / totalVotes) * 100) : 0;
+                        const isUserChoice = opt === userVoteChoice;
+                        const votersNames = votes.join(', ');
+                        
+                        activeHtml += `
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.95em; margin-bottom: 5px; color: ${isUserChoice ? '#8e6eff' : 'white'}; font-weight: ${isUserChoice ? 'bold' : 'normal'};">
+                                    <span>${opt} ${isUserChoice ? '⭐ (Seu voto)' : ''}</span>
+                                    <span>${votes.length} voto(s) (${pct}%)</span>
+                                </div>
+                                <div style="width: 100%; height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; position: relative;" title="${votersNames || 'Sem votos'}">
+                                    <div style="width: ${pct}%; height: 100%; background: #8e6eff; border-radius: 5px; transition: width 1s ease;"></div>
+                                </div>
+                                <span style="font-size: 0.75em; color: #a0aec0; display: block; margin-top: 3px; opacity: 0.8;">Quem votou: ${votersNames || 'Ninguém'}</span>
+                            </div>
+                        `;
+                    });
+                    activeHtml += `</div>
+                        <p style="margin: 20px 0 0 0; font-size: 0.85em; color: #a0aec0; text-align: center;">Total de votos: ${totalVotes} • Expira hoje às 23:59</p>
+                    </div>`;
+                } else {
+                    activeHtml += `<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">`;
+                    activePoll.opcoes.forEach(opt => {
+                        activeHtml += `
+                            <button class="glass-card" onclick="window.voteInPoll('${activePoll.id}', '${opt}')" style="background: rgba(255,255,255,0.02); text-align: left; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 1em; transition: all 0.2s;" onmouseenter="this.style.borderColor='#8e6eff'; this.style.background='rgba(142, 110, 255, 0.05)';" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.background='rgba(255,255,255,0.02)';">
+                                ${opt}
+                            </button>
+                        `;
+                    });
+                    activeHtml += `</div></div>`;
+                }
+                
+                if (activePollContainer) {
+                    activePollContainer.innerHTML = activeHtml;
+                }
+            } else {
+                activePoll = null;
+                if (activePollContainer) {
+                    activePollContainer.innerHTML = `
+                        <div class="glass-card" style="padding: 30px; text-align: center; opacity: 0.6;">
+                            <i data-lucide="help-circle" style="width: 40px; height: 40px; color: #a0aec0; margin-bottom: 10px;"></i>
+                            <p style="margin: 0;">Nenhuma enquete ativa no momento.</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            if (expiredList.length > 0) {
+                let expiredHtml = '';
+                expiredList.forEach(poll => {
+                    let totalVotes = 0;
+                    for (const opt in poll.votos) {
+                        totalVotes += poll.votos[opt].length;
+                    }
+                    const formattedDate = new Date(poll.criado_em).toLocaleDateString('pt-BR');
+                    
+                    expiredHtml += `
+                        <div class="glass-card" style="padding: 20px; opacity: 0.85; border-left: 4px solid #a0aec0; margin-bottom: 15px;">
+                            <span style="background: rgba(255,255,255,0.1); color: #a0aec0; padding: 2px 8px; border-radius: 20px; font-size: 0.7em; font-weight: bold; text-transform: uppercase;">Encerrada em ${formattedDate}</span>
+                            <h4 style="color: white; margin: 10px 0; font-size: 1.15em;">${poll.pergunta}</h4>
+                            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                    `;
+                    
+                    poll.opcoes.forEach(opt => {
+                        const votes = poll.votos[opt] || [];
+                        const pct = totalVotes > 0 ? Math.round((votes.length / totalVotes) * 100) : 0;
+                        const votersNames = votes.join(', ');
+                        
+                        expiredHtml += `
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 3px; color: #a0aec0;">
+                                    <span>${opt}</span>
+                                    <span>${votes.length} voto(s) (${pct}%)</span>
+                                </div>
+                                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;" title="${votersNames || 'Sem votos'}">
+                                    <div style="width: ${pct}%; height: 100%; background: #a0aec0; border-radius: 3px;"></div>
+                                </div>
+                                <span style="font-size: 0.7em; color: #718096; display: block; margin-top: 2px;">Votos: ${votersNames || 'Nenhum'}</span>
+                            </div>
+                        `;
+                    });
+                    
+                    expiredHtml += `</div>
+                        <p style="margin: 15px 0 0 0; font-size: 0.85em; color: #718096; text-align: right;">Total de votos: ${totalVotes}</p>
+                    </div>`;
+                });
+                
+                if (expiredPollsContainer) {
+                    expiredPollsContainer.innerHTML = expiredHtml;
+                }
+            } else {
+                if (expiredPollsContainer) {
+                    expiredPollsContainer.innerHTML = `<div style="text-align: center; padding: 20px; opacity: 0.5;">Nenhuma enquete antiga encontrada.</div>`;
+                }
+            }
+            if (window.lucide) window.lucide.createIcons();
+        } catch(err) {
+            console.error("Erro ao carregar enquetes:", err);
+        }
+    }
+
+    window.voteInPoll = async function(pollId, selectedOption) {
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        if (!currentUser) return;
+        
+        try {
+            const { data, error } = await window.supabaseClient.from('sugestoes').select('*').eq('id', pollId).single();
+            if (error) throw error;
+            
+            const jsonStr = data.sugestao.replace('ENQUETE:', '');
+            const pollObj = JSON.parse(jsonStr);
+            
+            for (const opt in pollObj.votos) {
+                const idx = pollObj.votos[opt].indexOf(currentUser);
+                if (idx > -1) {
+                    pollObj.votos[opt].splice(idx, 1);
+                }
+            }
+            
+            if (!pollObj.votos[selectedOption]) {
+                pollObj.votos[selectedOption] = [];
+            }
+            pollObj.votos[selectedOption].push(currentUser);
+            
+            const updatedPayload = 'ENQUETE:' + JSON.stringify(pollObj);
+            const { error: updateError } = await window.supabaseClient.from('sugestoes').update({ sugestao: updatedPayload }).eq('id', pollId);
+            if (updateError) throw updateError;
+            
+            if (typeof window.showToast === 'function') window.showToast('Voto confirmado! 🗳️', 'success');
+            
+            const forcedPollModal = document.getElementById('forcedPollModal');
+            if (forcedPollModal) forcedPollModal.style.display = 'none';
+            
+            loadEnquetes();
+        } catch(err) {
+            alert('Erro ao computar voto: ' + err.message);
+        }
+    };
+
+    async function checkActivePollAndForcedOverlay() {
+        if (!window.supabaseClient) return;
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        if (!currentUser) return;
+        
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('sugestoes')
+                .select('*')
+                .like('sugestao', 'ENQUETE:%')
+                .order('created_at', { ascending: false });
+                
+            if (error) throw error;
+            
+            let activePoll = null;
+            const now = new Date();
+            
+            if (data) {
+                for (const item of data) {
+                    try {
+                        const jsonStr = item.sugestao.replace('ENQUETE:', '');
+                        const poll = JSON.parse(jsonStr);
+                        poll.id = item.id;
+                        
+                        const expDate = new Date(poll.expira_em);
+                        if (expDate > now) {
+                            activePoll = poll;
+                            break;
+                        }
+                    } catch(e) {}
+                }
+            }
+            
+            const forcedModal = document.getElementById('forcedPollModal');
+            if (activePoll) {
+                let userVoted = false;
+                for (const opt in activePoll.votos) {
+                    if (activePoll.votos[opt].includes(currentUser)) {
+                        userVoted = true;
+                        break;
+                    }
+                }
+                
+                if (!userVoted) {
+                    if (forcedModal && forcedModal.style.display !== 'flex') {
+                        document.getElementById('forcedPollQuestion').innerText = activePoll.pergunta;
+                        
+                        const container = document.getElementById('forcedPollOptionsContainer');
+                        container.innerHTML = '';
+                        
+                        let selectedOpt = '';
+                        const voteBtn = document.getElementById('forcedPollVoteBtn');
+                        voteBtn.disabled = true;
+                        voteBtn.style.opacity = '0.5';
+                        voteBtn.style.cursor = 'not-allowed';
+                        
+                        activePoll.opcoes.forEach(opt => {
+                            const btn = document.createElement('button');
+                            btn.className = 'glass-card';
+                            btn.innerText = opt;
+                            btn.style.cssText = 'background: rgba(255,255,255,0.02); text-align: left; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 1.05em; transition: all 0.2s; width: 100%;';
+                            
+                            btn.onclick = () => {
+                                Array.from(container.children).forEach(child => {
+                                    child.style.borderColor = 'rgba(255,255,255,0.1)';
+                                    child.style.background = 'rgba(255,255,255,0.02)';
+                                    child.style.transform = 'scale(1)';
+                                    child.style.boxShadow = 'none';
+                                });
+                                
+                                btn.style.borderColor = '#8e6eff';
+                                btn.style.background = 'rgba(142, 110, 255, 0.1)';
+                                btn.style.transform = 'scale(1.02)';
+                                btn.style.boxShadow = '0 0 15px rgba(142, 110, 255, 0.2)';
+                                selectedOpt = opt;
+                                
+                                voteBtn.disabled = false;
+                                voteBtn.style.opacity = '1';
+                                voteBtn.style.cursor = 'pointer';
+                            };
+                            
+                            container.appendChild(btn);
+                        });
+                        
+                        voteBtn.onclick = () => {
+                            if (selectedOpt) {
+                                window.voteInPoll(activePoll.id, selectedOpt);
+                            }
+                        };
+                        
+                        forcedModal.style.display = 'flex';
+                    }
+                } else {
+                    if (forcedModal) forcedModal.style.display = 'none';
+                }
+            } else {
+                if (forcedModal) forcedModal.style.display = 'none';
+            }
+        } catch(e) {
+            console.error("Erro na verificação da enquete ativa:", e);
+        }
+    }
+
+    async function checkForNewPhotosAndPolls() {
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        if (!currentUser) return;
+        
+        await checkActivePollAndForcedOverlay();
+        
+        try {
+            const { data: photos, error } = await window.supabaseClient
+                .from('sugestoes')
+                .select('id, username, created_at')
+                .like('sugestao', 'FOTO:%')
+                .order('id', { ascending: false })
+                .limit(1);
+                
+            if (error) throw error;
+            
+            if (photos && photos.length > 0) {
+                const latestPhoto = photos[0];
+                const lastSeenId = localStorage.getItem('last_seen_photo_id');
+                
+                if (!lastSeenId) {
+                    localStorage.setItem('last_seen_photo_id', latestPhoto.id.toString());
+                } else if (latestPhoto.id > parseInt(lastSeenId)) {
+                    const normStr = (s) => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : "";
+                    if (normStr(latestPhoto.username) !== normStr(currentUser)) {
+                        if (typeof window.showToast === 'function') {
+                            window.showToast(`Nova foto no Mural de Fotos postada por ${latestPhoto.username}! 📸`, 'success', 6000);
+                        }
+                    }
+                    localStorage.setItem('last_seen_photo_id', latestPhoto.id.toString());
+                    
+                    const fotosTab = document.getElementById('tab-fotos');
+                    if (fotosTab && fotosTab.style.display !== 'none') {
+                        loadPhotoGallery();
+                    }
+                }
+            }
+        } catch(e) {
+            console.error("Erro na verificação de fotos:", e);
+        }
+    }
+
+    // Refresh when tab is clicked
+    const enquetesTabBtn = document.querySelector('[data-target="tab-enquetes"]');
+    if (enquetesTabBtn) {
+        enquetesTabBtn.addEventListener('click', loadEnquetes);
+    }
+
+    // Initial check for active poll/new photos
+    loadEnquetes();
+    checkForNewPhotosAndPolls();
+    setInterval(checkForNewPhotosAndPolls, 12000);
 });
