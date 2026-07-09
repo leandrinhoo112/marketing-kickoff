@@ -381,6 +381,14 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch(e) { console.error("Audio error", e); }
     };
 
+    window.playEditarSound = function() {
+        try {
+            const audio = new Audio('EDITAR.MP3');
+            audio.volume = 0.6;
+            audio.play().catch(e => console.error("Audio error", e));
+        } catch(e) { console.error("Audio error", e); }
+    };
+
     window.toggleTaskDone = function(index) {
         if (currentTasks[index].startsWith('✅ ')) {
             currentTasks[index] = currentTasks[index].replace('✅ ', '');
@@ -1339,6 +1347,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.editEntry = (id) => {
+        if (typeof window.playEditarSound === 'function') window.playEditarSound();
         const entry = allEntries.find(e => e.id == id);
         if (!entry) return;
         editingId = id;
@@ -2067,6 +2076,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.editSucesso = (id) => {
+        if (typeof window.playEditarSound === 'function') window.playEditarSound();
         const entry = allSucessos.find(e => e.id == id);
         if (!entry) return;
         editingSucessoId = id;
