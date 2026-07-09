@@ -162,6 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderTaskBuilder();
     };
+
+    window.toggleTaskRework = function(index) {
+        let task = currentTasks[index];
+        if (task.includes('🔄 ')) {
+            currentTasks[index] = task.replace('🔄 ', '');
+        } else {
+            currentTasks[index] = '🔄 ' + task;
+        }
+        renderTaskBuilder();
+    };
     if (taskInput) {
         taskInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') {
@@ -214,8 +224,10 @@ document.addEventListener('DOMContentLoaded', () => {
         taskListUI.innerHTML = currentTasks.map((t, index) => {
             const isDone = t.startsWith('✅ ');
             let isUrgent = t.includes('🚨 ');
+            let isRework = t.includes('🔄 ');
             let textStyle = isDone ? 'text-decoration: line-through; opacity: 0.6;' : '';
             if (isUrgent && !isDone) textStyle += 'color: #ff416c; font-weight: bold; ';
+            if (isRework && !isDone) textStyle += 'color: #f59e0b; font-style: italic; ';
             const iconName = isDone ? 'check-circle' : 'circle';
             const iconColor = isDone ? '#22c55e' : '#8e6eff';
             return `
@@ -231,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${t}
                 </span>
                 <div style="display: flex; gap: 8px;">
+                    <button type="button" onclick="toggleTaskRework(${index})" style="background: none; border: none; color: ${isRework ? '#f59e0b' : 'rgba(255,255,255,0.4)'}; cursor: pointer;" title="Marcar como Retrabalho"><i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i></button>
                     <button type="button" onclick="toggleTaskUrgent(${index})" style="background: none; border: none; color: ${isUrgent ? '#ff416c' : 'rgba(255,255,255,0.4)'}; cursor: pointer;" title="Alternar Urgência"><i data-lucide="siren" style="width: 16px; height: 16px;"></i></button>
                     <button type="button" onclick="toggleTaskDone(${index})" style="background: none; border: none; color: #22c55e; cursor: pointer;" title="Concluir Tarefa"><i data-lucide="check" style="width: 16px; height: 16px;"></i></button>
                     <button type="button" onclick="removeTask(${index})" style="background: none; border: none; color: #ff416c; cursor: pointer;" title="Remover Tarefa"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
@@ -344,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.playSatisfyingCheckSound = function() {
         try {
-            const audio = new Audio('som concluido.MP3');
+            const audio = new Audio('0709.MP3');
             audio.volume = 0.5; // Ajuste de volume se necessário
             audio.play().catch(e => console.error("Audio error", e));
         } catch(e) { console.error("Audio error", e); }
@@ -1484,9 +1497,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!tClean) return '';
                 const isDone = tClean.startsWith('✅ ');
                 const isUrgent = tClean.includes('🚨 ');
+                const isRework = tClean.includes('🔄 ');
                 let spanStyle = 'flex:1;';
-                if (isUrgent && !isDone) spanStyle += 'color: #ff416c; font-weight: bold;';
-                if (isDone) spanStyle += 'text-decoration: line-through; opacity: 0.6;';
+                if (isUrgent && !isDone) spanStyle += 'color: #ff416c; font-weight: bold; ';
+                if (isRework && !isDone) spanStyle += 'color: #f59e0b; font-style: italic; ';
+                if (isDone) spanStyle += 'text-decoration: line-through; opacity: 0.6; ';
                 return `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><i data-lucide="check-square" style="width:14px;height:14px;color:#8e6eff;flex-shrink:0;margin-top:3px;"></i> <span style="${spanStyle}">${tClean}</span></div>`;
             }).join('');
 
