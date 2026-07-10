@@ -603,9 +603,9 @@ document.addEventListener('DOMContentLoaded', () => {
     runawayBall.style.cssText = 'position: fixed; font-size: 60px; cursor: pointer; z-index: 9999; transition: left 0.25s ease-out, top 0.25s ease-out, transform 0.25s ease-out; user-select: none; top: 180px; left: 180px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));';
     document.body.appendChild(runawayBall);
 
-    const oleSound = new Audio('ole.mp3');
+    const oleSound = new Audio('ole.MP3');
     oleSound.volume = 0.8;
-    const recuperouSound = new Audio('recuperou.mp3');
+    const recuperouSound = new Audio('recuperou.MP3');
     recuperouSound.volume = 1.0;
 
     let ballCaught = false;
