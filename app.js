@@ -577,6 +577,10 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast("🏆 Conquista Desbloqueada: Caçador de Telefones!", "success");
         }
         
+        if (typeof calculateXP === 'function') {
+            calculateXP();
+        }
+        
         const currentUser = localStorage.getItem('radarMarketingUser');
         if (currentUser && typeof applyCurrentUser === 'function') {
             const btn = document.getElementById('submitBtn');
@@ -592,6 +596,88 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 6000);
     });
     // --- FIM BRINCADEIRA DO TELEFONE ---
+
+    // --- BRINCADEIRA DA BOLA FUJONA ---
+    const runawayBall = document.createElement('div');
+    runawayBall.innerHTML = '⚽';
+    runawayBall.style.cssText = 'position: fixed; font-size: 60px; cursor: pointer; z-index: 9999; transition: left 0.25s ease-out, top 0.25s ease-out, transform 0.25s ease-out; user-select: none; top: 180px; left: 180px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));';
+    document.body.appendChild(runawayBall);
+
+    const oleSound = new Audio('ole.mp3');
+    oleSound.volume = 0.8;
+    const recuperouSound = new Audio('recuperou.mp3');
+    recuperouSound.volume = 1.0;
+
+    let ballCaught = false;
+    let ballActivated = false;
+    let ballEscapeTimeout = null;
+
+    runawayBall.addEventListener('mouseover', () => {
+        if (!ballActivated || ballCaught) return;
+        
+        oleSound.currentTime = 0;
+        oleSound.play().catch(() => {});
+        
+        clearTimeout(ballEscapeTimeout);
+        ballEscapeTimeout = setTimeout(() => {
+            if (ballCaught) return;
+            
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            const newX = Math.max(20, Math.random() * maxX);
+            const newY = Math.max(20, Math.random() * maxY);
+            
+            runawayBall.style.left = `${newX}px`;
+            runawayBall.style.top = `${newY}px`;
+            runawayBall.style.transform = `rotate(${Math.random() * 360}deg)`;
+        }, 80); 
+    });
+
+    runawayBall.addEventListener('click', () => {
+        if (!ballActivated) {
+            ballActivated = true;
+            oleSound.currentTime = 0;
+            oleSound.play().catch(() => {});
+            
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            runawayBall.style.left = `${Math.max(20, Math.random() * maxX)}px`;
+            runawayBall.style.top = `${Math.max(20, Math.random() * maxY)}px`;
+            runawayBall.style.transform = `rotate(${Math.random() * 360}deg)`;
+            return;
+        }
+
+        if (ballCaught) return;
+        ballCaught = true;
+        clearTimeout(ballEscapeTimeout);
+        
+        oleSound.pause();
+        recuperouSound.currentTime = 0;
+        recuperouSound.play().catch(() => {});
+        
+        runawayBall.style.transform = 'rotate(0deg) scale(1.3)';
+        runawayBall.style.filter = 'drop-shadow(0 0 20px #22c55e)';
+        
+        localStorage.setItem('ballHunter', 'true');
+        
+        if (window.confetti) {
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, zIndex: 10000 });
+        }
+        if (typeof showToast === 'function') {
+            showToast("⚽ Você recuperou a bola fujona! Olé!", "success");
+        }
+        
+        if (typeof calculateXP === 'function') {
+            calculateXP();
+        }
+        
+        setTimeout(() => {
+            ballCaught = false;
+            runawayBall.style.transform = 'rotate(0deg) scale(1)';
+            runawayBall.style.filter = 'drop-shadow(0 0 10px rgba(255,255,255,0.5))';
+        }, 6000);
+    });
+    // --- FIM BRINCADEIRA DA BOLA FUJONA ---
 
     function playNameSound(nameStr) {
         if (!nameStr) return;
@@ -988,6 +1074,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'coluna_time', title: 'Coluna do Time', desc: 'Citado 10x em Elogios', icon: '🤝', condition: praisesCount >= 10 },
             { id: 'veterano', title: 'Veterano', desc: 'Alcançou 500 XP', icon: '🏅', condition: totalXp >= 500 },
             { id: 'phone_hunter', title: 'Caçador de Telefones', desc: 'Pegou o telefone fujão', icon: '📞', condition: localStorage.getItem('phoneHunter') === 'true' },
+            { id: 'ball_hunter', title: 'Craque do Drible', desc: 'Pegou a bola fujona', icon: '⚽', condition: localStorage.getItem('ballHunter') === 'true' },
             { id: 'termo_master', title: 'Sabe-Tudo', desc: 'Jogou o Termo diário', icon: '🧠', condition: localStorage.getItem('achv_termo') === 'true' },
             { id: 'caca_palavras', title: 'Olho de Águia', desc: 'Jogou o Caça-Palavras', icon: '🦅', condition: localStorage.getItem('achv_caca') === 'true' }
         ];
