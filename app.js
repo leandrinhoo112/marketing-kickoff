@@ -4667,6 +4667,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     description: e.detail || '',
                                     location: location,
                                     link: e.url || `https://www.sympla.com.br/evento/${e.id}`,
+                                    image: e.image || '',
                                     official: true
                                 };
                             })
@@ -4757,7 +4758,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             const link = e.url || e.link || `https://www.sympla.com.br/evento/${e.id}`;
 
-                            return { title, description, date, location, link };
+                            return { title, description, date, location, link, image: e.image || e.flyer || '' };
                         });
                     }
                 }
@@ -4904,7 +4905,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     syncBadge = `<span style="background: rgba(0, 193, 232, 0.2); color: #00c1e8; padding: 2px 6px; border-radius: 4px; font-size: 0.6em; font-weight: bold; display: inline-flex; align-items: center; gap: 2px;"><i data-lucide="refresh-cw" style="width:8px;height:8px;animation:spin 4s linear infinite;"></i> Live</span>`;
                 }
 
-                const coverImage = event.image || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80';
+                const isValidImage = (url) => {
+                    if (!url || typeof url !== 'string') return false;
+                    const u = url.trim();
+                    if (u === 'https://images.sympla.com.br/' || u === 'https://images.sympla.com.br' || u === 'http://images.sympla.com.br/' || u === 'http://images.sympla.com.br') {
+                        return false;
+                    }
+                    return u.startsWith('http://') || u.startsWith('https://');
+                };
+
+                const coverImage = isValidImage(event.image) ? event.image : 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80';
 
                 return `
                     <div class="glass-card" style="padding: 16px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.3s, box-shadow 0.3s; ${cardBorder}">
