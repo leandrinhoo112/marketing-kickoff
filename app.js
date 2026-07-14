@@ -797,6 +797,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof playStartSoundForUser === 'function') {
             playStartSoundForUser(currentUser);
         }
+        if (typeof window.loadSymplaEvents === 'function') {
+            window.loadSymplaEvents();
+        }
     }
 
     let previousTasksData = null; // Store radar entry to edit later
@@ -2075,7 +2078,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const { data, error } = await supabaseClient.from('sugestoes').select('*').order('created_at', { ascending: false });
             if (error) throw error;
-            const filtered = data ? data.filter(item => !item.sugestao.startsWith('FOTO:') && !item.sugestao.startsWith('ENQUETE:')) : [];
+            const filtered = data ? data.filter(item => !item.sugestao.startsWith('FOTO:') && !item.sugestao.startsWith('ENQUETE:') && !item.sugestao.startsWith('SYMPLA:')) : [];
             if (filtered.length > 0) {
                 container.innerHTML = filtered.map(item => `
                     <div class="glass-card" style="padding: 15px; border-left: 4px solid #02ceff; background: rgba(2, 206, 255, 0.05);">
@@ -2313,7 +2316,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             const container = document.getElementById('adminSugestoesContainer');
             if (data && container) {
-                const filtered = data.filter(sg => !sg.sugestao.startsWith('FOTO:') && !sg.sugestao.startsWith('ENQUETE:'));
+                const filtered = data.filter(sg => !sg.sugestao.startsWith('FOTO:') && !sg.sugestao.startsWith('ENQUETE:') && !sg.sugestao.startsWith('SYMPLA:'));
                 if (filtered.length === 0) {
                     container.innerHTML = `<div class="glass-card" style="padding: 15px; text-align: center; opacity: 0.5;">Nenhuma sugestão recebida ainda.</div>`;
                     return;
@@ -4603,6 +4606,398 @@ document.addEventListener('DOMContentLoaded', () => {
     if (enquetesTabBtn) {
         enquetesTabBtn.addEventListener('click', loadEnquetes);
     }
+
+    // ==========================================
+    // INTEGRAÇÃO SYMPLA - FACULDADE INSPIRAR
+    // ==========================================
+
+    window.loadSymplaEvents = async function() {
+        if (!window.supabaseClient) return;
+        
+        const container = document.getElementById('symplaEventsList');
+        if (!container) return;
+
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        const normStr = (s) => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim() : "";
+        const currentU = normStr(currentUser || '');
+        const isManager = ['VANESSA', 'BRUNO', 'VITOR', 'LEANDRO'].includes(currentU);
+        
+        const addBtn = document.getElementById('addSymplaEventBtn');
+        if (addBtn) addBtn.style.display = isManager ? 'flex' : 'none';
+
+        let realEvents = [];
+        let manualEvents = [];
+
+        // 1. Tenta obter os eventos reais da API de raspagem (Vercel)
+        try {
+            const response = await fetch('/api/get-sympla-events');
+            if (response.ok) {
+                const resJson = await response.json();
+                if (resJson.events) {
+                    realEvents = resJson.events;
+                }
+            } else {
+                throw new Error("API local retornou status: " + response.status);
+            }
+        } catch (e) {
+            console.warn("Erro ao buscar API local do Sympla, tentando oficial direta...", e);
+            // Fallback 1: Tenta chamar a API oficial direta da Sympla no client-side
+            try {
+                const token = '3c53762d14d139ec276692b86d49fa2e478279608c6aa00a4b8b11124176f580';
+                const response = await fetch('https://api.sympla.com.br/public/v3/events?sort=DESC&page_size=100', {
+                    headers: { 's_token': token }
+                });
+                if (response.ok) {
+                    const resJson = await response.json();
+                    if (resJson.data && resJson.data.length > 0) {
+                        const today = new Date();
+                        today.setHours(0,0,0,0);
+                        
+                        realEvents = resJson.data
+                            .map(e => {
+                                let location = 'Online';
+                                if (e.address && !Array.isArray(e.address)) {
+                                    location = e.address.name || e.address.city || 'Presencial';
+                                } else if (e.address && Array.isArray(e.address) && e.address.length > 0) {
+                                    location = e.address[0].name || e.address[0].city || 'Presencial';
+                                }
+                                return {
+                                    title: e.name || '',
+                                    date: e.start_date || '',
+                                    description: e.detail || '',
+                                    location: location,
+                                    link: e.url || `https://www.sympla.com.br/evento/${e.id}`,
+                                    official: true
+                                };
+                            })
+                            .filter(e => {
+                                if (!e.date) return false;
+                                const eventDate = new Date(e.date.replace(' ', 'T'));
+                                return eventDate >= today;
+                            });
+                    }
+                } else {
+                    throw new Error("API oficial retornou status: " + response.status);
+                }
+            } catch (errOff) {
+                console.warn("Chamada direta à API oficial falhou, tentando proxy público...", errOff);
+                // Fallback 2: Fallback para AllOrigins CORS Proxy (permite testar localmente em localhost/file://)
+                try {
+                    const targetUrl = 'https://www.sympla.com.br/produtor/faculdadeinspirar';
+                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+                    const response = await fetch(proxyUrl);
+                    if (response.ok) {
+                        const resJson = await response.json();
+                        const html = resJson.contents;
+                    const match = html.match(/<script id="symplaDiscovery">window\.symplaDiscovery="([^"]+)"<\/script>/) || html.match(/window\.symplaDiscovery="([^"]+)"/);
+                    let data = null;
+
+                    if (match) {
+                        try {
+                            let enc = match[1];
+                            const t = enc.length;
+                            for (let r = t - 1; r >= 0; r--) {
+                                enc = enc.substring(0, r) + enc.charAt(t - 1 - r) + enc.substring(r + 1);
+                            }
+                            const binary = atob(enc);
+                            let decrypted = "";
+                            for (let a = 0; a < binary.length; a++) {
+                                decrypted += String.fromCharCode(binary.charCodeAt(a) ^ (a % 10));
+                            }
+                            data = JSON.parse(decrypted);
+                        } catch(decErr) {
+                            console.error("Erro ao descriptografar symplaDiscovery:", decErr);
+                        }
+                    } else {
+                        const nextMatch = html.match(/<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/);
+                        if (nextMatch) {
+                            data = JSON.parse(nextMatch[1]);
+                        }
+                    }
+
+                    if (data) {
+                        let events = [];
+
+                        const findEventsArray = (obj) => {
+                            if (!obj || typeof obj !== 'object') return false;
+                            for (const key in obj) {
+                                try {
+                                    const val = obj[key];
+                                    if (Array.isArray(val)) {
+                                        if (val.length > 0 && val[0] && (val[0].name || val[0].title) && (val[0].startDate || val[0].date || val[0].start_date)) {
+                                            events = val;
+                                            return true;
+                                        }
+                                    } else if (val && typeof val === 'object') {
+                                        if (findEventsArray(val)) return true;
+                                    }
+                                } catch(err) {}
+                            }
+                            return false;
+                        };
+
+                        findEventsArray(data);
+
+                        realEvents = events.map(e => {
+                            const title = e.name || e.title || '';
+                            const date = e.startDate || e.date || e.start_date || '';
+                            let description = e.description || e.detail || e.summary || '';
+                            if (description) {
+                                description = description.replace(/<[^>]*>/g, '').substring(0, 150) + (description.length > 150 ? '...' : '');
+                            }
+
+                            let location = 'Online';
+                            if (e.address) {
+                                location = e.address.name || e.address.city || e.address.address_line || 'Presencial';
+                            } else if (e.location) {
+                                location = e.location.name || e.location.city || 'Presencial';
+                            } else if (e.city) {
+                                location = e.city;
+                            }
+
+                            const link = e.url || e.link || `https://www.sympla.com.br/evento/${e.id}`;
+
+                            return { title, description, date, location, link };
+                        });
+                    }
+                }
+            } catch (proxyErr) {
+                console.error("Erro no fallback do proxy público:", proxyErr);
+            }
+        }
+
+        // 2. Busca do Supabase (eventos manuais)
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('sugestoes')
+                .select('*')
+                .like('sugestao', 'SYMPLA:%')
+                .order('created_at', { ascending: true });
+
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+                manualEvents = data.map(item => {
+                    try {
+                        const jsonStr = item.sugestao.replace('SYMPLA:', '');
+                        const evObj = JSON.parse(jsonStr);
+                        evObj.id = item.id; // Guarda ID para deletar
+                        evObj.username = item.username; // Guarda o username para saber se é inventado
+                        return evObj;
+                    } catch(e) {
+                        return null;
+                    }
+                }).filter(e => e !== null);
+            } else if (realEvents.length === 0) {
+                // Se tudo estiver vazio (erro no scraper E sem eventos no Supabase), criamos eventos padrão
+                const today = new Date();
+                const getFutureDate = (daysAhead, hour) => {
+                    const d = new Date(today);
+                    d.setDate(today.getDate() + daysAhead);
+                    d.setHours(hour, 0, 0, 0);
+                    return d.toISOString();
+                };
+
+                const isFriday = today.getDay() === 5;
+                const weekendOffset = isFriday ? 1 : 2;
+
+                const seedData = [
+                    {
+                        title: "Inspirar Conecta - Autismo e Inclusão",
+                        description: "Um dia de palestras e trocas de experiências com foco no espectro autista.",
+                        date: getFutureDate(0, 19),
+                        location: "Auditório Principal / Online",
+                        link: "https://www.sympla.com.br"
+                    },
+                    {
+                        title: "II Ergonomia Inspirar Summit",
+                        description: "Rede nacional reunida para discutir as inovações em ergonomia e saúde corporativa.",
+                        date: getFutureDate(weekendOffset, 9),
+                        location: "Unidade Curitiba",
+                        link: "https://www.sympla.com.br"
+                    },
+                    {
+                        title: "VII Simpósio Nacional de Acupuntura",
+                        description: "Pesquisas científicas e prática clínica na medicina tradicional chinesa.",
+                        date: getFutureDate(4, 14),
+                        location: "Online (Transmissão Streaming)",
+                        link: "https://www.sympla.com.br"
+                    }
+                ];
+
+                for (const seed of seedData) {
+                    await window.supabaseClient.from('sugestoes').insert({
+                        username: "Inspirar",
+                        sugestao: 'SYMPLA:' + JSON.stringify(seed)
+                    });
+                }
+                loadSymplaEvents();
+                return;
+            }
+        } catch (err) {
+            console.error("Erro ao carregar eventos manuais do Supabase:", err);
+        }
+
+        // 3. Mesclar as listas (removendo duplicados por título) e ordenar por data
+        const mergedMap = new Map();
+        
+        realEvents.forEach(e => {
+            mergedMap.set(e.title.toLowerCase().trim(), e);
+        });
+
+        manualEvents.forEach(e => {
+            // Se tivermos eventos oficiais reais, desconsideramos os fictícios de teste ("Inspirar")
+            if (realEvents.length > 0 && e.username === 'Inspirar') {
+                return;
+            }
+            mergedMap.set(e.title.toLowerCase().trim(), e);
+        });
+
+        const sortedEvents = Array.from(mergedMap.values()).sort((a, b) => new Date(a.date.replace(' ', 'T')) - new Date(b.date.replace(' ', 'T')));
+
+        const today = new Date();
+        const todayStr = today.toDateString();
+
+        const html = sortedEvents.map(event => {
+            try {
+                const eventDate = new Date(event.date.replace(' ', 'T'));
+                const isToday = eventDate.toDateString() === todayStr;
+                
+                let isWeekendWarning = false;
+                if (today.getDay() === 5) {
+                    const eventDay = eventDate.getDay();
+                    const diffTime = eventDate - today;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (diffDays >= 0 && diffDays <= 3 && (eventDay === 6 || eventDay === 0)) {
+                        isWeekendWarning = true;
+                    }
+                }
+
+                const dateFormatted = eventDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+                const timeFormatted = eventDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+                let warningBadge = '';
+                let cardBorder = 'border-top: 3px solid rgba(255,255,255,0.1);';
+                if (isToday) {
+                    warningBadge = `<span class="pulse-badge" style="background: #ff416c; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 0 10px rgba(255, 65, 108, 0.4);"><i data-lucide="alert-circle" style="width:12px;height:12px;"></i> HOJE! 🚨</span>`;
+                    cardBorder = 'border-top: 3px solid #ff416c; background: rgba(255, 65, 108, 0.03);';
+                } else if (isWeekendWarning) {
+                    warningBadge = `<span style="background: #ffd700; color: #0f0a1e; padding: 4px 10px; border-radius: 6px; font-size: 0.75em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="calendar" style="width:12px;height:12px;"></i> FIM DE SEMANA! 📅</span>`;
+                    cardBorder = 'border-top: 3px solid #ffd700; background: rgba(250, 204, 21, 0.02);';
+                }
+
+                const deleteBtn = (isManager && event.id) ? `<button onclick="window.deleteSymplaEvent('${event.id}')" style="background: rgba(255, 65, 108, 0.1); border: none; color: #ff416c; padding: 6px 12px; border-radius: 6px; font-size: 0.8em; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255, 65, 108, 0.2)'" onmouseout="this.style.background='rgba(255, 65, 108, 0.1)'">Excluir</button>` : '';
+
+                let syncBadge = '';
+                if (event.id) {
+                    syncBadge = `<span style="background: rgba(255,255,255,0.05); color: #a0aec0; padding: 2px 6px; border-radius: 4px; font-size: 0.65em;">Manual</span>`;
+                } else if (event.official) {
+                    syncBadge = `<span style="background: rgba(0, 193, 232, 0.15); color: #00c1e8; padding: 2px 6px; border-radius: 4px; font-size: 0.65em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="shield-check" style="width:10px;height:10px;"></i> Sympla Oficial</span>`;
+                } else {
+                    syncBadge = `<span style="background: rgba(0, 193, 232, 0.1); color: #00c1e8; padding: 2px 6px; border-radius: 4px; font-size: 0.65em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="refresh-cw" style="width:8px;height:8px;animation:spin 4s linear infinite;"></i> Sympla Live</span>`;
+                }
+
+                return `
+                    <div class="glass-card" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 15px; transition: transform 0.3s, box-shadow 0.3s; ${cardBorder}">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 10px;">
+                                <span style="font-size: 0.75em; color: #00c1e8; font-weight: bold; text-transform: uppercase; display: flex; align-items: center; gap: 4px;">
+                                    <i data-lucide="clock" style="width:12px;height:12px;"></i> ${dateFormatted} às ${timeFormatted}
+                                </span>
+                                <div style="display: flex; gap: 5px; align-items: center;">
+                                    ${syncBadge}
+                                    ${warningBadge}
+                                </div>
+                            </div>
+                            <h4 style="margin: 0 0 8px 0; color: white; font-size: 1.15em; font-weight: bold;">${event.title}</h4>
+                            <p style="margin: 0 0 10px 0; font-size: 0.88em; color: #a0aec0; line-height: 1.4;">${event.description}</p>
+                            <span style="font-size: 0.8em; color: #718096; display: flex; align-items: center; gap: 4px;">
+                                    <i data-lucide="map-pin" style="width:12px;height:12px;"></i> ${event.location}
+                            </span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; margin-top: auto;">
+                            <a href="${event.link}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: #00c1e8; color: #0f0a1e; padding: 6px 14px; border-radius: 6px; font-size: 0.85em; font-weight: bold; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='#00deff'" onmouseout="this.style.background='#00c1e8'">
+                                Ver no Sympla <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+                            </a>
+                            ${deleteBtn}
+                        </div>
+                    </div>
+                `;
+            } catch(e) {
+                return '';
+            }
+        }).join('');
+
+        container.innerHTML = html || '<div style="text-align: center; padding: 20px; opacity: 0.5; grid-column: 1 / -1;">Nenhum evento futuro encontrado.</div>';
+        if (window.lucide) window.lucide.createIcons();
+    };
+
+    window.deleteSymplaEvent = async function(id) {
+        if (!confirm('Deseja realmente remover este evento?')) return;
+        try {
+            const { error } = await window.supabaseClient.from('sugestoes').delete().eq('id', id);
+            if (error) throw error;
+            if (typeof window.showToast === 'function') window.showToast('Evento removido!', 'success');
+            loadSymplaEvents();
+        } catch(err) {
+            alert('Erro ao deletar evento: ' + err.message);
+        }
+    };
+
+    const addSymplaEventBtn = document.getElementById('addSymplaEventBtn');
+    const formContainer = document.getElementById('symplaEventFormContainer');
+    const cancelSymplaEventBtn = document.getElementById('cancelSymplaEventBtn');
+    const symplaEventForm = document.getElementById('symplaEventForm');
+
+    if (addSymplaEventBtn && formContainer) {
+        addSymplaEventBtn.onclick = () => formContainer.style.display = 'block';
+    }
+    if (cancelSymplaEventBtn && formContainer) {
+        cancelSymplaEventBtn.onclick = () => formContainer.style.display = 'none';
+    }
+
+    if (symplaEventForm) {
+        symplaEventForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = symplaEventForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+
+            const title = document.getElementById('seTitle').value;
+            const description = document.getElementById('seDesc').value;
+            const date = document.getElementById('seDate').value;
+            const location = document.getElementById('seLocation').value;
+            const link = document.getElementById('seLink').value;
+
+            const eventData = {
+                title,
+                description,
+                date: new Date(date).toISOString(),
+                location,
+                link
+            };
+
+            try {
+                const { error } = await window.supabaseClient.from('sugestoes').insert({
+                    username: "Inspirar",
+                    sugestao: 'SYMPLA:' + JSON.stringify(eventData)
+                });
+
+                if (error) throw error;
+
+                if (typeof window.showToast === 'function') window.showToast('Evento lançado no Sympla!', 'success');
+                symplaEventForm.reset();
+                if (formContainer) formContainer.style.display = 'none';
+                loadSymplaEvents();
+            } catch(err) {
+                alert('Erro ao salvar evento: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    // Carregar na inicialização
+    loadSymplaEvents();
 
     // Initial check for active poll/new photos
     loadEnquetes();

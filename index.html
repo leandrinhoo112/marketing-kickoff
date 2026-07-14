@@ -214,6 +214,72 @@
             </div>
         </section>
 
+        <!-- PAINEL DE EVENTOS SYMPLA -->
+        <section id="symplaEventsPanel" class="glass-card" style="margin-bottom: 40px; padding: 25px; border-left: 4px solid #00c1e8; background: linear-gradient(135deg, rgba(0, 193, 232, 0.05), rgba(104, 65, 241, 0.02));">
+            <style>
+                @keyframes pulse-glow {
+                    0% { box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.4); }
+                    70% { box-shadow: 0 0 0 10px rgba(255, 65, 108, 0); }
+                    100% { box-shadow: 0 0 0 0 rgba(255, 65, 108, 0); }
+                }
+                .pulse-badge {
+                    animation: pulse-glow 1.5s infinite;
+                }
+            </style>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(0, 193, 232, 0.15);">
+                        <i data-lucide="calendar-days" style="width: 22px; height: 22px; color: #00c1e8;"></i>
+                    </span>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.25em; color: white;">Próximos Eventos - Faculdade Inspirar</h3>
+                        <p style="margin: 0; font-size: 0.85em; color: #a0aec0;">Eventos e cursos integrados diretamente do Sympla 🎓</p>
+                    </div>
+                </div>
+                <button type="button" id="addSymplaEventBtn" class="btn-secondary" style="display: none; background: rgba(0, 193, 232, 0.1); border: 1px solid rgba(0, 193, 232, 0.3); color: #00c1e8; padding: 6px 14px; border-radius: 8px; font-size: 0.82em; cursor: pointer; transition: all 0.3s; align-items: center; gap: 6px;">
+                    <i data-lucide="plus-circle" style="width:14px; height:14px;"></i> Novo Evento
+                </button>
+            </div>
+
+            <!-- Formulário para adicionar evento (oculto por padrão) -->
+            <div id="symplaEventFormContainer" style="display: none; margin-bottom: 25px; padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05);">
+                <h4 style="color: #00c1e8; margin-top: 0; margin-bottom: 15px;">Adicionar Evento do Sympla</h4>
+                <form id="symplaEventForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <label for="seTitle">Título do Evento</label>
+                        <input type="text" id="seTitle" required placeholder="Ex: II Ergonomia Inspirar Summit" style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                    </div>
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <label for="seDesc">Descrição / Detalhes</label>
+                        <textarea id="seDesc" required placeholder="Ex: Summit de Ergonomia reunindo os maiores nomes nacionais do mercado..." style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; height: 60px; font-family: inherit; resize: vertical;"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="seDate">Data e Hora do Evento</label>
+                        <input type="datetime-local" id="seDate" required style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                    </div>
+                    <div class="input-group">
+                        <label for="seLocation">Local / Transmissão</label>
+                        <input type="text" id="seLocation" required placeholder="Ex: Unidade Curitiba / Online" style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                    </div>
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <label for="seLink">Link do Sympla (URL)</label>
+                        <input type="url" id="seLink" required placeholder="Ex: https://www.sympla.com.br/evento/..." style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                    </div>
+                    <div style="grid-column: 1 / -1; display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+                        <button type="button" id="cancelSymplaEventBtn" style="padding: 8px 16px; border-radius: 8px; border: none; background: rgba(255,255,255,0.05); color: white; cursor: pointer;">Cancelar</button>
+                        <button type="submit" style="padding: 8px 20px; border-radius: 8px; border: none; background: #00c1e8; color: #0f0a1e; font-weight: bold; cursor: pointer;">Lançar Evento</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Listagem de Eventos -->
+            <div id="symplaEventsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <div style="text-align: center; padding: 20px; opacity: 0.5; grid-column: 1 / -1;">
+                    <p style="margin: 0;">Carregando eventos do Sympla...</p>
+                </div>
+            </div>
+        </section>
+
         <section class="form-section">
             <div class="glass-card">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
