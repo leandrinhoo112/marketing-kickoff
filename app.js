@@ -4765,6 +4765,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Erro no fallback do proxy público:", proxyErr);
             }
         }
+    }
 
         // 2. Busca do Supabase (eventos manuais)
         try {
