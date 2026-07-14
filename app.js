@@ -4854,12 +4854,18 @@ document.addEventListener('DOMContentLoaded', () => {
             mergedMap.set(e.title.toLowerCase().trim(), e);
         });
 
+        if (typeof window.symplaShowAll === 'undefined') {
+            window.symplaShowAll = false;
+        }
+
         const sortedEvents = Array.from(mergedMap.values()).sort((a, b) => new Date(a.date.replace(' ', 'T')) - new Date(b.date.replace(' ', 'T')));
+
+        const displayEvents = window.symplaShowAll ? sortedEvents : sortedEvents.slice(0, 3);
 
         const today = new Date();
         const todayStr = today.toDateString();
 
-        const html = sortedEvents.map(event => {
+        const html = displayEvents.map(event => {
             try {
                 const eventDate = new Date(event.date.replace(' ', 'T'));
                 const isToday = eventDate.toDateString() === todayStr;
@@ -4880,10 +4886,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 let warningBadge = '';
                 let cardBorder = 'border-top: 3px solid rgba(255,255,255,0.1);';
                 if (isToday) {
-                    warningBadge = `<span class="pulse-badge" style="background: #ff416c; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 0 10px rgba(255, 65, 108, 0.4);"><i data-lucide="alert-circle" style="width:12px;height:12px;"></i> HOJE! 🚨</span>`;
+                    warningBadge = `<span class="pulse-badge" style="background: #ff416c; color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.7em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 0 10px rgba(255, 65, 108, 0.4);"><i data-lucide="alert-circle" style="width:10px;height:10px;"></i> HOJE!</span>`;
                     cardBorder = 'border-top: 3px solid #ff416c; background: rgba(255, 65, 108, 0.03);';
                 } else if (isWeekendWarning) {
-                    warningBadge = `<span style="background: #ffd700; color: #0f0a1e; padding: 4px 10px; border-radius: 6px; font-size: 0.75em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="calendar" style="width:12px;height:12px;"></i> FIM DE SEMANA! 📅</span>`;
+                    warningBadge = `<span style="background: #ffd700; color: #0f0a1e; padding: 4px 8px; border-radius: 6px; font-size: 0.7em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="calendar" style="width:10px;height:10px;"></i> FDS!</span>`;
                     cardBorder = 'border-top: 3px solid #ffd700; background: rgba(250, 204, 21, 0.02);';
                 }
 
@@ -4891,34 +4897,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let syncBadge = '';
                 if (event.id) {
-                    syncBadge = `<span style="background: rgba(255,255,255,0.05); color: #a0aec0; padding: 2px 6px; border-radius: 4px; font-size: 0.65em;">Manual</span>`;
+                    syncBadge = `<span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.6em;">Manual</span>`;
                 } else if (event.official) {
-                    syncBadge = `<span style="background: rgba(0, 193, 232, 0.15); color: #00c1e8; padding: 2px 6px; border-radius: 4px; font-size: 0.65em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="shield-check" style="width:10px;height:10px;"></i> Sympla Oficial</span>`;
+                    syncBadge = `<span style="background: #00c1e8; color: #0f0a1e; padding: 2px 6px; border-radius: 4px; font-size: 0.6em; font-weight: bold; display: inline-flex; align-items: center; gap: 2px;"><i data-lucide="shield-check" style="width:8px;height:8px;"></i> Oficial</span>`;
                 } else {
-                    syncBadge = `<span style="background: rgba(0, 193, 232, 0.1); color: #00c1e8; padding: 2px 6px; border-radius: 4px; font-size: 0.65em; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="refresh-cw" style="width:8px;height:8px;animation:spin 4s linear infinite;"></i> Sympla Live</span>`;
+                    syncBadge = `<span style="background: rgba(0, 193, 232, 0.2); color: #00c1e8; padding: 2px 6px; border-radius: 4px; font-size: 0.6em; font-weight: bold; display: inline-flex; align-items: center; gap: 2px;"><i data-lucide="refresh-cw" style="width:8px;height:8px;animation:spin 4s linear infinite;"></i> Live</span>`;
                 }
 
+                const coverImage = event.image || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80';
+
                 return `
-                    <div class="glass-card" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 15px; transition: transform 0.3s, box-shadow 0.3s; ${cardBorder}">
-                        <div>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 10px;">
-                                <span style="font-size: 0.75em; color: #00c1e8; font-weight: bold; text-transform: uppercase; display: flex; align-items: center; gap: 4px;">
+                    <div class="glass-card" style="padding: 16px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.3s, box-shadow 0.3s; ${cardBorder}">
+                        <div style="width: 100%; height: 150px; overflow: hidden; border-radius: 8px; position: relative; background: #000;">
+                            <img src="${coverImage}" alt="${event.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            <div style="position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; align-items: center;">
+                                ${syncBadge}
+                                ${warningBadge}
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px; flex-grow: 1;">
+                            <h4 style="margin: 0; color: white; font-size: 1.1em; font-weight: bold; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${event.title}</h4>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 4px; margin-top: auto; padding-top: 8px;">
+                                <span style="font-size: 0.78em; color: #00c1e8; font-weight: bold; display: flex; align-items: center; gap: 4px;">
                                     <i data-lucide="clock" style="width:12px;height:12px;"></i> ${dateFormatted} às ${timeFormatted}
                                 </span>
-                                <div style="display: flex; gap: 5px; align-items: center;">
-                                    ${syncBadge}
-                                    ${warningBadge}
-                                </div>
-                            </div>
-                            <h4 style="margin: 0 0 8px 0; color: white; font-size: 1.15em; font-weight: bold;">${event.title}</h4>
-                            <p style="margin: 0 0 10px 0; font-size: 0.88em; color: #a0aec0; line-height: 1.4;">${event.description}</p>
-                            <span style="font-size: 0.8em; color: #718096; display: flex; align-items: center; gap: 4px;">
+                                <span style="font-size: 0.78em; color: #a0aec0; display: flex; align-items: center; gap: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     <i data-lucide="map-pin" style="width:12px;height:12px;"></i> ${event.location}
-                            </span>
+                                </span>
+                            </div>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; margin-top: auto;">
-                            <a href="${event.link}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: #00c1e8; color: #0f0a1e; padding: 6px 14px; border-radius: 6px; font-size: 0.85em; font-weight: bold; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='#00deff'" onmouseout="this.style.background='#00c1e8'">
-                                Ver no Sympla <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
+                            <a href="${event.link}" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; background: #00c1e8; color: #0f0a1e; padding: 6px 12px; border-radius: 6px; font-size: 0.8em; font-weight: bold; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='#00deff'" onmouseout="this.style.background='#00c1e8'">
+                                Inscrever <i data-lucide="external-link" style="width:10px;height:10px;"></i>
                             </a>
                             ${deleteBtn}
                         </div>
@@ -4930,6 +4941,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
 
         container.innerHTML = html || '<div style="text-align: center; padding: 20px; opacity: 0.5; grid-column: 1 / -1;">Nenhum evento futuro encontrado.</div>';
+
+        // Atualiza o botão Ver Mais / Ver Menos
+        const loadMoreContainer = document.getElementById('symplaLoadMoreContainer');
+        if (loadMoreContainer) {
+            if (sortedEvents.length > 3) {
+                if (window.symplaShowAll) {
+                    loadMoreContainer.innerHTML = `
+                        <button onclick="window.toggleSymplaShowAll(false)" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px 20px; border-radius: 8px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 6px;">
+                            Ver menos <i data-lucide="chevron-up" style="width: 14px; height: 14px;"></i>
+                        </button>
+                    `;
+                } else {
+                    loadMoreContainer.innerHTML = `
+                        <button onclick="window.toggleSymplaShowAll(true)" style="background: rgba(0, 193, 232, 0.1); border: 1px solid rgba(0, 193, 232, 0.3); color: #00c1e8; padding: 8px 20px; border-radius: 8px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 6px;" onmouseover="this.style.background='rgba(0, 193, 232, 0.2)'" onmouseout="this.style.background='rgba(0, 193, 232, 0.1)'">
+                            Ver mais (${sortedEvents.length - 3} novos) <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+                        </button>
+                    `;
+                }
+            } else {
+                loadMoreContainer.innerHTML = '';
+            }
+        }
+
+        window.toggleSymplaShowAll = function(showAll) {
+            window.symplaShowAll = showAll;
+            loadSymplaEvents();
+        };
+
         if (window.lucide) window.lucide.createIcons();
     };
 
@@ -4968,13 +5007,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const date = document.getElementById('seDate').value;
             const location = document.getElementById('seLocation').value;
             const link = document.getElementById('seLink').value;
+            const image = document.getElementById('seImage').value;
 
             const eventData = {
                 title,
                 description,
                 date: new Date(date).toISOString(),
                 location,
-                link
+                link,
+                image
             };
 
             try {

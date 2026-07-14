@@ -265,6 +265,10 @@
                         <label for="seLink">Link do Sympla (URL)</label>
                         <input type="url" id="seLink" required placeholder="Ex: https://www.sympla.com.br/evento/..." style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                     </div>
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <label for="seImage">URL da Imagem da Capa (Opcional)</label>
+                        <input type="url" id="seImage" placeholder="Ex: https://images.sympla.com.br/..." style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                    </div>
                     <div style="grid-column: 1 / -1; display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
                         <button type="button" id="cancelSymplaEventBtn" style="padding: 8px 16px; border-radius: 8px; border: none; background: rgba(255,255,255,0.05); color: white; cursor: pointer;">Cancelar</button>
                         <button type="submit" style="padding: 8px 20px; border-radius: 8px; border: none; background: #00c1e8; color: #0f0a1e; font-weight: bold; cursor: pointer;">Lançar Evento</button>
@@ -278,6 +282,8 @@
                     <p style="margin: 0;">Carregando eventos do Sympla...</p>
                 </div>
             </div>
+            <!-- Botão Ver Mais -->
+            <div id="symplaLoadMoreContainer" style="display: flex; justify-content: center; margin-top: 25px;"></div>
         </section>
 
         <section class="form-section">
