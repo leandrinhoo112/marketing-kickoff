@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  background-color: #030712;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+
+/* Canvas cursor */
+canvas {
+  display: block;
+}
+
+/* Prevent text selection during gameplay */
+.game-area {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Scale animation */
+@keyframes scale-in {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out;
+}
+
+/* Goal flash */
+@keyframes goal-flash {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* Pulse glow */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(0, 255, 100, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(0, 255, 100, 0.8); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}

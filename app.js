@@ -1147,6 +1147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'ball_hunter', title: 'Craque do Drible', desc: 'Pegou a bola fujona', icon: '⚽', condition: localStorage.getItem('ballHunter') === 'true' },
             { id: 'termo_master', title: 'Sabe-Tudo', desc: 'Jogou o Termo diário', icon: '🧠', condition: localStorage.getItem('achv_termo') === 'true' },
             { id: 'caca_palavras', title: 'Olho de Águia', desc: 'Jogou o Caça-Palavras', icon: '🦅', condition: localStorage.getItem('achv_caca') === 'true' },
+            { id: 'rei_do_botao', title: 'Rei do Botão', desc: 'Jogou o Futbotão', icon: '⚽', condition: localStorage.getItem('achv_futbotao') === 'true' },
             { id: 'pe_na_areia', title: 'Pé na Areia', desc: 'Programou férias (Streak Protect)', icon: '🌴', condition: (window.myVacations && window.myVacations.length > 0) }
         ];
 
@@ -3599,14 +3600,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 const gameId = btn.getAttribute('data-game');
                 document.getElementById('game-wordle').style.display = gameId === 'wordle' ? 'block' : 'none';
                 document.getElementById('game-cacaPalavras').style.display = gameId === 'cacaPalavras' ? 'block' : 'none';
+                const futbotaoContainer = document.getElementById('game-futbotao');
+                if (futbotaoContainer) futbotaoContainer.style.display = gameId === 'futbotao' ? 'block' : 'none';
                 const mensalContainer = document.getElementById('game-mensal');
                 if (mensalContainer) mensalContainer.style.display = gameId === 'mensal' ? 'block' : 'none';
                 
                 if (gameId === 'mensal') {
                     fetchMonthlyRankings();
+                } else if (gameId === 'futbotao') {
+                    loadFutbotaoGame();
                 }
             });
         });
+
+        function loadFutbotaoGame() {
+            if (window.updateMinigameAchievements) {
+                window.updateMinigameAchievements('futbotao');
+            } else {
+                localStorage.setItem('achv_futbotao', 'true');
+            }
+
+            const iframe = document.getElementById('futbotao-iframe');
+            if (iframe && !iframe.src) {
+                // Tenta carregar a URL da Vercel ou localhost se estiver em dev
+                let gameUrl = localStorage.getItem('futbotao_url');
+                if (!gameUrl) {
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        gameUrl = 'http://localhost:3000';
+                    } else {
+                        gameUrl = 'https://fut-botao-copia.vercel.app';
+                    }
+                }
+                
+                iframe.src = gameUrl;
+                iframe.onload = () => {
+                    const loading = document.getElementById('futbotao-loading');
+                    if (loading) {
+                        loading.style.display = 'none';
+                    }
+                    iframe.style.display = 'block';
+                };
+                iframe.onerror = () => {
+                    const loading = document.getElementById('futbotao-loading');
+                    if (loading) {
+                        loading.innerHTML = `<p style="color: #ff416c; font-weight: bold; text-align: center; padding: 20px; font-size: 0.9em; font-family: inherit;">Erro ao carregar o servidor do jogo. Verifique o deploy do Next.js na Vercel.</p>`;
+                    }
+                };
+            }
+        }
     });
 
 })();
