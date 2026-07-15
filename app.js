@@ -762,7 +762,11 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('currentUser', currentUser);
             applyCurrentUser();
             welcomeModal.style.display = 'none';
-            calculateXP(); // Recalcular ao entrar
+            if (typeof window.calculateXP === 'function') {
+                window.calculateXP();
+            } else {
+                calculateXP();
+            }
             // Dispara o aviso do Bolão imediatamente ao entrar
             if (typeof window.initBolao === 'function') window.initBolao();
         });
@@ -1193,8 +1197,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle Admin Panel with Password
     window.toggleAdmin = () => {
         if (adminArea.style.display === 'none') {
+            const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+            const userNorm = currentUser ? currentUser.toUpperCase().trim() : '';
+
+            // Lista de gestores permitidos
+            const allowedManagers = ['VITOR', 'BRUNO', 'VANESSA', 'LEANDRO'];
+            if (!allowedManagers.includes(userNorm)) {
+                showToast('Acesso negado! Esta área é exclusiva para gestores.', 'error');
+                return;
+            }
+
+            const passwords = {
+                'VITOR': 'vitor123',
+                'BRUNO': 'bruno123',
+                'VANESSA': 'vanessa123',
+                'LEANDRO': 'CampeãoInspirar'
+            };
+
             const password = prompt("Senha do Gestor:");
-            if (password === "CampeãoInspirar") {
+            const expectedPassword = passwords[userNorm] || 'CampeãoInspirar';
+
+            if (password === expectedPassword) {
                 adminArea.style.display = 'block';
                 updateAdminPanel();
                 loadFeedbacks();
