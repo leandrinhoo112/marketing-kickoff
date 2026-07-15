@@ -946,6 +946,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Gamificação (Cálculo de XP)
     async function calculateXP() {
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
         if (!currentUser || allEntries.length === 0) return;
         
         let xp = 0;
@@ -5203,6 +5204,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (new Date(start) > new Date(end)) {
                 alert("A data de início não pode ser posterior à data de fim!");
+                return;
+            }
+
+            const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert("Nenhum usuário detectado. Faça login antes de agendar férias.");
                 return;
             }
 
