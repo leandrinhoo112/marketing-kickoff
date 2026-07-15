@@ -3669,6 +3669,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
 })();
 
+// --- FULLSCREEN DO FUTBOTÃO ---
+function toggleFutbotaoFullscreen() {
+    const container = document.getElementById('futbotao-canvas-container');
+    const btn = document.getElementById('futbotao-fullscreen-btn');
+    if (!container) return;
+    
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        // Entrar em tela cheia
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
+        }
+        if (btn) btn.innerHTML = '✕';
+    } else {
+        // Sair de tela cheia
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+        if (btn) btn.innerHTML = '⛶';
+    }
+}
+
+// Atualizar icone do botao quando sair do fullscreen pelo ESC
+document.addEventListener('fullscreenchange', () => {
+    const btn = document.getElementById('futbotao-fullscreen-btn');
+    if (btn) {
+        btn.innerHTML = document.fullscreenElement ? '✕' : '⛶';
+    }
+});
+
 // --- BOLÃO DA COPA ---
 document.addEventListener('DOMContentLoaded', () => {
     const adminBolaoForm = document.getElementById('adminBolaoForm');
