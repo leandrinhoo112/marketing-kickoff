@@ -195,7 +195,45 @@
         </div>
 
         <div id="tab-radar" class="tab-pane active">
-        <!-- DASHBOARD DE ESTATÍSTICAS -->
+            <!-- MURAL DE AVISOS -->
+            <section id="noticesPanel" class="glass-card" style="margin-bottom: 40px; padding: 25px; border-left: 4px solid #ff9f43; background: linear-gradient(135deg, rgba(255, 159, 67, 0.05), rgba(104, 65, 241, 0.02));">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h2 style="color: #ff9f43; margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.5em;">
+                            <i data-lucide="megaphone" style="width: 24px; height: 24px;"></i> Mural de Avisos
+                        </h2>
+                        <p style="font-size: 0.85em; color: #a0aec0; margin: 5px 0 0 0;">Avisos importantes da gestão e do time</p>
+                    </div>
+                    <button id="addNoticeBtn" style="display: none; background: rgba(255, 159, 67, 0.15); border: 1px solid rgba(255, 159, 67, 0.3); color: #ff9f43; padding: 8px 16px; border-radius: 8px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: all 0.3s; align-items: center; gap: 6px;">
+                        <i data-lucide="plus"></i> Criar Aviso
+                    </button>
+                </div>
+
+                <!-- Formulário de Criar Aviso (Escondido por padrão) -->
+                <div id="noticeFormContainer" style="display: none; margin-bottom: 25px; padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
+                    <form id="noticeForm" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <label for="noticeTitle" style="font-size: 0.8em; color: #a0aec0; font-weight: bold;">Título do Aviso</label>
+                            <input type="text" id="noticeTitle" required placeholder="Ex: Alteração de horário da Daily amanhã..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <label for="noticeContent" style="font-size: 0.8em; color: #a0aec0; font-weight: bold;">Conteúdo</label>
+                            <textarea id="noticeContent" required rows="3" placeholder="Escreva o aviso detalhado aqui..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: inherit; resize: vertical;"></textarea>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button type="button" id="cancelNoticeBtn" class="btn-secondary" style="padding: 8px 16px; border-radius: 8px; cursor: pointer;">Cancelar</button>
+                            <button type="submit" class="btn-primary" style="background: #ff9f43; color: #0f0a1e; border: none; padding: 8px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">Publicar Aviso</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Lista de Avisos -->
+                <div id="noticesList" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+                    <div style="text-align: center; padding: 20px; opacity: 0.5;">Carregando avisos...</div>
+                </div>
+            </section>
+
+            <!-- DASHBOARD DE ESTATÍSTICAS -->
         <section class="stats-dashboard"
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 40px;">
             <div class="glass-card" onclick="window.goToReportsAndFilter('all')"

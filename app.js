@@ -804,6 +804,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof window.loadSymplaEvents === 'function') {
             window.loadSymplaEvents();
         }
+        if (typeof window.loadNotices === 'function') {
+            window.loadNotices();
+        }
     }
 
     let previousTasksData = null; // Store radar entry to edit later
@@ -5271,8 +5274,153 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // ==========================================
+    // MURAL DE AVISOS LOGIC & UI
+    // ==========================================
+    window.loadNotices = async function() {
+        const noticesList = document.getElementById('noticesList');
+        const addNoticeBtn = document.getElementById('addNoticeBtn');
+        if (!noticesList) return;
+
+        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+        const userNorm = currentUser ? currentUser.toUpperCase().trim() : '';
+        const allowedManagers = ['VITOR', 'BRUNO', 'VANESSA', 'LEANDRO'];
+        const isManager = allowedManagers.includes(userNorm);
+
+        // Exibe/oculta botão de criar aviso para gestores
+        if (addNoticeBtn) {
+            addNoticeBtn.style.display = isManager ? 'inline-flex' : 'none';
+        }
+
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('sugestoes')
+                .select('*')
+                .like('sugestao', 'NOTICE:%');
+            
+            if (error) throw error;
+
+            const notices = (data || []).map(item => {
+                try {
+                    const noticeData = JSON.parse(item.sugestao.replace('NOTICE:', ''));
+                    noticeData.id = item.id;
+                    return noticeData;
+                } catch(e) { return null; }
+            }).filter(n => n !== null).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (notices.length === 0) {
+                noticesList.innerHTML = '<div style="text-align: center; padding: 30px; opacity: 0.5;">Nenhum aviso importante publicado hoje.</div>';
+                return;
+            }
+
+            noticesList.innerHTML = notices.map(n => {
+                const dateFormatted = new Date(n.date).toLocaleString('pt-BR');
+                const deleteBtn = isManager ? `
+                    <button onclick="window.deleteNotice('${n.id}')" style="background: none; border: none; color: #ff416c; cursor: pointer; padding: 4px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'" title="Excluir Aviso">
+                        <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                    </button>
+                ` : '';
+
+                return `
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #ff9f43; padding: 18px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; position: relative;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
+                            <h4 style="color: #ff9f43; margin: 0; font-size: 1.1em; font-weight: 600;">${n.title}</h4>
+                            ${deleteBtn}
+                        </div>
+                        <p style="margin: 0; font-size: 0.95em; color: #e2e8f0; line-height: 1.5; white-space: pre-line;">${n.content}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 0.78em; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.03); padding-top: 8px;">
+                            <span>Por: <strong style="color: #02ceff;">${n.author}</strong></span>
+                            <span>${dateFormatted}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (window.lucide) window.lucide.createIcons();
+        } catch(err) {
+            console.error("Erro ao carregar avisos:", err);
+            noticesList.innerHTML = '<div style="text-align: center; padding: 20px; color: #ff416c;">Erro ao carregar os avisos do painel.</div>';
+        }
+    };
+
+    window.deleteNotice = async function(id) {
+        if (!confirm('Deseja realmente excluir este aviso?')) return;
+        try {
+            const { error } = await window.supabaseClient.from('sugestoes').delete().eq('id', id);
+            if (error) throw error;
+            if (typeof window.showToast === 'function') window.showToast('Aviso excluído!', 'success');
+            loadNotices();
+        } catch(err) {
+            alert('Erro ao excluir aviso: ' + err.message);
+        }
+    };
+
+    const addNoticeBtn = document.getElementById('addNoticeBtn');
+    const noticeFormContainer = document.getElementById('noticeFormContainer');
+    const cancelNoticeBtn = document.getElementById('cancelNoticeBtn');
+    const noticeForm = document.getElementById('noticeForm');
+
+    if (addNoticeBtn && noticeFormContainer) {
+        addNoticeBtn.onclick = () => {
+            noticeFormContainer.style.display = 'block';
+            addNoticeBtn.style.display = 'none';
+        };
+    }
+
+    if (cancelNoticeBtn && noticeFormContainer && addNoticeBtn) {
+        cancelNoticeBtn.onclick = () => {
+            noticeFormContainer.style.display = 'none';
+            addNoticeBtn.style.display = 'inline-flex';
+            noticeForm.reset();
+        };
+    }
+
+    if (noticeForm) {
+        noticeForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('noticeTitle').value.trim();
+            const content = document.getElementById('noticeContent').value.trim();
+            const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+
+            if (!currentUser) {
+                alert('Você precisa estar logado para publicar avisos.');
+                return;
+            }
+
+            const noticeData = {
+                title,
+                content,
+                date: new Date().toISOString(),
+                author: currentUser
+            };
+
+            const submitBtn = noticeForm.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+
+            try {
+                const { error } = await window.supabaseClient.from('sugestoes').insert({
+                    username: currentUser,
+                    sugestao: 'NOTICE:' + JSON.stringify(noticeData)
+                });
+
+                if (error) throw error;
+
+                if (typeof window.showToast === 'function') window.showToast('Aviso publicado com sucesso!', 'success');
+                noticeForm.reset();
+                if (noticeFormContainer) noticeFormContainer.style.display = 'none';
+                if (addNoticeBtn) addNoticeBtn.style.display = 'inline-flex';
+                loadNotices();
+            } catch(err) {
+                alert('Erro ao salvar aviso: ' + err.message);
+            } finally {
+                if (submitBtn) submitBtn.disabled = false;
+            }
+        };
+    }
+
     // Carregar na inicialização
     loadSymplaEvents();
+    loadNotices();
 
     // Initial check for active poll/new photos
     loadEnquetes();
