@@ -1022,6 +1022,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.setItem('streakShown', 'true');
         }
     }
+    window.calculateXP = calculateXP;
 
     function calculateStreak(myCheckins, vacationDates = []) {
         if (!myCheckins.length) return 0;
@@ -5170,7 +5171,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof window.showToast === 'function') window.showToast("Férias canceladas!", "success");
             
             // Recarrega estatísticas para recalcular XP/Streak
-            calculateXP();
+            if (typeof window.calculateXP === 'function') {
+                window.calculateXP();
+            }
         } catch(err) {
             alert("Erro ao excluir férias: " + err.message);
         }
@@ -5236,7 +5239,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 addVacationBtn.style.display = 'inline-flex';
                 
                 // Recarrega XP e Streak
-                calculateXP();
+                if (typeof window.calculateXP === 'function') {
+                    window.calculateXP();
+                }
             } catch(err) {
                 alert("Erro ao salvar férias: " + err.message);
             }
