@@ -945,7 +945,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Gamificação (Cálculo de XP)
-    function calculateXP() {
+    async function calculateXP() {
         if (!currentUser || allEntries.length === 0) return;
         
         let xp = 0;
@@ -967,7 +967,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const userXpDisplay = document.getElementById('userXpDisplay');
         if (userXpDisplay) userXpDisplay.innerText = xp;
 
-        const streak = calculateStreak(myCheckins);
+        let vacationDates = [];
+        try {
+            const { data: vacData } = await window.supabaseClient
+                .from('sugestoes')
+                .select('*')
+                .eq('username', currentUser)
+                .like('sugestao', 'VACATION:%');
+            
+            if (vacData) {
+                window.myVacations = vacData.map(item => {
+                    try {
+                        const range = JSON.parse(item.sugestao.replace('VACATION:', ''));
+                        range.id = item.id;
+                        return range;
+                    } catch(e) { return null; }
+                }).filter(r => r !== null);
+
+                window.myVacations.forEach(range => {
+                    let current = new Date(range.start + 'T00:00:00');
+                    const end = new Date(range.end + 'T23:59:59');
+                    while (current <= end) {
+                        vacationDates.push(current.toLocaleDateString('en-CA'));
+                        current.setDate(current.getDate() + 1);
+                    }
+                });
+            }
+        } catch (e) {
+            console.error("Erro ao carregar férias:", e);
+        }
+
+        if (typeof window.renderVacationsList === 'function') {
+            window.renderVacationsList();
+        }
+
+        const streak = calculateStreak(myCheckins, vacationDates);
         
         const streakBadge = document.getElementById('streakBadge');
         const streakCountDisplay = document.getElementById('streakCountDisplay');
@@ -988,7 +1022,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function calculateStreak(myCheckins) {
+    function calculateStreak(myCheckins, vacationDates = []) {
         if (!myCheckins.length) return 0;
         
         const checkinDates = [...new Set(myCheckins.map(e => {
@@ -998,28 +1032,52 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let streak = 0;
         let dateToCheck = new Date();
-        
         const toDateStr = (d) => d.toLocaleDateString('en-CA');
-        const todayStr = toDateStr(dateToCheck);
+        const todayStr = toDateStr(new Date());
 
-        if (checkinDates.includes(todayStr)) {
+        // 1. Pula dias iniciais (incluindo hoje) protegidos por fim de semana ou férias sem check-in
+        while (true) {
+            const dateStr = toDateStr(dateToCheck);
+            const dayOfWeek = dateToCheck.getDay();
+            const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+            const isVacation = vacationDates.includes(dateStr);
+            
+            if (checkinDates.includes(dateStr)) {
+                break;
+            }
+            if (isWeekend || isVacation) {
+                dateToCheck.setDate(dateToCheck.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+
+        // 2. Verifica o ponto de partida
+        const startStr = toDateStr(dateToCheck);
+        if (checkinDates.includes(startStr)) {
             streak++;
             dateToCheck.setDate(dateToCheck.getDate() - 1);
         } else {
-            // Ainda não fez hoje, começa a contar de ontem
-            dateToCheck.setDate(dateToCheck.getDate() - 1);
+            // Se hoje o usuário não fez check-in, mas hoje é o ponto de partida útil, começa a contar de ontem
+            if (startStr === todayStr) {
+                dateToCheck.setDate(dateToCheck.getDate() - 1);
+            } else {
+                return 0; // Quebrou ontem ou antes
+            }
         }
 
+        // 3. Conta os dias anteriores consecutivos
         while (true) {
             const dateStr = toDateStr(dateToCheck);
-            const dayOfWeek = dateToCheck.getDay(); // 0 Dom, 6 Sab
+            const dayOfWeek = dateToCheck.getDay();
             const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+            const isVacation = vacationDates.includes(dateStr);
 
             if (checkinDates.includes(dateStr)) {
                 streak++;
                 dateToCheck.setDate(dateToCheck.getDate() - 1);
-            } else if (isWeekend) {
-                dateToCheck.setDate(dateToCheck.getDate() - 1); // Pula fim de semana
+            } else if (isWeekend || isVacation) {
+                dateToCheck.setDate(dateToCheck.getDate() - 1); // Pula dias protegidos
             } else {
                 break; // Quebrou
             }
@@ -1079,7 +1137,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'phone_hunter', title: 'Caçador de Telefones', desc: 'Pegou o telefone fujão', icon: '📞', condition: localStorage.getItem('phoneHunter') === 'true' },
             { id: 'ball_hunter', title: 'Craque do Drible', desc: 'Pegou a bola fujona', icon: '⚽', condition: localStorage.getItem('ballHunter') === 'true' },
             { id: 'termo_master', title: 'Sabe-Tudo', desc: 'Jogou o Termo diário', icon: '🧠', condition: localStorage.getItem('achv_termo') === 'true' },
-            { id: 'caca_palavras', title: 'Olho de Águia', desc: 'Jogou o Caça-Palavras', icon: '🦅', condition: localStorage.getItem('achv_caca') === 'true' }
+            { id: 'caca_palavras', title: 'Olho de Águia', desc: 'Jogou o Caça-Palavras', icon: '🦅', condition: localStorage.getItem('achv_caca') === 'true' },
+            { id: 'pe_na_areia', title: 'Pé na Areia', desc: 'Programou férias (Streak Protect)', icon: '🌴', condition: (window.myVacations && window.myVacations.length > 0) }
         ];
 
         const list = document.getElementById('achievementsList');
@@ -5046,6 +5105,135 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.disabled = false;
             }
         });
+    }
+
+    // ==========================================
+    // LOGIC & UI FOR VACATION MODE (STREAK PROTECT)
+    // ==========================================
+    window.renderVacationsList = function() {
+        const listContainer = document.getElementById('vacationList');
+        if (!listContainer) return;
+
+        const vacations = window.myVacations || [];
+        if (vacations.length === 0) {
+            listContainer.innerHTML = '<div style="font-size: 0.85em; color: #718096; font-style: italic; padding: 5px 0;">Nenhum período de férias programado.</div>';
+            return;
+        }
+
+        listContainer.innerHTML = vacations.map(v => {
+            const startD = new Date(v.start + 'T00:00:00').toLocaleDateString('pt-BR');
+            const endD = new Date(v.end + 'T00:00:00').toLocaleDateString('pt-BR');
+            
+            // Verifica se está de férias hoje
+            const todayStr = new Date().toLocaleDateString('en-CA');
+            let current = new Date(v.start + 'T00:00:00');
+            const end = new Date(v.end + 'T23:59:59');
+            let isCurrent = false;
+            while (current <= end) {
+                if (current.toLocaleDateString('en-CA') === todayStr) {
+                    isCurrent = true;
+                    break;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+
+            const currentBadge = isCurrent ? 
+                `<span style="background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.4); padding: 2px 6px; border-radius: 4px; font-size: 0.7em; font-weight: bold; margin-left: 8px;">ATIVO AGORA 🌴</span>` : '';
+
+            return `
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 10px 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                    <div>
+                        <div style="font-weight: 500; font-size: 0.88em; color: white; display: flex; align-items: center; flex-wrap: wrap;">
+                            De ${startD} até ${endD} ${currentBadge}
+                        </div>
+                    </div>
+                    <button onclick="window.deleteVacation('${v.id}')" style="background: none; border: none; color: #ff416c; cursor: pointer; padding: 4px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'" title="Remover Férias">
+                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                    </button>
+                </div>
+            `;
+        }).join('');
+        
+        if (window.lucide) window.lucide.createIcons();
+    };
+
+    window.deleteVacation = async function(id) {
+        if (!confirm("Deseja cancelar esta programação de férias?")) return;
+        try {
+            const { error } = await window.supabaseClient
+                .from('sugestoes')
+                .delete()
+                .eq('id', id);
+            
+            if (error) throw error;
+            if (typeof window.showToast === 'function') window.showToast("Férias canceladas!", "success");
+            
+            // Recarrega estatísticas para recalcular XP/Streak
+            calculateXP();
+        } catch(err) {
+            alert("Erro ao excluir férias: " + err.message);
+        }
+    };
+
+    const addVacationBtn = document.getElementById('addVacationBtn');
+    const vacationFormContainer = document.getElementById('vacationFormContainer');
+    const cancelVacationBtn = document.getElementById('cancelVacationBtn');
+    const vacationForm = document.getElementById('vacationForm');
+
+    if (addVacationBtn && vacationFormContainer) {
+        addVacationBtn.onclick = () => {
+            vacationFormContainer.style.display = 'block';
+            addVacationBtn.style.display = 'none';
+        };
+    }
+
+    if (cancelVacationBtn && vacationFormContainer && addVacationBtn) {
+        cancelVacationBtn.onclick = () => {
+            vacationFormContainer.style.display = 'none';
+            addVacationBtn.style.display = 'inline-flex';
+            vacationForm.reset();
+        };
+    }
+
+    if (vacationForm) {
+        vacationForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const start = document.getElementById('vacStart').value;
+            const end = document.getElementById('vacEnd').value;
+
+            if (new Date(start) > new Date(end)) {
+                alert("A data de início não pode ser posterior à data de fim!");
+                return;
+            }
+
+            const range = { start, end };
+            try {
+                const { error } = await window.supabaseClient.from('sugestoes').insert({
+                    username: currentUser,
+                    sugestao: 'VACATION:' + JSON.stringify(range)
+                });
+                
+                if (error) throw error;
+
+                const isFirstVacation = (!window.myVacations || window.myVacations.length === 0);
+                if (typeof window.showToast === 'function') {
+                    window.showToast("Período de férias salvo!", "success");
+                    if (isFirstVacation) {
+                        setTimeout(() => {
+                            window.showToast("Conquista Desbloqueada: Pé na Areia! 🌴", "success");
+                        }, 1000);
+                    }
+                }
+                vacationForm.reset();
+                vacationFormContainer.style.display = 'none';
+                addVacationBtn.style.display = 'inline-flex';
+                
+                // Recarrega XP e Streak
+                calculateXP();
+            } catch(err) {
+                alert("Erro ao salvar férias: " + err.message);
+            }
+        };
     }
 
     // Carregar na inicialização

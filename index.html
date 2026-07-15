@@ -636,7 +636,40 @@
                 </div>
             </div>
             
-            <div style="margin-top: 30px;">
+            <!-- MODO FÉRIAS -->
+            <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 30px; max-width: 500px; margin-left: auto; margin-right: auto; text-align: left;">
+                <h3 style="margin: 0 0 10px 0; color: #02ceff; display: flex; align-items: center; gap: 8px;"><i data-lucide="palm-tree"></i> Modo Férias</h3>
+                <p style="font-size: 0.85em; color: #a0aec0; margin: 0 0 20px 0;">Configure seus dias de folga/férias para manter e proteger sua ofensiva (streak) sem precisar fazer check-in!</p>
+                
+                <div id="vacationList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                    <!-- Períodos de férias cadastrados serão listados aqui -->
+                </div>
+
+                <button id="addVacationBtn" class="btn-secondary" style="background: rgba(2, 206, 255, 0.15); border: 1px solid rgba(2, 206, 255, 0.3); color: #02ceff; padding: 8px 16px; border-radius: 8px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 6px;">
+                    <i data-lucide="plus"></i> Programar Férias
+                </button>
+
+                <div id="vacationFormContainer" style="display: none; margin-top: 15px; padding: 15px; border-radius: 12px; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
+                    <form id="vacationForm" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                                <label for="vacStart" style="font-size: 0.75em; color: #a0aec0; font-weight: bold;">Início</label>
+                                <input type="date" id="vacStart" required style="padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: inherit; font-size: 0.85em;">
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                                <label for="vacEnd" style="font-size: 0.75em; color: #a0aec0; font-weight: bold;">Fim</label>
+                                <input type="date" id="vacEnd" required style="padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: inherit; font-size: 0.85em;">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button type="button" id="cancelVacationBtn" style="background: rgba(255,255,255,0.05); border: none; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.8em; cursor: pointer;">Cancelar</button>
+                            <button type="submit" style="background: #02ceff; border: none; color: #0f0a1e; padding: 6px 16px; border-radius: 6px; font-size: 0.8em; font-weight: bold; cursor: pointer;">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;">
                 <button id="logoutBtn" style="background: transparent; color: #ff416c; border: 1px solid rgba(255,65,108,0.3); padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-size: 0.8em;">Trocar de Usuário (Sair)</button>
             </div>
         </div>
