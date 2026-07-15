@@ -3628,7 +3628,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                         gameUrl = 'http://localhost:3000';
                     } else {
-                        gameUrl = 'https://fut-botao-copia.vercel.app';
+                        gameUrl = 'https://marketing-kickoff-lzon.vercel.app';
                     }
                 }
                 
