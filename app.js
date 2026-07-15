@@ -3613,6 +3613,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        let futbotaoLoaded = false;
         function loadFutbotaoGame() {
             if (window.updateMinigameAchievements) {
                 window.updateMinigameAchievements('futbotao');
@@ -3621,32 +3622,48 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const iframe = document.getElementById('futbotao-iframe');
-            if (iframe && !iframe.src) {
-                // Tenta carregar a URL da Vercel ou localhost se estiver em dev
-                let gameUrl = localStorage.getItem('futbotao_url');
-                if (!gameUrl) {
-                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                        gameUrl = 'http://localhost:3000';
-                    } else {
-                        gameUrl = 'https://marketing-kickoff-lzon.vercel.app';
-                    }
-                }
-                
-                iframe.src = gameUrl;
-                iframe.onload = () => {
-                    const loading = document.getElementById('futbotao-loading');
-                    if (loading) {
-                        loading.style.display = 'none';
-                    }
-                    iframe.style.display = 'block';
-                };
-                iframe.onerror = () => {
-                    const loading = document.getElementById('futbotao-loading');
-                    if (loading) {
-                        loading.innerHTML = `<p style="color: #ff416c; font-weight: bold; text-align: center; padding: 20px; font-size: 0.9em; font-family: inherit;">Erro ao carregar o servidor do jogo. Verifique o deploy do Next.js na Vercel.</p>`;
-                    }
-                };
+            const loading = document.getElementById('futbotao-loading');
+            
+            if (!iframe) return;
+            
+            // Se ja carregou, apenas mostra
+            if (futbotaoLoaded) {
+                if (loading) loading.style.display = 'none';
+                iframe.style.display = 'block';
+                return;
             }
+
+            // Detecta a URL do jogo
+            let gameUrl = localStorage.getItem('futbotao_url');
+            if (!gameUrl) {
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    gameUrl = 'http://localhost:3000';
+                } else {
+                    gameUrl = 'https://marketing-kickoff-lzon.vercel.app';
+                }
+            }
+            
+            // Mostra loading
+            if (loading) loading.style.display = 'flex';
+            
+            // Quando o iframe carregar, esconde o loading
+            iframe.onload = () => {
+                futbotaoLoaded = true;
+                if (loading) loading.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+            
+            // Fallback: se onload nao disparar em 8s, mostra o iframe mesmo assim
+            setTimeout(() => {
+                if (!futbotaoLoaded) {
+                    futbotaoLoaded = true;
+                    if (loading) loading.style.display = 'none';
+                    iframe.style.display = 'block';
+                }
+            }, 8000);
+            
+            // Define o src para iniciar o carregamento
+            iframe.src = gameUrl;
         }
     });
 
