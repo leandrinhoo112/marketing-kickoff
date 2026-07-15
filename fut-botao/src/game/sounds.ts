@@ -29,6 +29,8 @@ const TEAM_SOUND_MAP: Record<string, string> = {
   saopaulo:  '/sounds/saopaulo.mp3',
   sport:     '/sounds/sport.wav',
   vasco:     '/sounds/vasco.mp3',
+  inspirar1: '/sounds/inspirar1.mp3',
+  inspirar2: '/sounds/inspirar2.mp3',
 };
 
 /** Pre-load a team's anthem into the cache (call on team hover/selection for snappy playback) */
