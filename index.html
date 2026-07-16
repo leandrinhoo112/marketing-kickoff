@@ -838,15 +838,27 @@
                 <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">⚽ Jogue Futbotão! Escolha seu time e dispute partidas épicas com física 2D real!</p>
                 
                 <div id="futbotao-canvas-container" style="position: relative; width: 100%; max-width: 800px; height: 600px; margin: 0 auto; background: #0f0a1e; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
-                    <iframe id="futbotao-iframe" src="" style="width: 100%; height: 100%; border: none; background: #0f0a1e; display: none;"></iframe>
+                    <iframe id="futbotao-iframe" src="" allow="fullscreen" allowfullscreen style="width: 100%; height: 100%; border: none; background: #0f0a1e; display: none;"></iframe>
                     
+                    <!-- Botão Tela Cheia -->
+                    <button id="futbotao-fullscreen-btn" onclick="toggleFutbotaoFullscreen()" style="position: absolute; top: 10px; right: 10px; z-index: 20; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); color: #facc15; font-size: 1.3em; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; opacity: 0.7;" onmouseenter="this.style.opacity='1'; this.style.transform='scale(1.1)'" onmouseleave="this.style.opacity='0.7'; this.style.transform='scale(1)'">⛶</button>
+
+                    <style>
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                        #futbotao-canvas-container:fullscreen,
+                        #futbotao-canvas-container:-webkit-full-screen {
+                            max-width: 100% !important;
+                            width: 100vw !important;
+                            height: 100vh !important;
+                            border-radius: 0 !important;
+                            border: none !important;
+                        }
+                    </style>
+
                     <div id="futbotao-loading" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #0f0a1e; z-index: 10;">
-                        <style>
-                            @keyframes spin {
-                                0% { transform: rotate(0deg); }
-                                100% { transform: rotate(360deg); }
-                            }
-                        </style>
                         <div style="border: 4px solid rgba(255,255,255,0.1); border-top-color: #facc15; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);"></div>
                         <h3 style="color: #facc15; margin: 20px 0 5px 0; font-weight: bold; font-size: 1.2em;">Carregando Futbotão...</h3>
                         <p style="font-size: 0.82em; color: #a0aec0; max-width: 320px; text-align: center; line-height: 1.4;">Conectando ao servidor e inicializando o jogo...</p>
