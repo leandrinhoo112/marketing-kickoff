@@ -197,3 +197,47 @@ export function playGoal() {
     crowd.start(ctx.currentTime + 0.1);
   } catch (_) {}
 }
+
+// ── Narration Audio System ──────────────────────────────────────────────────
+const NARRATION_COUNT = 7;
+const narrationCache = new Map<number, AudioBuffer>();
+let currentNarration: AudioBufferSourceNode | null = null;
+
+export function stopNarration(): void {
+  try {
+    currentNarration?.stop();
+    currentNarration = null;
+  } catch (_) {}
+}
+
+export function playRandomNarration(volume = 0.85): void {
+  stopNarration();
+  const index = Math.floor(Math.random() * NARRATION_COUNT);
+  const buffer = narrationCache.get(index);
+  
+  if (buffer) {
+    try {
+      const ctx = getCtx();
+      const source = ctx.createBufferSource();
+      const gain = ctx.createGain();
+      source.buffer = buffer;
+      source.connect(gain);
+      gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(volume, ctx.currentTime);
+      source.start(ctx.currentTime);
+      currentNarration = source;
+    } catch (e) {
+      console.warn('Narration playback failed:', e);
+    }
+  } else {
+    const url = `/sounds/narr${index}.mp3`;
+    fetch(url)
+      .then(r => r.arrayBuffer())
+      .then(ab => getCtx().decodeAudioData(ab))
+      .then(buf => {
+        narrationCache.set(index, buf);
+        playRandomNarration(volume);
+      })
+      .catch(err => console.warn('Failed to load narration:', err));
+  }
+}

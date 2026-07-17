@@ -15,7 +15,7 @@ import React, { useRef, useEffect, useCallback } from 'react';
 import { ButtonPiece, Ball, GameState, Vec2, Intruder, GameModifiers } from '@/game/types';
 import { FIELD, stepPhysics, isMoving, MAX_LAUNCH_FORCE } from '@/game/physics';
 import { computeAILaunch } from '@/game/ai';
-import { playSlide, playGoal, playTeamAnthem } from '@/game/sounds';
+import { playSlide, playGoal, playTeamAnthem, playRandomNarration, stopNarration } from '@/game/sounds';
 import { spawnIntruder, stepIntruderPhysics } from '@/game/intruders';
 
 // ── Props ──────────────────────────────────────────────────────────────────
@@ -122,6 +122,21 @@ export default function GameCanvas({
       }
     });
   }, [gameState.buttons]);
+
+  // ── Narration Audio Interval ──────────────────────────────────────────────
+  useEffect(() => {
+    // Começa a tocar narrações de 30 em 30 segundos enquanto o jogo estiver ativo
+    const interval = setInterval(() => {
+      if (gameStateRef.current?.phase !== 'finished') {
+        playRandomNarration();
+      }
+    }, 30000);
+
+    return () => {
+      clearInterval(interval);
+      stopNarration();
+    };
+  }, []);
 
   // ── AI ──────────────────────────────────────────────────────────────────
 
