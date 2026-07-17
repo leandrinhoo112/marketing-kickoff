@@ -125,12 +125,12 @@ export default function GameCanvas({
 
   // ── Narration Audio Interval ──────────────────────────────────────────────
   useEffect(() => {
-    // Começa a tocar narrações de 30 em 30 segundos enquanto o jogo estiver ativo
+    // Começa a tocar narrações de 15 em 15 segundos enquanto o jogo estiver ativo
     const interval = setInterval(() => {
       if (gameStateRef.current?.phase !== 'finished') {
         playRandomNarration();
       }
-    }, 30000);
+    }, 15000);
 
     return () => {
       clearInterval(interval);

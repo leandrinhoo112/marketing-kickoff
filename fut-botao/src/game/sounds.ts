@@ -202,6 +202,7 @@ export function playGoal() {
 const NARRATION_COUNT = 7;
 const narrationCache = new Map<number, AudioBuffer>();
 let currentNarration: AudioBufferSourceNode | null = null;
+let lastNarrationIndex: number | null = null;
 
 export function stopNarration(): void {
   try {
@@ -211,11 +212,21 @@ export function stopNarration(): void {
 }
 
 export function playRandomNarration(volume = 0.85): void {
+  let index = Math.floor(Math.random() * NARRATION_COUNT);
+  if (lastNarrationIndex !== null && NARRATION_COUNT > 1) {
+    while (index === lastNarrationIndex) {
+      index = Math.floor(Math.random() * NARRATION_COUNT);
+    }
+  }
+  playNarrationByIndex(index, volume);
+}
+
+function playNarrationByIndex(index: number, volume = 0.85): void {
   stopNarration();
-  const index = Math.floor(Math.random() * NARRATION_COUNT);
   const buffer = narrationCache.get(index);
   
   if (buffer) {
+    lastNarrationIndex = index;
     try {
       const ctx = getCtx();
       const source = ctx.createBufferSource();
@@ -236,7 +247,7 @@ export function playRandomNarration(volume = 0.85): void {
       .then(ab => getCtx().decodeAudioData(ab))
       .then(buf => {
         narrationCache.set(index, buf);
-        playRandomNarration(volume);
+        playNarrationByIndex(index, volume);
       })
       .catch(err => console.warn('Failed to load narration:', err));
   }
