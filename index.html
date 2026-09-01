@@ -39,7 +39,7 @@
         .tag-checkbox input[type="checkbox"] {
             display: none !important;
         }
-        /* Remover setas de number input para não bugar no Bolão */
+        /* Remover setas de number input */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -152,8 +152,8 @@
             <button class="tab-btn" data-target="tab-minigame" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="gamepad-2"></i> Mini-game
             </button>
-            <button class="tab-btn" data-target="tab-bolao" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
-                <i data-lucide="trophy"></i> Bolão da Copa
+            <button class="tab-btn" data-target="tab-tutoriais" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
+                <i data-lucide="book-open"></i> Tutoriais
             </button>
             <button class="tab-btn" data-target="tab-fotos" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="camera"></i> Mural de Fotos
@@ -915,39 +915,83 @@
         </div>
     </section>
 
-    <!-- ABA BOLÃO DA COPA -->
-    <section id="tab-bolao" class="tab-pane" style="display: none;">
+    <!-- ABA TUTORIAIS -->
+    <section id="tab-tutoriais" class="tab-pane" style="display: none;">
         <div style="background: rgba(0,0,0,0.3); margin: -30px -30px 30px -30px; padding: 25px 30px; border-radius: 20px 20px 0 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center;">
-            <h2 style="color: #22c55e; margin-bottom: 8px;"><i data-lucide="trophy" style="width:28px;height:28px;vertical-align:middle;"></i> Bolão da Copa</h2>
-            <p style="opacity: 0.8; font-size: 0.95em;">Palpite nos jogos do dia! Acertar o placar exato vale <strong style="color: #22c55e;">50 pontos</strong>. Acertar o vencedor ou empate vale <strong style="color: #facc15;">15 pontos</strong>.<br><span style="font-size: 0.9em; opacity: 0.8;">* O resultado válido é apenas o do tempo normal (não conta prorrogação e pênaltis).</span></p>
+            <h2 style="color: #f59e0b; margin-bottom: 8px;"><i data-lucide="book-open" style="width:28px;height:28px;vertical-align:middle;"></i> Tutoriais do Marketing</h2>
+            <p style="opacity: 0.8; font-size: 0.95em;">Guias práticos para as principais atividades do setor. Clique em cada tutorial para expandir o passo a passo.</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;" class="bolao-grid">
-            
-            <!-- Lista de Jogos do Dia -->
-            <div id="bolaoMatchesContainer">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: white; margin: 0;"><i data-lucide="calendar"></i> Jogos de Hoje</h3>
-                    <div id="bolaoMatchesCount" style="font-size: 0.85em; opacity: 0.6;">Carregando...</div>
-                </div>
-                <div id="bolaoMatchesList" style="display: flex; flex-direction: column; gap: 15px;">
-                    <div class="glass-card" style="text-align: center; padding: 30px;">
-                        <i data-lucide="loader" class="spin" style="opacity: 0.5;"></i>
-                    </div>
-                </div>
+        <!-- Botão de criar novo tutorial + Busca -->
+        <div style="display: flex; gap: 12px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+            <button id="toggleTutorialFormBtn" onclick="document.getElementById('tutorialFormArea').style.display = document.getElementById('tutorialFormArea').style.display === 'none' ? 'block' : 'none'; this.querySelector('.btn-text').textContent = document.getElementById('tutorialFormArea').style.display === 'none' ? 'Criar Tutorial' : 'Cancelar'" style="padding: 12px 22px; background: #f59e0b; border: none; border-radius: 10px; color: #0f0a1e; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.95em; transition: all 0.3s; white-space: nowrap;">
+                <i data-lucide="plus-circle" style="width:18px;height:18px;"></i> <span class="btn-text">Criar Tutorial</span>
+            </button>
+            <div style="position: relative; flex: 1; min-width: 200px;">
+                <i data-lucide="search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; opacity: 0.4;"></i>
+                <input type="text" id="tutorialSearchInput" placeholder="Buscar tutorial..." style="width: 100%; padding: 13px 14px 13px 44px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-size: 0.95em; box-sizing: border-box; outline: none;">
             </div>
-
-            <!-- Ranking do Bolão -->
-            <div>
-                <div class="glass-card" style="padding: 20px; border-top: 3px solid #22c55e;">
-                    <h3 style="color: #22c55e; margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;"><i data-lucide="bar-chart-2"></i> Ranking do Bolão</h3>
-                    <div id="bolaoLeaderboardList" style="display: flex; flex-direction: column; gap: 10px;">
-                        <p style="opacity: 0.5; text-align: center; margin: 0;">Carregando ranking...</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
+
+        <!-- Formulário para criar tutorial (oculto por padrão) -->
+        <div id="tutorialFormArea" style="display: none; margin-bottom: 25px;">
+            <div class="glass-card" style="padding: 25px; border: 1px solid rgba(245,158,11,0.3); background: rgba(245,158,11,0.03);">
+                <h3 style="margin: 0 0 20px; color: #f59e0b; font-size: 1.1em; display: flex; align-items: center; gap: 8px;"><i data-lucide="edit-3" style="width:20px;height:20px;"></i> Novo Tutorial</h3>
+                <form id="tutorialForm" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="input-group">
+                            <label style="font-size: 0.85em; opacity: 0.7; margin-bottom: 5px; display: block;">Título do Tutorial *</label>
+                            <input type="text" id="tutorialTitle" required placeholder="Ex: Como criar uma arte no Canva" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 100%; box-sizing: border-box;">
+                        </div>
+                        <div class="input-group">
+                            <label style="font-size: 0.85em; opacity: 0.7; margin-bottom: 5px; display: block;">Categoria</label>
+                            <input type="text" id="tutorialCategory" placeholder="Ex: Design, Redes Sociais, E-mail" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 100%; box-sizing: border-box;">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="font-size: 0.85em; opacity: 0.7; margin-bottom: 8px; display: block;">Passos do Tutorial *</label>
+                        <div id="tutorialStepsContainer" style="display: flex; flex-direction: column; gap: 10px;">
+                            <div class="tutorial-step-row" style="display: flex; gap: 8px; align-items: center;">
+                                <span style="color: #f59e0b; font-weight: bold; min-width: 24px;">1.</span>
+                                <input type="text" class="tutorial-step-input" required placeholder="Descreva este passo..." style="flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; box-sizing: border-box;">
+                                <button type="button" onclick="this.parentElement.remove(); window.renumberTutorialSteps()" style="padding: 8px; background: rgba(255,65,108,0.2); border: none; border-radius: 6px; color: #ff416c; cursor: pointer; display: flex; align-items: center;"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+                            </div>
+                        </div>
+                        <button type="button" id="addStepBtn" style="margin-top: 10px; padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px; color: #a0aec0; cursor: pointer; font-size: 0.9em; display: flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                            <i data-lucide="plus" style="width:14px;height:14px;"></i> Adicionar passo
+                        </button>
+                    </div>
+
+                    <div class="input-group">
+                        <label style="font-size: 0.85em; opacity: 0.7; margin-bottom: 5px; display: block;">Dica extra <span style="opacity: 0.5;">(opcional)</span></label>
+                        <input type="text" id="tutorialTip" placeholder="Ex: Sempre salve uma cópia antes de editar" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 100%; box-sizing: border-box;">
+                    </div>
+
+                    <button type="submit" id="tutorialSubmitBtn" style="padding: 13px; background: #f59e0b; border: none; border-radius: 10px; color: #0f0a1e; font-weight: bold; cursor: pointer; font-size: 0.95em; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.3s;">
+                        <i data-lucide="save" style="width:18px;height:18px;"></i> Publicar Tutorial
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Container de tutoriais dinâmicos (carregados do Supabase) -->
+        <div id="tutoriaisContainer" style="display: flex; flex-direction: column; gap: 15px;">
+            <div class="glass-card" style="text-align: center; padding: 30px;">
+                <i data-lucide="loader" class="spin" style="opacity: 0.5;"></i>
+                <p style="opacity: 0.5; margin: 10px 0 0;">Carregando tutoriais...</p>
+            </div>
+        </div>
+
+        <!-- CSS para o accordion dos tutoriais -->
+        <style>
+            .tutorial-card.open .tutorial-body { max-height: 1200px !important; }
+            .tutorial-card.open .tutorial-chevron { transform: rotate(180deg) !important; }
+            .tutorial-card .tutorial-header:hover { background: rgba(255,255,255,0.03); }
+            .tutorial-card.open { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+            #addStepBtn:hover { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.4); color: #f59e0b; }
+            #toggleTutorialFormBtn:hover { filter: brightness(1.1); transform: scale(1.02); }
+        </style>
     </section>
 
     <!-- ABA MURAL DE FOTOS -->
@@ -1264,47 +1308,7 @@
                     </div>
                 </div>
             </div>
-            <!-- NOVO: GESTÃO DO BOLÃO -->
-            <div style="margin-top: 40px;">
-                <h4 style="margin-bottom: 20px; color: #22c55e;"><i data-lucide="trophy"></i> Gestão do Bolão da Copa</h4>
-                <div class="glass-card" style="padding: 20px; margin-bottom: 20px; border: 1px solid rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.05);">
-                    <h5 style="margin-bottom: 15px; color: white;">Adicionar Novo Jogo</h5>
-                    <form id="adminBolaoForm" style="display: flex; flex-direction: column; gap: 15px;">
-                        <div class="grid-2">
-                            <div class="input-group">
-                                <label>Data do Jogo</label>
-                                <input type="date" id="bolaoDate" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
-                            </div>
-                            <div class="input-group">
-                                <label>Horário do Jogo</label>
-                                <input type="time" id="bolaoTime" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
-                            </div>
-                            <div class="input-group">
-                                <label>Time A</label>
-                                <select id="bolaoTeamA" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;"></select>
-                            </div>
-                            <div class="input-group">
-                                <label>Time B</label>
-                                <select id="bolaoTeamB" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;"></select>
-                            </div>
-                        </div>
-                        <div class="input-group" style="margin-top: 10px;">
-                            <label>Condição Especial (+10pts) <span style="opacity:0.6; font-size:0.8em;">(Opcional)</span></label>
-                            <input type="text" id="bolaoSpecialCondition" placeholder="Ex: Vini Jr marca gol?" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 100%; box-sizing: border-box;">
-                        </div>
-                        <button type="submit" class="pulse-button" style="padding: 12px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                            Adicionar Jogo <i data-lucide="plus-circle"></i>
-                        </button>
-                    </form>
-                </div>
-                
-                <h5 style="margin-bottom: 15px; color: #a0aec0;">Definir Resultados (Jogos Pendentes)</h5>
-                <div id="adminBolaoPendingContainer" style="display: flex; flex-direction: column; gap: 15px; max-height: 400px; overflow-y: auto; padding-right: 10px;">
-                    <div class="glass-card" style="padding: 15px;">
-                        <p style="margin: 0; opacity: 0.5;">Carregando...</p>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- NOVO: Caixa de Sugestões Anônimas -->
             <div style="margin-top: 40px;">

@@ -14,9 +14,6 @@ if (!localStorage.getItem('reset_26_06_2026_v3')) {
 
 const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "JOÃO", "EDSON", "LUIZ", "JORGE", "MARIANA", "VANESSA", "BRUNO", "VITOR"];
 
-const COPA_TEAMS = [
-    "África do Sul", "Alemanha", "Arábia Saudita", "Argélia", "Argentina", "Austrália", "Áustria", "Bélgica", "Bósnia e Herzegovina", "Brasil", "Cabo Verde", "Canadá", "Catar", "Colômbia", "Coreia do Sul", "Costa do Marfim", "Croácia", "Curaçau", "Egito", "Equador", "Escócia", "Espanha", "Estados Unidos", "França", "Gana", "Haiti", "Holanda", "Inglaterra", "Irã", "Iraque", "Japão", "Jordânia", "Marrocos", "México", "Nova Zelândia", "Noruega", "Panamá", "Paraguai", "Portugal", "RD do Congo", "República Tcheca", "Senegal", "Suécia", "Suíça", "Turquia", "Tunísia", "Uruguai", "Uzbequistão"
-].sort();
 
 let supabaseClient;
 try {
@@ -415,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btn.dataset.target === 'tab-radar') activeBg = '#6841f1';
             else if (btn.dataset.target === 'tab-sucesso') activeBg = '#ffd700';
             else if (btn.dataset.target === 'tab-minigame') activeBg = '#ff416c';
-            else if (btn.dataset.target === 'tab-bolao') activeBg = '#22c55e';
+            else if (btn.dataset.target === 'tab-tutoriais') activeBg = '#f59e0b';
             else if (btn.dataset.target === 'tab-enquetes') activeBg = '#8e6eff';
             
             btn.style.background = activeBg;
@@ -767,8 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 calculateXP();
             }
-            // Dispara o aviso do Bolão imediatamente ao entrar
-            if (typeof window.initBolao === 'function') window.initBolao();
+
         });
     }
 
@@ -3702,441 +3698,226 @@ document.addEventListener('fullscreenchange', () => {
     }
 });
 
-// --- BOLÃO DA COPA ---
+// --- TUTORIAIS DO MARKETING ---
 document.addEventListener('DOMContentLoaded', () => {
-    const adminBolaoForm = document.getElementById('adminBolaoForm');
-    const bolaoTeamA = document.getElementById('bolaoTeamA');
-    const bolaoTeamB = document.getElementById('bolaoTeamB');
-    const bolaoMatchesList = document.getElementById('bolaoMatchesList');
-    const bolaoMatchesCount = document.getElementById('bolaoMatchesCount');
-    const adminBolaoPendingContainer = document.getElementById('adminBolaoPendingContainer');
-    const bolaoLeaderboardList = document.getElementById('bolaoLeaderboardList');
+    const TUTORIAL_COLORS = ['#f59e0b','#3b82f6','#8b5cf6','#10b981','#ef4444','#06b6d4','#ec4899','#84cc16','#f97316','#6366f1'];
+    const tutoriaisContainer = document.getElementById('tutoriaisContainer');
+    const tutorialForm = document.getElementById('tutorialForm');
+    const stepsContainer = document.getElementById('tutorialStepsContainer');
+    const addStepBtn = document.getElementById('addStepBtn');
+    const tutorialSearch = document.getElementById('tutorialSearchInput');
 
-    // Popula seleções
-    COPA_TEAMS.forEach(team => {
-        bolaoTeamA.add(new Option(team, team));
-        bolaoTeamB.add(new Option(team, team));
-    });
+    // Renumber step rows
+    window.renumberTutorialSteps = function() {
+        const rows = stepsContainer.querySelectorAll('.tutorial-step-row');
+        rows.forEach((row, i) => {
+            row.querySelector('span').textContent = (i + 1) + '.';
+        });
+    };
 
-    const todayISO = new Date().toISOString().split('T')[0];
-    const bolaoDateInput = document.getElementById('bolaoDate');
-    if(bolaoDateInput) bolaoDateInput.value = todayISO;
-
-    adminBolaoForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const date = bolaoDateInput.value;
-        const timeInput = document.getElementById('bolaoTime');
-        const timeVal = timeInput ? timeInput.value : '';
-        const ta = bolaoTeamA.value;
-        const tb = bolaoTeamB.value;
-        const specialInput = document.getElementById('bolaoSpecialCondition');
-        const specialVal = specialInput ? specialInput.value : '';
-        if (ta === tb) { alert("Os times devem ser diferentes!"); return; }
-
-        if (window.supabaseClient) {
-            const btn = e.target.querySelector('button');
-            btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Adicionando...';
-            const { error } = await window.supabaseClient.from('bolao_matches').insert([{
-                match_date: date,
-                match_time: timeVal,
-                team_a: ta,
-                team_b: tb,
-                status: 'pending',
-                special_condition: specialVal
-            }]);
-            btn.innerHTML = 'Adicionar Jogo <i data-lucide="plus-circle"></i>';
+    // Add step button
+    if (addStepBtn) {
+        addStepBtn.addEventListener('click', () => {
+            const count = stepsContainer.querySelectorAll('.tutorial-step-row').length + 1;
+            const row = document.createElement('div');
+            row.className = 'tutorial-step-row';
+            row.style = 'display: flex; gap: 8px; align-items: center;';
+            row.innerHTML = `
+                <span style="color: #f59e0b; font-weight: bold; min-width: 24px;">${count}.</span>
+                <input type="text" class="tutorial-step-input" required placeholder="Descreva este passo..." style="flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; box-sizing: border-box;">
+                <button type="button" onclick="this.parentElement.remove(); window.renumberTutorialSteps()" style="padding: 8px; background: rgba(255,65,108,0.2); border: none; border-radius: 6px; color: #ff416c; cursor: pointer; display: flex; align-items: center;"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+            `;
+            stepsContainer.appendChild(row);
             if (window.lucide) window.lucide.createIcons();
-
-            if (error) { console.error(error); alert("Erro ao criar jogo"); }
-            else { alert("Jogo adicionado!"); initBolao(); }
-        }
-    });
-
-    window.initBolao = async function initBolao() {
-        if (!window.supabaseClient) return;
-
-        const { data: matches } = await window.supabaseClient
-            .from('bolao_matches')
-            .select('*')
-            .order('match_date', { ascending: false })
-            .order('id', { ascending: false });
-
-        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
-        let allPredictions = [];
-        if (matches && matches.length > 0) {
-            const matchIds = matches.map(m => m.id);
-            const { data: preds } = await window.supabaseClient
-                .from('bolao_predictions')
-                .select('*')
-                .in('match_id', matchIds);
-            if (preds) allPredictions = preds;
-        }
-
-        renderBolaoMatches(matches || [], allPredictions, currentUser);
-
-        const { data: pendingMatches } = await window.supabaseClient
-            .from('bolao_matches')
-            .select('*')
-            .eq('status', 'pending')
-            .order('match_date', { ascending: false });
-        renderBolaoAdminPending(pendingMatches || []);
-
-        const { data: ranking } = await window.supabaseClient
-            .from('bolao_predictions')
-            .select('username, points_awarded')
-            .gt('points_awarded', 0);
-        renderBolaoLeaderboard(ranking || []);
+            row.querySelector('input').focus();
+        });
     }
 
-    function renderBolaoMatches(matches, allPredictions, currentUser) {
-        if (!bolaoMatchesCount || !bolaoMatchesList) return;
-        bolaoMatchesCount.textContent = `${matches.length} jogo(s)`;
-        if (matches.length === 0) {
-            bolaoMatchesList.innerHTML = `<div class="glass-card" style="text-align: center; padding: 20px;"><p style="opacity: 0.6; margin: 0;">Nenhum jogo agendado para hoje.</p></div>`;
+    // Submit tutorial form
+    if (tutorialForm) {
+        tutorialForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
+            if (!currentUser) { alert("Você precisa estar logado para criar um tutorial."); return; }
+
+            const title = document.getElementById('tutorialTitle').value.trim();
+            const category = document.getElementById('tutorialCategory').value.trim();
+            const tip = document.getElementById('tutorialTip').value.trim();
+            const stepInputs = stepsContainer.querySelectorAll('.tutorial-step-input');
+            const steps = [];
+            stepInputs.forEach(inp => { if (inp.value.trim()) steps.push(inp.value.trim()); });
+
+            if (!title) { alert("Preencha o título do tutorial."); return; }
+            if (steps.length === 0) { alert("Adicione pelo menos um passo ao tutorial."); return; }
+
+            const submitBtn = document.getElementById('tutorialSubmitBtn');
+            submitBtn.innerHTML = '<i data-lucide="loader" class="spin" style="width:18px;height:18px;"></i> Publicando...';
+            submitBtn.disabled = true;
+
+            if (window.supabaseClient) {
+                const { error } = await window.supabaseClient.from('tutorials').insert([{
+                    title: title,
+                    category: category || 'Geral',
+                    steps: JSON.stringify(steps),
+                    tip: tip,
+                    author: currentUser
+                }]);
+
+                if (error) {
+                    console.error(error);
+                    alert("Erro ao publicar tutorial. Verifique se a tabela 'tutorials' existe no Supabase.");
+                } else {
+                    alert("Tutorial publicado com sucesso! 🎉");
+                    tutorialForm.reset();
+                    // Reset steps to single empty one
+                    stepsContainer.innerHTML = `
+                        <div class="tutorial-step-row" style="display: flex; gap: 8px; align-items: center;">
+                            <span style="color: #f59e0b; font-weight: bold; min-width: 24px;">1.</span>
+                            <input type="text" class="tutorial-step-input" required placeholder="Descreva este passo..." style="flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; box-sizing: border-box;">
+                            <button type="button" onclick="this.parentElement.remove(); window.renumberTutorialSteps()" style="padding: 8px; background: rgba(255,65,108,0.2); border: none; border-radius: 6px; color: #ff416c; cursor: pointer; display: flex; align-items: center;"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+                        </div>
+                    `;
+                    document.getElementById('tutorialFormArea').style.display = 'none';
+                    document.querySelector('#toggleTutorialFormBtn .btn-text').textContent = 'Criar Tutorial';
+                    loadTutorials();
+                }
+            }
+            submitBtn.innerHTML = '<i data-lucide="save" style="width:18px;height:18px;"></i> Publicar Tutorial';
+            submitBtn.disabled = false;
+            if (window.lucide) window.lucide.createIcons();
+        });
+    }
+
+    // Delete tutorial
+    window.deleteTutorial = async function(id) {
+        if (!confirm("Tem certeza que deseja excluir este tutorial?")) return;
+        if (id === 'model-example') {
+            const card = document.querySelector('.tutorial-card');
+            if (card) card.remove();
             return;
         }
-        
-        let html = '';
-        matches.forEach(m => {
-            const matchPreds = allPredictions.filter(p => p.match_id === m.id);
-            const pred = currentUser ? matchPreds.find(p => p.username === currentUser) : null;
-            let isStarted = false;
-            if (m.match_time) {
-                const now = new Date();
-                const matchDate = new Date(`${m.match_date}T${m.match_time}:00`);
-                if (now >= matchDate) {
-                    isStarted = true;
-                }
-            }
-            
-            const isFinished = m.status === 'finished';
-            const disableInput = isFinished || isStarted || pred ? 'disabled' : '';
-            const valA = pred ? pred.guess_a : (isFinished ? m.score_a : '');
-            const valB = pred ? pred.guess_b : (isFinished ? m.score_b : '');
-
-            let pointsMsg = '';
-            if (isFinished && pred) {
-                const color = pred.points_awarded === 50 ? '#22c55e' : (pred.points_awarded === 15 ? '#facc15' : '#ff416c');
-                pointsMsg = `<div style="text-align: center; margin-top: 15px; background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; color: ${color}; font-weight: bold; border: 1px solid ${color};">
-                    Você ganhou ${pred.points_awarded} pontos!
-                </div>`;
-            } else if (pred && !isFinished) {
-                pointsMsg = `<div style="text-align: center; margin-top: 15px; color: #a0aec0; font-size: 0.9em;">Palpite registrado! Boa sorte! 🍀</div>`;
-            } else if (isStarted && !isFinished && !pred) {
-                pointsMsg = `<div style="text-align: center; margin-top: 15px; color: #ff416c; font-size: 0.9em; font-weight: bold;"><i data-lucide="lock" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> Apostas encerradas (O jogo já começou)</div>`;
-            }
-
-            let finalScoreHtml = '';
-            if (isFinished) {
-                finalScoreHtml = `<div style="text-align: center; margin-bottom: 15px; font-weight: bold; color: #22c55e; font-size: 1.1em; background: rgba(34, 197, 94, 0.1); padding: 5px; border-radius: 5px;">🏆 Placar Final: ${m.score_a} x ${m.score_b}</div>`;
-            }
-            
-            const dStr = m.match_date ? m.match_date.split('-').reverse().join('/') : '';
-            const matchTimeDisplay = m.match_time ? `<div style="text-align: center; font-size: 0.85em; opacity: 0.6; margin-bottom: 15px;"><i data-lucide="clock" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> ${dStr} às ${m.match_time}</div>` : (dStr ? `<div style="text-align: center; font-size: 0.85em; opacity: 0.6; margin-bottom: 15px;"><i data-lucide="calendar" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> ${dStr}</div>` : '');
-
-            let specialQuestionHtml = '';
-            let valSpecial = pred && pred.guess_special !== null ? (pred.guess_special ? 'true' : 'false') : 'none';
-            if (m.special_condition) {
-                specialQuestionHtml = `
-                    <div style="margin-top: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
-                        <strong style="color: #facc15; font-size: 0.9em; text-transform: uppercase;">Aposta Bônus (+10pts)</strong>
-                        <p style="margin: 5px 0 10px; font-size: 0.95em;">${m.special_condition}</p>
-                        <div style="display: flex; justify-content: center; gap: 15px;">
-                            <label style="cursor: pointer; opacity: ${disableInput ? '0.6' : '1'}; display: flex; align-items: center; gap: 5px;">
-                                <input type="radio" name="guess_special_${m.id}" value="true" ${valSpecial === 'true' ? 'checked' : ''} ${disableInput}> Sim
-                            </label>
-                            <label style="cursor: pointer; opacity: ${disableInput ? '0.6' : '1'}; display: flex; align-items: center; gap: 5px;">
-                                <input type="radio" name="guess_special_${m.id}" value="false" ${valSpecial === 'false' ? 'checked' : ''} ${disableInput}> Não
-                            </label>
-                        </div>
-                    </div>
-                `;
-            }
-
-            html += `
-            <div class="glass-card" style="padding: 25px; transition: transform 0.2s;">
-                ${finalScoreHtml}
-                ${matchTimeDisplay}
-                <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
-                    <div style="flex: 1; text-align: right; font-weight: bold; font-size: 1.2em; color: white;">${m.team_a}</div>
-                    <input type="number" id="guess_a_${m.id}" value="${valA}" ${disableInput} style="width: 60px; height: 60px; text-align: center; font-size: 1.5em; border-radius: 12px; border: 2px solid ${pred?'transparent':'rgba(255,255,255,0.2)'}; background: ${pred?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.05)'}; color: white; padding: 0; box-sizing: border-box;" min="0">
-                    <span style="font-weight: bold; color: rgba(255,255,255,0.3); font-size: 1.2em;">X</span>
-                    <input type="number" id="guess_b_${m.id}" value="${valB}" ${disableInput} style="width: 60px; height: 60px; text-align: center; font-size: 1.5em; border-radius: 12px; border: 2px solid ${pred?'transparent':'rgba(255,255,255,0.2)'}; background: ${pred?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.05)'}; color: white; padding: 0; box-sizing: border-box;" min="0">
-                    <div style="flex: 1; text-align: left; font-weight: bold; font-size: 1.2em; color: white;">${m.team_b}</div>
-                </div>
-                ${specialQuestionHtml}
-                ${!pred && !isFinished && !isStarted ? `<div style="text-align: center; margin-top: 20px;"><button class="pulse-button" onclick="window.submitBolaoPrediction(${m.id})" style="padding: 10px 25px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; width: 100%;">Confirmar Palpite</button></div>` : ''}
-                ${pointsMsg}
-                ${matchPreds.length > 0 ? `
-                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85em;">
-                    <div style="opacity: 0.6; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; font-size: 0.9em;"><i data-lucide="users" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> Palpites do Time:</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                        ${matchPreds.map(p => {
-                            const isMe = currentUser && p.username === currentUser;
-                            let specialLabel = '';
-                            if (m.special_condition && p.guess_special !== null) {
-                                specialLabel = p.guess_special ? ' <span style="color:#facc15;font-size:0.85em;margin-left:4px;">(Bônus: Sim)</span>' : ' <span style="opacity:0.6;font-size:0.85em;margin-left:4px;">(Bônus: Não)</span>';
-                            }
-                            return `<span style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); color: ${isMe ? '#02ceff' : '#e2e8f0'};">
-                                <strong>${p.username}</strong>: ${p.guess_a}x${p.guess_b}${specialLabel}
-                            </span>`;
-                        }).join('')}
-                    </div>
-                </div>` : ''}
-            </div>
-            `;
-        });
-        bolaoMatchesList.innerHTML = html;
-        
-        let missingCount = 0;
-        matches.forEach(m => {
-            const matchPreds = allPredictions.filter(p => p.match_id === m.id);
-            const pred = currentUser ? matchPreds.find(p => p.username === currentUser) : null;
-            let isStarted = false;
-            if (m.match_time) {
-                const now = new Date();
-                const matchDate = new Date(`${m.match_date}T${m.match_time}:00`);
-                if (now >= matchDate) isStarted = true;
-            }
-            if (m.status !== 'finished' && !isStarted && !pred) missingCount++;
-        });
-
-        const existingPopup = document.getElementById('bolaoReminderPopup');
-        if (missingCount > 0 && currentUser) {
-            if (!existingPopup) {
-                const popup = document.createElement('div');
-                popup.id = 'bolaoReminderPopup';
-                popup.style = "position: fixed; bottom: 20px; right: 20px; background: rgba(34, 197, 94, 0.95); color: white; padding: 15px 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); transition: transform 0.3s; animation: slideUp 0.3s ease-out;";
-                popup.innerHTML = `
-                    <style>
-                    @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-                    #bolaoReminderPopup:hover { transform: scale(1.05); }
-                    </style>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i data-lucide="alert-circle" style="width: 24px; height: 24px; color: #0f0a1e;"></i>
-                        <div>
-                            <h4 style="margin: 0; font-size: 1.1em; color: #0f0a1e; font-weight: 800; text-transform: uppercase;">Bolão da Copa</h4>
-                            <p id="bolaoReminderText" style="margin: 3px 0 0; font-size: 0.9em; color: #0f0a1e; font-weight: 600;">Faltam ${missingCount} palpite(s) de hoje!</p>
-                        </div>
-                    </div>
-                `;
-                popup.onclick = () => {
-                    const bolaoTabBtn = document.querySelector('.tab-btn[data-target="tab-bolao"]');
-                    if (bolaoTabBtn) bolaoTabBtn.click();
-                    popup.style.transform = 'scale(0.9)';
-                    setTimeout(() => popup.style.transform = 'scale(1)', 150);
-                };
-                document.body.appendChild(popup);
-                if (window.lucide) window.lucide.createIcons();
-            } else {
-                document.getElementById('bolaoReminderText').innerText = `Faltam ${missingCount} palpite(s) de hoje!`;
-                existingPopup.style.display = 'block';
-            }
-        } else if (existingPopup) {
-            existingPopup.style.display = 'none';
-        }
-    }
-
-    window.submitBolaoPrediction = async function(matchId) {
-        const currentUser = typeof window.currentUser !== 'undefined' ? window.currentUser : localStorage.getItem('currentUser');
-        if (!currentUser) { alert("Ops! Você precisa se identificar (selecione seu nome na aba Radar) para poder dar palpites."); return; }
-        
-        const ga = document.getElementById('guess_a_'+matchId).value;
-        const gb = document.getElementById('guess_b_'+matchId).value;
-        
-        if (ga === '' || gb === '') { alert("Preencha o placar dos dois times!"); return; }
-
-        let guessSpecial = null;
-        const specialRadios = document.getElementsByName('guess_special_'+matchId);
-        if (specialRadios && specialRadios.length > 0) {
-            let selected = false;
-            for (let r of specialRadios) {
-                if (r.checked) {
-                    guessSpecial = r.value === 'true';
-                    selected = true;
-                    break;
-                }
-            }
-            if (!selected) {
-                alert("Por favor, responda a Aposta Bônus (Sim ou Não)!");
-                return;
-            }
-        }
-
-        const btn = event.target;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = 'Enviando...';
-        btn.disabled = true;
-
         if (window.supabaseClient) {
-            const { error } = await window.supabaseClient.from('bolao_predictions').insert([{
-                match_id: matchId,
-                username: currentUser,
-                guess_a: parseInt(ga),
-                guess_b: parseInt(gb),
-                guess_special: guessSpecial
-            }]);
-            if (error) { 
-                console.error(error); 
-                alert("Erro ao enviar palpite"); 
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-            else { initBolao(); }
+            const { error } = await window.supabaseClient.from('tutorials').delete().eq('id', id);
+            if (error) { alert("Erro ao excluir: " + error.message); }
+            else { loadTutorials(); }
         }
-    }
+    };
 
-    function renderBolaoAdminPending(matches) {
-        if (!adminBolaoPendingContainer) return;
-        if (matches.length === 0) {
-            adminBolaoPendingContainer.innerHTML = '<div class="glass-card" style="padding: 15px;"><p style="margin: 0; opacity: 0.5;">Nenhum jogo pendente.</p></div>';
-            return;
-        }
-        let html = '';
-        matches.forEach(m => {
-            // format date
-            const d = m.match_date.split('-').reverse().join('/');
-            const t = m.match_time ? ` às ${m.match_time}` : '';
-            
-            let specialHtml = '';
-            if (m.special_condition) {
-                specialHtml = `
-                    <div style="margin-top: 10px; font-size: 0.85em; opacity: 0.9;">
-                        <strong>Condição:</strong> ${m.special_condition}
-                        <select id="special_result_${m.id}" style="margin-left: 10px; background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 2px 5px;">
-                            <option value="none">-- Escolha --</option>
-                            <option value="true">Sim (+10pts)</option>
-                            <option value="false">Não</option>
-                        </select>
+    // Render a single tutorial card HTML
+    function renderTutorialCard(t, index) {
+        const color = TUTORIAL_COLORS[index % TUTORIAL_COLORS.length];
+        let steps = [];
+        try { steps = typeof t.steps === 'string' ? JSON.parse(t.steps) : t.steps; } catch(e) { steps = []; }
+        const stepCount = steps.length;
+        const categoryLabel = t.category || 'Geral';
+
+        const stepsHtml = steps.map(s => `<li>${s}</li>`).join('');
+        const tipHtml = t.tip ? `
+            <div style="margin-top: 20px; padding: 12px 16px; background: rgba(0,0,0,0.15); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); font-size: 0.9em;">
+                💡 <strong style="color: ${color};">Dica:</strong> ${t.tip}
+            </div>` : '';
+
+        const authorHtml = t.author ? `<div style="margin-top: 15px; font-size: 0.8em; opacity: 0.4; text-align: right;">Criado por ${t.author}</div>` : '';
+
+        const deleteBtn = `<button onclick="event.stopPropagation(); window.deleteTutorial('${t.id}')" style="padding: 6px; background: rgba(255,65,108,0.15); border: none; border-radius: 6px; color: #ff416c; cursor: pointer; display: flex; align-items: center; margin-left: 8px; opacity: 0.6; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="Excluir tutorial"><i data-lucide="trash-2" style="width:16px;height:16px;"></i></button>`;
+
+        return `
+        <div class="tutorial-card glass-card" style="padding: 0; overflow: hidden; border-left: 4px solid ${color}; transition: all 0.3s;">
+            <div class="tutorial-header" onclick="this.parentElement.classList.toggle('open')" style="padding: 20px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;">
+                <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: ${color}22; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="book-open" style="width: 20px; height: 20px; color: ${color};"></i>
                     </div>
-                `;
-            }
-            
-            html += `
-            <div class="glass-card" style="padding: 15px; display: flex; align-items: center; justify-content: space-between; border-left: 3px solid #facc15;">
-                <div style="flex: 1;">
-                    <div style="font-size: 0.75em; opacity: 0.6; margin-bottom: 4px;"><i data-lucide="calendar"></i> ${d}${t}</div>
-                    <strong style="color: white;">${m.team_a} <span style="opacity:0.5;">x</span> ${m.team_b}</strong>
-                    ${specialHtml}
+                    <div style="flex: 1;">
+                        <h3 style="margin: 0; color: white; font-size: 1.05em;">${t.title}</h3>
+                        <span style="font-size: 0.8em; opacity: 0.5; margin-top: 2px; display: block;">📋 ${categoryLabel} · ${stepCount} etapa${stepCount !== 1 ? 's' : ''}</span>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="number" id="final_a_${m.id}" style="width: 45px; height: 35px; text-align: center; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; padding: 0; box-sizing: border-box;" placeholder="A">
-                    <span style="opacity:0.5; font-size:0.8em;">x</span>
-                    <input type="number" id="final_b_${m.id}" style="width: 45px; height: 35px; text-align: center; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; padding: 0; box-sizing: border-box;" placeholder="B">
-                    <button class="btn-primary" onclick="window.resolveBolaoMatch(${m.id})" style="padding: 8px 12px; background: #facc15; color: #0f0a1e; margin-left: 5px;" title="Resolver"><i data-lucide="check"></i></button>
-                    <button class="btn-primary" onclick="window.deleteBolaoMatch(${m.id})" style="padding: 8px 12px; background: #ff416c; color: #fff; margin-left: 5px;" title="Excluir"><i data-lucide="trash-2"></i></button>
+                <div style="display: flex; align-items: center;">
+                    ${deleteBtn}
+                    <i data-lucide="chevron-down" class="tutorial-chevron" style="width: 20px; height: 20px; opacity: 0.4; transition: transform 0.3s; margin-left: 8px;"></i>
                 </div>
             </div>
-            `;
-        });
-        adminBolaoPendingContainer.innerHTML = html;
+            <div class="tutorial-body" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                <div style="padding: 0 25px 25px; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <ol style="margin: 20px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 12px; color: #cbd5e1; line-height: 1.7;">
+                        ${stepsHtml}
+                    </ol>
+                    ${tipHtml}
+                    ${authorHtml}
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // Load tutorials from Supabase
+    async function loadTutorials() {
+        if (!tutoriaisContainer) return;
+
+        if (!window.supabaseClient) {
+            tutoriaisContainer.innerHTML = '<div class="glass-card" style="text-align: center; padding: 25px;"><p style="opacity: 0.5; margin: 0;">Conectando ao banco de dados...</p></div>';
+            return;
+        }
+
+        const { data, error } = await window.supabaseClient
+            .from('tutorials')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Tutorials load error:', error);
+            tutoriaisContainer.innerHTML = `
+                <div class="glass-card" style="text-align: center; padding: 30px; border: 1px solid rgba(245,158,11,0.2);">
+                    <i data-lucide="alert-triangle" style="width: 32px; height: 32px; color: #f59e0b; margin-bottom: 10px;"></i>
+                    <p style="color: #f59e0b; margin: 0 0 8px; font-weight: bold;">Tabela de tutoriais não encontrada</p>
+                    <p style="opacity: 0.6; margin: 0; font-size: 0.9em;">Peça ao administrador para criar a tabela <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">tutorials</code> no Supabase.</p>
+                </div>`;
+            if (window.lucide) window.lucide.createIcons();
+            return;
+        }
+
+        if (!data || data.length === 0) {
+            const sampleTutorial = {
+                id: 'model-example',
+                title: 'Exemplo / Modelo: Como criar uma campanha de e-mail marketing',
+                category: 'Modelo de Exemplo',
+                steps: [
+                    'Defina o objetivo: Determine se é uma campanha de nutrição, promocional ou informativa.',
+                    'Segmente o público: Filtre a base de contatos pelo perfil desejado.',
+                    'Crie o assunto: Use até 50 caracteres com clareza e CTA.',
+                    'Monte o layout: Utilize o template padrão da Inspirar com cabeçalho, corpo e botão.',
+                    'Revise e envie teste: Valide a formatação no celular e desktop.',
+                    'Agende o disparo: Escolha o melhor horário conforme o público.'
+                ],
+                tip: 'Sempre acompanhe as métricas de abertura e clique nas primeiras 24h após o envio.',
+                author: 'Equipe de Marketing'
+            };
+            tutoriaisContainer.innerHTML = renderTutorialCard(sampleTutorial, 0);
+            if (window.lucide) window.lucide.createIcons();
+            return;
+        }
+
+        let html = '';
+        data.forEach((t, i) => { html += renderTutorialCard(t, i); });
+        tutoriaisContainer.innerHTML = html;
         if (window.lucide) window.lucide.createIcons();
     }
 
-    window.deleteBolaoMatch = async function(matchId) {
-        if (confirm("Tem certeza que deseja excluir este jogo? Todos os palpites atrelados a ele também poderão ser perdidos.")) {
-            if (window.supabaseClient) {
-                const { error } = await window.supabaseClient.from('bolao_matches').delete().eq('id', matchId);
-                if (error) {
-                    alert("Erro ao excluir: " + error.message);
-                } else {
-                    alert("Jogo excluído com sucesso.");
-                    initBolao();
-                }
-            }
-        }
-    }
-
-    window.resolveBolaoMatch = async function(matchId) {
-        const fa = parseInt(document.getElementById('final_a_'+matchId).value);
-        const fb = parseInt(document.getElementById('final_b_'+matchId).value);
-        if (isNaN(fa) || isNaN(fb)) { alert("Preencha o placar final corretamente!"); return; }
-
-        let specialResult = null;
-        const specialSelect = document.getElementById('special_result_'+matchId);
-        if (specialSelect) {
-            if (specialSelect.value === 'none') {
-                alert("Selecione se a condição especial aconteceu ou não!"); return;
-            }
-            specialResult = specialSelect.value === 'true';
-        }
-
-        if (confirm(`Confirmar o resultado de ${fa} x ${fb}? Esta ação encerrará o jogo e distribuirá os pontos.`)) {
-            const btn = event.target.closest('button');
-            btn.disabled = true;
-            btn.innerHTML = '...';
-
-            if (window.supabaseClient) {
-                await window.supabaseClient.from('bolao_matches').update({ status: 'finished', score_a: fa, score_b: fb, special_result: specialResult }).eq('id', matchId);
-                
-                const { data: preds } = await window.supabaseClient.from('bolao_predictions').select('*').eq('match_id', matchId);
-                if (preds) {
-                    for (let p of preds) {
-                        let pts = 0;
-                        if (p.guess_a === fa && p.guess_b === fb) {
-                            pts = 50; 
-                        } else {
-                            const matchResult = Math.sign(fa - fb);
-                            const guessResult = Math.sign(p.guess_a - p.guess_b);
-                            if (matchResult === guessResult) pts = 15;
-                        }
-                        
-                        if (specialResult !== null && p.guess_special !== null && p.guess_special === specialResult) {
-                            pts += 10;
-                        }
-
-                        if (pts > 0) {
-                            await window.supabaseClient.from('bolao_predictions').update({ points_awarded: pts }).eq('id', p.id);
-                        }
-                    }
-                }
-                alert("Resultado salvo! Pontos do bolão calculados e distribuídos.");
-                initBolao();
-            }
-        }
-    }
-
-    function renderBolaoLeaderboard(rankingData) {
-        if (!bolaoLeaderboardList) return;
-        const scores = {};
-        rankingData.forEach(r => {
-            // Normalizar o nome para juntar pontuações da mesma pessoa (evita erros de case)
-            let name = (r.username || "Desconhecido").toUpperCase();
-            scores[name] = (scores[name] || 0) + (r.points_awarded || 0);
+    // Search filter
+    if (tutorialSearch) {
+        tutorialSearch.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('#tutoriaisContainer .tutorial-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = (query === '' || text.includes(query)) ? '' : 'none';
+            });
         });
-
-        const arr = Object.keys(scores).map(u => ({ username: u, pts: scores[u] })).sort((a,b) => b.pts - a.pts);
-
-        if (arr.length === 0) {
-            bolaoLeaderboardList.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Nenhum ponto registrado ainda na copa.</p>';
-            return;
-        }
-
-        let html = '';
-        arr.forEach((item, i) => {
-            let icon = '⚽';
-            let style = '';
-            if (i === 0) { icon = '🥇'; style = 'border: 1px solid #ffd700; background: rgba(255, 215, 0, 0.1); transform: scale(1.02);'; }
-            else if (i === 1) { icon = '🥈'; style = 'border: 1px solid #c0c0c0; background: rgba(192, 192, 192, 0.1);'; }
-            else if (i === 2) { icon = '🥉'; style = 'border: 1px solid #cd7f32; background: rgba(205, 127, 50, 0.1);'; }
-
-            html += `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 5px; ${style}">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.2em;">${icon}</span>
-                        <span style="font-weight: bold; color: white;">${item.username}</span>
-                    </div>
-                    <div style="background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 0.9em; box-shadow: 0 0 10px rgba(34,197,94,0.2);">
-                        ${item.pts} pts
-                    </div>
-                </div>
-            `;
-        });
-        bolaoLeaderboardList.innerHTML = html;
     }
 
-    // Chama a renderizacao inicial
-    window.initBolao();
+    // Initial load
+    window.initTutorials = loadTutorials;
+    loadTutorials();
 });
 
 // --- MOOD PICKER INTERACTIVITY ---
