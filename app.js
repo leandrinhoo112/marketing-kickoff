@@ -2,14 +2,18 @@ const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
 
 // Reset temporário para liberar as tentativas de hoje
-if (!localStorage.getItem('reset_26_06_2026_v3')) {
-    const todayKey = new Date().toLocaleDateString('pt-BR');
-    localStorage.removeItem('wordleState_' + todayKey);
-    localStorage.removeItem('cacaPalavras_' + todayKey);
-    // Também remove chaves antigas (sem data) por segurança
-    localStorage.removeItem('wordleState');
-    localStorage.removeItem('cacaPalavrasState');
-    localStorage.setItem('reset_26_06_2026_v3', 'true');
+try {
+    if (!localStorage.getItem('reset_26_06_2026_v3')) {
+        const todayKey = new Date().toLocaleDateString('pt-BR');
+        localStorage.removeItem('wordleState_' + todayKey);
+        localStorage.removeItem('cacaPalavras_' + todayKey);
+        // Também remove chaves antigas (sem data) por segurança
+        localStorage.removeItem('wordleState');
+        localStorage.removeItem('cacaPalavrasState');
+        localStorage.setItem('reset_26_06_2026_v3', 'true');
+    }
+} catch (e) {
+    console.warn('localStorage access error:', e);
 }
 
 const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "JOÃO", "EDSON", "LUIZ", "JORGE", "MARIANA", "VANESSA", "BRUNO", "VITOR"];
