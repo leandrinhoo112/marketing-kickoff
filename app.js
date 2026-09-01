@@ -28,9 +28,9 @@ try {
 } catch (e) { console.error(e); }
 
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW fail:', err));
-    });
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let r of registrations) r.unregister();
+    }).catch(() => {});
 }
 
 document.addEventListener('DOMContentLoaded', () => {
