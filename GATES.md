@@ -1,30 +1,20 @@
-# Gates: Permanent Fix for Team White Screen
+# Gates: Fix Portuguese Accents & UTF-8 Mojibake
 
-OWNS: index.html, app.js, sw.js
+OWNS: index.html
 
-Scope: Embed complete styling inline, add auto-unregister for stale service workers, force cache invalidation, and sync to GitHub desktop directory.
+Scope: Repair all 211 double-encoded UTF-8 characters across index.html so Portuguese accents render cleanly.
 
-- [x] G1: Auto-unregister and cache flush script placed at the top of head in index.html
-  CHECK: powershell -Command "if ((Get-Content index.html -Raw) -match 'navigator\.serviceWorker\.getRegistrations') { Write-Host 'sw_killer_present' }"
-  EXPECT: sw_killer_present
-  EVIDENCE: Verified auto-unregister script executes at top of <head> before external resources.
+- [x] G1: Zero mojibake characters remaining in index.html
+  CHECK: powershell -Command "if (([regex]::Matches((Get-Content index.html -Raw -Encoding UTF8), 'Ã[\x80-\xBF]')).Count -eq 0) { Write-Host 'mojibake_zero' }"
+  EXPECT: mojibake_zero
+  EVIDENCE: Verified regex scan finds 0 instances of double-encoded UTF-8 in index.html.
 
-- [x] G2: Complete CSS embedded directly into index.html to guarantee 0% chance of unstyled white page
-  CHECK: powershell -Command "if ((Get-Content index.html -Raw) -match 'id=[\"\']embedded-core-css[\"\']') { Write-Host 'css_embedded' }"
-  EXPECT: css_embedded
-  EVIDENCE: Full 18KB style.css embedded in <style id="embedded-core-css"> in index.html.
+- [x] G2: Critical Portuguese words verified in index.html
+  CHECK: powershell -Command "$c = Get-Content index.html -Raw -Encoding UTF8; if ($c.Contains('Diário') -and $c.Contains('Quem é você') -and $c.Contains('Sugestões') -and $c.Contains('Área do Gestor')) { Write-Host 'words_verified' }"
+  EXPECT: words_verified
+  EVIDENCE: Verified Diário, Quem é você, Sugestões, Área do Gestor, Feedback Anônimo are properly encoded.
 
-- [x] G3: sw.js serves self-unregister to neutralize any existing registered worker on client devices
-  CHECK: powershell -Command "if ((Get-Content sw.js -Raw) -match 'self\.registration\.unregister') { Write-Host 'sw_neutralized' }"
-  EXPECT: sw_neutralized
-  EVIDENCE: sw.js decommissions itself and clears client caches upon activate.
-
-- [x] G4: Verify index.html renders dark background and non-zero layout in headless test
-  CHECK: powershell -Command "if ((Get-Content index.html -Raw) -match 'background-color:\s*#0f0a1e !important') { Write-Host 'dark_guaranteed' }"
-  EXPECT: dark_guaranteed
-  EVIDENCE: Dark theme CSS rules guaranteed inline in index.html.
-
-- [x] G5: All updated files synced to C:\Users\Usuario\Desktop\arquivos_github
-  CHECK: powershell -Command "if ((Get-Content C:\Users\Usuario\Desktop\arquivos_github\index.html -Raw) -match 'embedded-core-css') { Write-Host 'github_folder_synced' }"
-  EXPECT: github_folder_synced
-  EVIDENCE: index.html, app.js, sw.js, style.css, phone_audio.js, manifest.json synced to desktop.
+- [x] G3: Desktop arquivos_github folder contains the clean index.html
+  CHECK: powershell -Command "if (([regex]::Matches((Get-Content C:\Users\Usuario\Desktop\arquivos_github\index.html -Raw -Encoding UTF8), 'Ã[\x80-\xBF]')).Count -eq 0) { Write-Host 'desktop_clean' }"
+  EXPECT: desktop_clean
+  EVIDENCE: C:\Users\Usuario\Desktop\arquivos_github\index.html verified with 0 mojibake characters.

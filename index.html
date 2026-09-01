@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+﻿?<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radar DiÃ¡rio | Daily Team Sync</title>
+    <title>Radar Diário | Daily Team Sync</title>
     <meta name="description"
-        content="App de Kickoff diÃ¡rio para times de marketing. Organize suas tarefas, compartilhe progressos e peÃ§a ajuda de forma eficiente.">
+        content="App de Kickoff diário para times de marketing. Organize suas tarefas, compartilhe progressos e peça ajuda de forma eficiente.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap"
@@ -217,7 +217,7 @@ form {
     gap: 50px;
     padding-bottom: 40px;
     margin-bottom: 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Linha divisÃ³ria sutil */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Linha divisória sutil */
 }
 
 .grid-2:last-of-type {
@@ -227,7 +227,7 @@ form {
 .input-group {
     display: flex;
     flex-direction: column;
-    gap: 12px; /* Mais espaÃ§o entre label e o campo */
+    gap: 12px; /* Mais espaço entre label e o campo */
 }
 
 .input-group label {
@@ -645,7 +645,7 @@ footer {
 }
 
 .toast::before {
-    content: 'âœ“';
+    content: '�o"';
     background: var(--success);
     color: white;
     width: 24px;
@@ -669,7 +669,7 @@ footer {
 }
 
 .toast.error::before {
-    content: 'âœ•';
+    content: '�o.';
     background: var(--error);
 }
 
@@ -880,7 +880,7 @@ footer {
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* CorreÃ§Ã£o essencial para as bolinhas de seleÃ§Ã£o nÃ£o ficarem gigantes */
+        /* Correção essencial para as bolinhas de seleção não ficarem gigantes */
         .radio-card input[type="radio"] {
             -webkit-appearance: radio !important;
             appearance: radio !important;
@@ -915,7 +915,7 @@ footer {
     <div id="welcomeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 10, 30, 0.95); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(10px);">
         <div class="glass-card" style="width: 90%; max-width: 400px; text-align: center; padding: 40px;">
             <i data-lucide="rocket" style="width: 48px; height: 48px; color: #02ceff; margin-bottom: 20px;"></i>
-            <h2 style="font-size: 1.8em; margin-bottom: 10px;">Quem Ã© vocÃª?</h2>
+            <h2 style="font-size: 1.8em; margin-bottom: 10px;">Quem é você?</h2>
             <p style="color: #a0aec0; margin-bottom: 30px; font-size: 0.9em;">Identifique-se para carregar seu perfil e suas conquistas.</p>
             
             <div class="input-group" style="text-align: left; margin-bottom: 25px;">
@@ -925,7 +925,7 @@ footer {
                     <option value="LEANDRO">LEANDRO</option>
                     <option value="IGOR">IGOR</option>
                     <option value="YASMIM">YASMIM</option>
-                    <option value="JOÃƒO">JOÃƒO</option>
+                    <option value="JO�fO">JO�fO</option>
                     <option value="EDSON">EDSON</option>
                     <option value="LUIZ">LUIZ</option>
                     <option value="JORGE">JORGE</option>
@@ -945,7 +945,7 @@ footer {
             style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; gap: 20px;">
             <div class="logo" style="flex: 1; margin-bottom: 0;">
                 <i data-lucide="activity"></i>
-                <span>Radar<span>DiÃ¡rio</span></span>
+                <span>Radar<span>Diário</span></span>
             </div>
             <div style="flex: 1; display: flex; justify-content: center;">
                 <img id="headerLogo" src="Logo-Faculdade-Inspirar-4.png" alt="Inspirar Logo"
@@ -958,16 +958,16 @@ footer {
     </header>
 
     <main class="container">
-        <!-- SAUDAÃ‡ÃƒO E PRESENÃ‡A -->
+        <!-- SAUDA�?�fO E PRESEN�?A -->
         <section class="greeting-section" style="margin-bottom: 30px; text-align: center; position: relative;">
             <div id="streakBadge" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-bottom: 15px; background: rgba(255, 65, 108, 0.1); border: 1px solid rgba(255, 65, 108, 0.3); color: #ff416c; padding: 5px 15px; border-radius: 20px; font-weight: bold; width: fit-content; margin-left: auto; margin-right: auto; cursor: pointer; transition: transform 0.3s;">
                 <i data-lucide="flame"></i> <span id="streakCountDisplay">0 Dias de Ofensiva</span>
             </div>
             <h2 id="dynamicGreeting"
                 style="font-size: 1.8em; margin-bottom: 10px; font-weight: 800; background: linear-gradient(to right, #fff, #8e6eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                Bom dia, Time! ðŸš€</h2>
+                Bom dia, Time! �Ys?</h2>
             <div id="presenceBar" style="display: flex; justify-content: center; gap: -10px; margin-top: 15px;">
-                <!-- Avatares de quem jÃ¡ postou hoje entrarÃ£o aqui -->
+                <!-- Avatares de quem já postou hoje entrarão aqui -->
             </div>
             <button id="editMyReportShortcutBtn" style="display: none; margin: 18px auto 0; gap: 8px; font-size: 0.82em; border-radius: 25px; padding: 8px 22px; background: linear-gradient(135deg, rgba(142,110,255,0.15), rgba(2,206,255,0.1)); border: 1px solid rgba(142,110,255,0.35); color: #c4aaff; cursor: pointer; align-items: center; transition: all 0.25s ease; font-family: inherit; font-weight: 600; letter-spacing: 0.5px; backdrop-filter: blur(6px);"
                 onmouseover="this.style.background='linear-gradient(135deg,rgba(142,110,255,0.3),rgba(2,206,255,0.2))'; this.style.borderColor='rgba(142,110,255,0.7)'; this.style.transform='translateY(-1px)';"
@@ -985,22 +985,22 @@ footer {
             </div>
         </div>
         
-        <!-- TABS DE NAVEGAÃ‡ÃƒO -->
+        <!-- TABS DE NAVEGA�?�fO -->
         <div class="tabs-container" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; flex-wrap: wrap;">
             <button class="tab-btn active" data-target="tab-radar" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: #6841f1; color: white;">
-                <i data-lucide="activity"></i> Radar DiÃ¡rio
+                <i data-lucide="activity"></i> Radar Diário
             </button>
             <button class="tab-btn" data-target="tab-sucesso" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="star"></i> Sucesso Semanal
             </button>
             <button class="tab-btn" data-target="tab-feedback" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
-                <i data-lucide="message-circle"></i> Feedback AnÃ´nimo
+                <i data-lucide="message-circle"></i> Feedback Anônimo
             </button>
             <button class="tab-btn" data-target="tab-ajuda" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="help-circle"></i> Ajuda & Perfil
             </button>
             <button class="tab-btn" data-target="tab-sugestao" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
-                <i data-lucide="lightbulb"></i> SugestÃµes
+                <i data-lucide="lightbulb"></i> Sugestões
             </button>
             <button class="tab-btn" data-target="tab-novidades" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="bell-ring"></i> Novidades
@@ -1018,7 +1018,7 @@ footer {
                 <i data-lucide="bar-chart-2"></i> Enquetes
             </button>
             <button onclick="toggleAdmin()" style="padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(104, 65, 241, 0.3); font-weight: bold; cursor: pointer; transition: all 0.3s; background: rgba(104, 65, 241, 0.1); color: #8e6eff;">
-                <i data-lucide="shield"></i> Ãrea do Gestor
+                <i data-lucide="shield"></i> Área do Gestor
             </button>
         </div>
 
@@ -1029,7 +1029,7 @@ footer {
                 <i data-lucide="search"
                     style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
                 <input type="text" id="searchInput"
-                    placeholder="O que vocÃª estÃ¡ procurando no feed hoje? (nome ou texto)"
+                    placeholder="O que você está procurando no feed hoje? (nome ou texto)"
                     style="padding-left: 55px; height: 60px; font-size: 1.1em; background: rgba(255,255,255,0.05); border-radius: 15px; width: 100%;">
             </div>
             <div class="date-filter-wrapper" style="position: relative;">
@@ -1037,13 +1037,13 @@ footer {
                     style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5; pointer-events: none;"></i>
                 <select id="dateFilter"
                     style="padding-left: 55px; height: 60px; font-size: 1.1em; background: #1a152e; border-radius: 15px; width: 100%; color: white; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; appearance: none; color-scheme: dark;">
-                    <option value="all" style="background: #1a152e;">ðŸ“… Todos os registros</option>
+                    <option value="all" style="background: #1a152e;">�Y". Todos os registros</option>
                     <option value="today" style="background: #1a152e;">Hoje</option>
                     <option value="yesterday" style="background: #1a152e;">Ontem</option>
                     <option value="beforeYesterday" style="background: #1a152e;">Anteontem</option>
                     <option value="thisWeek" style="background: #1a152e;">Esta Semana</option>
-                    <option value="thisMonth" style="background: #1a152e;">Este MÃªs</option>
-                    <option value="custom" style="background: #1a152e;">ðŸ“… Escolher data especÃ­fica...</option>
+                    <option value="thisMonth" style="background: #1a152e;">Este Mês</option>
+                    <option value="custom" style="background: #1a152e;">�Y". Escolher data específica...</option>
                 </select>
                 <input type="date" id="customDateInput"
                     style="display: none; margin-top: 10px; height: 60px; font-size: 1.1em; background: #1a152e; border-radius: 15px; width: 100%; color: white; border: 1px solid var(--primary); padding: 0 20px; color-scheme: dark;">
@@ -1058,22 +1058,22 @@ footer {
                         <h2 style="color: #ff9f43; margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.5em;">
                             <i data-lucide="megaphone" style="width: 24px; height: 24px;"></i> Mural de Avisos
                         </h2>
-                        <p style="font-size: 0.85em; color: #a0aec0; margin: 5px 0 0 0;">Avisos importantes da gestÃ£o e do time</p>
+                        <p style="font-size: 0.85em; color: #a0aec0; margin: 5px 0 0 0;">Avisos importantes da gestão e do time</p>
                     </div>
                     <button id="addNoticeBtn" style="display: none; background: rgba(255, 159, 67, 0.15); border: 1px solid rgba(255, 159, 67, 0.3); color: #ff9f43; padding: 8px 16px; border-radius: 8px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: all 0.3s; align-items: center; gap: 6px;">
                         <i data-lucide="plus"></i> Criar Aviso
                     </button>
                 </div>
 
-                <!-- FormulÃ¡rio de Criar Aviso (Escondido por padrÃ£o) -->
+                <!-- Formulário de Criar Aviso (Escondido por padrão) -->
                 <div id="noticeFormContainer" style="display: none; margin-bottom: 25px; padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
                     <form id="noticeForm" style="display: flex; flex-direction: column; gap: 15px;">
                         <div style="display: flex; flex-direction: column; gap: 5px;">
-                            <label for="noticeTitle" style="font-size: 0.8em; color: #a0aec0; font-weight: bold;">TÃ­tulo do Aviso</label>
-                            <input type="text" id="noticeTitle" required placeholder="Ex: AlteraÃ§Ã£o de horÃ¡rio da Daily amanhÃ£..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: inherit;">
+                            <label for="noticeTitle" style="font-size: 0.8em; color: #a0aec0; font-weight: bold;">Título do Aviso</label>
+                            <input type="text" id="noticeTitle" required placeholder="Ex: Alteração de horário da Daily amanhã..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: inherit;">
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 5px;">
-                            <label for="noticeContent" style="font-size: 0.8em; color: #a0aec0; font-weight: bold;">ConteÃºdo</label>
+                            <label for="noticeContent" style="font-size: 0.8em; color: #a0aec0; font-weight: bold;">Conteúdo</label>
                             <textarea id="noticeContent" required rows="3" placeholder="Escreva o aviso detalhado aqui..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: inherit; resize: vertical;"></textarea>
                         </div>
                         <div style="display: flex; gap: 10px; justify-content: flex-end;">
@@ -1089,7 +1089,7 @@ footer {
                 </div>
             </section>
 
-            <!-- DASHBOARD DE ESTATÃSTICAS -->
+            <!-- DASHBOARD DE ESTATÍSTICAS -->
         <section class="stats-dashboard"
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 40px;">
             <div class="glass-card" onclick="window.goToReportsAndFilter('all')"
@@ -1127,8 +1127,8 @@ footer {
                         <i data-lucide="calendar-days" style="width: 22px; height: 22px; color: #00c1e8;"></i>
                     </span>
                     <div>
-                        <h3 style="margin: 0; font-size: 1.25em; color: white;">PrÃ³ximos Eventos - Faculdade Inspirar</h3>
-                        <p style="margin: 0; font-size: 0.85em; color: #a0aec0;">Eventos e cursos integrados diretamente do Sympla ðŸŽ“</p>
+                        <h3 style="margin: 0; font-size: 1.25em; color: white;">Próximos Eventos - Faculdade Inspirar</h3>
+                        <p style="margin: 0; font-size: 0.85em; color: #a0aec0;">Eventos e cursos integrados diretamente do Sympla �YZ"</p>
                     </div>
                 </div>
                 <button type="button" id="addSymplaEventBtn" class="btn-secondary" style="display: none; background: rgba(0, 193, 232, 0.1); border: 1px solid rgba(0, 193, 232, 0.3); color: #00c1e8; padding: 6px 14px; border-radius: 8px; font-size: 0.82em; cursor: pointer; transition: all 0.3s; align-items: center; gap: 6px;">
@@ -1136,16 +1136,16 @@ footer {
                 </button>
             </div>
 
-            <!-- FormulÃ¡rio para adicionar evento (oculto por padrÃ£o) -->
+            <!-- Formulário para adicionar evento (oculto por padrão) -->
             <div id="symplaEventFormContainer" style="display: none; margin-bottom: 25px; padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05);">
                 <h4 style="color: #00c1e8; margin-top: 0; margin-bottom: 15px;">Adicionar Evento do Sympla</h4>
                 <form id="symplaEventForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="input-group" style="grid-column: 1 / -1;">
-                        <label for="seTitle">TÃ­tulo do Evento</label>
+                        <label for="seTitle">Título do Evento</label>
                         <input type="text" id="seTitle" required placeholder="Ex: II Ergonomia Inspirar Summit" style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                     </div>
                     <div class="input-group" style="grid-column: 1 / -1;">
-                        <label for="seDesc">DescriÃ§Ã£o / Detalhes</label>
+                        <label for="seDesc">Descrição / Detalhes</label>
                         <textarea id="seDesc" required placeholder="Ex: Summit de Ergonomia reunindo os maiores nomes nacionais do mercado..." style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; height: 60px; font-family: inherit; resize: vertical;"></textarea>
                     </div>
                     <div class="input-group">
@@ -1153,7 +1153,7 @@ footer {
                         <input type="datetime-local" id="seDate" required style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                     </div>
                     <div class="input-group">
-                        <label for="seLocation">Local / TransmissÃ£o</label>
+                        <label for="seLocation">Local / Transmissão</label>
                         <input type="text" id="seLocation" required placeholder="Ex: Unidade Curitiba / Online" style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                     </div>
                     <div class="input-group" style="grid-column: 1 / -1;">
@@ -1166,7 +1166,7 @@ footer {
                     </div>
                     <div style="grid-column: 1 / -1; display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
                         <button type="button" id="cancelSymplaEventBtn" style="padding: 8px 16px; border-radius: 8px; border: none; background: rgba(255,255,255,0.05); color: white; cursor: pointer;">Cancelar</button>
-                        <button type="submit" style="padding: 8px 20px; border-radius: 8px; border: none; background: #00c1e8; color: #0f0a1e; font-weight: bold; cursor: pointer;">LanÃ§ar Evento</button>
+                        <button type="submit" style="padding: 8px 20px; border-radius: 8px; border: none; background: #00c1e8; color: #0f0a1e; font-weight: bold; cursor: pointer;">Lançar Evento</button>
                     </div>
                 </form>
             </div>
@@ -1177,7 +1177,7 @@ footer {
                     <p style="margin: 0;">Carregando eventos do Sympla...</p>
                 </div>
             </div>
-            <!-- BotÃ£o Ver Mais -->
+            <!-- Botão Ver Mais -->
             <div id="symplaLoadMoreContainer" style="display: flex; justify-content: center; margin-top: 25px;"></div>
         </section>
 
@@ -1185,11 +1185,11 @@ footer {
             <div class="glass-card">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
                     <div>
-                        <h2>Novo Check-in DiÃ¡rio</h2>
-                        <p>Preencha suas metas e atualizaÃ§Ãµes para o dia de hoje.</p>
+                        <h2>Novo Check-in Diário</h2>
+                        <p>Preencha suas metas e atualizações para o dia de hoje.</p>
                     </div>
                     <button type="button" id="myReportBtn" class="btn-secondary" style="background: rgba(104, 65, 241, 0.1); border: 1px solid rgba(104, 65, 241, 0.3); color: #8e6eff; padding: 8px 16px; border-radius: 8px; font-size: 0.85em; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;">
-                        <i data-lucide="file-text"></i> Meu RelatÃ³rio Mensal
+                        <i data-lucide="file-text"></i> Meu Relatório Mensal
                     </button>
                 </div>
                 <form id="kickoffForm">
@@ -1200,7 +1200,7 @@ footer {
                             <option value="LEANDRO">LEANDRO</option>
                             <option value="IGOR">IGOR</option>
                             <option value="YASMIM">YASMIM</option>
-                            <option value="JOÃƒO">JOÃƒO</option>
+                            <option value="JO�fO">JO�fO</option>
                             <option value="EDSON">EDSON</option>
                             <option value="LUIZ">LUIZ</option>
                             <option value="JORGE">JORGE</option>
@@ -1211,7 +1211,7 @@ footer {
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="userColor"><i data-lucide="palette"></i> Sua Cor de IdentificaÃ§Ã£o</label>
+                        <label for="userColor"><i data-lucide="palette"></i> Sua Cor de Identificação</label>
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <input type="color" id="userColor" value="#6841f1" style="width: 40px; height: 40px; padding: 0; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; cursor: pointer; background: none; -webkit-appearance: none; appearance: none; overflow: hidden;">
                             <span id="colorHexDisplay" style="font-size: 0.85em; opacity: 0.6; font-family: monospace;">#6841f1</span>
@@ -1221,7 +1221,7 @@ footer {
 
                 <div class="grid-1">
                     <div class="input-group">
-                        <label><i data-lucide="target"></i> O que vocÃª farÃ¡ hoje?</label>
+                        <label><i data-lucide="target"></i> O que você fará hoje?</label>
                         <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
                             <input type="text" id="taskInput" placeholder="Digite uma tarefa..." style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                             <label style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: #ff416c; font-weight: bold; font-size: 0.85em; white-space: nowrap;">
@@ -1242,11 +1242,11 @@ footer {
                         <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
                             <input type="text" id="helpInput" placeholder="Descreva onde o progresso travou..." style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                             <select id="helpPersonSelect" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 160px;">
-                                <option value="">Sem marcaÃ§Ã£o</option>
+                                <option value="">Sem marcação</option>
                                 <option value="LEANDRO">LEANDRO</option>
                                 <option value="IGOR">IGOR</option>
                                 <option value="YASMIM">YASMIM</option>
-                                <option value="JOÃƒO">JOÃƒO</option>
+                                <option value="JO�fO">JO�fO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
                                 <option value="JORGE">JORGE</option>
@@ -1264,46 +1264,46 @@ footer {
 
                 <div class="input-group">
                     <label for="blockers"><i data-lucide="alert-triangle"></i> Algo impedindo o seu progresso? (Deixe em
-                        branco se nÃ£o houver)</label>
+                        branco se não houver)</label>
                     <textarea id="blockers" name="blockers"
-                        placeholder="Ex: Aguardando aprovaÃ§Ã£o, problema tÃ©cnico..."></textarea>
+                        placeholder="Ex: Aguardando aprovação, problema técnico..."></textarea>
                 </div>
 
                 <div class="input-group">
                     <label><i data-lucide="smile"></i> Humor do Dia</label>
                     <div id="moodPicker" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ˜€" style="display:none;">ðŸ˜€
+                            <input type="radio" name="moodEmoji" value="�Y~?" style="display:none;">�Y~?
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ˜Ž" style="display:none;">ðŸ˜Ž
+                            <input type="radio" name="moodEmoji" value="�Y~Z" style="display:none;">�Y~Z
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ¤©" style="display:none;">ðŸ¤©
+                            <input type="radio" name="moodEmoji" value="�Y��" style="display:none;">�Y��
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ˜" style="display:none;">ðŸ˜
+                            <input type="radio" name="moodEmoji" value="�Y~�" style="display:none;">�Y~�
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ˜´" style="display:none;">ðŸ˜´
+                            <input type="radio" name="moodEmoji" value="�Y~�" style="display:none;">�Y~�
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ¤¯" style="display:none;">ðŸ¤¯
+                            <input type="radio" name="moodEmoji" value="�Y��" style="display:none;">�Y��
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ˜¤" style="display:none;">ðŸ˜¤
+                            <input type="radio" name="moodEmoji" value="�Y~�" style="display:none;">�Y~�
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ˜‚" style="display:none;">ðŸ˜‚
+                            <input type="radio" name="moodEmoji" value="�Y~," style="display:none;">�Y~,
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸ¥²" style="display:none;">ðŸ¥²
+                            <input type="radio" name="moodEmoji" value="�Y��" style="display:none;">�Y��
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="â˜•" style="display:none;">â˜•
+                            <input type="radio" name="moodEmoji" value="�~." style="display:none;">�~.
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="ðŸµ" style="display:none;">ðŸµ
+                            <input type="radio" name="moodEmoji" value="�Y��" style="display:none;">�Y��
                         </label>
                     </div>
                 </div>
@@ -1311,21 +1311,21 @@ footer {
                 
                 <div class="grid-2">
                     <div class="input-group">
-                        <label><i data-lucide="battery-charging"></i> NÃ­vel de Energia DiÃ¡rio</label>
+                        <label><i data-lucide="battery-charging"></i> Nível de Energia Diário</label>
                         <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
-                                <input type="radio" name="energyLevel" value="ðŸŸ¢ Livre: Pode me mandar coisa nova." required style="margin: 0;">
-                                <span style="font-size: 1.2em;">ðŸŸ¢</span>
+                                <input type="radio" name="energyLevel" value="�YY� Livre: Pode me mandar coisa nova." required style="margin: 0;">
+                                <span style="font-size: 1.2em;">�YY�</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Livre: Pode me mandar coisa nova.</span>
                             </label>
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
-                                <input type="radio" name="energyLevel" value="ðŸŸ¡ No limite: Finalizando o que tenho, mas aceito demandas." style="margin: 0;">
-                                <span style="font-size: 1.2em;">ðŸŸ¡</span>
+                                <input type="radio" name="energyLevel" value="�YY� No limite: Finalizando o que tenho, mas aceito demandas." style="margin: 0;">
+                                <span style="font-size: 1.2em;">�YY�</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">No limite: Aceito demandas.</span>
                             </label>
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
-                                <input type="radio" name="energyLevel" value="ðŸ”´ Explodindo: Preciso de ajuda ou repriorizaÃ§Ã£o." style="margin: 0;">
-                                <span style="font-size: 1.2em;">ðŸ”´</span>
+                                <input type="radio" name="energyLevel" value="�Y"� Explodindo: Preciso de ajuda ou repriorização." style="margin: 0;">
+                                <span style="font-size: 1.2em;">�Y"�</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Explodindo: Preciso de ajuda.</span>
                             </label>
                         </div>
@@ -1366,13 +1366,13 @@ footer {
         </section>
         </div> <!-- FIM TAB RADAR -->
 
-        <!-- INÃCIO TAB SUCESSO -->
+        <!-- INÍCIO TAB SUCESSO -->
         <div id="tab-sucesso" class="tab-pane" style="display: none;">
             <section class="form-section">
                 <div class="glass-card" style="border-color: rgba(255, 215, 0, 0.3); box-shadow: 0 10px 30px -5px rgba(255, 215, 0, 0.1);">
                     <div class="card-header">
-                        <h2 style="background: linear-gradient(to right, #fff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sucesso Semanal ðŸŒŸ</h2>
-                        <p>Celebre as vitÃ³rias da semana e agradeÃ§a ao time!</p>
+                        <h2 style="background: linear-gradient(to right, #fff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sucesso Semanal �YOY</h2>
+                        <p>Celebre as vitórias da semana e agradeça ao time!</p>
                     </div>
 
                     <form id="sucessoForm">
@@ -1383,7 +1383,7 @@ footer {
                                 <option value="LEANDRO">LEANDRO</option>
                                 <option value="IGOR">IGOR</option>
                                 <option value="YASMIM">YASMIM</option>
-                                <option value="JOÃƒO">JOÃƒO</option>
+                                <option value="JO�fO">JO�fO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
                                 <option value="JORGE">JORGE</option>
@@ -1396,7 +1396,7 @@ footer {
                     </div>
 
                     <div class="input-group" style="margin-bottom: 20px;">
-                        <label for="sucessoVictory"><i data-lucide="award"></i> A Minha VitÃ³ria</label>
+                        <label for="sucessoVictory"><i data-lucide="award"></i> A Minha Vitória</label>
                         <textarea id="sucessoVictory" name="sucessoVictory" placeholder="O melhor que fiz essa semana..." required></textarea>
                     </div>
 
@@ -1408,7 +1408,7 @@ footer {
                                 <option value="LEANDRO">LEANDRO</option>
                                 <option value="IGOR">IGOR</option>
                                 <option value="YASMIM">YASMIM</option>
-                                <option value="JOÃƒO">JOÃƒO</option>
+                                <option value="JO�fO">JO�fO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
                                 <option value="JORGE">JORGE</option>
@@ -1429,8 +1429,8 @@ footer {
                     </div>
 
                     <div class="input-group" style="margin-bottom: 20px;">
-                        <label for="sucessoGoal"><i data-lucide="target"></i> Meta do MÃªs</label>
-                        <textarea id="sucessoGoal" name="sucessoGoal" placeholder="Descreva como vocÃª avanÃ§ou na sua meta mensal..." required></textarea>
+                        <label for="sucessoGoal"><i data-lucide="target"></i> Meta do Mês</label>
+                        <textarea id="sucessoGoal" name="sucessoGoal" placeholder="Descreva como você avançou na sua meta mensal..." required></textarea>
                     </div>
 
                     <div style="display: flex; gap: 10px; margin-top: 15px;">
@@ -1455,55 +1455,55 @@ footer {
             </section>
         </div> <!-- FIM TAB SUCESSO -->
     
-    <!-- INÃCIO TAB FEEDBACK ANÃ”NIMO -->
+    <!-- INÍCIO TAB FEEDBACK AN�"NIMO -->
     <div id="tab-feedback" class="tab-pane" style="display: none; max-width: 800px; margin: 0 auto; padding: 0 20px;">
         <section class="form-section">
             <div class="glass-card" style="border-color: rgba(2, 206, 255, 0.3); box-shadow: 0 10px 30px -5px rgba(2, 206, 255, 0.1);">
                 <div class="card-header">
-                    <h2 style="background: linear-gradient(to right, #fff, #02ceff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"><i data-lucide="message-circle"></i> Feedback AnÃ´nimo Inteligente</h2>
-                    <p>Sua opiniÃ£o importa. Compartilhe o que estÃ¡ travando o seu dia a dia e ajude o Marketing a evoluir. 100% sigiloso.</p>
+                    <h2 style="background: linear-gradient(to right, #fff, #02ceff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"><i data-lucide="message-circle"></i> Feedback Anônimo Inteligente</h2>
+                    <p>Sua opinião importa. Compartilhe o que está travando o seu dia a dia e ajude o Marketing a evoluir. 100% sigiloso.</p>
                 </div>
 
                 <form id="feedbackForm">
                     <div class="input-group" style="margin-bottom: 20px;">
-                        <label for="fbDesempenho"><i data-lucide="alert-circle"></i> O que estÃ¡ travando seu desempenho?</label>
-                        <textarea id="fbDesempenho" name="fbDesempenho" placeholder="Sistemas lentos, falta de processo, muitas reuniÃµes..." required></textarea>
+                        <label for="fbDesempenho"><i data-lucide="alert-circle"></i> O que está travando seu desempenho?</label>
+                        <textarea id="fbDesempenho" name="fbDesempenho" placeholder="Sistemas lentos, falta de processo, muitas reuniões..." required></textarea>
                     </div>
 
                     <div class="input-group" style="margin-bottom: 20px;">
                         <label for="fbMelhorar"><i data-lucide="trending-up"></i> O que poderia melhorar no marketing?</label>
-                        <textarea id="fbMelhorar" name="fbMelhorar" placeholder="Novas ferramentas, organizaÃ§Ã£o de demandas..." required></textarea>
+                        <textarea id="fbMelhorar" name="fbMelhorar" placeholder="Novas ferramentas, organização de demandas..." required></textarea>
                     </div>
 
                     <div class="input-group" style="margin-bottom: 20px;">
-                        <label for="fbSugestao"><i data-lucide="lightbulb"></i> Tem alguma sugestÃ£o?</label>
+                        <label for="fbSugestao"><i data-lucide="lightbulb"></i> Tem alguma sugestão?</label>
                         <textarea id="fbSugestao" name="fbSugestao" placeholder="Deixe aqui sua ideia para resolver os pontos acima..."></textarea>
                     </div>
 
                     <div class="input-group" style="margin-bottom: 20px;">
-                        <label><i data-lucide="battery-charging"></i> VocÃª se sente sobrecarregado?</label>
+                        <label><i data-lucide="battery-charging"></i> Você se sente sobrecarregado?</label>
                         <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
                                 <input type="radio" name="fbSobrecarregado" value="Sim, muito" required style="margin: 0;">
-                                <span style="font-size: 1.2em;">ðŸ˜«</span>
+                                <span style="font-size: 1.2em;">�Y~�</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Sim, muito</span>
                             </label>
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
                                 <input type="radio" name="fbSobrecarregado" value="Um pouco" style="margin: 0;">
-                                <span style="font-size: 1.2em;">ðŸ˜</span>
+                                <span style="font-size: 1.2em;">�Y~�</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Um pouco</span>
                             </label>
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
-                                <input type="radio" name="fbSobrecarregado" value="NÃ£o, estÃ¡ tranquilo" style="margin: 0;">
-                                <span style="font-size: 1.2em;">ðŸ˜„</span>
-                                <span style="font-weight: 500; font-size: 0.95em;">NÃ£o, estÃ¡ tranquilo</span>
+                                <input type="radio" name="fbSobrecarregado" value="Não, está tranquilo" style="margin: 0;">
+                                <span style="font-size: 1.2em;">�Y~"</span>
+                                <span style="font-weight: 500; font-size: 0.95em;">Não, está tranquilo</span>
                             </label>
                         </div>
                     </div>
 
                     <div style="display: flex; gap: 10px; margin-top: 25px;">
                         <button type="submit" class="btn-primary" style="flex: 2; background: #02ceff; color: #0f0a1e; box-shadow: 0 4px 15px rgba(2, 206, 255, 0.3);">
-                            Enviar Feedback AnÃ´nimo <i data-lucide="send"></i>
+                            Enviar Feedback Anônimo <i data-lucide="send"></i>
                         </button>
                     </div>
                 </form>
@@ -1515,8 +1515,8 @@ footer {
     <section id="tab-ajuda" class="tab-pane" style="display: none;">
         <div class="glass-card" style="margin-bottom: 40px; text-align: center;">
             <div class="card-header">
-                <h2>Meu Perfil & Conquistas ðŸ†</h2>
-                <p>VocÃª Ã©: <strong id="profileNameDisplay" style="color: #02ceff;">---</strong></p>
+                <h2>Meu Perfil & Conquistas �Y�?</h2>
+                <p>Você é: <strong id="profileNameDisplay" style="color: #02ceff;">---</strong></p>
             </div>
             
             <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: inline-block; min-width: 250px;">
@@ -1531,24 +1531,24 @@ footer {
                 </div>
             </div>
             
-            <!-- MODO FÃ‰RIAS -->
+            <!-- MODO F�?RIAS -->
             <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 30px; max-width: 500px; margin-left: auto; margin-right: auto; text-align: left;">
-                <h3 style="margin: 0 0 10px 0; color: #02ceff; display: flex; align-items: center; gap: 8px;"><i data-lucide="palm-tree"></i> Modo FÃ©rias</h3>
-                <p style="font-size: 0.85em; color: #a0aec0; margin: 0 0 20px 0;">Configure seus dias de folga/fÃ©rias para manter e proteger sua ofensiva (streak) sem precisar fazer check-in!</p>
+                <h3 style="margin: 0 0 10px 0; color: #02ceff; display: flex; align-items: center; gap: 8px;"><i data-lucide="palm-tree"></i> Modo Férias</h3>
+                <p style="font-size: 0.85em; color: #a0aec0; margin: 0 0 20px 0;">Configure seus dias de folga/férias para manter e proteger sua ofensiva (streak) sem precisar fazer check-in!</p>
                 
                 <div id="vacationList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-                    <!-- PerÃ­odos de fÃ©rias cadastrados serÃ£o listados aqui -->
+                    <!-- Períodos de férias cadastrados serão listados aqui -->
                 </div>
 
                 <button id="addVacationBtn" class="btn-secondary" style="background: rgba(2, 206, 255, 0.15); border: 1px solid rgba(2, 206, 255, 0.3); color: #02ceff; padding: 8px 16px; border-radius: 8px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 6px;">
-                    <i data-lucide="plus"></i> Programar FÃ©rias
+                    <i data-lucide="plus"></i> Programar Férias
                 </button>
 
                 <div id="vacationFormContainer" style="display: none; margin-top: 15px; padding: 15px; border-radius: 12px; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
                     <form id="vacationForm" style="display: flex; flex-direction: column; gap: 12px;">
                         <div style="display: flex; gap: 10px;">
                             <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                                <label for="vacStart" style="font-size: 0.75em; color: #a0aec0; font-weight: bold;">InÃ­cio</label>
+                                <label for="vacStart" style="font-size: 0.75em; color: #a0aec0; font-weight: bold;">Início</label>
                                 <input type="date" id="vacStart" required style="padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: inherit; font-size: 0.85em;">
                             </div>
                             <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
@@ -1565,64 +1565,64 @@ footer {
             </div>
             
             <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;">
-                <button id="logoutBtn" style="background: transparent; color: #ff416c; border: 1px solid rgba(255,65,108,0.3); padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-size: 0.8em;">Trocar de UsuÃ¡rio (Sair)</button>
+                <button id="logoutBtn" style="background: transparent; color: #ff416c; border: 1px solid rgba(255,65,108,0.3); padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-size: 0.8em;">Trocar de Usuário (Sair)</button>
             </div>
         </div>
 
         <div class="glass-card">
             <div class="card-header">
-                <h2>Guia do App ðŸ“š</h2>
+                <h2>Guia do App �Y"s</h2>
                 <p>Entenda para que serve cada funcionalidade deste sistema.</p>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
                 <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #6841f1;">
-                    <h4 style="color: #6841f1; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="activity"></i> Radar DiÃ¡rio</h4>
-                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Seu check-in diÃ¡rio. Serve para substituir reuniÃµes chatas. Diga o que fez, o que vai fazer e se estÃ¡ travado. <strong>Gera +10 XP por envio.</strong></p>
+                    <h4 style="color: #6841f1; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="activity"></i> Radar Diário</h4>
+                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Seu check-in diário. Serve para substituir reuniões chatas. Diga o que fez, o que vai fazer e se está travado. <strong>Gera +10 XP por envio.</strong></p>
                 </div>
                 
                 <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #ffd700;">
                     <h4 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="star"></i> Sucesso Semanal</h4>
-                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Sua celebraÃ§Ã£o na sexta-feira. Compartilhe suas vitÃ³rias e elogie colegas. <strong>Ser citado por um colega gera +30 XP!</strong> Se for citado 3x, vocÃª vira Destaque da Semana ðŸ”¥.</p>
+                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Sua celebração na sexta-feira. Compartilhe suas vitórias e elogie colegas. <strong>Ser citado por um colega gera +30 XP!</strong> Se for citado 3x, você vira Destaque da Semana �Y"�.</p>
                 </div>
 
                 <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #02ceff;">
-                    <h4 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="message-circle"></i> Feedback AnÃ´nimo</h4>
-                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Um canal direto e 100% secreto com a gestÃ£o. Fale sobre processos, ferramentas ou sobrecarga. <strong>(NÃ£o gera XP para manter o anonimato absoluto).</strong></p>
+                    <h4 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="message-circle"></i> Feedback Anônimo</h4>
+                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Um canal direto e 100% secreto com a gestão. Fale sobre processos, ferramentas ou sobrecarga. <strong>(Não gera XP para manter o anonimato absoluto).</strong></p>
                 </div>
 
                 <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #ff416c;">
-                    <h4 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="battery-charging"></i> NÃ­vel de Energia</h4>
-                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Essencial para o Mapa de Carga de Trabalho do Gestor. Se vocÃª marcar "Explodindo", ele tentarÃ¡ repriorizar suas demandas. Se marcar "Livre", pode receber novos projetos.</p>
+                    <h4 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="battery-charging"></i> Nível de Energia</h4>
+                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Essencial para o Mapa de Carga de Trabalho do Gestor. Se você marcar "Explodindo", ele tentará repriorizar suas demandas. Se marcar "Livre", pode receber novos projetos.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- TAB SUGESTÃ•ES -->
+    <!-- TAB SUGEST�.ES -->
     <section id="tab-sugestao" class="tab-pane" style="display: none;">
         <div class="glass-card" style="max-width: 600px; margin: 0 auto; margin-bottom: 40px;">
             <div class="card-header" style="text-align: center;">
-                <h2>Caixa de SugestÃµes ðŸ’¡</h2>
+                <h2>Caixa de Sugestões �Y'�</h2>
                 <p>Tem alguma ideia para melhorar a plataforma ou algo divertido para adicionarmos? Mande aqui!</p>
             </div>
             <form id="sugestaoForm" style="display: flex; flex-direction: column; gap: 20px;">
                 <div class="form-group">
-                    <label style="color: #a0aec0; font-weight: 500; display: block; margin-bottom: 8px;">Sua SugestÃ£o</label>
-                    <textarea id="sugestaoText" placeholder="Ex: Que tal colocar um botÃ£o de curtir nas mensagens? Ou um som de FaustÃ£o quando bater a meta?" style="width: 100%; min-height: 150px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; padding: 15px; font-family: inherit; resize: vertical;" required></textarea>
+                    <label style="color: #a0aec0; font-weight: 500; display: block; margin-bottom: 8px;">Sua Sugestão</label>
+                    <textarea id="sugestaoText" placeholder="Ex: Que tal colocar um botão de curtir nas mensagens? Ou um som de Faustão quando bater a meta?" style="width: 100%; min-height: 150px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; padding: 15px; font-family: inherit; resize: vertical;" required></textarea>
                 </div>
                 <button type="submit" id="submitSugestaoBtn" class="pulse-button" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #02ceff, #6841f1); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 1.1em; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;">
-                    Enviar SugestÃ£o <i data-lucide="send"></i>
+                    Enviar Sugestão <i data-lucide="send"></i>
                 </button>
             </form>
         </div>
 
         <div style="max-width: 600px; margin: 0 auto; margin-top: 40px;">
-            <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="list"></i> Mural de SugestÃµes</h4>
+            <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="list"></i> Mural de Sugestões</h4>
             <div id="sugestoesFeedContainer" style="display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto; padding-right: 10px;">
                 <!-- Feed carregado via JS -->
                 <div class="glass-card" style="padding: 15px; text-align: center;">
-                    <p style="margin: 0; opacity: 0.5;">Carregando sugestÃµes...</p>
+                    <p style="margin: 0; opacity: 0.5;">Carregando sugestões...</p>
                 </div>
             </div>
         </div>
@@ -1631,8 +1631,8 @@ footer {
     <!-- TAB NOVIDADES -->
     <section id="tab-novidades" class="tab-pane" style="display: none;">
         <div style="max-width: 800px; margin: 0 auto; margin-bottom: 40px; text-align: center;">
-            <h2 style="color: #22c55e; margin-bottom: 10px;">O que hÃ¡ de novo? ðŸš€</h2>
-            <p style="opacity: 0.7;">Fique por dentro das Ãºltimas atualizaÃ§Ãµes, novos recursos e melhorias da nossa plataforma.</p>
+            <h2 style="color: #22c55e; margin-bottom: 10px;">O que há de novo? �Ys?</h2>
+            <p style="opacity: 0.7;">Fique por dentro das últimas atualizações, novos recursos e melhorias da nossa plataforma.</p>
         </div>
         
         <div style="max-width: 800px; margin: 0 auto;">
@@ -1640,7 +1640,7 @@ footer {
                 <!-- Feed carregado via JS -->
                 <div class="glass-card" style="padding: 30px; text-align: center;">
                     <i data-lucide="loader-2" class="spin" style="margin-bottom: 15px; color: #22c55e;"></i>
-                    <p style="margin: 0; opacity: 0.5;">Carregando atualizaÃ§Ãµes...</p>
+                    <p style="margin: 0; opacity: 0.5;">Carregando atualizações...</p>
                 </div>
             </div>
         </div>
@@ -1653,15 +1653,15 @@ footer {
                 
                 <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
                     <button class="game-tab-btn active" data-game="wordle" style="padding: 8px 16px; border-radius: 20px; border: none; background: #6841f1; color: white; cursor: pointer; font-weight: bold; transition: all 0.2s;">Termo</button>
-                    <button class="game-tab-btn" data-game="cacaPalavras" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;">CaÃ§a-Palavras</button>
-                    <button class="game-tab-btn" data-game="futbotao" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;">FutbotÃ£o âš½</button>
+                    <button class="game-tab-btn" data-game="cacaPalavras" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;">Caça-Palavras</button>
+                    <button class="game-tab-btn" data-game="futbotao" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;">Futbotão �s�</button>
                     <button class="game-tab-btn" data-game="mensal" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;"><i data-lucide="calendar" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i>Mensal</button>
                 </div>
             </div>
 
             <!-- CONTAINER DO TERMO -->
             <div id="game-wordle">
-            <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">Adivinhe a palavra em 6 tentativas. Letras <strong style="color: #22c55e;">verdes</strong> estÃ£o no lugar certo, e <strong style="color: #facc15;">amarelas</strong> estÃ£o na palavra mas no lugar errado.</p>
+            <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">Adivinhe a palavra em 6 tentativas. Letras <strong style="color: #22c55e;">verdes</strong> estão no lugar certo, e <strong style="color: #facc15;">amarelas</strong> estão na palavra mas no lugar errado.</p>
             
             <!-- Status / Record -->
             <div id="gameStatusBar" style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;"></div>
@@ -1675,12 +1675,12 @@ footer {
             <!-- Teclado virtual -->
             <div id="wordleKeyboard" style="display: flex; flex-direction: column; align-items: center; gap: 8px;"></div>
 
-            <!-- Volta amanhÃ£ -->
+            <!-- Volta amanhã -->
             <div id="wordleNextTimer" style="text-align: center; margin-top: 24px; display: none;">
-                <p style="opacity: 0.6; font-size: 0.9em;">PrÃ³xima palavra em: <span id="wordleCountdown" style="color: #facc15; font-weight: bold;"></span></p>
+                <p style="opacity: 0.6; font-size: 0.9em;">Próxima palavra em: <span id="wordleCountdown" style="color: #facc15; font-weight: bold;"></span></p>
             </div>
 
-            <!-- Placar de LÃ­deres -->
+            <!-- Placar de Líderes -->
             <div id="wordleLeaderboard" style="margin-top: 40px; padding: 20px; border-radius: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
                 <h3 style="color: #8e6eff; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;"><i data-lucide="trophy"></i> Ranking de Hoje</h3>
                 <div id="wordleLeaderboardList" style="display: flex; flex-direction: column; gap: 10px;">
@@ -1689,15 +1689,15 @@ footer {
             </div>
             </div> <!-- FIM DO CONTAINER DO TERMO -->
             
-            <!-- CONTAINER DO FUTBOTÃƒO -->
+            <!-- CONTAINER DO FUTBOT�fO -->
             <div id="game-futbotao" style="display: none;">
-                <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">âš½ Jogue FutbotÃ£o! Escolha seu time e dispute partidas Ã©picas com fÃ­sica 2D real!</p>
+                <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">�s� Jogue Futbotão! Escolha seu time e dispute partidas épicas com física 2D real!</p>
                 
                 <div id="futbotao-canvas-container" style="position: relative; width: 100%; max-width: 800px; height: 600px; margin: 0 auto; background: #0f0a1e; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
                     <iframe id="futbotao-iframe" src="" allow="fullscreen" allowfullscreen style="width: 100%; height: 100%; border: none; background: #0f0a1e; display: none;"></iframe>
                     
-                    <!-- BotÃ£o Tela Cheia -->
-                    <button id="futbotao-fullscreen-btn" onclick="toggleFutbotaoFullscreen()" style="position: absolute; top: 10px; right: 10px; z-index: 20; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); color: #facc15; font-size: 1.3em; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; opacity: 0.7;" onmouseenter="this.style.opacity='1'; this.style.transform='scale(1.1)'" onmouseleave="this.style.opacity='0.7'; this.style.transform='scale(1)'">â›¶</button>
+                    <!-- Botão Tela Cheia -->
+                    <button id="futbotao-fullscreen-btn" onclick="toggleFutbotaoFullscreen()" style="position: absolute; top: 10px; right: 10px; z-index: 20; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); color: #facc15; font-size: 1.3em; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; opacity: 0.7;" onmouseenter="this.style.opacity='1'; this.style.transform='scale(1.1)'" onmouseleave="this.style.opacity='0.7'; this.style.transform='scale(1)'">�>�</button>
 
                     <style>
                         @keyframes spin {
@@ -1716,13 +1716,13 @@ footer {
 
                     <div id="futbotao-loading" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #0f0a1e; z-index: 10;">
                         <div style="border: 4px solid rgba(255,255,255,0.1); border-top-color: #facc15; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);"></div>
-                        <h3 style="color: #facc15; margin: 20px 0 5px 0; font-weight: bold; font-size: 1.2em;">Carregando FutbotÃ£o...</h3>
+                        <h3 style="color: #facc15; margin: 20px 0 5px 0; font-weight: bold; font-size: 1.2em;">Carregando Futbotão...</h3>
                         <p style="font-size: 0.82em; color: #a0aec0; max-width: 320px; text-align: center; line-height: 1.4;">Conectando ao servidor e inicializando o jogo...</p>
                     </div>
                 </div>
             </div>
 
-            <!-- CONTAINER DO CAÃ‡A-PALAVRAS -->
+            <!-- CONTAINER DO CA�?A-PALAVRAS -->
             <div id="game-cacaPalavras" style="display: none;">
                 <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">Clique e arraste pelas letras para encontrar as palavras ocultas.</p>
                 
@@ -1734,10 +1734,10 @@ footer {
                 </div>
                 
                 <div id="wordSearchWinMsg" style="display: none; margin-top: 20px; color: #22c55e; font-weight: bold; font-size: 1.2em;">
-                    ðŸŽ‰ ParabÃ©ns! VocÃª encontrou todas!
+                    �YZ? Parabéns! Você encontrou todas!
                 </div>
 
-                <!-- Placar de LÃ­deres - CaÃ§a Palavras -->
+                <!-- Placar de Líderes - Caça Palavras -->
                 <div id="cacaPalavrasLeaderboard" style="margin-top: 40px; padding: 20px; border-radius: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
                     <h3 style="color: #8e6eff; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;"><i data-lucide="trophy"></i> Ranking de Hoje</h3>
                     <div id="cacaPalavrasLeaderboardList" style="display: flex; flex-direction: column; gap: 10px;">
@@ -1745,22 +1745,22 @@ footer {
                     </div>
                 </div>
 
-            </div> <!-- FIM DO CONTAINER DO CAÃ‡A-PALAVRAS -->
+            </div> <!-- FIM DO CONTAINER DO CA�?A-PALAVRAS -->
 
             <!-- CONTAINER DO RANKING MENSAL -->
             <div id="game-mensal" style="display: none;">
-                <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">Quem tem mais constÃ¢ncia no mÃªs? Ranking baseado em dias jogados.</p>
+                <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">Quem tem mais constância no mês? Ranking baseado em dias jogados.</p>
                 
                 <div style="display: flex; flex-direction: column; gap: 20px;">
                     <div style="padding: 20px; border-radius: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
-                        <h3 style="color: #6841f1; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">ðŸ—“ï¸ Termo do MÃªs</h3>
+                        <h3 style="color: #6841f1; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">�Y-"️ Termo do Mês</h3>
                         <div id="monthlyTermoList" style="display: flex; flex-direction: column; gap: 10px;">
                             <p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>
                         </div>
                     </div>
                     
                     <div style="padding: 20px; border-radius: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
-                        <h3 style="color: #facc15; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">ðŸ—“ï¸ CaÃ§a-Palavras do MÃªs</h3>
+                        <h3 style="color: #facc15; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">�Y-"️ Caça-Palavras do Mês</h3>
                         <div id="monthlyCacaList" style="display: flex; flex-direction: column; gap: 10px;">
                             <p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>
                         </div>
@@ -1775,10 +1775,10 @@ footer {
     <section id="tab-tutoriais" class="tab-pane" style="display: none;">
         <div style="background: rgba(0,0,0,0.3); margin: -30px -30px 30px -30px; padding: 25px 30px; border-radius: 20px 20px 0 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center;">
             <h2 style="color: #f59e0b; margin-bottom: 8px;"><i data-lucide="book-open" style="width:28px;height:28px;vertical-align:middle;"></i> Tutoriais do Marketing</h2>
-            <p style="opacity: 0.8; font-size: 0.95em;">Guias prÃ¡ticos para as principais atividades do setor. Clique em cada tutorial para expandir o passo a passo.</p>
+            <p style="opacity: 0.8; font-size: 0.95em;">Guias práticos para as principais atividades do setor. Clique em cada tutorial para expandir o passo a passo.</p>
         </div>
 
-        <!-- BotÃ£o de criar novo tutorial + Busca -->
+        <!-- Botão de criar novo tutorial + Busca -->
         <div style="display: flex; gap: 12px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
             <button id="toggleTutorialFormBtn" onclick="document.getElementById('tutorialFormArea').style.display = document.getElementById('tutorialFormArea').style.display === 'none' ? 'block' : 'none'; this.querySelector('.btn-text').textContent = document.getElementById('tutorialFormArea').style.display === 'none' ? 'Criar Tutorial' : 'Cancelar'" style="padding: 12px 22px; background: #f59e0b; border: none; border-radius: 10px; color: #0f0a1e; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.95em; transition: all 0.3s; white-space: nowrap;">
                 <i data-lucide="plus-circle" style="width:18px;height:18px;"></i> <span class="btn-text">Criar Tutorial</span>
@@ -1789,14 +1789,14 @@ footer {
             </div>
         </div>
 
-        <!-- FormulÃ¡rio para criar tutorial (oculto por padrÃ£o) -->
+        <!-- Formulário para criar tutorial (oculto por padrão) -->
         <div id="tutorialFormArea" style="display: none; margin-bottom: 25px;">
             <div class="glass-card" style="padding: 25px; border: 1px solid rgba(245,158,11,0.3); background: rgba(245,158,11,0.03);">
                 <h3 style="margin: 0 0 20px; color: #f59e0b; font-size: 1.1em; display: flex; align-items: center; gap: 8px;"><i data-lucide="edit-3" style="width:20px;height:20px;"></i> Novo Tutorial</h3>
                 <form id="tutorialForm" style="display: flex; flex-direction: column; gap: 15px;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                         <div class="input-group">
-                            <label style="font-size: 0.85em; opacity: 0.7; margin-bottom: 5px; display: block;">TÃ­tulo do Tutorial *</label>
+                            <label style="font-size: 0.85em; opacity: 0.7; margin-bottom: 5px; display: block;">Título do Tutorial *</label>
                             <input type="text" id="tutorialTitle" required placeholder="Ex: Como criar uma arte no Canva" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 100%; box-sizing: border-box;">
                         </div>
                         <div class="input-group">
@@ -1821,7 +1821,7 @@ footer {
 
                     <div class="input-group">
                         <label style="font-size: 0.85em; opacity: 0.7; margin-bottom: 5px; display: block;">Dica extra <span style="opacity: 0.5;">(opcional)</span></label>
-                        <input type="text" id="tutorialTip" placeholder="Ex: Sempre salve uma cÃ³pia antes de editar" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 100%; box-sizing: border-box;">
+                        <input type="text" id="tutorialTip" placeholder="Ex: Sempre salve uma cópia antes de editar" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 100%; box-sizing: border-box;">
                     </div>
 
                     <button type="submit" id="tutorialSubmitBtn" style="padding: 13px; background: #f59e0b; border: none; border-radius: 10px; color: #0f0a1e; font-weight: bold; cursor: pointer; font-size: 0.95em; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.3s;">
@@ -1831,7 +1831,7 @@ footer {
             </div>
         </div>
 
-        <!-- Container de tutoriais dinÃ¢micos (carregados do Supabase) -->
+        <!-- Container de tutoriais dinâmicos (carregados do Supabase) -->
         <div id="tutoriaisContainer" style="display: flex; flex-direction: column; gap: 15px;">
             <div class="glass-card" style="text-align: center; padding: 30px;">
                 <i data-lucide="loader" class="spin" style="opacity: 0.5;"></i>
@@ -1880,7 +1880,7 @@ footer {
         </style>
         <div style="background: rgba(0,0,0,0.3); margin: -30px -30px 30px -30px; padding: 25px 30px; border-radius: 20px 20px 0 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center;">
             <h2 style="color: #f472b6; margin-bottom: 8px;"><i data-lucide="camera" style="width:28px;height:28px;vertical-align:middle;"></i> Mural de Fotos</h2>
-            <p style="opacity: 0.8; font-size: 0.95em;">Registros do dia a dia do setor! CafÃ©, prints engraÃ§ados, reuniÃµes, caretas... tudo vale! ðŸ“¸</p>
+            <p style="opacity: 0.8; font-size: 0.95em;">Registros do dia a dia do setor! Café, prints engraçados, reuniões, caretas... tudo vale! �Y"�</p>
         </div>
 
         <!-- Upload form -->
@@ -1893,7 +1893,7 @@ footer {
                     <input type="file" id="photoFileInput" accept="image/*" style="display: none;">
                     <img id="photoPreview" style="display: none; max-width: 300px; max-height: 200px; margin: 15px auto 0; border-radius: 8px; object-fit: cover;">
                 </div>
-                <input type="text" id="photoCaption" placeholder="Legenda da foto (ex: CafÃ© da manhÃ£ de hoje â˜•)" style="padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-size: 0.95em;">
+                <input type="text" id="photoCaption" placeholder="Legenda da foto (ex: Café da manhã de hoje �~.)" style="padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-size: 0.95em;">
                 <button id="photoSubmitBtn" style="padding: 14px; background: #f472b6; border: none; border-radius: 10px; color: #0f0a1e; font-weight: bold; font-size: 1em; cursor: pointer; transition: all 0.3s;" disabled>
                     <i data-lucide="send" style="width:16px;height:16px;vertical-align:middle;"></i> Publicar no Mural
                 </button>
@@ -1910,7 +1910,7 @@ footer {
     <section id="tab-enquetes" class="tab-pane" style="display: none;">
         <div style="background: rgba(0,0,0,0.3); margin: -30px -30px 30px -30px; padding: 25px 30px; border-radius: 20px 20px 0 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center;">
             <h2 style="color: #8e6eff; margin-bottom: 8px;"><i data-lucide="bar-chart-2" style="width:28px;height:28px;vertical-align:middle;"></i> Enquetes Globais</h2>
-            <p style="opacity: 0.8; font-size: 0.95em;">Participe das decisÃµes do time! As enquetes duram atÃ© o final do dia.</p>
+            <p style="opacity: 0.8; font-size: 0.95em;">Participe das decisões do time! As enquetes duram até o final do dia.</p>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr; gap: 30px; max-width: 800px; margin: 0 auto;">
@@ -1922,19 +1922,19 @@ footer {
                 <form id="pollCreationForm" style="display: flex; flex-direction: column; gap: 15px;">
                     <div class="input-group">
                         <label for="pollQuestion">Pergunta da Enquete</label>
-                        <input type="text" id="pollQuestion" placeholder="Ex: Onde deve ser nossa prÃ³xima confraternizaÃ§Ã£o?" required style="padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                        <input type="text" id="pollQuestion" placeholder="Ex: Onde deve ser nossa próxima confraternização?" required style="padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
                     </div>
                     <div class="input-group" style="display: flex; flex-direction: column; gap: 10px;">
-                        <label>OpÃ§Ãµes de Resposta</label>
-                        <input type="text" class="poll-option-input" placeholder="OpÃ§Ã£o 1" required style="padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
-                        <input type="text" class="poll-option-input" placeholder="OpÃ§Ã£o 2" required style="padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                        <label>Opções de Resposta</label>
+                        <input type="text" class="poll-option-input" placeholder="Opção 1" required style="padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                        <input type="text" class="poll-option-input" placeholder="Opção 2" required style="padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
                         <div id="extraPollOptions" style="display: flex; flex-direction: column; gap: 10px;"></div>
                         <button type="button" id="addPollOptionBtn" style="align-self: flex-start; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); color: #a0aec0; padding: 6px 12px; border-radius: 8px; font-size: 0.85em; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                            <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Adicionar OpÃ§Ã£o
+                            <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Adicionar Opção
                         </button>
                     </div>
                     <button type="submit" style="background: #8e6eff; border: none; color: white; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i data-lucide="send"></i> LanÃ§ar Enquete Global
+                        <i data-lucide="send"></i> Lançar Enquete Global
                     </button>
                 </form>
             </div>
@@ -1947,7 +1947,7 @@ footer {
                 </div>
             </div>
 
-            <!-- HistÃ³rico de Enquetes -->
+            <!-- Histórico de Enquetes -->
             <div class="glass-card" style="padding: 25px;">
                 <h3 style="color: #a0aec0; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
                     <i data-lucide="history"></i> Enquetes Anteriores
@@ -1959,19 +1959,19 @@ footer {
         </div>
     </section>
 
-    <!-- MODAL FORÃ‡ADO DE ENQUETE -->
+    <!-- MODAL FOR�?ADO DE ENQUETE -->
     <div id="forcedPollModal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(10px);">
         <div class="glass-card" style="background: #110e20; padding: 35px; border-radius: 20px; width: 90%; max-width: 500px; border: 2px solid #8e6eff; text-align: center; box-shadow: 0 0 30px rgba(142, 110, 255, 0.3);">
             <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; background: rgba(142, 110, 255, 0.2); margin-bottom: 20px;">
                 <i data-lucide="vote" style="width: 32px; height: 32px; color: #8e6eff;"></i>
             </div>
             <h2 style="color: white; margin-bottom: 10px; font-size: 1.6em;">Nova Enquete do Dia!</h2>
-            <p style="color: #a0aec0; font-size: 0.95em; margin-bottom: 25px;">Sua opiniÃ£o Ã© muito importante. Responda para liberar o acesso Ã  plataforma:</p>
+            <p style="color: #a0aec0; font-size: 0.95em; margin-bottom: 25px;">Sua opinião é muito importante. Responda para liberar o acesso à plataforma:</p>
             
             <h3 id="forcedPollQuestion" style="color: #8e6eff; margin-bottom: 20px; font-size: 1.3em;">Carregando pergunta...</h3>
             
             <div id="forcedPollOptionsContainer" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
-                <!-- OpÃ§Ãµes serÃ£o geradas dinamicamente -->
+                <!-- Opções serão geradas dinamicamente -->
             </div>
             
             <button id="forcedPollVoteBtn" disabled style="width: 100%; padding: 12px 20px; border-radius: 10px; border: none; font-weight: bold; background: #8e6eff; color: white; cursor: not-allowed; opacity: 0.5; transition: all 0.3s;">
@@ -1980,12 +1980,12 @@ footer {
         </div>
     </div>
 
-    <!-- POPUP NOTIFICAÃ‡ÃƒO DE AJUDA -->
+    <!-- POPUP NOTIFICA�?�fO DE AJUDA -->
     <div id="helpNotificationPopup" class="glass-card" style="display: none; position: fixed; bottom: 30px; right: 30px; z-index: 9999; padding: 20px; border-left: 4px solid #ff416c; width: 350px; cursor: pointer; transition: all 0.3s; background: #1a152e;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div>
                 <h4 style="margin: 0 0 8px 0; color: #ff416c; display: flex; align-items: center; gap: 8px;">
-                    <i data-lucide="alert-circle" style="width: 20px; height: 20px;"></i> AlguÃ©m precisa de vocÃª!
+                    <i data-lucide="alert-circle" style="width: 20px; height: 20px;"></i> Alguém precisa de você!
                 </h4>
                 <p id="helpNotificationText" style="margin: 0; font-size: 0.9em; color: #a0aec0; line-height: 1.4;"></p>
             </div>
@@ -1993,22 +1993,22 @@ footer {
         </div>
     </div>
 
-    <!-- MODAL MEU RELATÃ“RIO MENSAL -->
+    <!-- MODAL MEU RELAT�"RIO MENSAL -->
     <div id="monthlyReportModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
         <div class="modal-content glass-card" style="background: #1a152e; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin: 0; color: #8e6eff;"><i data-lucide="shield"></i> Meu Registro de Entregas InvisÃ­veis</h3>
+                <h3 style="margin: 0; color: #8e6eff;"><i data-lucide="shield"></i> Meu Registro de Entregas Invisíveis</h3>
                 <span class="close-modal" id="closeReportModal" style="color: #a0aec0; cursor: pointer; font-size: 1.5em; font-weight: bold;">&times;</span>
             </div>
             
             <div class="input-group" style="margin-bottom: 20px;">
-                <label for="reportUserName"><i data-lucide="user"></i> Selecione seu nome para ver suas entregas no mÃªs atual</label>
+                <label for="reportUserName"><i data-lucide="user"></i> Selecione seu nome para ver suas entregas no mês atual</label>
                 <select id="reportUserName" name="reportUserName">
                     <option value="" disabled selected>Selecione seu nome...</option>
                     <option value="LEANDRO">LEANDRO</option>
                     <option value="IGOR">IGOR</option>
                     <option value="YASMIM">YASMIM</option>
-                    <option value="JOÃƒO">JOÃƒO</option>
+                    <option value="JO�fO">JO�fO</option>
                     <option value="EDSON">EDSON</option>
                     <option value="LUIZ">LUIZ</option>
                     <option value="JORGE">JORGE</option>
@@ -2029,8 +2029,8 @@ footer {
         <div class="modal-content glass-card" style="background: #1a152e; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
             <div style="margin-bottom: 20px;">
                 <i data-lucide="alert-circle" style="color: #facc15; width: 40px; height: 40px;"></i>
-                <h3 style="color: #facc15; margin: 10px 0;">Tarefas Pendentes do Ãšltimo Radar</h3>
-                <p style="opacity: 0.8; font-size: 0.9em;">VocÃª deixou as seguintes tarefas sem o check (âœ…) no seu Ãºltimo preenchimento:</p>
+                <h3 style="color: #facc15; margin: 10px 0;">Tarefas Pendentes do �sltimo Radar</h3>
+                <p style="opacity: 0.8; font-size: 0.9em;">Você deixou as seguintes tarefas sem o check (�o.) no seu último preenchimento:</p>
             </div>
             
             <div id="previousTasksList" style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; text-align: left; max-height: 200px; overflow-y: auto; margin-bottom: 25px; font-size: 0.9em; border: 1px solid rgba(255,255,255,0.05);">
@@ -2051,7 +2051,7 @@ footer {
         </div>
     </div>
 
-    <!-- ÃREA DO ADMINISTRADOR (ESCONDIDA POR PADRÃƒO) -->
+    <!-- ÁREA DO ADMINISTRADOR (ESCONDIDA POR PADR�fO) -->
     <section id="adminArea" class="container"
         style="display: none; margin-top: 50px; padding-top: 30px; border-top: 2px dashed rgba(104, 65, 241, 0.3);">
         <div class="glass-card" style="border: 2px solid #6841f1;">
@@ -2066,7 +2066,7 @@ footer {
                         style="width: auto; height: 40px; padding: 0 15px; font-size: 0.8em; background: rgba(104, 65, 241, 0.1); border-color: #6841f1;">
                         <option value="today">Hoje</option>
                         <option value="thisWeek">Esta Semana</option>
-                        <option value="thisMonth" selected>Este MÃªs</option>
+                        <option value="thisMonth" selected>Este Mês</option>
                     </select>
                     <button onclick="toggleAdmin()" class="btn-secondary"
                         style="padding: 5px 15px; font-size: 0.8em; background: rgba(255,255,255,0.1);">Fechar
@@ -2074,12 +2074,12 @@ footer {
                 </div>
             </div>
 
-            <!-- Dashboard de MÃ©tricas do Admin -->
+            <!-- Dashboard de Métricas do Admin -->
             <div
                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
                 <div class="stat-card"
                     style="background: rgba(104, 65, 241, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(104, 65, 241, 0.1); text-align: center;">
-                    <span style="font-size: 0.8em; color: var(--text-muted); text-transform: uppercase;">AdesÃ£o do
+                    <span style="font-size: 0.8em; color: var(--text-muted); text-transform: uppercase;">Adesão do
                         Time</span>
                     <h3 id="adminStatParticipation" style="color: #6841f1; font-size: 2em; margin: 10px 0;">0%</h3>
                 </div>
@@ -2097,7 +2097,7 @@ footer {
                 </div>
             </div>
 
-            <!-- NOVO: GrÃ¡fico de SaÃºde da Equipe -->
+            <!-- NOVO: Gráfico de Saúde da Equipe -->
             <div style="margin-top: 20px; margin-bottom: 40px;" class="glass-card">
                 <h4 style="margin-bottom: 20px; color: #a78bfa;"><i data-lucide="trending-up"></i> Curva de Energia do Time</h4>
                 <div style="position: relative; height: 300px; width: 100%;">
@@ -2107,14 +2107,14 @@ footer {
 
             <div class="grid-2" style="margin-top: 20px; gap: 40px;">
                 <div class="content-block">
-                    <h4 style="margin-bottom: 20px; color: #6841f1;"><i data-lucide="bar-chart-2"></i> AnÃ¡lise
+                    <h4 style="margin-bottom: 20px; color: #6841f1;"><i data-lucide="bar-chart-2"></i> Análise
                         Individual</h4>
                     <select id="adminMemberSelect" style="margin-bottom: 15px; border-color: rgba(255,255,255,0.1);">
-                        <option value="">Selecione um membro para anÃ¡lise...</option>
+                        <option value="">Selecione um membro para análise...</option>
                         <option value="LEANDRO">LEANDRO</option>
                         <option value="IGOR">IGOR</option>
                         <option value="YASMIM">YASMIM</option>
-                        <option value="JOÃƒO">JOÃƒO</option>
+                        <option value="JO�fO">JO�fO</option>
                         <option value="EDSON">EDSON</option>
                         <option value="LUIZ">LUIZ</option>
                         <option value="JORGE">JORGE</option>
@@ -2124,32 +2124,32 @@ footer {
                     </select>
                     <div id="adminIndividualCard"
                         style="display: none; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px;">
-                        <!-- Dados individuais entrarÃ£o aqui via JS -->
+                        <!-- Dados individuais entrarão aqui via JS -->
                     </div>
                 </div>
 
                 <div class="content-block">
                     <h4 style="margin-bottom: 20px;"><i data-lucide="users"></i> Status de Check-in (Hoje)</h4>
                     <div id="checkinStatus" style="display: flex; flex-wrap: wrap; gap: 12px;">
-                        <!-- Status dos membros entrarÃ¡ aqui -->
+                        <!-- Status dos membros entrará aqui -->
                     </div>
                 </div>
             </div>
 
             <!-- NOVO: Mapa de Carga de Trabalho -->
             <div style="margin-top: 40px;">
-                <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="brain"></i> Mapa de Carga de Trabalho (VisualizaÃ§Ã£o Semanal)</h4>
+                <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="brain"></i> Mapa de Carga de Trabalho (Visualização Semanal)</h4>
                 <div id="workloadMap" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
                     <div class="glass-card" style="padding: 20px; border-top: 3px solid #ff416c;">
-                        <h5 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="flame" style="width: 16px; height: 16px;"></i> ðŸ”´ Explodindo</h5>
+                        <h5 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="flame" style="width: 16px; height: 16px;"></i> �Y"� Explodindo</h5>
                         <ul id="overloadedList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
                     </div>
                     <div class="glass-card" style="padding: 20px; border-top: 3px solid #ffd700;">
-                        <h5 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="activity" style="width: 16px; height: 16px;"></i> ðŸŸ¡ No limite</h5>
+                        <h5 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="activity" style="width: 16px; height: 16px;"></i> �YY� No limite</h5>
                         <ul id="limitList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
                     </div>
                     <div class="glass-card" style="padding: 20px; border-top: 3px solid #02ceff;">
-                        <h5 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="wind" style="width: 16px; height: 16px;"></i> ðŸŸ¢ Livre</h5>
+                        <h5 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="wind" style="width: 16px; height: 16px;"></i> �YY� Livre</h5>
                         <ul id="lightloadList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
                     </div>
                 </div>
@@ -2160,15 +2160,15 @@ footer {
                 <h4 style="margin-bottom: 20px; color: #ff4b2b;"><i data-lucide="search"></i> Detector de Gargalos Repetidos</h4>
                 <div id="bottleneckAlerts" style="display: flex; flex-direction: column; gap: 15px;">
                     <div class="glass-card" style="padding: 15px; background: rgba(255, 65, 108, 0.1); border-left: 4px solid #ff416c;">
-                        <p style="margin: 0; color: #ff416c;">Analisando padrÃµes na semana...</p>
+                        <p style="margin: 0; color: #ff416c;">Analisando padrões na semana...</p>
                     </div>
                 </div>
             </div>
 
 
-            <!-- NOVO: Caixa de SugestÃµes AnÃ´nimas -->
+            <!-- NOVO: Caixa de Sugestões Anônimas -->
             <div style="margin-top: 40px;">
-                <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="message-square"></i> Feedbacks AnÃ´nimos Recebidos</h4>
+                <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="message-square"></i> Feedbacks Anônimos Recebidos</h4>
                 <div id="adminFeedbacksContainer" style="display: flex; flex-direction: column; gap: 15px; max-height: 400px; overflow-y: auto; padding-right: 10px;">
                     <div class="glass-card" style="padding: 15px;">
                         <p style="margin: 0; opacity: 0.5;">Carregando feedbacks...</p>
@@ -2176,27 +2176,27 @@ footer {
                 </div>
             </div>
 
-            <!-- NOVO: GestÃ£o de SugestÃµes -->
+            <!-- NOVO: Gestão de Sugestões -->
             <div style="margin-top: 40px;">
-                <h4 style="margin-bottom: 20px; color: #facc15;"><i data-lucide="lightbulb"></i> GestÃ£o de SugestÃµes</h4>
+                <h4 style="margin-bottom: 20px; color: #facc15;"><i data-lucide="lightbulb"></i> Gestão de Sugestões</h4>
                 <div id="adminSugestoesContainer" style="display: flex; flex-direction: column; gap: 15px; max-height: 400px; overflow-y: auto; padding-right: 10px;">
                     <div class="glass-card" style="padding: 15px;">
-                        <p style="margin: 0; opacity: 0.5;">Carregando sugestÃµes...</p>
+                        <p style="margin: 0; opacity: 0.5;">Carregando sugestões...</p>
                     </div>
                 </div>
             </div>
 
             <!-- NOVO: Publicar e Gerenciar Novidades -->
             <div style="margin-top: 40px;">
-                <h4 style="margin-bottom: 20px; color: #22c55e;"><i data-lucide="megaphone"></i> Publicar Novidade / AtualizaÃ§Ã£o</h4>
+                <h4 style="margin-bottom: 20px; color: #22c55e;"><i data-lucide="megaphone"></i> Publicar Novidade / Atualização</h4>
                 <div class="glass-card" style="padding: 20px; margin-bottom: 20px; border: 1px solid rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.05);">
                     <form id="adminNovidadeForm" style="display: flex; flex-direction: column; gap: 15px;">
                         <div class="input-group">
-                            <label>TÃ­tulo / VersÃ£o</label>
-                            <input type="text" id="novidadeTitulo" required placeholder="Ex: VersÃ£o 35.0 - Novas cores" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                            <label>Título / Versão</label>
+                            <input type="text" id="novidadeTitulo" required placeholder="Ex: Versão 35.0 - Novas cores" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                         </div>
                         <div class="input-group">
-                            <label>DescriÃ§Ã£o da AtualizaÃ§Ã£o</label>
+                            <label>Descrição da Atualização</label>
                             <textarea id="novidadeDescricao" required rows="3" placeholder="O que mudou? Quais os novos recursos?" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; resize: vertical;"></textarea>
                         </div>
                         <button type="submit" id="submitNovidadeBtn" class="pulse-button" style="padding: 12px; background: #22c55e; border: none; border-radius: 8px; color: #0f0a1e; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
@@ -2219,7 +2219,7 @@ footer {
         <div class="footer-content">
             <img src="Logo-Faculdade-Inspirar-4.png" alt="Faculdade Inspirar"
                 style="height: 60px; margin-bottom: 15px; filter: brightness(0) invert(1);">
-            <p>&copy; 2026 Radar DiÃ¡rio â€¢ Desenvolvido pelo Leandro CampeÃ£o ðŸ†</p>
+            <p>&copy; 2026 Radar Diário �?� Desenvolvido pelo Leandro Campeão �Y�?</p>
             <button onclick="toggleAdmin()"
                 style="margin-top: 20px; background: none; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.7em;">Acesso
                 Administrativo</button>
