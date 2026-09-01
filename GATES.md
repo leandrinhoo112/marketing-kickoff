@@ -1,20 +1,20 @@
-# Gates: Fix Portuguese Accents & UTF-8 Mojibake
+# Gates: Restore All Emojis & Purge Corrupt Characters
 
 OWNS: index.html
 
-Scope: Repair all 211 double-encoded UTF-8 characters across index.html so Portuguese accents render cleanly.
+Scope: Reconstruct all 11 mood emojis, 3 energy levels, 3 feedback icons, and eliminate every single 0xFFFD character in index.html.
 
-- [x] G1: Zero mojibake characters remaining in index.html
-  CHECK: powershell -Command "if (([regex]::Matches((Get-Content index.html -Raw -Encoding UTF8), 'Ã[\x80-\xBF]')).Count -eq 0) { Write-Host 'mojibake_zero' }"
-  EXPECT: mojibake_zero
-  EVIDENCE: Verified regex scan finds 0 instances of double-encoded UTF-8 in index.html.
+- [x] G1: Total 0xFFFD corrupt characters in index.html is zero
+  CHECK: powershell -Command "$c = Get-Content index.html -Raw -Encoding UTF8; if (!($c.Contains([char]0xFFFD))) { Write-Host 'zero_corrupt' }"
+  EXPECT: zero_corrupt
+  EVIDENCE: Verified 0 remaining 0xFFFD characters across the entire file.
 
-- [x] G2: Critical Portuguese words verified in index.html
-  CHECK: powershell -Command "$c = Get-Content index.html -Raw -Encoding UTF8; if ($c.Contains('Diário') -and $c.Contains('Quem é você') -and $c.Contains('Sugestões') -and $c.Contains('Área do Gestor')) { Write-Host 'words_verified' }"
-  EXPECT: words_verified
-  EVIDENCE: Verified Diário, Quem é você, Sugestões, Área do Gestor, Feedback Anônimo are properly encoded.
+- [x] G2: Mood emojis and energy levels restored
+  CHECK: powershell -Command "$c = Get-Content index.html -Raw -Encoding UTF8; if ($c.Contains('😀') -and $c.Contains('🟢 Livre') -and $c.Contains('🟡 No limite') -and $c.Contains('🔴 Explodindo')) { Write-Host 'emojis_verified' }"
+  EXPECT: emojis_verified
+  EVIDENCE: Verified 😀, 😎, 🤩, 😐, 😴, 🤯, 😤, 😂, 🥲, ☕, 🍵 and 🟢, 🟡, 🔴 restored.
 
-- [x] G3: Desktop arquivos_github folder contains the clean index.html
-  CHECK: powershell -Command "if (([regex]::Matches((Get-Content C:\Users\Usuario\Desktop\arquivos_github\index.html -Raw -Encoding UTF8), 'Ã[\x80-\xBF]')).Count -eq 0) { Write-Host 'desktop_clean' }"
-  EXPECT: desktop_clean
-  EVIDENCE: C:\Users\Usuario\Desktop\arquivos_github\index.html verified with 0 mojibake characters.
+- [x] G3: Desktop index.html is synchronized and clean
+  CHECK: powershell -Command "$c = Get-Content C:\Users\Usuario\Desktop\arquivos_github\index.html -Raw -Encoding UTF8; if (!($c.Contains([char]0xFFFD))) { Write-Host 'desktop_synced' }"
+  EXPECT: desktop_synced
+  EVIDENCE: Desktop arquivos_github/index.html contains 0 corrupt characters.

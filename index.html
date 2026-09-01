@@ -645,7 +645,7 @@ footer {
 }
 
 .toast::before {
-    content: '�o"';
+    content: '✓';
     background: var(--success);
     color: white;
     width: 24px;
@@ -669,7 +669,7 @@ footer {
 }
 
 .toast.error::before {
-    content: '�o.';
+    content: '•';
     background: var(--error);
 }
 
@@ -925,7 +925,7 @@ footer {
                     <option value="LEANDRO">LEANDRO</option>
                     <option value="IGOR">IGOR</option>
                     <option value="YASMIM">YASMIM</option>
-                    <option value="JO�fO">JO�fO</option>
+                    <option value="JOÃO">JOÃO</option>
                     <option value="EDSON">EDSON</option>
                     <option value="LUIZ">LUIZ</option>
                     <option value="JORGE">JORGE</option>
@@ -958,14 +958,14 @@ footer {
     </header>
 
     <main class="container">
-        <!-- SAUDA�?�fO E PRESEN�?A -->
+        <!-- SAUDAÇÃO E PRESENÇA -->
         <section class="greeting-section" style="margin-bottom: 30px; text-align: center; position: relative;">
             <div id="streakBadge" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-bottom: 15px; background: rgba(255, 65, 108, 0.1); border: 1px solid rgba(255, 65, 108, 0.3); color: #ff416c; padding: 5px 15px; border-radius: 20px; font-weight: bold; width: fit-content; margin-left: auto; margin-right: auto; cursor: pointer; transition: transform 0.3s;">
                 <i data-lucide="flame"></i> <span id="streakCountDisplay">0 Dias de Ofensiva</span>
             </div>
             <h2 id="dynamicGreeting"
                 style="font-size: 1.8em; margin-bottom: 10px; font-weight: 800; background: linear-gradient(to right, #fff, #8e6eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                Bom dia, Time! �Ys?</h2>
+            <h2 id="dynamicGreeting" style="font-size: 1.8em; margin-bottom: 15px; font-weight: 800; background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Bom dia, Time! 🚀</h2>
             <div id="presenceBar" style="display: flex; justify-content: center; gap: -10px; margin-top: 15px;">
                 <!-- Avatares de quem já postou hoje entrarão aqui -->
             </div>
@@ -985,7 +985,7 @@ footer {
             </div>
         </div>
         
-        <!-- TABS DE NAVEGA�?�fO -->
+        <!-- TABS DE NAVEGAÇÃO -->
         <div class="tabs-container" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; flex-wrap: wrap;">
             <button class="tab-btn active" data-target="tab-radar" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: #6841f1; color: white;">
                 <i data-lucide="activity"></i> Radar Diário
@@ -1037,13 +1037,13 @@ footer {
                     style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5; pointer-events: none;"></i>
                 <select id="dateFilter"
                     style="padding-left: 55px; height: 60px; font-size: 1.1em; background: #1a152e; border-radius: 15px; width: 100%; color: white; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; appearance: none; color-scheme: dark;">
-                    <option value="all" style="background: #1a152e;">�Y". Todos os registros</option>
+                    <option value="all" style="background: #1a152e;">📅 Todos os registros</option>
                     <option value="today" style="background: #1a152e;">Hoje</option>
                     <option value="yesterday" style="background: #1a152e;">Ontem</option>
                     <option value="beforeYesterday" style="background: #1a152e;">Anteontem</option>
                     <option value="thisWeek" style="background: #1a152e;">Esta Semana</option>
                     <option value="thisMonth" style="background: #1a152e;">Este Mês</option>
-                    <option value="custom" style="background: #1a152e;">�Y". Escolher data específica...</option>
+                    <option value="custom" style="background: #1a152e;">📅 Escolher data específica...</option>
                 </select>
                 <input type="date" id="customDateInput"
                     style="display: none; margin-top: 10px; height: 60px; font-size: 1.1em; background: #1a152e; border-radius: 15px; width: 100%; color: white; border: 1px solid var(--primary); padding: 0 20px; color-scheme: dark;">
@@ -1128,7 +1128,7 @@ footer {
                     </span>
                     <div>
                         <h3 style="margin: 0; font-size: 1.25em; color: white;">Próximos Eventos - Faculdade Inspirar</h3>
-                        <p style="margin: 0; font-size: 0.85em; color: #a0aec0;">Eventos e cursos integrados diretamente do Sympla �YZ"</p>
+                <p style="margin: 0; font-size: 0.85em; color: #a0aec0;">Eventos e cursos integrados diretamente do Sympla 🎟️</p>
                     </div>
                 </div>
                 <button type="button" id="addSymplaEventBtn" class="btn-secondary" style="display: none; background: rgba(0, 193, 232, 0.1); border: 1px solid rgba(0, 193, 232, 0.3); color: #00c1e8; padding: 6px 14px; border-radius: 8px; font-size: 0.82em; cursor: pointer; transition: all 0.3s; align-items: center; gap: 6px;">
@@ -1200,7 +1200,7 @@ footer {
                             <option value="LEANDRO">LEANDRO</option>
                             <option value="IGOR">IGOR</option>
                             <option value="YASMIM">YASMIM</option>
-                            <option value="JO�fO">JO�fO</option>
+                            <option value="JOÃO">JOÃO</option>
                             <option value="EDSON">EDSON</option>
                             <option value="LUIZ">LUIZ</option>
                             <option value="JORGE">JORGE</option>
@@ -1246,7 +1246,7 @@ footer {
                                 <option value="LEANDRO">LEANDRO</option>
                                 <option value="IGOR">IGOR</option>
                                 <option value="YASMIM">YASMIM</option>
-                                <option value="JO�fO">JO�fO</option>
+                                <option value="JOÃO">JOÃO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
                                 <option value="JORGE">JORGE</option>
@@ -1273,37 +1273,37 @@ footer {
                     <label><i data-lucide="smile"></i> Humor do Dia</label>
                     <div id="moodPicker" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y~?" style="display:none;">�Y~?
+                            <input type="radio" name="moodEmoji" value="😀" style="display:none;">😀
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y~Z" style="display:none;">�Y~Z
+                            <input type="radio" name="moodEmoji" value="😎" style="display:none;">😎
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y��" style="display:none;">�Y��
+                            <input type="radio" name="moodEmoji" value="🤩" style="display:none;">🤩
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y~�" style="display:none;">�Y~�
+                            <input type="radio" name="moodEmoji" value="😐" style="display:none;">😐
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y~�" style="display:none;">�Y~�
+                            <input type="radio" name="moodEmoji" value="😴" style="display:none;">😴
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y��" style="display:none;">�Y��
+                            <input type="radio" name="moodEmoji" value="🤯" style="display:none;">🤯
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y~�" style="display:none;">�Y~�
+                            <input type="radio" name="moodEmoji" value="😤" style="display:none;">😤
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y~," style="display:none;">�Y~,
+                            <input type="radio" name="moodEmoji" value="😂" style="display:none;">😂
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y��" style="display:none;">�Y��
+                            <input type="radio" name="moodEmoji" value="🥲" style="display:none;">🥲
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�~." style="display:none;">�~.
+                            <input type="radio" name="moodEmoji" value="☕" style="display:none;">☕
                         </label>
                         <label class="mood-option" style="cursor:pointer; font-size: 2em; padding: 8px 12px; border-radius: 12px; border: 2px solid transparent; background: rgba(255,255,255,0.05); transition: all 0.3s; text-align: center;">
-                            <input type="radio" name="moodEmoji" value="�Y��" style="display:none;">�Y��
+                            <input type="radio" name="moodEmoji" value="🍵" style="display:none;">🍵
                         </label>
                     </div>
                 </div>
@@ -1314,18 +1314,18 @@ footer {
                         <label><i data-lucide="battery-charging"></i> Nível de Energia Diário</label>
                         <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
-                                <input type="radio" name="energyLevel" value="�YY� Livre: Pode me mandar coisa nova." required style="margin: 0;">
-                                <span style="font-size: 1.2em;">�YY�</span>
+                                <input type="radio" name="energyLevel" value="🟢 Livre: Pode me mandar coisa nova." required style="margin: 0;">
+                                <span style="font-size: 1.2em;">🟢</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Livre: Pode me mandar coisa nova.</span>
                             </label>
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
-                                <input type="radio" name="energyLevel" value="�YY� No limite: Finalizando o que tenho, mas aceito demandas." style="margin: 0;">
-                                <span style="font-size: 1.2em;">�YY�</span>
+                                <input type="radio" name="energyLevel" value="🟡 No limite: Finalizando o que tenho, mas aceito demandas." style="margin: 0;">
+                                <span style="font-size: 1.2em;">🟡</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">No limite: Aceito demandas.</span>
                             </label>
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;">
-                                <input type="radio" name="energyLevel" value="�Y"� Explodindo: Preciso de ajuda ou repriorização." style="margin: 0;">
-                                <span style="font-size: 1.2em;">�Y"�</span>
+                                <input type="radio" name="energyLevel" value="🔴 Explodindo: Preciso de ajuda ou repriorização." style="margin: 0;">
+                                <span style="font-size: 1.2em;">🔴</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Explodindo: Preciso de ajuda.</span>
                             </label>
                         </div>
@@ -1371,7 +1371,7 @@ footer {
             <section class="form-section">
                 <div class="glass-card" style="border-color: rgba(255, 215, 0, 0.3); box-shadow: 0 10px 30px -5px rgba(255, 215, 0, 0.1);">
                     <div class="card-header">
-                        <h2 style="background: linear-gradient(to right, #fff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sucesso Semanal �YOY</h2>
+            <h2 style="background: linear-gradient(to right, #fff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sucesso Semanal 🏆</h2>
                         <p>Celebre as vitórias da semana e agradeça ao time!</p>
                     </div>
 
@@ -1383,7 +1383,7 @@ footer {
                                 <option value="LEANDRO">LEANDRO</option>
                                 <option value="IGOR">IGOR</option>
                                 <option value="YASMIM">YASMIM</option>
-                                <option value="JO�fO">JO�fO</option>
+                                <option value="JOÃO">JOÃO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
                                 <option value="JORGE">JORGE</option>
@@ -1408,7 +1408,7 @@ footer {
                                 <option value="LEANDRO">LEANDRO</option>
                                 <option value="IGOR">IGOR</option>
                                 <option value="YASMIM">YASMIM</option>
-                                <option value="JO�fO">JO�fO</option>
+                                <option value="JOÃO">JOÃO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
                                 <option value="JORGE">JORGE</option>
@@ -1455,7 +1455,7 @@ footer {
             </section>
         </div> <!-- FIM TAB SUCESSO -->
     
-    <!-- INÍCIO TAB FEEDBACK AN�"NIMO -->
+        <!-- INÍCIO TAB FEEDBACK ANÔNIMO -->
     <div id="tab-feedback" class="tab-pane" style="display: none; max-width: 800px; margin: 0 auto; padding: 0 20px;">
         <section class="form-section">
             <div class="glass-card" style="border-color: rgba(2, 206, 255, 0.3); box-shadow: 0 10px 30px -5px rgba(2, 206, 255, 0.1);">
@@ -1485,17 +1485,17 @@ footer {
                         <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
                                 <input type="radio" name="fbSobrecarregado" value="Sim, muito" required style="margin: 0;">
-                                <span style="font-size: 1.2em;">�Y~�</span>
+                                <span style="font-size: 1.2em;">😫</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Sim, muito</span>
                             </label>
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
                                 <input type="radio" name="fbSobrecarregado" value="Um pouco" style="margin: 0;">
-                                <span style="font-size: 1.2em;">�Y~�</span>
+                                <span style="font-size: 1.2em;">😄</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Um pouco</span>
                             </label>
                             <label class="radio-card" style="cursor: pointer; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); width: 100%; transition: all 0.3s;">
                                 <input type="radio" name="fbSobrecarregado" value="Não, está tranquilo" style="margin: 0;">
-                                <span style="font-size: 1.2em;">�Y~"</span>
+                                <span style="font-size: 1.2em;">😄</span>
                                 <span style="font-weight: 500; font-size: 0.95em;">Não, está tranquilo</span>
                             </label>
                         </div>
@@ -1515,7 +1515,7 @@ footer {
     <section id="tab-ajuda" class="tab-pane" style="display: none;">
         <div class="glass-card" style="margin-bottom: 40px; text-align: center;">
             <div class="card-header">
-                <h2>Meu Perfil & Conquistas �Y�?</h2>
+            <h2>Meu Perfil & Conquistas 🎖️</h2>
                 <p>Você é: <strong id="profileNameDisplay" style="color: #02ceff;">---</strong></p>
             </div>
             
@@ -1531,7 +1531,7 @@ footer {
                 </div>
             </div>
             
-            <!-- MODO F�?RIAS -->
+        <!-- MODO FÉRIAS -->
             <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 30px; max-width: 500px; margin-left: auto; margin-right: auto; text-align: left;">
                 <h3 style="margin: 0 0 10px 0; color: #02ceff; display: flex; align-items: center; gap: 8px;"><i data-lucide="palm-tree"></i> Modo Férias</h3>
                 <p style="font-size: 0.85em; color: #a0aec0; margin: 0 0 20px 0;">Configure seus dias de folga/férias para manter e proteger sua ofensiva (streak) sem precisar fazer check-in!</p>
@@ -1571,7 +1571,7 @@ footer {
 
         <div class="glass-card">
             <div class="card-header">
-                <h2>Guia do App �Y"s</h2>
+            <h2>Guia do App 📖</h2>
                 <p>Entenda para que serve cada funcionalidade deste sistema.</p>
             </div>
             
@@ -1583,7 +1583,7 @@ footer {
                 
                 <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #ffd700;">
                     <h4 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="star"></i> Sucesso Semanal</h4>
-                    <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Sua celebração na sexta-feira. Compartilhe suas vitórias e elogie colegas. <strong>Ser citado por um colega gera +30 XP!</strong> Se for citado 3x, você vira Destaque da Semana �Y"�.</p>
+            <p style="font-size: 0.9em; line-height: 1.5; color: #a0aec0;">Sua celebração na sexta-feira. Compartilhe suas vitórias e elogie colegas. <strong>Ser citado por um colega gera +30 XP!</strong> Se for citado 3x, você vira Destaque da Semana 🌟.</p>
                 </div>
 
                 <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid #02ceff;">
@@ -1599,11 +1599,11 @@ footer {
         </div>
     </section>
 
-    <!-- TAB SUGEST�.ES -->
+        <!-- TAB SUGESTÕES -->
     <section id="tab-sugestao" class="tab-pane" style="display: none;">
         <div class="glass-card" style="max-width: 600px; margin: 0 auto; margin-bottom: 40px;">
             <div class="card-header" style="text-align: center;">
-                <h2>Caixa de Sugestões �Y'�</h2>
+            <h2>Caixa de Sugestões 💡</h2>
                 <p>Tem alguma ideia para melhorar a plataforma ou algo divertido para adicionarmos? Mande aqui!</p>
             </div>
             <form id="sugestaoForm" style="display: flex; flex-direction: column; gap: 20px;">
@@ -1631,7 +1631,7 @@ footer {
     <!-- TAB NOVIDADES -->
     <section id="tab-novidades" class="tab-pane" style="display: none;">
         <div style="max-width: 800px; margin: 0 auto; margin-bottom: 40px; text-align: center;">
-            <h2 style="color: #22c55e; margin-bottom: 10px;">O que há de novo? �Ys?</h2>
+            <h2 style="color: #22c55e; margin-bottom: 10px;">O que há de novo? 🚀</h2>
             <p style="opacity: 0.7;">Fique por dentro das últimas atualizações, novos recursos e melhorias da nossa plataforma.</p>
         </div>
         
@@ -1654,7 +1654,7 @@ footer {
                 <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
                     <button class="game-tab-btn active" data-game="wordle" style="padding: 8px 16px; border-radius: 20px; border: none; background: #6841f1; color: white; cursor: pointer; font-weight: bold; transition: all 0.2s;">Termo</button>
                     <button class="game-tab-btn" data-game="cacaPalavras" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;">Caça-Palavras</button>
-                    <button class="game-tab-btn" data-game="futbotao" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;">Futbotão �s�</button>
+            <button class="game-tab-btn" data-game="futbotao" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;">Futbotão ⚽</button>
                     <button class="game-tab-btn" data-game="mensal" style="padding: 8px 16px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: #a0aec0; cursor: pointer; font-weight: bold; transition: all 0.2s;"><i data-lucide="calendar" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i>Mensal</button>
                 </div>
             </div>
@@ -1689,15 +1689,15 @@ footer {
             </div>
             </div> <!-- FIM DO CONTAINER DO TERMO -->
             
-            <!-- CONTAINER DO FUTBOT�fO -->
+        <!-- CONTAINER DO FUTBOTÃO -->
             <div id="game-futbotao" style="display: none;">
-                <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">�s� Jogue Futbotão! Escolha seu time e dispute partidas épicas com física 2D real!</p>
+            <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">⚽ Jogue Futbotão! Escolha seu time e dispute partidas épicas com física 2D real!</p>
                 
                 <div id="futbotao-canvas-container" style="position: relative; width: 100%; max-width: 800px; height: 600px; margin: 0 auto; background: #0f0a1e; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
                     <iframe id="futbotao-iframe" src="" allow="fullscreen" allowfullscreen style="width: 100%; height: 100%; border: none; background: #0f0a1e; display: none;"></iframe>
                     
                     <!-- Botão Tela Cheia -->
-                    <button id="futbotao-fullscreen-btn" onclick="toggleFutbotaoFullscreen()" style="position: absolute; top: 10px; right: 10px; z-index: 20; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); color: #facc15; font-size: 1.3em; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; opacity: 0.7;" onmouseenter="this.style.opacity='1'; this.style.transform='scale(1.1)'" onmouseleave="this.style.opacity='0.7'; this.style.transform='scale(1)'">�>�</button>
+                <button id="futbotao-fullscreen-btn" onclick="toggleFutbotaoFullscreen()" style="position: absolute; top: 10px; right: 10px; z-index: 20; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); color: #facc15; font-size: 1.3em; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; opacity: 0.7;" onmouseenter="this.style.opacity='1'; this.style.transform='scale(1.1)'" onmouseleave="this.style.opacity='0.7'; this.style.transform='scale(1)'">⛶</button>
 
                     <style>
                         @keyframes spin {
@@ -1722,7 +1722,7 @@ footer {
                 </div>
             </div>
 
-            <!-- CONTAINER DO CA�?A-PALAVRAS -->
+        <!-- CONTAINER DO CAÇA-PALAVRAS -->
             <div id="game-cacaPalavras" style="display: none;">
                 <p style="opacity: 0.8; margin-bottom: 20px; text-align: center; font-size: 0.95em;">Clique e arraste pelas letras para encontrar as palavras ocultas.</p>
                 
@@ -1734,7 +1734,7 @@ footer {
                 </div>
                 
                 <div id="wordSearchWinMsg" style="display: none; margin-top: 20px; color: #22c55e; font-weight: bold; font-size: 1.2em;">
-                    �YZ? Parabéns! Você encontrou todas!
+            🎉 Parabéns! Você encontrou todas!
                 </div>
 
                 <!-- Placar de Líderes - Caça Palavras -->
@@ -1745,7 +1745,7 @@ footer {
                     </div>
                 </div>
 
-            </div> <!-- FIM DO CONTAINER DO CA�?A-PALAVRAS -->
+        </div> <!-- FIM DO CONTAINER DO CAÇA-PALAVRAS -->
 
             <!-- CONTAINER DO RANKING MENSAL -->
             <div id="game-mensal" style="display: none;">
@@ -1753,14 +1753,14 @@ footer {
                 
                 <div style="display: flex; flex-direction: column; gap: 20px;">
                     <div style="padding: 20px; border-radius: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
-                        <h3 style="color: #6841f1; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">�Y-"️ Termo do Mês</h3>
+            <h3 style="color: #6841f1; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">🔤 Termo do Mês</h3>
                         <div id="monthlyTermoList" style="display: flex; flex-direction: column; gap: 10px;">
                             <p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>
                         </div>
                     </div>
                     
                     <div style="padding: 20px; border-radius: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
-                        <h3 style="color: #facc15; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">�Y-"️ Caça-Palavras do Mês</h3>
+            <h3 style="color: #facc15; margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">🔍 Caça-Palavras do Mês</h3>
                         <div id="monthlyCacaList" style="display: flex; flex-direction: column; gap: 10px;">
                             <p style="opacity: 0.5; text-align: center; margin: 0;">Carregando...</p>
                         </div>
@@ -1880,7 +1880,7 @@ footer {
         </style>
         <div style="background: rgba(0,0,0,0.3); margin: -30px -30px 30px -30px; padding: 25px 30px; border-radius: 20px 20px 0 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center;">
             <h2 style="color: #f472b6; margin-bottom: 8px;"><i data-lucide="camera" style="width:28px;height:28px;vertical-align:middle;"></i> Mural de Fotos</h2>
-            <p style="opacity: 0.8; font-size: 0.95em;">Registros do dia a dia do setor! Café, prints engraçados, reuniões, caretas... tudo vale! �Y"�</p>
+            <p style="opacity: 0.8; font-size: 0.95em;">Registros do dia a dia do setor! Café, prints engraçados, reuniões, caretas... tudo vale! 📸</p>
         </div>
 
         <!-- Upload form -->
@@ -1893,7 +1893,7 @@ footer {
                     <input type="file" id="photoFileInput" accept="image/*" style="display: none;">
                     <img id="photoPreview" style="display: none; max-width: 300px; max-height: 200px; margin: 15px auto 0; border-radius: 8px; object-fit: cover;">
                 </div>
-                <input type="text" id="photoCaption" placeholder="Legenda da foto (ex: Café da manhã de hoje �~.)" style="padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-size: 0.95em;">
+                <input type="text" id="photoCaption" placeholder="Legenda da foto (ex: Café da manhã de hoje ☕)" style="padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-size: 0.95em;">
                 <button id="photoSubmitBtn" style="padding: 14px; background: #f472b6; border: none; border-radius: 10px; color: #0f0a1e; font-weight: bold; font-size: 1em; cursor: pointer; transition: all 0.3s;" disabled>
                     <i data-lucide="send" style="width:16px;height:16px;vertical-align:middle;"></i> Publicar no Mural
                 </button>
@@ -1959,7 +1959,7 @@ footer {
         </div>
     </section>
 
-    <!-- MODAL FOR�?ADO DE ENQUETE -->
+    <!-- MODAL FORÇADO DE ENQUETE -->
     <div id="forcedPollModal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(10px);">
         <div class="glass-card" style="background: #110e20; padding: 35px; border-radius: 20px; width: 90%; max-width: 500px; border: 2px solid #8e6eff; text-align: center; box-shadow: 0 0 30px rgba(142, 110, 255, 0.3);">
             <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; background: rgba(142, 110, 255, 0.2); margin-bottom: 20px;">
@@ -1980,7 +1980,7 @@ footer {
         </div>
     </div>
 
-    <!-- POPUP NOTIFICA�?�fO DE AJUDA -->
+    <!-- POPUP NOTIFICAÇÃO DE AJUDA -->
     <div id="helpNotificationPopup" class="glass-card" style="display: none; position: fixed; bottom: 30px; right: 30px; z-index: 9999; padding: 20px; border-left: 4px solid #ff416c; width: 350px; cursor: pointer; transition: all 0.3s; background: #1a152e;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div>
@@ -1993,7 +1993,7 @@ footer {
         </div>
     </div>
 
-    <!-- MODAL MEU RELAT�"RIO MENSAL -->
+    <!-- MODAL MEU RELATÓRIO MENSAL -->
     <div id="monthlyReportModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
         <div class="modal-content glass-card" style="background: #1a152e; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -2008,7 +2008,7 @@ footer {
                     <option value="LEANDRO">LEANDRO</option>
                     <option value="IGOR">IGOR</option>
                     <option value="YASMIM">YASMIM</option>
-                    <option value="JO�fO">JO�fO</option>
+                    <option value="JOÃO">JOÃO</option>
                     <option value="EDSON">EDSON</option>
                     <option value="LUIZ">LUIZ</option>
                     <option value="JORGE">JORGE</option>
@@ -2029,8 +2029,8 @@ footer {
         <div class="modal-content glass-card" style="background: #1a152e; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
             <div style="margin-bottom: 20px;">
                 <i data-lucide="alert-circle" style="color: #facc15; width: 40px; height: 40px;"></i>
-                <h3 style="color: #facc15; margin: 10px 0;">Tarefas Pendentes do �sltimo Radar</h3>
-                <p style="opacity: 0.8; font-size: 0.9em;">Você deixou as seguintes tarefas sem o check (�o.) no seu último preenchimento:</p>
+                <h3 style="color: #facc15; margin: 10px 0;">Tarefas Pendentes do Último Radar</h3>
+                <p style="opacity: 0.8; font-size: 0.9em;">Você deixou as seguintes tarefas sem o check (✓) no seu último preenchimento:</p>
             </div>
             
             <div id="previousTasksList" style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; text-align: left; max-height: 200px; overflow-y: auto; margin-bottom: 25px; font-size: 0.9em; border: 1px solid rgba(255,255,255,0.05);">
@@ -2051,7 +2051,7 @@ footer {
         </div>
     </div>
 
-    <!-- ÁREA DO ADMINISTRADOR (ESCONDIDA POR PADR�fO) -->
+    <!-- ÁREA DO ADMINISTRADOR (ESCONDIDA POR PADRÃO) -->
     <section id="adminArea" class="container"
         style="display: none; margin-top: 50px; padding-top: 30px; border-top: 2px dashed rgba(104, 65, 241, 0.3);">
         <div class="glass-card" style="border: 2px solid #6841f1;">
@@ -2114,7 +2114,7 @@ footer {
                         <option value="LEANDRO">LEANDRO</option>
                         <option value="IGOR">IGOR</option>
                         <option value="YASMIM">YASMIM</option>
-                        <option value="JO�fO">JO�fO</option>
+                        <option value="JOÃO">JOÃO</option>
                         <option value="EDSON">EDSON</option>
                         <option value="LUIZ">LUIZ</option>
                         <option value="JORGE">JORGE</option>
@@ -2141,15 +2141,15 @@ footer {
                 <h4 style="margin-bottom: 20px; color: #02ceff;"><i data-lucide="brain"></i> Mapa de Carga de Trabalho (Visualização Semanal)</h4>
                 <div id="workloadMap" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
                     <div class="glass-card" style="padding: 20px; border-top: 3px solid #ff416c;">
-                        <h5 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="flame" style="width: 16px; height: 16px;"></i> �Y"� Explodindo</h5>
+                <h5 style="color: #ff416c; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="flame" style="width: 16px; height: 16px;"></i> 🔴 Explodindo</h5>
                         <ul id="overloadedList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
                     </div>
                     <div class="glass-card" style="padding: 20px; border-top: 3px solid #ffd700;">
-                        <h5 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="activity" style="width: 16px; height: 16px;"></i> �YY� No limite</h5>
+                <h5 style="color: #ffd700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="activity" style="width: 16px; height: 16px;"></i> 🟡 No limite</h5>
                         <ul id="limitList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
                     </div>
                     <div class="glass-card" style="padding: 20px; border-top: 3px solid #02ceff;">
-                        <h5 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="wind" style="width: 16px; height: 16px;"></i> �YY� Livre</h5>
+                <h5 style="color: #02ceff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i data-lucide="wind" style="width: 16px; height: 16px;"></i> 🟢 Livre</h5>
                         <ul id="lightloadList" style="list-style: none; padding: 0; font-size: 0.9em; opacity: 0.8;"><li>Aguardando dados...</li></ul>
                     </div>
                 </div>
@@ -2219,7 +2219,7 @@ footer {
         <div class="footer-content">
             <img src="Logo-Faculdade-Inspirar-4.png" alt="Faculdade Inspirar"
                 style="height: 60px; margin-bottom: 15px; filter: brightness(0) invert(1);">
-            <p>&copy; 2026 Radar Diário �?� Desenvolvido pelo Leandro Campeão �Y�?</p>
+            <p>&copy; 2026 Radar Diário • Desenvolvido pelo Leandro Campeão 🏆</p>
             <button onclick="toggleAdmin()"
                 style="margin-top: 20px; background: none; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.7em;">Acesso
                 Administrativo</button>
