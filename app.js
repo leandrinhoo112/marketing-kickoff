@@ -1,5 +1,5 @@
-const SUPABASE_URL = 'https://szscamhegxbywbulptyg.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6c2NhbWhlZ3hieXdidWxwdHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTMzNTYsImV4cCI6MjA5NDIyOTM1Nn0.zDwmCpC3rV_NFQxflD469fDIWrH81_c-rcrLPun7w6M';
+const SUPABASE_URL = 'https://agpsgapfyajhjlueaqyu.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFncHNnYXBmeWFqaGpsdWVhcXl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5MzM1ODYsImV4cCI6MjEwNDUwOTU4Nn0.sycoaKGk4x0_srbr9wsvFyBc7AW7q5UCD2ZrAPWeXhs';
 
 // Reset temporário para liberar as tentativas de hoje
 try {
