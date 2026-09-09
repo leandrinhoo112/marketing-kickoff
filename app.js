@@ -2321,9 +2321,19 @@ document.addEventListener('DOMContentLoaded', () => {
     loadEntries(); 
     loadSucessos();
     setInterval(() => {
-        loadEntries();
-        loadSucessos();
-    }, 10000);
+        if (document.visibilityState === 'visible') {
+            loadEntries();
+            loadSucessos();
+        }
+    }, 60000);
+
+    // Recarrega dados ao voltar para a aba (substitui polling agressivo)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            loadEntries();
+            loadSucessos();
+        }
+    });
 
     // FEEDBACK ANÔNIMO E RELATÓRIO MENSAL
     const feedbackForm = document.getElementById('feedbackForm');
@@ -2692,8 +2702,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Polling a cada 30 segundos
-    setInterval(window.pollHelpRequests, 30000);
+    // Polling a cada 2 minutos (economia de requisições)
+    setInterval(() => {
+        if (document.visibilityState === 'visible') window.pollHelpRequests();
+    }, 120000);
     // Checa imediatamente ao carregar (sem delay)
     window.pollHelpRequests();
 
@@ -5301,5 +5313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial check for active poll/new photos
     loadEnquetes();
     checkForNewPhotosAndPolls();
-    setInterval(checkForNewPhotosAndPolls, 12000);
+    setInterval(() => {
+        if (document.visibilityState === 'visible') checkForNewPhotosAndPolls();
+    }, 60000);
 });
