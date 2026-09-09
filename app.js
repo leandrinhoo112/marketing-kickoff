@@ -1009,6 +1009,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.renderVacationsList();
         }
 
+        window.currentVacationDates = vacationDates;
         const streak = calculateStreak(myCheckins, vacationDates);
         
         const streakBadge = document.getElementById('streakBadge');
@@ -1031,7 +1032,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.calculateXP = calculateXP;
 
-    function calculateStreak(myCheckins, vacationDates = []) {
+    // Feriados oficiais e emendas que NÃO quebram a ofensiva
+    const OFFICIAL_HOLIDAYS = [
+        '2026-01-01', // Ano Novo
+        '2026-02-16', // Carnaval
+        '2026-02-17', // Carnaval
+        '2026-04-03', // Sexta-feira Santa
+        '2026-04-21', // Tiradentes
+        '2026-05-01', // Dia do Trabalho
+        '2026-06-04', // Corpus Christi
+        '2026-09-07', // Independência do Brasil
+        '2026-09-08', // Feriado / Ponto Facultativo
+        '2026-10-12', // N. Sra. Aparecida
+        '2026-11-02', // Finados
+        '2026-11-15', // Proclamação da República
+        '2026-11-20', // Consciência Negra
+        '2026-12-25'  // Natal
+    ];
+
+    function calculateStreak(myCheckins, vacationDates = (window.currentVacationDates || [])) {
         if (!myCheckins.length) return 0;
         
         const checkinDates = [...new Set(myCheckins.map(e => {
@@ -1044,17 +1063,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const toDateStr = (d) => d.toLocaleDateString('en-CA');
         const todayStr = toDateStr(new Date());
 
-        // 1. Pula dias iniciais (incluindo hoje) protegidos por fim de semana ou férias sem check-in
+        // 1. Pula dias iniciais (incluindo hoje) protegidos por fim de semana, férias ou feriados sem check-in
         while (true) {
             const dateStr = toDateStr(dateToCheck);
             const dayOfWeek = dateToCheck.getDay();
             const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
             const isVacation = vacationDates.includes(dateStr);
+            const isHoliday = OFFICIAL_HOLIDAYS.includes(dateStr);
             
             if (checkinDates.includes(dateStr)) {
                 break;
             }
-            if (isWeekend || isVacation) {
+            if (isWeekend || isVacation || isHoliday) {
                 dateToCheck.setDate(dateToCheck.getDate() - 1);
             } else {
                 break;
@@ -1081,12 +1101,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const dayOfWeek = dateToCheck.getDay();
             const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
             const isVacation = vacationDates.includes(dateStr);
+            const isHoliday = OFFICIAL_HOLIDAYS.includes(dateStr);
 
             if (checkinDates.includes(dateStr)) {
                 streak++;
                 dateToCheck.setDate(dateToCheck.getDate() - 1);
-            } else if (isWeekend || isVacation) {
-                dateToCheck.setDate(dateToCheck.getDate() - 1); // Pula dias protegidos
+            } else if (isWeekend || isVacation || isHoliday) {
+                dateToCheck.setDate(dateToCheck.getDate() - 1); // Pula fins de semana, férias e feriados protegidos
             } else {
                 break; // Quebrou
             }
