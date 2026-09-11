@@ -199,7 +199,19 @@ export function playGoal() {
 }
 
 // ── Narration Audio System ──────────────────────────────────────────────────
-const NARRATION_COUNT = 7;
+const NARRATION_TRACKS: string[] = [
+  '/sounds/narr0.mp3',
+  '/sounds/narr1.mp3',
+  '/sounds/narr2.mp3',
+  '/sounds/narr3.mp3',
+  '/sounds/narr4.mp3',
+  '/sounds/narr5.mp3',
+  '/sounds/narr6.mp3',
+  '/sounds/casagrande.mp3',
+  '/sounds/laranxinha.mp3',
+  '/sounds/molecula.mp3',
+];
+const NARRATION_COUNT = NARRATION_TRACKS.length;
 const narrationCache = new Map<number, AudioBuffer>();
 let currentNarration: AudioBufferSourceNode | null = null;
 let lastNarrationIndex: number | null = null;
@@ -241,7 +253,7 @@ function playNarrationByIndex(index: number, volume = 0.85): void {
       console.warn('Narration playback failed:', e);
     }
   } else {
-    const url = `/sounds/narr${index}.mp3`;
+    const url = NARRATION_TRACKS[index] || `/sounds/narr${index}.mp3`;
     fetch(url)
       .then(r => r.arrayBuffer())
       .then(ab => getCtx().decodeAudioData(ab))
@@ -252,3 +264,4 @@ function playNarrationByIndex(index: number, volume = 0.85): void {
       .catch(err => console.warn('Failed to load narration:', err));
   }
 }
+
