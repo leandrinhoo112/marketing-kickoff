@@ -1018,6 +1018,9 @@ footer {
             <button class="tab-btn" data-target="tab-enquetes" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="bar-chart-2"></i> Enquetes
             </button>
+            <button class="tab-btn" data-target="tab-planejamento" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
+                <i data-lucide="compass"></i> Planejamento Estratégico
+            </button>
             <button onclick="toggleAdmin()" style="padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(104, 65, 241, 0.3); font-weight: bold; cursor: pointer; transition: all 0.3s; background: rgba(104, 65, 241, 0.1); color: #8e6eff;">
                 <i data-lucide="shield"></i> Área do Gestor
             </button>
@@ -1960,6 +1963,48 @@ footer {
         </div>
     </section>
 
+    <!-- SEÇÃO: PLANEJAMENTO ESTRATÉGICO 2026-2027 (HOSPEDAGEM DIRETA DO MARKETING-INSPIRAR-MAIN) -->
+    <section id="tab-planejamento" class="tab-pane" style="display: none; max-width: 1400px; margin: 0 auto; padding: 0 15px 40px 15px;">
+        <!-- Barra Superior de Controles -->
+        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.12); padding: 12px 22px; border-radius: 16px 16px 0 0; backdrop-filter: blur(12px); flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 10px; background: rgba(104, 65, 241, 0.25); color: #8e6eff;">
+                    <i data-lucide="compass" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div>
+                    <h3 style="color: #fff; font-size: 1.05em; font-weight: 700; margin: 0; line-height: 1.2;">
+                        Planejamento Estratégico Inspirar · Marketing
+                    </h3>
+                    <div style="color: #94a3b8; font-size: 0.78em; margin-top: 2px;">
+                        Plataforma oficial hospedada na íntegra · Projeto original sem alterações
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button type="button" onclick="togglePlanejamentoFullscreen()" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: #cbd5e1; font-size: 0.82em; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    <i data-lucide="maximize-2" style="width: 14px; height: 14px;"></i>
+                    Tela Cheia
+                </button>
+                <a href="marketing-inspirar-main/index.html" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 18px; border-radius: 20px; border: 1px solid #8e6eff; background: linear-gradient(135deg, #6841f1, #8e6eff); color: #fff; font-size: 0.82em; font-weight: 700; text-decoration: none; box-shadow: 0 0 15px rgba(104,65,241,0.35);">
+                    <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+                    Abrir em Nova Aba
+                </a>
+            </div>
+        </div>
+
+        <!-- Frame do App Original (Preserva 100% de cores, estilos, scripts e layout originais) -->
+        <div id="planejamento-frame-wrapper" style="position: relative; width: 100%; height: 92vh; min-height: 900px; border-radius: 0 0 18px 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); border-top: none; box-shadow: 0 15px 45px rgba(0,0,0,0.6); background: #18181b;">
+            <iframe id="frame-planejamento"
+                    src="marketing-inspirar-main/index.html"
+                    style="width: 100%; height: 100%; border: none; display: block;"
+                    title="Planejamento Estratégico Inspirar · Marketing"
+                    allow="fullscreen">
+            </iframe>
+        </div>
+    </section>
+
+
     <!-- MODAL FORÇADO DE ENQUETE -->
     <div id="forcedPollModal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(10px);">
         <div class="glass-card" style="background: #110e20; padding: 35px; border-radius: 20px; width: 90%; max-width: 500px; border: 2px solid #8e6eff; text-align: center; box-shadow: 0 0 30px rgba(142, 110, 255, 0.3);">
@@ -2228,7 +2273,8 @@ footer {
     </footer>
 
     <script src="phone_audio.js"></script>
-    <script src="app.js?v=86.0" defer></script>
+    <script src="planejamento.js?v=1.0" defer></script>
+    <script src="app.js?v=87.0" defer></script>
     <script>
         lucide.createIcons();
     </script>

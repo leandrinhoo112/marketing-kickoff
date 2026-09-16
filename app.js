@@ -418,15 +418,21 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (btn.dataset.target === 'tab-minigame') activeBg = '#ff416c';
             else if (btn.dataset.target === 'tab-tutoriais') activeBg = '#f59e0b';
             else if (btn.dataset.target === 'tab-enquetes') activeBg = '#8e6eff';
+            else if (btn.dataset.target === 'tab-planejamento') activeBg = '#8e6eff';
             
             btn.style.background = activeBg;
-            btn.style.color = (btn.dataset.target === 'tab-radar' || btn.dataset.target === 'tab-minigame' || btn.dataset.target === 'tab-enquetes') ? 'white' : '#0f0a1e';
+            btn.style.color = (btn.dataset.target === 'tab-radar' || btn.dataset.target === 'tab-minigame' || btn.dataset.target === 'tab-enquetes' || btn.dataset.target === 'tab-planejamento') ? 'white' : '#0f0a1e';
             btn.classList.add('active');
 
             tabPanes.forEach(pane => {
                 pane.style.display = 'none';
             });
-            document.getElementById(btn.dataset.target).style.display = 'block';
+            const targetEl = document.getElementById(btn.dataset.target);
+            if (targetEl) targetEl.style.display = 'block';
+
+            if (btn.dataset.target === 'tab-planejamento' && typeof window.initPlanejamento === 'function') {
+                window.initPlanejamento();
+            }
 
             // Se o usuário clicar na aba de Novidades, marcar como visto e remover a notificação
             if (btn.dataset.target === 'tab-novidades' && latestNovidadeId) {

@@ -1,0 +1,9 @@
+{
+  "name": "marketing-inspirar",
+  "private": true,
+  "type": "module",
+  "description": "Planejamento Estratégico, entregas por pessoa e calendário completo de Marketing — Faculdade Inspirar",
+  "dependencies": {
+    "@vercel/functions": "^3.9.7"
+  }
+}

@@ -1,0 +1,45 @@
+/* ================= Foto de fundo + glassmorfismo (igual ao calendário antigo) ================= */
+:root{
+  --photo-opacity:.24;
+  --glass:rgba(255,255,255,.56); --glass-alt:rgba(250,250,250,.40); --glass-strong:rgba(255,255,255,.82);
+  --glass-soft:rgba(255,255,255,.45); --glass-dark:rgba(24,24,27,.76);
+  --glass-border:rgba(255,255,255,.75); --glass-edge:rgba(9,9,11,.07);
+  --glass-hi:inset 0 1px 0 rgba(255,255,255,.9);
+  --glass-blur:blur(22px) saturate(165%);
+  --tint-glass:15%; --bar-base:rgba(255,255,255,.86);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --photo-opacity:.16;
+    --glass:rgba(24,24,27,.52); --glass-alt:rgba(32,32,36,.40); --glass-strong:rgba(20,20,23,.84);
+    --glass-soft:rgba(255,255,255,.05); --glass-dark:rgba(40,40,44,.58);
+    --glass-border:rgba(255,255,255,.10); --glass-edge:rgba(0,0,0,.25);
+    --glass-hi:inset 0 1px 0 rgba(255,255,255,.08);
+    --tint-glass:22%; --bar-base:rgba(30,30,34,.88);
+  }
+}
+:root[data-theme="dark"]{
+  --photo-opacity:.16;
+  --glass:rgba(24,24,27,.52); --glass-alt:rgba(32,32,36,.40); --glass-strong:rgba(20,20,23,.84);
+  --glass-soft:rgba(255,255,255,.05); --glass-dark:rgba(40,40,44,.58);
+  --glass-border:rgba(255,255,255,.10); --glass-edge:rgba(0,0,0,.25);
+  --glass-hi:inset 0 1px 0 rgba(255,255,255,.08);
+  --tint-glass:22%; --bar-base:rgba(30,30,34,.88);
+}
+
+html{background:var(--bg); transition:background-color .3s ease}
+body{background:transparent}
+body::before,body::after{content:""; position:fixed; inset:0; pointer-events:none}
+body::before{z-index:-2; background:url(__BG__) center/cover no-repeat; opacity:var(--photo-opacity); transition:opacity .3s ease}
+body::after{z-index:-1; background:linear-gradient(180deg, color-mix(in srgb,var(--bg) 10%,transparent) 0%, color-mix(in srgb,var(--bg) 45%,transparent) 100%)}
+
+.topbar-row,.subtabs{background:var(--glass-strong); -webkit-backdrop-filter:blur(18px) saturate(160%); backdrop-filter:blur(18px) saturate(160%); box-shadow:var(--glass-hi), 0 0 0 1px var(--glass-edge)}
+.subtabs{border:1px solid var(--glass-border)}
+.hero-now{background:var(--glass-dark); -webkit-backdrop-filter:var(--glass-blur); backdrop-filter:var(--glass-blur); border:1px solid rgba(255,255,255,.10); box-shadow:inset 0 1px 0 rgba(255,255,255,.10)}
+
+@media (prefers-reduced-transparency:reduce){
+  :root{--glass:var(--surface); --glass-alt:var(--surface-2); --glass-strong:var(--surface); --glass-soft:var(--surface-2); --photo-opacity:0}
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  :root{--glass:var(--surface); --glass-strong:var(--surface)}
+}

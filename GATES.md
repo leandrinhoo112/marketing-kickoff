@@ -1,20 +1,30 @@
-# Gates: Restore All Emojis & Purge Corrupt Characters
+# Gates: Interatividade e Edição no Planejamento Estratégico
 
-OWNS: index.html
+OWNS: marketing-inspirar-main/src/*, marketing-inspirar-main/index.html, planejamento-inspirar.html, GATES.md
 
-Scope: Reconstruct all 11 mood emojis, 3 energy levels, 3 feedback icons, and eliminate every single 0xFFFD character in index.html.
+Scope: Habilitar interatividade completa (concluir tarefas nos checklists e entregas por pessoa, editar indicadores com meta/realizado/semáforo/nota, alterar status e notas livres de iniciativas) com persistência em localStorage e sincronização pronta para o GitHub, sem alterar a identidade visual.
 
-- [x] G1: Total 0xFFFD corrupt characters in index.html is zero
-  CHECK: powershell -Command "$c = Get-Content index.html -Raw -Encoding UTF8; if (!($c.Contains([char]0xFFFD))) { Write-Host 'zero_corrupt' }"
-  EXPECT: zero_corrupt
-  EVIDENCE: Verified 0 remaining 0xFFFD characters across the entire file.
+- [x] G1: Checklist de iniciativas e entregas por pessoa alternam conclusão (done) e atualizam progresso com persistência
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G1
+  EXPECT: G1_PASSED
+  STATUS: PASSED (Tanto checklist de iniciativas quanto entregas por pessoa e setor possuem toggle interativo, visto verde, tachado e auto-save em localStorage)
 
-- [x] G2: Mood emojis and energy levels restored
-  CHECK: powershell -Command "$c = Get-Content index.html -Raw -Encoding UTF8; if ($c.Contains('😀') -and $c.Contains('🟢 Livre') -and $c.Contains('🟡 No limite') -and $c.Contains('🔴 Explodindo')) { Write-Host 'emojis_verified' }"
-  EXPECT: emojis_verified
-  EVIDENCE: Verified 😀, 😎, 🤩, 😐, 😴, 🤯, 😤, 😂, 🥲, ☕, 🍵 and 🟢, 🟡, 🔴 restored.
+- [x] G2: Indicadores permitem edição inline de Meta, Realizado, Semáforo e Nota com persistência no localStorage
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G2
+  EXPECT: G2_PASSED
+  STATUS: PASSED (Meta, Realizado e Nota possuem inputs inline com auto-save no storage; Semáforo possui seletor interativo com badges verde/amarelo/vermelho)
 
-- [x] G3: Desktop index.html is synchronized and clean
-  CHECK: powershell -Command "$c = Get-Content C:\Users\Usuario\Desktop\arquivos_github\index.html -Raw -Encoding UTF8; if (!($c.Contains([char]0xFFFD))) { Write-Host 'desktop_synced' }"
-  EXPECT: desktop_synced
-  EVIDENCE: Desktop arquivos_github/index.html contains 0 corrupt characters.
+- [x] G3: Status da iniciativa é editável e reflete no Kanban e nas contagens
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G3
+  EXPECT: G3_PASSED
+  STATUS: PASSED (Seletor de status implementado no painel de detalhes, atualiza colunas do Kanban e contadores do Painel Geral)
+
+- [x] G4: Recompilação íntegra do index.html mantendo 100% da identidade Editorial Zinc sem erros de sintaxe
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G4
+  EXPECT: G4_PASSED
+  STATUS: PASSED (Compilado index.html de 534 KB e espelho planejamento-inspirar.html, testados via Edge Headless com zero erros)
+
+- [x] G5: Sincronização de todos os arquivos atualizados em Desktop/arquivos_github
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G5
+  EXPECT: G5_PASSED
+  STATUS: PASSED (Pasta completa marketing-inspirar-main, planejamento-inspirar.html e GATES.md sincronizados no Desktop prontos para upload)
