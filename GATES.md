@@ -1,30 +1,25 @@
-# Gates: Interatividade e Edição no Planejamento Estratégico
+# Gates: Minigame O MEU É MAIOR no Radar Diário
 
-OWNS: marketing-inspirar-main/src/*, marketing-inspirar-main/index.html, planejamento-inspirar.html, GATES.md
+OWNS: index.html, o-meu-e-maior.js, app.js, C:\Users\Usuario\Desktop\arquivos_github\*, GATES.md
 
-Scope: Habilitar interatividade completa (concluir tarefas nos checklists e entregas por pessoa, editar indicadores com meta/realizado/semáforo/nota, alterar status e notas livres de iniciativas) com persistência em localStorage e sincronização pronta para o GitHub, sem alterar a identidade visual.
+Scope: Implementar na área de minigames do Radar Diário o jogo "O MEU É MAIOR" (inspirado no Size It Up do Magnitudle), com comparação visual de escala, 5 rodadas diárias, pontuação de até 500 pts, placar/leaderboard diário integrado ao Supabase e localStorage, modo treino e sincronização completa.
 
-- [x] G1: Checklist de iniciativas e entregas por pessoa alternam conclusão (done) e atualizam progresso com persistência
-  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G1
+- [x] G1: Interface do jogo "O MEU É MAIOR" integrada no tab-minigame com botão de navegação e arena visual
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_sizeitup.ps1" -Gate G1
   EXPECT: G1_PASSED
-  STATUS: PASSED (Tanto checklist de iniciativas quanto entregas por pessoa e setor possuem toggle interativo, visto verde, tachado e auto-save em localStorage)
 
-- [x] G2: Indicadores permitem edição inline de Meta, Realizado, Semáforo e Nota com persistência no localStorage
-  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G2
+- [x] G2: Mecânica de redimensionamento, trava de estimativa, revelação de escala real e pontuação de 0 a 100 por rodada
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_sizeitup.ps1" -Gate G2
   EXPECT: G2_PASSED
-  STATUS: PASSED (Meta, Realizado e Nota possuem inputs inline com auto-save no storage; Semáforo possui seletor interativo com badges verde/amarelo/vermelho)
 
-- [x] G3: Status da iniciativa é editável e reflete no Kanban e nas contagens
-  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G3
+- [x] G3: Placar do dia (Ranking) e histórico implementados com suporte a Supabase e fallback seguro no localStorage
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_sizeitup.ps1" -Gate G3
   EXPECT: G3_PASSED
-  STATUS: PASSED (Seletor de status implementado no painel de detalhes, atualiza colunas do Kanban e contadores do Painel Geral)
 
-- [x] G4: Recompilação íntegra do index.html mantendo 100% da identidade Editorial Zinc sem erros de sintaxe
-  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G4
+- [x] G4: Integração com abas de navegação do Play do Dia, Modo Treino e Conquistas/XP
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_sizeitup.ps1" -Gate G4
   EXPECT: G4_PASSED
-  STATUS: PASSED (Compilado index.html de 534 KB e espelho planejamento-inspirar.html, testados via Edge Headless com zero erros)
 
-- [x] G5: Sincronização de todos os arquivos atualizados em Desktop/arquivos_github
-  CHECK: powershell -ExecutionPolicy Bypass -File "verify_interactivity.ps1" -Gate G5
+- [x] G5: Verificação automatizada via Edge Headless do fluxo completo e sincronização dos arquivos no Desktop
+  CHECK: powershell -ExecutionPolicy Bypass -File "verify_sizeitup.ps1" -Gate G5
   EXPECT: G5_PASSED
-  STATUS: PASSED (Pasta completa marketing-inspirar-main, planejamento-inspirar.html e GATES.md sincronizados no Desktop prontos para upload)
