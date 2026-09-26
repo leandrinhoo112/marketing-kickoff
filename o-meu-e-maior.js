@@ -7,8 +7,8 @@
 (function () {
     'use strict';
 
-    // Banco de 70 itens com proporções e alturas reais (em metros)
-    const ITEMS = [
+    // Banco de fallback de 70 itens com proporções e alturas reais (em metros)
+    const FALLBACK_ITEMS = [
         // =====================================================================
         // CATEGORIA 1: PEQUENO (0.027m a 0.35m / 2.7 cm a 35 cm)
         // =====================================================================
@@ -660,6 +660,14 @@
         }
     ];
 
+    // Retorna o catálogo expandido de 540 itens se carregado via o-meu-e-maior-items.js, ou o fallback de 70
+    function getGameItems() {
+        if (typeof window !== 'undefined' && window.SIZE_IT_UP_ITEMS && Array.isArray(window.SIZE_IT_UP_ITEMS) && window.SIZE_IT_UP_ITEMS.length >= 500) {
+            return window.SIZE_IT_UP_ITEMS;
+        }
+        return FALLBACK_ITEMS;
+    }
+
     // Gerador de pares balanceados com base na data (Seed)
     function getTodayKey() {
         const d = new Date();
@@ -682,12 +690,13 @@
 
     // Gera as 5 rodadas diárias com proporções controladas e balanceadas
     function generateDailyRounds(isUnlimited = false) {
+        const items = getGameItems();
         const seedBase = isUnlimited ? Math.floor(Math.random() * 1000000) : getSeedFromString(getTodayKey());
         let seed = seedBase;
 
         // Plano balanceado de categorias: pares comparáveis visualmente
         const plan = [
-            { refCat: ['pequeno'], targetCat: ['pequeno', 'medio_pequeno'], minRatio: 0.35, maxRatio: 4.5 },
+            { refCat: ['micro_pequeno', 'pequeno'], targetCat: ['micro_pequeno', 'pequeno', 'medio_pequeno'], minRatio: 0.35, maxRatio: 4.5 },
             { refCat: ['pequeno', 'medio_pequeno'], targetCat: ['medio_pequeno'], minRatio: 0.4, maxRatio: 4.5 },
             { refCat: ['medio_pequeno', 'medio'], targetCat: ['medio'], minRatio: 0.35, maxRatio: 4.5 },
             { refCat: ['medio'], targetCat: ['medio', 'grande'], minRatio: 0.4, maxRatio: 5.0 },
@@ -698,14 +707,14 @@
         const usedIds = new Set();
 
         plan.forEach((p, idx) => {
-            const availableRefs = ITEMS.filter(it => p.refCat.includes(it.category) && !usedIds.has(it.id));
-            const refPool = availableRefs.length > 0 ? availableRefs : ITEMS.filter(it => p.refCat.includes(it.category));
+            const availableRefs = items.filter(it => p.refCat.includes(it.category) && !usedIds.has(it.id));
+            const refPool = availableRefs.length > 0 ? availableRefs : items.filter(it => p.refCat.includes(it.category));
             const refIdx = Math.floor(pseudoRandom(seed++) * refPool.length);
             const refItem = refPool[refIdx];
             usedIds.add(refItem.id);
 
             // Filtra alvos dentro do intervalo aceitável de proporção (minRatio a maxRatio)
-            let eligibleTargets = ITEMS.filter(it => {
+            let eligibleTargets = items.filter(it => {
                 if (it.id === refItem.id || usedIds.has(it.id)) return false;
                 if (!p.targetCat.includes(it.category)) return false;
                 const ratio = it.size / refItem.size;
@@ -713,10 +722,10 @@
             });
 
             if (eligibleTargets.length === 0) {
-                eligibleTargets = ITEMS.filter(it => it.id !== refItem.id && p.targetCat.includes(it.category));
+                eligibleTargets = items.filter(it => it.id !== refItem.id && p.targetCat.includes(it.category));
             }
             if (eligibleTargets.length === 0) {
-                eligibleTargets = ITEMS.filter(it => it.id !== refItem.id);
+                eligibleTargets = items.filter(it => it.id !== refItem.id);
             }
 
             const targetIdx = Math.floor(pseudoRandom(seed++) * eligibleTargets.length);
