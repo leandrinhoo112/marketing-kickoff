@@ -1,6 +1,6 @@
 ﻿/**
- * Catálogo Expandido de Itens e Silhuetas para o jogo O MEU É MAIOR
- * Contém 540 itens reais categorizados e proporcionados.
+ * CatÃ¡logo Expandido de Itens e Silhuetas para o jogo O MEU Ã‰ MAIOR
+ * ContÃ©m 540 itens reais categorizados e proporcionados com silhuetas condizentes.
  */
 
 window.SIZE_IT_UP_ITEMS = [
@@ -11,7 +11,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '1,2 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><ellipse cx='26' cy='45' rx='18' ry='14' fill='currentColor'/><circle cx='46' cy='45' r='4' fill='currentColor'/><ellipse cx='58' cy='45' rx='10' ry='8' fill='currentColor'/><circle cx='76' cy='42' r='8' fill='currentColor'/><path d='M82,40 L88,38 L84,43' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M76,36 C80,24 88,20 92,15' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round'/><path d='M74,36 C72,24 76,18 78,12' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round'/><path d='M48,45 L40,28 L32,22' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><path d='M56,45 L54,26 L50,18' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><path d='M62,45 L68,28 L74,22' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><path d='M48,45 L38,62 L28,70' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><path d='M56,45 L54,64 L52,74' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><path d='M62,45 L70,62 L78,72' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round'/></svg>"
         },
         {
             id: 'grao_cafe',
@@ -20,7 +20,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '1 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><ellipse cx='45' cy='45' rx='32' ry='40' fill='#78350f'/><path d='M45,10 Q34,35 48,50 Q36,68 45,80' fill='none' stroke='#3e1d08' stroke-width='6' stroke-linecap='round'/></svg>"
         },
         {
             id: 'abelha',
@@ -29,7 +29,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '1,5 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><ellipse cx='42' cy='22' rx='20' ry='10' transform='rotate(-25 42 22)' fill='rgba(255,255,255,0.35)' stroke='rgba(255,255,255,0.6)' stroke-width='1.5'/><ellipse cx='58' cy='24' rx='16' ry='8' transform='rotate(15 58 24)' fill='rgba(255,255,255,0.3)' stroke='rgba(255,255,255,0.6)' stroke-width='1.5'/><ellipse cx='36' cy='55' rx='22' ry='16' fill='#eab308'/><path d='M22,46 C26,42 28,68 22,64' stroke='#111' stroke-width='5' fill='none'/><path d='M32,40 C36,40 38,70 32,70' stroke='#111' stroke-width='5' fill='none'/><path d='M42,40 C46,40 48,70 42,70' stroke='#111' stroke-width='5' fill='none'/><polygon points='14,55 10,55 14,53' fill='#111'/><circle cx='58' cy='52' r='12' fill='#111'/><circle cx='70' cy='50' r='9' fill='#111'/><circle cx='72' cy='48' r='3' fill='rgba(255,255,255,0.7)'/><path d='M74,44 C78,35 84,32 86,30' fill='none' stroke='#111' stroke-width='2' stroke-linecap='round'/></svg>"
         },
         {
             id: 'joaninha',
@@ -38,7 +38,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '0,8 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 80 80' width='100%' height='100%'><path d='M20,25 L10,18 M20,40 L8,40 M20,55 L10,62' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><path d='M60,25 L70,18 M60,40 L72,40 M60,55 L70,62' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><circle cx='40' cy='44' r='26' fill='#ef4444'/><line x1='40' y1='18' x2='40' y2='70' stroke='#111' stroke-width='3'/><circle cx='28' cy='34' r='5' fill='#111'/><circle cx='52' cy='34' r='5' fill='#111'/><circle cx='26' cy='52' r='5' fill='#111'/><circle cx='54' cy='52' r='5' fill='#111'/><circle cx='38' cy='62' r='4' fill='#111'/><circle cx='42' cy='62' r='4' fill='#111'/><circle cx='40' cy='18' r='10' fill='#111'/><path d='M36,12 C34,6 30,4 26,4' stroke='#111' stroke-width='2' fill='none' stroke-linecap='round'/><path d='M44,12 C46,6 50,4 54,4' stroke='#111' stroke-width='2' fill='none' stroke-linecap='round'/></svg>"
         },
         {
             id: 'dente',
@@ -47,7 +47,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><rect x='15' y='20' width='70' height='60' rx='6' fill='currentColor'/><rect x='22' y='28' width='56' height='44' rx='3' fill='rgba(0,0,0,0.25)'/><circle cx='50' cy='50' r='8' fill='rgba(255,255,255,0.2)'/></svg>"
+            svg: "<svg viewBox='0 0 80 100' width='100%' height='100%'><path d='M15,35 C15,15 30,12 40,18 C50,12 65,15 65,35 C65,50 60,60 55,75 C52,85 48,92 46,92 C44,92 44,80 40,65 C36,80 36,92 34,92 C32,92 28,85 25,75 C20,60 15,50 15,35 Z' fill='currentColor'/><ellipse cx='30' cy='25' rx='6' ry='3' fill='rgba(255,255,255,0.4)'/><ellipse cx='50' cy='25' rx='6' ry='3' fill='rgba(255,255,255,0.4)'/></svg>"
         },
         {
             id: 'moeda_5c',
@@ -56,7 +56,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2,2 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'moeda_10c',
@@ -65,7 +65,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'moeda_25c',
@@ -74,7 +74,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2,5 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'moeda_50c',
@@ -83,7 +83,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2,3 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'moeda_1r',
@@ -92,7 +92,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2,7 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'clipes',
@@ -101,7 +101,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '3,3 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><rect x='15' y='20' width='70' height='60' rx='6' fill='currentColor'/><rect x='22' y='28' width='56' height='44' rx='3' fill='rgba(0,0,0,0.25)'/><circle cx='50' cy='50' r='8' fill='rgba(255,255,255,0.2)'/></svg>"
+            svg: "<svg viewBox='0 0 60 100' width='100%' height='100%'><path d='M25,80 L25,30 C25,18 45,18 45,30 L45,75 C45,88 15,88 15,75 L15,22 C15,5 55,5 55,22 L55,70' fill='none' stroke='currentColor' stroke-width='6' stroke-linecap='round'/></svg>"
         },
         {
             id: 'tampinha',
@@ -110,7 +110,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '1,2 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 50 140' width='100%' height='100%'><rect x='18' y='5' width='14' height='14' rx='2' fill='currentColor'/><path d='M19,19 C12,30 6,45 6,65 L6,125 C6,132 12,136 25,136 C38,136 44,132 44,125 L44,65 C44,45 38,30 31,19 Z' fill='currentColor'/><ellipse cx='25' cy='95' rx='16' ry='14' fill='rgba(255,255,255,0.15)'/></svg>"
         },
         {
             id: 'dado',
@@ -128,7 +128,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '0,5 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'microsd',
@@ -191,7 +191,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '5,5 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 60 120' width='100%' height='100%'><circle cx='30' cy='25' r='18' fill='currentColor'/><circle cx='30' cy='25' r='8' fill='rgba(0,0,0,0.5)'/><rect x='27' y='42' width='6' height='70' rx='2' fill='currentColor'/><rect x='33' y='85' width='10' height='5' fill='currentColor'/><rect x='33' y='96' width='14' height='6' fill='currentColor'/><rect x='33' y='107' width='8' height='4' fill='currentColor'/></svg>"
         },
         {
             id: 'pendrive',
@@ -236,7 +236,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 80 90' width='100%' height='100%'><circle cx='40' cy='52' r='26' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='40' cy='52' r='20' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><polygon points='40,12 50,22 40,26 30,22' fill='#38bdf8'/><polygon points='35,16 45,16 48,22 32,22' fill='#e0f2fe'/></svg>"
         },
         {
             id: 'parafuso',
@@ -245,7 +245,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '4 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 60 100' width='100%' height='100%'><rect x='15' y='12' width='30' height='10' rx='2' fill='currentColor'/><line x1='24' y1='14' x2='36' y2='14' stroke='rgba(0,0,0,0.4)' stroke-width='3'/><rect x='24' y='22' width='12' height='65' fill='currentColor'/><polygon points='24,87 36,87 30,96' fill='currentColor'/><line x1='21' y1='34' x2='39' y2='30' stroke='rgba(255,255,255,0.5)' stroke-width='3'/><line x1='21' y1='46' x2='39' y2='42' stroke='rgba(255,255,255,0.5)' stroke-width='3'/><line x1='21' y1='58' x2='39' y2='54' stroke='rgba(255,255,255,0.5)' stroke-width='3'/><line x1='21' y1='70' x2='39' y2='66' stroke='rgba(255,255,255,0.5)' stroke-width='3'/><line x1='21' y1='82' x2='39' y2='78' stroke='rgba(255,255,255,0.5)' stroke-width='3'/></svg>"
         },
         {
             id: 'apontador',
@@ -263,7 +263,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2,8 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 60 110' width='100%' height='100%'><rect x='22' y='4' width='16' height='8' rx='2' fill='currentColor'/><rect x='10' y='12' width='40' height='92' rx='6' fill='currentColor'/><rect x='14' y='35' width='32' height='45' fill='rgba(0,0,0,0.25)'/><text x='30' y='65' font-size='24' font-family='sans-serif' font-weight='bold' fill='rgba(255,255,255,0.6)' text-anchor='middle'>+</text></svg>"
+            svg: "<svg viewBox='0 0 100 110' width='100%' height='100%'><path d='M20,60 C20,25 80,25 80,60' fill='none' stroke='currentColor' stroke-width='8' stroke-linecap='round'/><rect x='12' y='55' width='16' height='35' rx='7' fill='currentColor'/><rect x='72' y='55' width='16' height='35' rx='7' fill='currentColor'/></svg>"
         },
         {
             id: 'palheta',
@@ -272,7 +272,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '3 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'botao_camisa',
@@ -281,7 +281,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '1,2 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'cadeado_pequeno',
@@ -317,7 +317,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '3 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><path d='M15,10 L85,10 C85,55 70,75 50,75 C30,75 15,55 15,10 Z' fill='currentColor'/><path d='M85,20 C95,20 100,32 98,45 C95,55 85,55 80,52' fill='none' stroke='currentColor' stroke-width='8' stroke-linecap='round'/><ellipse cx='50' cy='10' rx='35' ry='6' fill='rgba(255,255,255,0.2)'/></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><ellipse cx='45' cy='45' rx='32' ry='40' fill='#78350f'/><path d='M45,10 Q34,35 48,50 Q36,68 45,80' fill='none' stroke='#3e1d08' stroke-width='6' stroke-linecap='round'/></svg>"
         },
         {
             id: 'chiclete',
@@ -335,7 +335,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '1,5 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'moeda_dolar',
@@ -344,7 +344,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2,6 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'moeda_euro',
@@ -353,7 +353,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2,6 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'plug_tomada',
@@ -371,7 +371,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '4 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 70 140' width='100%' height='100%'><rect x='10' y='10' width='50' height='122' rx='5' fill='currentColor'/><rect x='12' y='12' width='46' height='38' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='32' width='3' height='14' rx='1.5' fill='rgba(255,255,255,0.7)'/><line x1='10' y1='52' x2='60' y2='52' stroke='rgba(0,0,0,0.4)' stroke-width='3'/><rect x='12' y='54' width='46' height='75' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='60' width='3' height='26' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='14' y='132' width='8' height='4' rx='1' fill='currentColor'/><rect x='48' y='132' width='8' height='4' rx='1' fill='currentColor'/></svg>"
         },
         {
             id: 'broca',
@@ -380,7 +380,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '5 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 110 90' width='100%' height='100%'><rect x='85' y='22' width='10' height='12' fill='rgba(255,255,255,0.5)'/><polygon points='95,27 108,27 105,29' fill='currentColor'/><rect x='25' y='16' width='60' height='26' rx='5' fill='currentColor'/><rect x='30' y='20' width='20' height='6' rx='1' fill='rgba(0,0,0,0.3)'/><path d='M42,42 L48,76 L62,76 L54,42 Z' fill='currentColor'/><rect x='55' y='48' width='6' height='8' rx='2' fill='#ef4444'/><rect x='42' y='74' width='32' height='12' rx='3' fill='rgba(0,0,0,0.35)'/></svg>"
         },
         {
             id: 'pilha_9v',
@@ -398,7 +398,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'comprimido',
@@ -407,7 +407,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '2,5 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'fita_isolante',
@@ -416,7 +416,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '5 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'isqueiro',
@@ -452,7 +452,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '4 cm',
             category: 'micro_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 60 110' width='100%' height='100%'><path d='M20,95 L20,30 C20,18 40,18 40,30 L40,95 C40,102 20,102 20,95 Z' fill='none' stroke='currentColor' stroke-width='5'/><rect x='15' y='18' width='30' height='16' rx='5' fill='currentColor'/><circle cx='30' cy='96' r='6' fill='none' stroke='currentColor' stroke-width='4'/></svg>"
         },
         {
             id: 'xicara',
@@ -461,7 +461,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '8 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><path d='M15,10 L85,10 C85,55 70,75 50,75 C30,75 15,55 15,10 Z' fill='currentColor'/><path d='M85,20 C95,20 100,32 98,45 C95,55 85,55 80,52' fill='none' stroke='currentColor' stroke-width='8' stroke-linecap='round'/><ellipse cx='50' cy='10' rx='35' ry='6' fill='rgba(255,255,255,0.2)'/></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><ellipse cx='45' cy='45' rx='32' ry='40' fill='#78350f'/><path d='M45,10 Q34,35 48,50 Q36,68 45,80' fill='none' stroke='#3e1d08' stroke-width='6' stroke-linecap='round'/></svg>"
         },
         {
             id: 'maca',
@@ -803,7 +803,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '21 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 65 130' width='100%' height='100%'><rect x='3' y='3' width='59' height='124' rx='12' fill='currentColor'/><rect x='8' y='12' width='49' height='106' rx='6' fill='rgba(0,0,0,0.35)'/><circle cx='32.5' cy='7' r='2.5' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 75' width='100%' height='100%'><path d='M22,18 C35,14 75,14 88,18 C102,22 108,48 98,68 C92,76 80,72 74,60 L68,48 L42,48 L36,60 C30,72 18,76 12,68 C2,48 8,22 22,18 Z' fill='currentColor'/><polygon points='26,30 32,30 32,24 38,24 38,30 44,30 44,36 38,36 38,42 32,42 32,36 26,36' fill='rgba(0,0,0,0.4)'/><circle cx='78' cy='28' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='86' cy='33' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='70' cy='33' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='78' cy='38' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='44' cy='46' r='7' fill='rgba(0,0,0,0.5)'/><circle cx='44' cy='46' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='66' cy='46' r='7' fill='rgba(0,0,0,0.5)'/><circle cx='66' cy='46' r='4' fill='rgba(255,255,255,0.4)'/><rect x='45' y='20' width='20' height='12' rx='2' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'controle_ps5',
@@ -812,7 +812,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '11 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 75' width='100%' height='100%'><path d='M22,18 C35,14 75,14 88,18 C102,22 108,48 98,68 C92,76 80,72 74,60 L68,48 L42,48 L36,60 C30,72 18,76 12,68 C2,48 8,22 22,18 Z' fill='currentColor'/><polygon points='26,30 32,30 32,24 38,24 38,30 44,30 44,36 38,36 38,42 32,42 32,36 26,36' fill='rgba(0,0,0,0.4)'/><circle cx='78' cy='28' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='86' cy='33' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='70' cy='33' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='78' cy='38' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='44' cy='46' r='7' fill='rgba(0,0,0,0.5)'/><circle cx='44' cy='46' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='66' cy='46' r='7' fill='rgba(0,0,0,0.5)'/><circle cx='66' cy='46' r='4' fill='rgba(255,255,255,0.4)'/><rect x='45' y='20' width='20' height='12' rx='2' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'mouse',
@@ -821,7 +821,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '12 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 70 100' width='100%' height='100%'><path d='M35,15 C20,15 15,30 15,55 C15,80 22,90 35,90 C48,90 55,80 55,55 C55,30 50,15 35,15 Z' fill='currentColor'/><line x1='35' y1='15' x2='35' y2='45' stroke='rgba(0,0,0,0.4)' stroke-width='2'/><rect x='33' y='26' width='4' height='12' rx='2' fill='rgba(255,255,255,0.6)'/></svg>"
         },
         {
             id: 'teclado_comp',
@@ -839,7 +839,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '18 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 90' width='100%' height='100%'><line x1='28' y1='45' x2='15' y2='10' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='45' y1='45' x2='38' y2='8' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='65' y1='45' x2='72' y2='8' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='82' y1='45' x2='95' y2='10' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><rect x='18' y='45' width='74' height='25' rx='5' fill='currentColor'/><circle cx='35' cy='58' r='2' fill='#22c55e'/><circle cx='45' cy='58' r='2' fill='#22c55e'/><circle cx='55' cy='58' r='2' fill='#22c55e'/><circle cx='65' cy='58' r='2' fill='#22c55e'/></svg>"
         },
         {
             id: 'headphone',
@@ -857,7 +857,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '8 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 70' width='100%' height='100%'><rect x='10' y='15' width='70' height='40' rx='16' fill='currentColor'/><ellipse cx='30' cy='35' rx='12' ry='12' fill='rgba(0,0,0,0.35)'/><ellipse cx='60' cy='35' rx='12' ry='12' fill='rgba(0,0,0,0.35)'/><circle cx='30' cy='35' r='5' fill='rgba(255,255,255,0.5)'/><circle cx='60' cy='35' r='5' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'caixa_som_portatil',
@@ -875,7 +875,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '8 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><rect x='15' y='20' width='70' height='60' rx='6' fill='currentColor'/><rect x='22' y='28' width='56' height='44' rx='3' fill='rgba(0,0,0,0.25)'/><circle cx='50' cy='50' r='8' fill='rgba(255,255,255,0.2)'/></svg>"
         },
         {
             id: 'powerbank',
@@ -983,7 +983,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '6,7 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><polygon points='50,30 65,42 60,58 40,58 35,42' fill='rgba(0,0,0,0.3)'/><circle cx='50' cy='50' r='46' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='4'/></svg>"
+            svg: "<svg viewBox='0 0 140 70' width='100%' height='100%'><path d='M10,55 C10,55 20,62 50,62 C90,62 130,55 130,45 C130,30 110,25 95,28 L75,10 C65,10 55,20 45,35 L20,40 C12,43 10,50 10,55 Z' fill='currentColor'/><rect x='10' y='58' width='120' height='8' rx='4' fill='rgba(255,255,255,0.3)'/></svg>"
         },
         {
             id: 'bola_beisebol',
@@ -1001,7 +1001,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '7,6 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'bola_sinuca',
@@ -1010,7 +1010,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '5,7 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><polygon points='50,30 65,42 60,58 40,58 35,42' fill='rgba(0,0,0,0.3)'/><circle cx='50' cy='50' r='46' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='4'/></svg>"
+            svg: "<svg viewBox='0 0 150 90' width='100%' height='100%'><polygon points='10,35 140,35 130,55 20,55' fill='currentColor'/><polygon points='20,38 130,38 122,52 28,52' fill='#16a34a'/><circle cx='20' cy='38' r='4' fill='#111'/><circle cx='75' cy='37' r='3.5' fill='#111'/><circle cx='130' cy='38' r='4' fill='#111'/><circle cx='26' cy='52' r='4' fill='#111'/><circle cx='75' cy='53' r='3.5' fill='#111'/><circle cx='124' cy='52' r='4' fill='#111'/><circle cx='100' cy='45' r='2' fill='#fef08a'/><circle cx='104' cy='43' r='2' fill='#ef4444'/><circle cx='104' cy='47' r='2' fill='#3b82f6'/><rect x='20' y='52' width='110' height='12' fill='currentColor'/><rect x='25' y='64' width='12' height='22' rx='3' fill='currentColor'/><rect x='113' y='64' width='12' height='22' rx='3' fill='currentColor'/></svg>"
         },
         {
             id: 'peteca',
@@ -1100,7 +1100,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '4 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'fatia_bolo',
@@ -1190,7 +1190,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '32 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 80 110' width='100%' height='100%'><rect x='36' y='26' width='8' height='80' rx='3' fill='currentColor'/><polygon points='14,14 66,14 62,26 18,26' fill='currentColor'/><path d='M62,14 C72,16 76,28 72,36' stroke='currentColor' stroke-width='6' fill='none' stroke-linecap='round'/></svg>"
         },
         {
             id: 'chave_fenda',
@@ -1199,7 +1199,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '25 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 50 120' width='100%' height='100%'><rect x='20' y='10' width='10' height='45' rx='4' fill='currentColor'/><rect x='23' y='55' width='4' height='55' fill='currentColor'/><polygon points='21,110 29,110 25,116' fill='currentColor'/></svg>"
         },
         {
             id: 'alicate',
@@ -1208,7 +1208,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '20 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><path d='M25,15 L32,38 L22,110' stroke='currentColor' stroke-width='6' stroke-linecap='round' fill='none'/><path d='M45,15 L38,38 L48,110' stroke='currentColor' stroke-width='6' stroke-linecap='round' fill='none'/><circle cx='35' cy='38' r='5' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'furadeira',
@@ -1217,7 +1217,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '26 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 110 90' width='100%' height='100%'><rect x='85' y='22' width='10' height='12' fill='rgba(255,255,255,0.5)'/><polygon points='95,27 108,27 105,29' fill='currentColor'/><rect x='25' y='16' width='60' height='26' rx='5' fill='currentColor'/><rect x='30' y='20' width='20' height='6' rx='1' fill='rgba(0,0,0,0.3)'/><path d='M42,42 L48,76 L62,76 L54,42 Z' fill='currentColor'/><rect x='55' y='48' width='6' height='8' rx='2' fill='#ef4444'/><rect x='42' y='74' width='32' height='12' rx='3' fill='rgba(0,0,0,0.35)'/></svg>"
         },
         {
             id: 'trena',
@@ -1253,7 +1253,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '24 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 100 85' width='100%' height='100%'><rect x='15' y='18' width='22' height='20' rx='2' fill='currentColor'/><rect x='34' y='14' width='44' height='28' rx='8' fill='currentColor'/><ellipse cx='78' cy='28' rx='4' ry='12' fill='rgba(0,0,0,0.4)'/><path d='M50,42 L56,76 C56,80 46,80 44,76 L40,42 Z' fill='currentColor'/><rect x='42' y='52' width='4' height='8' rx='1' fill='#ef4444'/></svg>"
         },
         {
             id: 'chapinha',
@@ -1280,7 +1280,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '28 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'perfume',
@@ -1307,7 +1307,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '18 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 60 110' width='100%' height='100%'><rect x='22' y='4' width='16' height='8' rx='2' fill='currentColor'/><rect x='10' y='12' width='40' height='92' rx='6' fill='currentColor'/><rect x='14' y='35' width='32' height='45' fill='rgba(0,0,0,0.25)'/><text x='30' y='65' font-size='24' font-family='sans-serif' font-weight='bold' fill='rgba(255,255,255,0.6)' text-anchor='middle'>+</text></svg>"
+            svg: "<svg viewBox='0 0 80 100' width='100%' height='100%'><path d='M15,35 C15,15 30,12 40,18 C50,12 65,15 65,35 C65,50 60,60 55,75 C52,85 48,92 46,92 C44,92 44,80 40,65 C36,80 36,92 34,92 C32,92 28,85 25,75 C20,60 15,50 15,35 Z' fill='currentColor'/><ellipse cx='30' cy='25' rx='6' ry='3' fill='rgba(255,255,255,0.4)'/><ellipse cx='50' cy='25' rx='6' ry='3' fill='rgba(255,255,255,0.4)'/></svg>"
         },
         {
             id: 'shampoo',
@@ -1334,7 +1334,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '18 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 80 110' width='100%' height='100%'><rect x='12' y='10' width='56' height='90' rx='4' fill='currentColor'/><rect x='16' y='15' width='48' height='80' rx='2' fill='rgba(0,0,0,0.25)'/><line x1='12' y1='10' x2='12' y2='100' stroke='rgba(255,255,255,0.4)' stroke-width='6'/></svg>"
+            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><rect x='10' y='8' width='60' height='138' fill='none' stroke='currentColor' stroke-width='5'/><rect x='14' y='12' width='52' height='130' fill='currentColor'/><rect x='19' y='18' width='18' height='45' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='43' y='18' width='18' height='45' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='19' y='72' width='18' height='58' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='43' y='72' width='18' height='58' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><circle cx='60' cy='82' r='3.5' fill='rgba(255,255,255,0.9)'/><rect x='58' y='78' width='4' height='12' rx='1' fill='rgba(255,255,255,0.4)'/></svg>"
         },
         {
             id: 'abajur_pequeno',
@@ -1442,7 +1442,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '20 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><path d='M15,10 L85,10 C85,55 70,75 50,75 C30,75 15,55 15,10 Z' fill='currentColor'/><path d='M85,20 C95,20 100,32 98,45 C95,55 85,55 80,52' fill='none' stroke='currentColor' stroke-width='8' stroke-linecap='round'/><ellipse cx='50' cy='10' rx='35' ry='6' fill='rgba(255,255,255,0.2)'/></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><ellipse cx='45' cy='45' rx='32' ry='40' fill='#78350f'/><path d='M45,10 Q34,35 48,50 Q36,68 45,80' fill='none' stroke='#3e1d08' stroke-width='6' stroke-linecap='round'/></svg>"
         },
         {
             id: 'liquidificador_copo',
@@ -1451,7 +1451,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '26 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><path d='M15,10 L85,10 C85,55 70,75 50,75 C30,75 15,55 15,10 Z' fill='currentColor'/><path d='M85,20 C95,20 100,32 98,45 C95,55 85,55 80,52' fill='none' stroke='currentColor' stroke-width='8' stroke-linecap='round'/><ellipse cx='50' cy='10' rx='35' ry='6' fill='rgba(255,255,255,0.2)'/></svg>"
+            svg: "<svg viewBox='0 0 80 110' width='100%' height='100%'><polygon points='24,15 56,15 50,65 30,65' fill='rgba(255,255,255,0.3)' stroke='currentColor' stroke-width='3'/><path d='M54,25 C62,25 64,45 52,50' stroke='currentColor' stroke-width='4' fill='none'/><rect x='22' y='10' width='36' height='6' rx='2' fill='currentColor'/><rect x='25' y='65' width='30' height='35' rx='6' fill='currentColor'/><circle cx='40' cy='82' r='5' fill='rgba(255,255,255,0.6)'/></svg>"
         },
         {
             id: 'sanduicheira',
@@ -1469,7 +1469,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '20 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><rect x='26' y='8' width='20' height='14' rx='3' fill='#d97706'/><rect x='54' y='8' width='20' height='14' rx='3' fill='#d97706'/><rect x='14' y='20' width='72' height='48' rx='12' fill='currentColor'/><rect x='24' y='18' width='24' height='4' rx='1' fill='rgba(0,0,0,0.4)'/><rect x='52' y='18' width='24' height='4' rx='1' fill='rgba(0,0,0,0.4)'/><rect x='84' y='32' width='6' height='16' rx='2' fill='rgba(255,255,255,0.7)'/></svg>"
         },
         {
             id: 'banana',
@@ -1496,7 +1496,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '24 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 120 85' width='100%' height='100%'><polygon points='22,12 98,12 94,60 26,60' fill='currentColor'/><polygon points='27,16 93,16 90,56 30,56' fill='rgba(0,0,0,0.45)'/><polygon points='10,60 110,60 116,72 4,72' fill='currentColor'/><rect x='48' y='63' width='24' height='6' rx='1' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'pizza',
@@ -1541,7 +1541,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '20 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><path d='M15,10 L85,10 C85,55 70,75 50,75 C30,75 15,55 15,10 Z' fill='currentColor'/><path d='M85,20 C95,20 100,32 98,45 C95,55 85,55 80,52' fill='none' stroke='currentColor' stroke-width='8' stroke-linecap='round'/><ellipse cx='50' cy='10' rx='35' ry='6' fill='rgba(255,255,255,0.2)'/></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><path d='M45,18 C30,8 10,25 15,55 C20,75 38,85 45,85 C52,85 70,75 75,55 C80,25 60,8 45,18 Z' fill='currentColor'/><path d='M45,18 C48,8 55,4 60,3' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/></svg>"
         },
         {
             id: 'relogio_parede_p',
@@ -1550,7 +1550,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '25 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'vela_perfumada',
@@ -1604,7 +1604,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '10 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'garrafa_termica',
@@ -1613,7 +1613,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '30 cm',
             category: 'pequeno',
-            svg: "<svg viewBox='0 0 50 140' width='100%' height='100%'><rect x='18' y='5' width='14' height='14' rx='2' fill='currentColor'/><path d='M19,19 C12,30 6,45 6,65 L6,125 C6,132 12,136 25,136 C38,136 44,132 44,125 L44,65 C44,45 38,30 31,19 Z' fill='currentColor'/><ellipse cx='25' cy='95' rx='16' ry='14' fill='rgba(255,255,255,0.15)'/></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><ellipse cx='45' cy='45' rx='32' ry='40' fill='#78350f'/><path d='M45,10 Q34,35 48,50 Q36,68 45,80' fill='none' stroke='#3e1d08' stroke-width='6' stroke-linecap='round'/></svg>"
         },
         {
             id: 'abridor_vinho',
@@ -1631,7 +1631,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '32 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 75' width='100%' height='100%'><rect x='10' y='10' width='90' height='55' rx='5' fill='currentColor'/><rect x='16' y='16' width='55' height='42' rx='3' fill='rgba(0,0,0,0.45)'/><rect x='76' y='18' width='18' height='10' rx='2' fill='rgba(0,0,0,0.5)'/><circle cx='85' cy='38' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='85' cy='52' r='4' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'air_fryer',
@@ -1640,7 +1640,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '36 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 100' width='100%' height='100%'><rect x='15' y='12' width='60' height='76' rx='18' fill='currentColor'/><ellipse cx='45' cy='24' rx='14' ry='6' fill='rgba(0,0,0,0.4)'/><circle cx='45' cy='24' r='3' fill='#38bdf8'/><path d='M18,40 L72,40 L70,80 C70,84 64,86 45,86 C26,86 20,84 20,80 Z' fill='rgba(0,0,0,0.2)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='41' y='48' width='8' height='24' rx='3' fill='rgba(255,255,255,0.7)'/></svg>"
         },
         {
             id: 'cafeteira_expresso',
@@ -1649,7 +1649,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '34 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 80 100' width='100%' height='100%'><path d='M25,12 L55,12 L55,30 L35,30 L35,70 L55,70 L55,88 L25,88 Z' fill='currentColor'/><rect x='36' y='42' width='26' height='26' rx='4' fill='rgba(255,255,255,0.3)'/><path d='M62,46 C68,46 70,56 62,64' stroke='currentColor' stroke-width='3' fill='none'/></svg>"
         },
         {
             id: 'pizza_familia',
@@ -1676,7 +1676,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '45 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 80 100' width='100%' height='100%'><path d='M32,15 C32,8 48,8 48,15' fill='none' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><path d='M18,30 C18,18 62,18 62,30 L65,85 C65,92 58,95 40,95 C22,95 15,92 15,85 Z' fill='currentColor'/><rect x='22' y='52' width='36' height='32' rx='6' fill='rgba(0,0,0,0.25)'/><line x1='25' y1='56' x2='55' y2='56' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><line x1='22' y1='34' x2='58' y2='34' stroke='rgba(0,0,0,0.3)' stroke-width='2.5'/><path d='M15,40 C10,50 10,75 14,85' fill='none' stroke='currentColor' stroke-width='3'/><path d='M65,40 C70,50 70,75 66,85' fill='none' stroke='currentColor' stroke-width='3'/></svg>"
         },
         {
             id: 'mala_bordo',
@@ -1685,7 +1685,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '55 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='32' y='5' width='16' height='4' rx='2' fill='currentColor'/><line x1='34' y1='9' x2='34' y2='25' stroke='currentColor' stroke-width='3'/><line x1='46' y1='9' x2='46' y2='25' stroke='currentColor' stroke-width='3'/><rect x='16' y='25' width='48' height='75' rx='7' fill='currentColor'/><line x1='22' y1='40' x2='58' y2='40' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='55' x2='58' y2='55' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='70' x2='58' y2='70' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='85' x2='58' y2='85' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><circle cx='24' cy='105' r='5' fill='currentColor'/><circle cx='56' cy='105' r='5' fill='currentColor'/></svg>"
         },
         {
             id: 'mala_media',
@@ -1694,7 +1694,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '65 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='32' y='5' width='16' height='4' rx='2' fill='currentColor'/><line x1='34' y1='9' x2='34' y2='25' stroke='currentColor' stroke-width='3'/><line x1='46' y1='9' x2='46' y2='25' stroke='currentColor' stroke-width='3'/><rect x='16' y='25' width='48' height='75' rx='7' fill='currentColor'/><line x1='22' y1='40' x2='58' y2='40' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='55' x2='58' y2='55' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='70' x2='58' y2='70' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='85' x2='58' y2='85' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><circle cx='24' cy='105' r='5' fill='currentColor'/><circle cx='56' cy='105' r='5' fill='currentColor'/></svg>"
         },
         {
             id: 'mala_grande',
@@ -1703,7 +1703,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '75 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='32' y='5' width='16' height='4' rx='2' fill='currentColor'/><line x1='34' y1='9' x2='34' y2='25' stroke='currentColor' stroke-width='3'/><line x1='46' y1='9' x2='46' y2='25' stroke='currentColor' stroke-width='3'/><rect x='16' y='25' width='48' height='75' rx='7' fill='currentColor'/><line x1='22' y1='40' x2='58' y2='40' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='55' x2='58' y2='55' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='70' x2='58' y2='70' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><line x1='22' y1='85' x2='58' y2='85' stroke='rgba(0,0,0,0.25)' stroke-width='3' stroke-linecap='round'/><circle cx='24' cy='105' r='5' fill='currentColor'/><circle cx='56' cy='105' r='5' fill='currentColor'/></svg>"
         },
         {
             id: 'caixa_termica',
@@ -1712,7 +1712,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '42 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><rect x='15' y='20' width='70' height='60' rx='6' fill='currentColor'/><rect x='22' y='28' width='56' height='44' rx='3' fill='rgba(0,0,0,0.25)'/><circle cx='50' cy='50' r='8' fill='rgba(255,255,255,0.2)'/></svg>"
         },
         {
             id: 'botijao_gas',
@@ -1739,7 +1739,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '58 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'pneu_camionete',
@@ -1748,7 +1748,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '78 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'roda_bike29',
@@ -1757,7 +1757,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '74 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 140 90' width='100%' height='100%'><circle cx='28' cy='62' r='22' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='28' cy='62' r='3' fill='currentColor'/><line x1='28' y1='40' x2='28' y2='84' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><line x1='6' y1='62' x2='50' y2='62' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><circle cx='112' cy='62' r='22' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='112' cy='62' r='3' fill='currentColor'/><line x1='112' y1='40' x2='112' y2='84' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><line x1='90' y1='62' x2='134' y2='62' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><path d='M28,62 L60,62 L94,36 L48,36 Z' fill='none' stroke='currentColor' stroke-width='6' stroke-linejoin='round'/><line x1='60' y1='62' x2='50' y2='30' stroke='currentColor' stroke-width='5'/><path d='M42,28 C45,26 58,26 60,30' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='112' y1='62' x2='92' y2='22' stroke='currentColor' stroke-width='5'/><path d='M86,22 C92,20 98,20 102,24' stroke='currentColor' stroke-width='5' stroke-linecap='round' fill='none'/><circle cx='60' cy='62' r='6' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'skate',
@@ -1811,7 +1811,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '90 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='20' y='12' width='30' height='45' rx='3' fill='none' stroke='currentColor' stroke-width='5'/><line x1='28' y1='15' x2='28' y2='57' stroke='currentColor' stroke-width='3'/><line x1='35' y1='15' x2='35' y2='57' stroke='currentColor' stroke-width='3'/><line x1='42' y1='15' x2='42' y2='57' stroke='currentColor' stroke-width='3'/><rect x='16' y='57' width='38' height='8' rx='2' fill='currentColor'/><line x1='20' y1='65' x2='18' y2='112' stroke='currentColor' stroke-width='5'/><line x1='50' y1='65' x2='52' y2='112' stroke='currentColor' stroke-width='5'/></svg>"
         },
         {
             id: 'banqueta',
@@ -1820,7 +1820,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '75 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='20' y='12' width='30' height='45' rx='3' fill='none' stroke='currentColor' stroke-width='5'/><line x1='28' y1='15' x2='28' y2='57' stroke='currentColor' stroke-width='3'/><line x1='35' y1='15' x2='35' y2='57' stroke='currentColor' stroke-width='3'/><line x1='42' y1='15' x2='42' y2='57' stroke='currentColor' stroke-width='3'/><rect x='16' y='57' width='38' height='8' rx='2' fill='currentColor'/><line x1='20' y1='65' x2='18' y2='112' stroke='currentColor' stroke-width='5'/><line x1='50' y1='65' x2='52' y2='112' stroke='currentColor' stroke-width='5'/></svg>"
         },
         {
             id: 'mesa_centro',
@@ -1829,7 +1829,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '45 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 80' width='100%' height='100%'><rect x='15' y='18' width='110' height='30' rx='6' fill='currentColor'/><rect x='10' y='32' width='18' height='32' rx='6' fill='currentColor'/><rect x='112' y='32' width='18' height='32' rx='6' fill='currentColor'/><rect x='28' y='42' width='41' height='20' rx='4' fill='rgba(0,0,0,0.2)'/><rect x='71' y='42' width='41' height='20' rx='4' fill='rgba(0,0,0,0.2)'/><rect x='14' y='64' width='112' height='6' fill='currentColor'/><rect x='20' y='70' width='6' height='6' rx='1' fill='currentColor'/><rect x='114' y='70' width='6' height='6' rx='1' fill='currentColor'/></svg>"
         },
         {
             id: 'criado_mudo',
@@ -1838,7 +1838,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '55 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><rect x='15' y='20' width='70' height='60' rx='6' fill='currentColor'/><rect x='22' y='28' width='56' height='44' rx='3' fill='rgba(0,0,0,0.25)'/><circle cx='50' cy='50' r='8' fill='rgba(255,255,255,0.2)'/></svg>"
         },
         {
             id: 'puf_sala',
@@ -1847,7 +1847,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '45 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'carrinho_bebe',
@@ -1856,7 +1856,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,05 m',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 100 110' width='100%' height='100%'><path d='M15,18 L32,45' stroke='currentColor' stroke-width='5' stroke-linecap='round'/><path d='M35,45 C35,28 65,28 72,45 L45,55 Z' fill='currentColor'/><path d='M35,50 L40,75 L75,75 L80,55 Z' fill='currentColor'/><line x1='32' y1='45' x2='42' y2='92' stroke='currentColor' stroke-width='4'/><line x1='65' y1='60' x2='82' y2='92' stroke='currentColor' stroke-width='4'/><circle cx='40' cy='95' r='10' fill='currentColor'/><circle cx='84' cy='95' r='10' fill='currentColor'/><circle cx='40' cy='95' r='4' fill='rgba(255,255,255,0.6)'/><circle cx='84' cy='95' r='4' fill='rgba(255,255,255,0.6)'/></svg>"
         },
         {
             id: 'andador',
@@ -1874,7 +1874,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '75 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><circle cx='25' cy='65' r='18' fill='currentColor'/><circle cx='105' cy='65' r='18' fill='currentColor'/><path d='M25,65 L55,65 L65,40 L90,40 L105,65' stroke='currentColor' stroke-width='8' fill='none' stroke-linejoin='round'/><rect x='40' y='32' width='28' height='12' rx='4' fill='currentColor'/><line x1='88' y1='40' x2='80' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='74' y1='18' x2='86' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 140 90' width='100%' height='100%'><circle cx='28' cy='62' r='22' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='28' cy='62' r='3' fill='currentColor'/><line x1='28' y1='40' x2='28' y2='84' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><line x1='6' y1='62' x2='50' y2='62' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><circle cx='112' cy='62' r='22' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='112' cy='62' r='3' fill='currentColor'/><line x1='112' y1='40' x2='112' y2='84' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><line x1='90' y1='62' x2='134' y2='62' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><path d='M28,62 L60,62 L94,36 L48,36 Z' fill='none' stroke='currentColor' stroke-width='6' stroke-linejoin='round'/><line x1='60' y1='62' x2='50' y2='30' stroke='currentColor' stroke-width='5'/><path d='M42,28 C45,26 58,26 60,30' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='112' y1='62' x2='92' y2='22' stroke='currentColor' stroke-width='5'/><path d='M86,22 C92,20 98,20 102,24' stroke='currentColor' stroke-width='5' stroke-linecap='round' fill='none'/><circle cx='60' cy='62' r='6' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'maquina_lavar',
@@ -1883,7 +1883,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '85 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 100' width='100%' height='100%'><rect x='12' y='8' width='66' height='82' rx='6' fill='currentColor'/><rect x='16' y='14' width='18' height='10' rx='2' fill='rgba(0,0,0,0.25)'/><circle cx='45' cy='19' r='5' fill='rgba(255,255,255,0.6)'/><rect x='56' y='16' width='18' height='6' rx='1' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='56' r='24' fill='rgba(0,0,0,0.35)' stroke='rgba(255,255,255,0.3)' stroke-width='4'/><circle cx='45' cy='56' r='16' fill='rgba(0,0,0,0.45)'/><path d='M35,62 Q45,52 55,62' stroke='rgba(255,255,255,0.3)' stroke-width='3' fill='none'/><rect x='16' y='90' width='10' height='4' rx='1' fill='currentColor'/><rect x='64' y='90' width='10' height='4' rx='1' fill='currentColor'/></svg>"
         },
         {
             id: 'lava_loucas',
@@ -1892,7 +1892,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '82 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 100' width='100%' height='100%'><rect x='12' y='8' width='66' height='82' rx='6' fill='currentColor'/><rect x='16' y='14' width='18' height='10' rx='2' fill='rgba(0,0,0,0.25)'/><circle cx='45' cy='19' r='5' fill='rgba(255,255,255,0.6)'/><rect x='56' y='16' width='18' height='6' rx='1' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='56' r='24' fill='rgba(0,0,0,0.35)' stroke='rgba(255,255,255,0.3)' stroke-width='4'/><circle cx='45' cy='56' r='16' fill='rgba(0,0,0,0.45)'/><path d='M35,62 Q45,52 55,62' stroke='rgba(255,255,255,0.3)' stroke-width='3' fill='none'/><rect x='16' y='90' width='10' height='4' rx='1' fill='currentColor'/><rect x='64' y='90' width='10' height='4' rx='1' fill='currentColor'/></svg>"
         },
         {
             id: 'fogao_4bocas',
@@ -1901,7 +1901,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '86 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 100' width='100%' height='100%'><rect x='12' y='15' width='66' height='75' rx='4' fill='currentColor'/><ellipse cx='28' cy='12' rx='8' ry='4' fill='currentColor'/><ellipse cx='62' cy='12' rx='8' ry='4' fill='currentColor'/><circle cx='22' cy='24' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='34' cy='24' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='56' cy='24' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='68' cy='24' r='3' fill='rgba(255,255,255,0.6)'/><rect x='24' y='33' width='42' height='4' rx='2' fill='rgba(255,255,255,0.7)'/><rect x='20' y='42' width='50' height='36' rx='3' fill='rgba(0,0,0,0.45)' stroke='rgba(255,255,255,0.2)' stroke-width='2'/><line x1='24' y1='60' x2='66' y2='60' stroke='rgba(255,255,255,0.25)' stroke-width='2'/><rect x='16' y='90' width='8' height='4' fill='currentColor'/><rect x='66' y='90' width='8' height='4' fill='currentColor'/></svg>"
         },
         {
             id: 'frigobar',
@@ -1910,7 +1910,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '64 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 70 140' width='100%' height='100%'><rect x='10' y='10' width='50' height='122' rx='5' fill='currentColor'/><rect x='12' y='12' width='46' height='38' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='32' width='3' height='14' rx='1.5' fill='rgba(255,255,255,0.7)'/><line x1='10' y1='52' x2='60' y2='52' stroke='rgba(0,0,0,0.4)' stroke-width='3'/><rect x='12' y='54' width='46' height='75' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='60' width='3' height='26' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='14' y='132' width='8' height='4' rx='1' fill='currentColor'/><rect x='48' y='132' width='8' height='4' rx='1' fill='currentColor'/></svg>"
         },
         {
             id: 'ventilador_coluna',
@@ -1919,7 +1919,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,15 m',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 60 160' width='100%' height='100%'><line x1='30' y1='20' x2='30' y2='158' stroke='currentColor' stroke-width='6'/><path d='M30,30 C30,10 52,10 52,25' fill='none' stroke='currentColor' stroke-width='5'/><polygon points='45,25 58,25 54,35 48,35' fill='#facc15'/></svg>"
+            svg: "<svg viewBox='0 0 90 120' width='100%' height='100%'><circle cx='45' cy='45' r='36' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='45' cy='45' r='10' fill='currentColor'/><path d='M45,45 C35,25 45,15 50,15 C55,25 45,45 45,45 Z' fill='rgba(255,255,255,0.5)'/><path d='M45,45 C65,40 75,50 72,56 C62,56 45,45 45,45 Z' fill='rgba(255,255,255,0.5)'/><path d='M45,45 C35,65 25,60 25,54 C30,48 45,45 45,45 Z' fill='rgba(255,255,255,0.5)'/><rect x='41' y='81' width='8' height='26' rx='2' fill='currentColor'/><ellipse cx='45' cy='110' rx='28' ry='8' fill='currentColor'/></svg>"
         },
         {
             id: 'ventilador_mesa',
@@ -1928,7 +1928,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '55 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 90 120' width='100%' height='100%'><circle cx='45' cy='45' r='36' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='45' cy='45' r='10' fill='currentColor'/><path d='M45,45 C35,25 45,15 50,15 C55,25 45,45 45,45 Z' fill='rgba(255,255,255,0.5)'/><path d='M45,45 C65,40 75,50 72,56 C62,56 45,45 45,45 Z' fill='rgba(255,255,255,0.5)'/><path d='M45,45 C35,65 25,60 25,54 C30,48 45,45 45,45 Z' fill='rgba(255,255,255,0.5)'/><rect x='41' y='81' width='8' height='26' rx='2' fill='currentColor'/><ellipse cx='45' cy='110' rx='28' ry='8' fill='currentColor'/></svg>"
         },
         {
             id: 'aspirador_vertical',
@@ -1937,7 +1937,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,10 m',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 60 140' width='100%' height='100%'><path d='M25,10 C25,5 35,5 35,10 L35,25 L25,25 Z' fill='currentColor'/><rect x='22' y='25' width='16' height='35' rx='5' fill='currentColor'/><rect x='25' y='32' width='10' height='22' rx='2' fill='rgba(0,0,0,0.35)'/><rect x='28' y='60' width='4' height='64' fill='rgba(255,255,255,0.6)'/><polygon points='12,134 48,134 44,124 16,124' fill='currentColor'/><circle cx='18' cy='134' r='3' fill='rgba(0,0,0,0.4)'/><circle cx='42' cy='134' r='3' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'caixa_som_torre',
@@ -1946,7 +1946,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '95 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 70 130' width='100%' height='100%'><rect x='12' y='8' width='46' height='114' rx='6' fill='currentColor'/><circle cx='35' cy='35' r='14' fill='rgba(0,0,0,0.45)' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='35' cy='35' r='6' fill='#38bdf8'/><circle cx='35' cy='80' r='16' fill='rgba(0,0,0,0.45)' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='35' cy='80' r='7' fill='#f43f5e'/><rect x='25' y='108' width='20' height='4' rx='2' fill='rgba(255,255,255,0.4)'/></svg>"
         },
         {
             id: 'gabinete_gamer',
@@ -1955,7 +1955,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '50 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='10' y='10' width='50' height='100' rx='4' fill='currentColor'/><rect x='14' y='14' width='42' height='92' rx='2' fill='rgba(0,0,0,0.35)'/><circle cx='35' cy='40' r='12' fill='none' stroke='#38bdf8' stroke-width='3'/><circle cx='35' cy='72' r='12' fill='none' stroke='#f43f5e' stroke-width='3'/><circle cx='35' cy='18' r='3' fill='rgba(255,255,255,0.7)'/></svg>"
         },
         {
             id: 'monitor_34',
@@ -2000,7 +2000,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,15 m',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 60 130' width='100%' height='100%'><polygon points='27,5 33,5 33,60 27,60' fill='currentColor'/><ellipse cx='30' cy='80' rx='16' ry='18' fill='currentColor'/><ellipse cx='30' cy='105' rx='22' ry='24' fill='currentColor'/><circle cx='30' cy='85' r='7' fill='rgba(0,0,0,0.35)'/></svg>"
+            svg: "<svg viewBox='0 0 60 145' width='100%' height='100%'><polygon points='26,4 34,4 33,28 27,28' fill='currentColor'/><rect x='28' y='28' width='4' height='55' fill='currentColor'/><path d='M30,83 C16,81 12,91 20,99 C12,107 18,136 34,136 C48,136 50,114 42,104 C46,96 42,88 36,83 Z' fill='currentColor'/></svg>"
         },
         {
             id: 'violoncelo_p',
@@ -2018,7 +2018,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '60 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 60 130' width='100%' height='100%'><polygon points='27,5 33,5 33,60 27,60' fill='currentColor'/><ellipse cx='30' cy='80' rx='16' ry='18' fill='currentColor'/><ellipse cx='30' cy='105' rx='22' ry='24' fill='currentColor'/><circle cx='30' cy='85' r='7' fill='rgba(0,0,0,0.35)'/></svg>"
+            svg: "<svg viewBox='0 0 55 130' width='100%' height='100%'><rect x='26' y='12' width='3' height='40' fill='currentColor'/><path d='M27,52 C16,52 14,64 20,72 C12,80 14,106 27,106 C40,106 42,80 34,72 C40,64 38,52 27,52 Z' fill='currentColor'/><line x1='12' y1='30' x2='42' y2='110' stroke='rgba(255,255,255,0.7)' stroke-width='2'/></svg>"
         },
         {
             id: 'ukulele',
@@ -2036,7 +2036,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '62 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 60 130' width='100%' height='100%'><polygon points='27,5 33,5 33,60 27,60' fill='currentColor'/><ellipse cx='30' cy='80' rx='16' ry='18' fill='currentColor'/><ellipse cx='30' cy='105' rx='22' ry='24' fill='currentColor'/><circle cx='30' cy='85' r='7' fill='rgba(0,0,0,0.35)'/></svg>"
+            svg: "<svg viewBox='0 0 50 110' width='100%' height='100%'><rect x='23' y='10' width='4' height='35' fill='currentColor'/><ellipse cx='25' cy='62' rx='12' ry='14' fill='currentColor'/><ellipse cx='25' cy='85' rx='16' ry='18' fill='currentColor'/><circle cx='25' cy='72' r='5' fill='rgba(0,0,0,0.5)'/></svg>"
         },
         {
             id: 'saxofone',
@@ -2045,7 +2045,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '66 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><path d='M25,10 L35,10 L35,80 C35,100 55,100 55,80 L55,70 L65,70 L65,85 C65,110 25,110 25,80 Z' fill='currentColor'/><polygon points='20,10 40,10 35,5 25,5' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><path d='M25,15 L35,15 L35,80 C35,100 55,100 55,80 L55,60 L70,60 L70,82 C70,110 25,110 25,80 Z' fill='currentColor'/><polygon points='20,15 40,15 35,8 25,8' fill='currentColor'/></svg>"
         },
         {
             id: 'trompete',
@@ -2054,7 +2054,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '50 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><path d='M25,10 L35,10 L35,80 C35,100 55,100 55,80 L55,70 L65,70 L65,85 C65,110 25,110 25,80 Z' fill='currentColor'/><polygon points='20,10 40,10 35,5 25,5' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 120 60' width='100%' height='100%'><path d='M15,30 L95,20 L110,10 L110,50 L95,40 L15,30 Z' fill='currentColor'/><rect x='45' y='15' width='4' height='15' fill='currentColor'/><rect x='55' y='15' width='4' height='15' fill='currentColor'/><rect x='65' y='15' width='4' height='15' fill='currentColor'/></svg>"
         },
         {
             id: 'trombone',
@@ -2072,7 +2072,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '60 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><ellipse cx='50' cy='25' rx='36' ry='12' fill='currentColor'/><rect x='14' y='25' width='72' height='30' fill='currentColor'/><ellipse cx='50' cy='55' rx='36' ry='12' fill='rgba(0,0,0,0.3)'/><ellipse cx='50' cy='25' rx='32' ry='10' fill='white'/></svg>"
         },
         {
             id: 'caixa_bateria',
@@ -2081,7 +2081,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '35 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><ellipse cx='50' cy='25' rx='36' ry='12' fill='currentColor'/><rect x='14' y='25' width='72' height='30' fill='currentColor'/><ellipse cx='50' cy='55' rx='36' ry='12' fill='rgba(0,0,0,0.3)'/><ellipse cx='50' cy='25' rx='32' ry='10' fill='white'/></svg>"
         },
         {
             id: 'teclado_musical',
@@ -2099,7 +2099,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '52 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 100 90' width='100%' height='100%'><rect x='10' y='15' width='18' height='60' rx='3' fill='currentColor'/><circle cx='19' cy='30' r='2' fill='rgba(255,255,255,0.7)'/><circle cx='19' cy='40' r='2' fill='rgba(255,255,255,0.7)'/><circle cx='19' cy='50' r='2' fill='rgba(255,255,255,0.7)'/><circle cx='19' cy='60' r='2' fill='rgba(255,255,255,0.7)'/><polygon points='28,15 34,22 30,30 36,37 30,45 36,52 30,60 36,67 30,75 70,75 64,67 70,60 64,52 70,45 64,37 70,30 64,22 70,15' fill='rgba(0,0,0,0.3)' stroke='currentColor' stroke-width='2'/><rect x='72' y='12' width='20' height='66' rx='3' fill='currentColor'/><rect x='84' y='16' width='6' height='58' fill='white'/><rect x='84' y='22' width='4' height='4' fill='black'/><rect x='84' y='30' width='4' height='4' fill='black'/><rect x='84' y='42' width='4' height='4' fill='black'/><rect x='84' y='50' width='4' height='4' fill='black'/><rect x='84' y='58' width='4' height='4' fill='black'/></svg>"
         },
         {
             id: 'capivara',
@@ -2243,7 +2243,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '45 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 90 140' width='100%' height='100%'><ellipse cx='45' cy='80' rx='30' ry='42' fill='currentColor'/><circle cx='45' cy='30' r='18' fill='currentColor'/><circle cx='32' cy='16' r='6' fill='currentColor'/><circle cx='58' cy='16' r='6' fill='currentColor'/><path d='M20,45 C10,55 8,75 16,85' stroke='currentColor' stroke-width='10' fill='none' stroke-linecap='round'/><path d='M70,45 C80,55 82,75 74,85' stroke='currentColor' stroke-width='10' fill='none' stroke-linecap='round'/><rect x='25' y='115' width='14' height='22' rx='5' fill='currentColor'/><rect x='51' y='115' width='14' height='22' rx='5' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><path d='M45,18 C30,8 10,25 15,55 C20,75 38,85 45,85 C52,85 70,75 75,55 C80,25 60,8 45,18 Z' fill='currentColor'/><path d='M45,18 C48,8 55,4 60,3' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/></svg>"
         },
         {
             id: 'lemure',
@@ -2396,7 +2396,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '40 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><ellipse cx='35' cy='65' rx='22' ry='45' fill='currentColor'/><ellipse cx='35' cy='70' rx='14' ry='35' fill='rgba(255,255,255,0.25)'/><circle cx='35' cy='22' r='14' fill='currentColor'/><polygon points='35,22 55,26 35,30' fill='#facc15'/><ellipse cx='14' cy='60' rx='4' ry='22' fill='currentColor'/><ellipse cx='56' cy='60' rx='4' ry='22' fill='currentColor'/><polygon points='25,110 32,118 40,110' fill='#facc15'/><polygon points='40,110 48,118 55,110' fill='#facc15'/></svg>"
+            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,40 C10,38 25,32 50,32 L130,34 C148,35 158,38 158,41 C158,44 148,47 130,48 L50,50 C25,50 10,44 10,40 Z' fill='currentColor'/><polygon points='82,34 68,10 82,10 112,34' fill='currentColor'/><polygon points='82,48 112,48 82,72 68,72' fill='currentColor'/><ellipse cx='90' cy='22' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><ellipse cx='90' cy='60' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><polygon points='18,34 32,14 44,14 36,34' fill='currentColor'/><polygon points='18,39 26,30 32,30 26,39' fill='currentColor'/><circle cx='148' cy='38' r='2' fill='rgba(255,255,255,0.8)'/><line x1='60' y1='41' x2='130' y2='41' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-dasharray='2,2'/></svg>"
         },
         {
             id: 'condor',
@@ -2414,7 +2414,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '55 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><ellipse cx='35' cy='65' rx='22' ry='45' fill='currentColor'/><ellipse cx='35' cy='70' rx='14' ry='35' fill='rgba(255,255,255,0.25)'/><circle cx='35' cy='22' r='14' fill='currentColor'/><polygon points='35,22 55,26 35,30' fill='#facc15'/><ellipse cx='14' cy='60' rx='4' ry='22' fill='currentColor'/><ellipse cx='56' cy='60' rx='4' ry='22' fill='currentColor'/><polygon points='25,110 32,118 40,110' fill='#facc15'/><polygon points='40,110 48,118 55,110' fill='#facc15'/></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><path d='M45,18 C30,8 10,25 15,55 C20,75 38,85 45,85 C52,85 70,75 75,55 C80,25 60,8 45,18 Z' fill='currentColor'/><path d='M45,18 C48,8 55,4 60,3' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/></svg>"
         },
         {
             id: 'arara_vermelha',
@@ -2432,7 +2432,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '40 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 110 70' width='100%' height='100%'><path d='M25,52 C22,25 78,25 85,52 Z' fill='currentColor'/><path d='M35,38 Q55,30 75,38' stroke='rgba(0,0,0,0.3)' stroke-width='3' fill='none'/><line x1='55' y1='30' x2='55' y2='52' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><ellipse cx='92' cy='46' rx='10' ry='6' fill='currentColor'/><circle cx='95' cy='44' r='1.5' fill='#111'/><rect x='32' y='48' width='10' height='14' rx='4' fill='currentColor'/><rect x='70' y='48' width='10' height='14' rx='4' fill='currentColor'/><polygon points='25,48 18,52 25,54' fill='currentColor'/></svg>"
         },
         {
             id: 'camaleao',
@@ -2441,7 +2441,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '50 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 90' width='100%' height='100%'><ellipse cx='45' cy='55' rx='30' ry='25' fill='currentColor'/><circle cx='70' cy='35' r='16' fill='currentColor'/><polygon points='62,25 65,10 74,22' fill='currentColor'/><polygon points='73,22 82,10 85,25' fill='currentColor'/><path d='M20,55 C10,50 5,30 15,20 C18,16 22,25 18,35 C15,45 22,50 25,52' fill='none' stroke='currentColor' stroke-width='7' stroke-linecap='round'/><rect x='30' y='70' width='8' height='18' rx='4' fill='currentColor'/><rect x='55' y='70' width='8' height='18' rx='4' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><rect x='15' y='15' width='100' height='35' rx='5' fill='currentColor'/><rect x='20' y='20' width='42' height='25' rx='3' fill='rgba(0,0,0,0.2)'/><rect x='68' y='20' width='42' height='25' rx='3' fill='rgba(0,0,0,0.2)'/><rect x='22' y='36' width='38' height='16' rx='4' fill='rgba(255,255,255,0.4)'/><rect x='70' y='36' width='38' height='16' rx='4' fill='rgba(255,255,255,0.4)'/><rect x='18' y='46' width='94' height='30' rx='5' fill='currentColor'/><path d='M18,52 L112,52 L112,76 L18,76 Z' fill='rgba(255,255,255,0.2)'/><rect x='15' y='74' width='100' height='6' rx='2' fill='currentColor'/><rect x='20' y='80' width='8' height='8' rx='2' fill='currentColor'/><rect x='102' y='80' width='8' height='8' rx='2' fill='currentColor'/></svg>"
         },
         {
             id: 'iguana',
@@ -2486,7 +2486,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '75 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><path d='M15,10 L85,10 C85,55 70,75 50,75 C30,75 15,55 15,10 Z' fill='currentColor'/><path d='M85,20 C95,20 100,32 98,45 C95,55 85,55 80,52' fill='none' stroke='currentColor' stroke-width='8' stroke-linecap='round'/><ellipse cx='50' cy='10' rx='35' ry='6' fill='rgba(255,255,255,0.2)'/></svg>"
+            svg: "<svg viewBox='0 0 90 90' width='100%' height='100%'><path d='M45,18 C30,8 10,25 15,55 C20,75 38,85 45,85 C52,85 70,75 75,55 C80,25 60,8 45,18 Z' fill='currentColor'/><path d='M45,18 C48,8 55,4 60,3' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/></svg>"
         },
         {
             id: 'carrinho_mercado',
@@ -2495,7 +2495,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,00 m',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 110 100' width='100%' height='100%'><line x1='12' y1='22' x2='22' y2='22' stroke='currentColor' stroke-width='5' stroke-linecap='round'/><polygon points='22,25 95,30 85,68 32,68' fill='none' stroke='currentColor' stroke-width='4' stroke-linejoin='round'/><line x1='40' y1='28' x2='45' y2='68' stroke='rgba(255,255,255,0.35)' stroke-width='2'/><line x1='60' y1='29' x2='62' y2='68' stroke='rgba(255,255,255,0.35)' stroke-width='2'/><line x1='80' y1='29' x2='78' y2='68' stroke='rgba(255,255,255,0.35)' stroke-width='2'/><line x1='26' y1='44' x2='90' y2='44' stroke='rgba(255,255,255,0.35)' stroke-width='2'/><line x1='30' y1='56' x2='86' y2='56' stroke='rgba(255,255,255,0.35)' stroke-width='2'/><path d='M22,25 L34,80 L88,80' fill='none' stroke='currentColor' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='38' cy='88' r='6' fill='currentColor'/><circle cx='84' cy='88' r='6' fill='currentColor'/><circle cx='38' cy='88' r='2.5' fill='rgba(255,255,255,0.6)'/><circle cx='84' cy='88' r='2.5' fill='rgba(255,255,255,0.6)'/></svg>"
         },
         {
             id: 'escada_3degraus',
@@ -2504,7 +2504,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '90 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 70 120' width='100%' height='100%'><rect x='32' y='25' width='8' height='90' rx='3' fill='currentColor'/><rect x='12' y='10' width='48' height='20' rx='4' fill='currentColor'/><polygon points='12,15 5,10 12,25' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 90 120' width='100%' height='100%'><line x1='45' y1='15' x2='18' y2='112' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='45' y1='15' x2='72' y2='112' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><rect x='38' y='10' width='14' height='6' rx='2' fill='currentColor'/><line x1='37' y1='40' x2='53' y2='40' stroke='currentColor' stroke-width='4'/><line x1='30' y1='65' x2='60' y2='65' stroke='currentColor' stroke-width='4'/><line x1='24' y1='90' x2='66' y2='90' stroke='currentColor' stroke-width='4'/></svg>"
         },
         {
             id: 'caixa_ferramentas',
@@ -2513,7 +2513,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '45 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 100 80' width='100%' height='100%'><rect x='40' y='12' width='20' height='6' rx='2' fill='currentColor'/><rect x='12' y='22' width='76' height='48' rx='4' fill='currentColor'/><line x1='12' y1='36' x2='88' y2='36' stroke='rgba(0,0,0,0.4)' stroke-width='3'/><rect x='44' y='32' width='12' height='10' rx='2' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'galinha',
@@ -2549,7 +2549,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '38 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 100 90' width='100%' height='100%'><rect x='20' y='72' width='60' height='10' rx='3' fill='currentColor'/><rect x='20' y='25' width='16' height='50' fill='currentColor'/><rect x='20' y='18' width='55' height='16' rx='6' fill='currentColor'/><path d='M44,45 L68,45 C68,65 44,65 44,45 Z' fill='rgba(255,255,255,0.4)' stroke='currentColor' stroke-width='3'/></svg>"
         },
         {
             id: 'computador_allinone',
@@ -2567,7 +2567,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '40 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='10' y='15' width='90' height='55' rx='4' fill='none' stroke='currentColor' stroke-width='5'/><rect x='14' y='22' width='82' height='44' fill='rgba(56,189,248,0.25)'/><path d='M35,42 Q45,36 55,42 Q45,48 35,42 Z' fill='#f97316'/><polygon points='55,42 62,38 62,46' fill='#f97316'/><circle cx='40' cy='40' r='1' fill='#111'/></svg>"
         },
         {
             id: 'globo_espelhado',
@@ -2603,7 +2603,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '80 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C40,5 40,0 40,5' stroke='currentColor' stroke-width='5' fill='none'/></svg>"
+            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/></svg>"
         },
         {
             id: 'quadro_pintura',
@@ -2630,7 +2630,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '40 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 70' width='100%' height='100%'><rect x='15' y='22' width='80' height='40' rx='16' fill='currentColor'/><path d='M35,22 C35,10 75,10 75,22' fill='none' stroke='currentColor' stroke-width='4'/><line x1='15' y1='34' x2='95' y2='34' stroke='rgba(0,0,0,0.3)' stroke-width='3'/></svg>"
         },
         {
             id: 'caixa_papelao',
@@ -2639,7 +2639,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '60 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><rect x='15' y='20' width='70' height='60' rx='6' fill='currentColor'/><rect x='22' y='28' width='56' height='44' rx='3' fill='rgba(0,0,0,0.25)'/><circle cx='50' cy='50' r='8' fill='rgba(255,255,255,0.2)'/></svg>"
         },
         {
             id: 'cesto_roupa',
@@ -2657,7 +2657,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '50 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 90' width='100%' height='100%'><ellipse cx='45' cy='55' rx='30' ry='25' fill='currentColor'/><circle cx='70' cy='35' r='16' fill='currentColor'/><polygon points='62,25 65,10 74,22' fill='currentColor'/><polygon points='73,22 82,10 85,25' fill='currentColor'/><path d='M20,55 C10,50 5,30 15,20 C18,16 22,25 18,35 C15,45 22,50 25,52' fill='none' stroke='currentColor' stroke-width='7' stroke-linecap='round'/><rect x='30' y='70' width='8' height='18' rx='4' fill='currentColor'/><rect x='55' y='70' width='8' height='18' rx='4' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><ellipse cx='60' cy='55' rx='38' ry='24' fill='currentColor'/><circle cx='100' cy='42' r='24' fill='rgba(0,0,0,0.3)'/><circle cx='100' cy='42' r='16' fill='currentColor'/><polygon points='94,28 98,20 102,28' fill='currentColor'/><polygon points='104,28 108,20 112,28' fill='currentColor'/><rect x='35' y='72' width='11' height='24' rx='4' fill='currentColor'/><rect x='75' y='72' width='11' height='24' rx='4' fill='currentColor'/><path d='M22,55 C12,45 10,65 14,75' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/></svg>"
         },
         {
             id: 'filhote_urso',
@@ -2720,7 +2720,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '40 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'>$</text></svg>"
         },
         {
             id: 'tartaruga_marinha_p',
@@ -2729,7 +2729,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '60 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 170 75' width='100%' height='100%'><path d='M10,40 C20,20 70,18 120,25 C145,28 160,35 168,22 C168,32 165,45 150,45 C120,45 70,55 30,52 Z' fill='currentColor'/><path d='M60,42 L50,60 L65,50' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 110 70' width='100%' height='100%'><path d='M25,52 C22,25 78,25 85,52 Z' fill='currentColor'/><path d='M35,38 Q55,30 75,38' stroke='rgba(0,0,0,0.3)' stroke-width='3' fill='none'/><line x1='55' y1='30' x2='55' y2='52' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><ellipse cx='92' cy='46' rx='10' ry='6' fill='currentColor'/><circle cx='95' cy='44' r='1.5' fill='#111'/><rect x='32' y='48' width='10' height='14' rx='4' fill='currentColor'/><rect x='70' y='48' width='10' height='14' rx='4' fill='currentColor'/><polygon points='25,48 18,52 25,54' fill='currentColor'/></svg>"
         },
         {
             id: 'tubarao_lixa_p',
@@ -2738,7 +2738,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '50 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 170 75' width='100%' height='100%'><path d='M10,40 C20,20 70,18 120,25 C145,28 160,35 168,22 C168,32 165,45 150,45 C120,45 70,55 30,52 Z' fill='currentColor'/><path d='M60,42 L50,60 L65,50' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,42 C30,30 65,22 105,25 C125,26 142,32 152,40 C140,46 125,50 105,52 C65,54 30,50 10,42 Z' fill='currentColor'/><path d='M75,23 C82,10 94,8 100,24 Z' fill='currentColor'/><path d='M12,42 L0,22 C5,32 8,38 12,42 L0,62 Z' fill='currentColor'/><path d='M100,52 L112,72 L118,50 Z' fill='currentColor'/><path d='M30,48 C60,54 100,52 135,44 C120,48 90,50 30,48 Z' fill='rgba(255,255,255,0.3)'/><circle cx='140' cy='36' r='2.5' fill='#111'/></svg>"
         },
         {
             id: 'arraia',
@@ -2828,7 +2828,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'cm',
             display: '70 cm',
             category: 'medio_pequeno',
-            svg: "<svg viewBox='0 0 50 140' width='100%' height='100%'><rect x='18' y='5' width='14' height='14' rx='2' fill='currentColor'/><path d='M19,19 C12,30 6,45 6,65 L6,125 C6,132 12,136 25,136 C38,136 44,132 44,125 L44,65 C44,45 38,30 31,19 Z' fill='currentColor'/><ellipse cx='25' cy='95' rx='16' ry='14' fill='rgba(255,255,255,0.15)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><path d='M35,100 L52,30 L60,30 L45,100 Z' fill='currentColor'/><polygon points='54,30 68,26 64,36 54,34' fill='currentColor'/><line x1='56' y1='28' x2='56' y2='20' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><line x1='60' y1='28' x2='62' y2='20' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><polygon points='22,100 48,96 46,120 22,115' fill='currentColor'/><line x1='44' y1='115' x2='46' y2='155' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='48' y1='115' x2='52' y2='155' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><line x1='24' y1='115' x2='22' y2='155' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='28' y1='115' x2='28' y2='155' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><circle cx='48' cy='50' r='3.5' fill='rgba(0,0,0,0.3)'/><circle cx='46' cy='68' r='4' fill='rgba(0,0,0,0.3)'/><circle cx='44' cy='85' r='4' fill='rgba(0,0,0,0.3)'/><circle cx='34' cy='105' r='5' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'crianca6',
@@ -2981,7 +2981,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,75 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><circle cx='25' cy='65' r='18' fill='currentColor'/><circle cx='105' cy='65' r='18' fill='currentColor'/><path d='M25,65 L55,65 L65,40 L90,40 L105,65' stroke='currentColor' stroke-width='8' fill='none' stroke-linejoin='round'/><rect x='40' y='32' width='28' height='12' rx='4' fill='currentColor'/><line x1='88' y1='40' x2='80' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='74' y1='18' x2='86' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 140 90' width='100%' height='100%'><circle cx='28' cy='62' r='22' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='28' cy='62' r='3' fill='currentColor'/><line x1='28' y1='40' x2='28' y2='84' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><line x1='6' y1='62' x2='50' y2='62' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><circle cx='112' cy='62' r='22' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='112' cy='62' r='3' fill='currentColor'/><line x1='112' y1='40' x2='112' y2='84' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><line x1='90' y1='62' x2='134' y2='62' stroke='rgba(255,255,255,0.3)' stroke-width='1.5'/><path d='M28,62 L60,62 L94,36 L48,36 Z' fill='none' stroke='currentColor' stroke-width='6' stroke-linejoin='round'/><line x1='60' y1='62' x2='50' y2='30' stroke='currentColor' stroke-width='5'/><path d='M42,28 C45,26 58,26 60,30' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='112' y1='62' x2='92' y2='22' stroke='currentColor' stroke-width='5'/><path d='M86,22 C92,20 98,20 102,24' stroke='currentColor' stroke-width='5' stroke-linecap='round' fill='none'/><circle cx='60' cy='62' r='6' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'moto_scooter',
@@ -2990,7 +2990,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,20 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><circle cx='25' cy='65' r='18' fill='currentColor'/><circle cx='105' cy='65' r='18' fill='currentColor'/><path d='M25,65 L55,65 L65,40 L90,40 L105,65' stroke='currentColor' stroke-width='8' fill='none' stroke-linejoin='round'/><rect x='40' y='32' width='28' height='12' rx='4' fill='currentColor'/><line x1='88' y1='40' x2='80' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='74' y1='18' x2='86' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 140 85' width='100%' height='100%'><circle cx='28' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='28' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><circle cx='112' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='112' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><rect x='48' y='46' width='28' height='22' rx='4' fill='currentColor'/><line x1='48' y1='52' x2='76' y2='52' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><line x1='48' y1='58' x2='76' y2='58' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><path d='M68,64 L30,68' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/><path d='M42,38 C48,26 72,26 80,36 C88,40 102,32 108,34 L110,42 L95,44 L78,42 C68,44 56,44 42,38 Z' fill='currentColor'/><path d='M44,38 Q56,44 68,36' stroke='rgba(0,0,0,0.3)' stroke-width='4' fill='none'/><line x1='112' y1='58' x2='96' y2='24' stroke='currentColor' stroke-width='5'/><line x1='90' y1='22' x2='102' y2='22' stroke='currentColor' stroke-width='5' stroke-linecap='round'/><polygon points='102,28 112,30 106,36' fill='#facc15'/></svg>"
         },
         {
             id: 'moto_street',
@@ -2999,7 +2999,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,15 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><circle cx='25' cy='65' r='18' fill='currentColor'/><circle cx='105' cy='65' r='18' fill='currentColor'/><path d='M25,65 L55,65 L65,40 L90,40 L105,65' stroke='currentColor' stroke-width='8' fill='none' stroke-linejoin='round'/><rect x='40' y='32' width='28' height='12' rx='4' fill='currentColor'/><line x1='88' y1='40' x2='80' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='74' y1='18' x2='86' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 140 85' width='100%' height='100%'><circle cx='28' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='28' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><circle cx='112' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='112' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><rect x='48' y='46' width='28' height='22' rx='4' fill='currentColor'/><line x1='48' y1='52' x2='76' y2='52' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><line x1='48' y1='58' x2='76' y2='58' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><path d='M68,64 L30,68' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/><path d='M42,38 C48,26 72,26 80,36 C88,40 102,32 108,34 L110,42 L95,44 L78,42 C68,44 56,44 42,38 Z' fill='currentColor'/><path d='M44,38 Q56,44 68,36' stroke='rgba(0,0,0,0.3)' stroke-width='4' fill='none'/><line x1='112' y1='58' x2='96' y2='24' stroke='currentColor' stroke-width='5'/><line x1='90' y1='22' x2='102' y2='22' stroke='currentColor' stroke-width='5' stroke-linecap='round'/><polygon points='102,28 112,30 106,36' fill='#facc15'/></svg>"
         },
         {
             id: 'moto_trail',
@@ -3008,7 +3008,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,35 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><circle cx='25' cy='65' r='18' fill='currentColor'/><circle cx='105' cy='65' r='18' fill='currentColor'/><path d='M25,65 L55,65 L65,40 L90,40 L105,65' stroke='currentColor' stroke-width='8' fill='none' stroke-linejoin='round'/><rect x='40' y='32' width='28' height='12' rx='4' fill='currentColor'/><line x1='88' y1='40' x2='80' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='74' y1='18' x2='86' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 140 85' width='100%' height='100%'><circle cx='28' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='28' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><circle cx='112' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='112' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><rect x='48' y='46' width='28' height='22' rx='4' fill='currentColor'/><line x1='48' y1='52' x2='76' y2='52' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><line x1='48' y1='58' x2='76' y2='58' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><path d='M68,64 L30,68' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/><path d='M42,38 C48,26 72,26 80,36 C88,40 102,32 108,34 L110,42 L95,44 L78,42 C68,44 56,44 42,38 Z' fill='currentColor'/><path d='M44,38 Q56,44 68,36' stroke='rgba(0,0,0,0.3)' stroke-width='4' fill='none'/><line x1='112' y1='58' x2='96' y2='24' stroke='currentColor' stroke-width='5'/><line x1='90' y1='22' x2='102' y2='22' stroke='currentColor' stroke-width='5' stroke-linecap='round'/><polygon points='102,28 112,30 106,36' fill='#facc15'/></svg>"
         },
         {
             id: 'moto_ninja',
@@ -3017,7 +3017,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,20 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><circle cx='25' cy='65' r='18' fill='currentColor'/><circle cx='105' cy='65' r='18' fill='currentColor'/><path d='M25,65 L55,65 L65,40 L90,40 L105,65' stroke='currentColor' stroke-width='8' fill='none' stroke-linejoin='round'/><rect x='40' y='32' width='28' height='12' rx='4' fill='currentColor'/><line x1='88' y1='40' x2='80' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='74' y1='18' x2='86' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 140 85' width='100%' height='100%'><circle cx='28' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='28' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><circle cx='112' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='112' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><rect x='48' y='46' width='28' height='22' rx='4' fill='currentColor'/><line x1='48' y1='52' x2='76' y2='52' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><line x1='48' y1='58' x2='76' y2='58' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><path d='M68,64 L30,68' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/><path d='M42,38 C48,26 72,26 80,36 C88,40 102,32 108,34 L110,42 L95,44 L78,42 C68,44 56,44 42,38 Z' fill='currentColor'/><path d='M44,38 Q56,44 68,36' stroke='rgba(0,0,0,0.3)' stroke-width='4' fill='none'/><line x1='112' y1='58' x2='96' y2='24' stroke='currentColor' stroke-width='5'/><line x1='90' y1='22' x2='102' y2='22' stroke='currentColor' stroke-width='5' stroke-linecap='round'/><polygon points='102,28 112,30 106,36' fill='#facc15'/></svg>"
         },
         {
             id: 'moto_harley',
@@ -3026,7 +3026,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,25 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><circle cx='25' cy='65' r='18' fill='currentColor'/><circle cx='105' cy='65' r='18' fill='currentColor'/><path d='M25,65 L55,65 L65,40 L90,40 L105,65' stroke='currentColor' stroke-width='8' fill='none' stroke-linejoin='round'/><rect x='40' y='32' width='28' height='12' rx='4' fill='currentColor'/><line x1='88' y1='40' x2='80' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='74' y1='18' x2='86' y2='18' stroke='currentColor' stroke-width='6' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 140 85' width='100%' height='100%'><circle cx='28' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='28' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><circle cx='112' cy='58' r='18' fill='none' stroke='currentColor' stroke-width='8'/><circle cx='112' cy='58' r='8' fill='rgba(255,255,255,0.3)'/><rect x='48' y='46' width='28' height='22' rx='4' fill='currentColor'/><line x1='48' y1='52' x2='76' y2='52' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><line x1='48' y1='58' x2='76' y2='58' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><path d='M68,64 L30,68' stroke='rgba(255,255,255,0.6)' stroke-width='4' stroke-linecap='round'/><path d='M42,38 C48,26 72,26 80,36 C88,40 102,32 108,34 L110,42 L95,44 L78,42 C68,44 56,44 42,38 Z' fill='currentColor'/><path d='M44,38 Q56,44 68,36' stroke='rgba(0,0,0,0.3)' stroke-width='4' fill='none'/><line x1='112' y1='58' x2='96' y2='24' stroke='currentColor' stroke-width='5'/><line x1='90' y1='22' x2='102' y2='22' stroke='currentColor' stroke-width='5' stroke-linecap='round'/><polygon points='102,28 112,30 106,36' fill='#facc15'/></svg>"
         },
         {
             id: 'quadriciclo',
@@ -3053,7 +3053,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,45 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,55 C10,50 20,40 35,40 L50,40 C60,25 75,18 95,18 C115,18 135,32 145,45 L155,50 C158,52 160,56 160,60 L160,68 C160,70 158,72 155,72 L145,72 C145,62 135,55 125,55 C115,55 105,62 105,72 L55,72 C55,62 45,55 35,55 C25,55 15,62 15,72 L5,72 C2,72 0,70 0,68 L0,60 Z' fill='currentColor'/><circle cx='35' cy='72' r='15' fill='rgba(0,0,0,0.4)'/><circle cx='125' cy='72' r='15' fill='rgba(0,0,0,0.4)'/><path d='M60,38 C68,26 80,24 95,24 C108,24 122,30 128,38 Z' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 150 75' width='100%' height='100%'><path d='M8,52 C10,40 22,34 35,36 C42,20 62,12 85,12 C105,12 125,22 135,38 C144,40 148,46 148,54 L142,56 C140,46 130,42 120,42 C110,42 102,48 100,56 L50,56 C48,48 40,42 30,42 C20,42 12,46 10,56 Z' fill='currentColor'/><circle cx='30' cy='56' r='14' fill='rgba(0,0,0,0.35)'/><circle cx='120' cy='56' r='14' fill='rgba(0,0,0,0.35)'/><circle cx='30' cy='56' r='6' fill='rgba(255,255,255,0.6)'/><circle cx='120' cy='56' r='6' fill='rgba(255,255,255,0.6)'/><path d='M52,34 C55,20 70,16 82,16 L82,34 Z' fill='rgba(0,0,0,0.35)'/><path d='M86,16 C98,16 112,22 118,34 L86,34 Z' fill='rgba(0,0,0,0.35)'/><rect x='4' y='52' width='6' height='6' rx='2' fill='rgba(255,255,255,0.7)'/><rect x='144' y='52' width='6' height='6' rx='2' fill='rgba(255,255,255,0.7)'/></svg>"
         },
         {
             id: 'carro_uno',
@@ -3125,7 +3125,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,05 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,55 C10,50 20,40 35,40 L50,40 C60,25 75,18 95,18 C115,18 135,32 145,45 L155,50 C158,52 160,56 160,60 L160,68 C160,70 158,72 155,72 L145,72 C145,62 135,55 125,55 C115,55 105,62 105,72 L55,72 C55,62 45,55 35,55 C25,55 15,62 15,72 L5,72 C2,72 0,70 0,68 L0,60 Z' fill='currentColor'/><circle cx='35' cy='72' r='15' fill='rgba(0,0,0,0.4)'/><circle cx='125' cy='72' r='15' fill='rgba(0,0,0,0.4)'/><path d='M60,38 C68,26 80,24 95,24 C108,24 122,30 128,38 Z' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'vaca_holandesa',
@@ -3134,7 +3134,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,50 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='75' cy='55' rx='48' ry='30' fill='currentColor'/><path d='M115,40 C125,30 140,30 145,45 C145,55 138,65 125,68 Z' fill='currentColor'/><rect x='40' y='80' width='12' height='28' rx='4' fill='currentColor'/><rect x='95' y='80' width='12' height='28' rx='4' fill='currentColor'/><circle cx='60' cy='48' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='95' cy='58' r='14' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 95' width='100%' height='100%'><ellipse cx='65' cy='48' rx='38' ry='24' fill='currentColor'/><circle cx='104' cy='36' r='16' fill='currentColor'/><polygon points='98,24 102,16 106,24' fill='white'/><polygon points='108,24 112,16 116,24' fill='white'/><circle cx='60' cy='42' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='80' cy='52' r='8' fill='rgba(0,0,0,0.3)'/><rect x='38' y='68' width='10' height='24' rx='3' fill='currentColor'/><rect x='88' y='68' width='10' height='24' rx='3' fill='currentColor'/></svg>"
         },
         {
             id: 'touro_nelore',
@@ -3143,7 +3143,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,65 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='75' cy='55' rx='48' ry='30' fill='currentColor'/><path d='M115,40 C125,30 140,30 145,45 C145,55 138,65 125,68 Z' fill='currentColor'/><rect x='40' y='80' width='12' height='28' rx='4' fill='currentColor'/><rect x='95' y='80' width='12' height='28' rx='4' fill='currentColor'/><circle cx='60' cy='48' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='95' cy='58' r='14' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 95' width='100%' height='100%'><ellipse cx='65' cy='48' rx='38' ry='24' fill='currentColor'/><circle cx='104' cy='36' r='16' fill='currentColor'/><polygon points='98,24 102,16 106,24' fill='white'/><polygon points='108,24 112,16 116,24' fill='white'/><circle cx='60' cy='42' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='80' cy='52' r='8' fill='rgba(0,0,0,0.3)'/><rect x='38' y='68' width='10' height='24' rx='3' fill='currentColor'/><rect x='88' y='68' width='10' height='24' rx='3' fill='currentColor'/></svg>"
         },
         {
             id: 'bezerro',
@@ -3161,7 +3161,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,55 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='75' cy='55' rx='48' ry='30' fill='currentColor'/><path d='M115,40 C125,30 140,30 145,45 C145,55 138,65 125,68 Z' fill='currentColor'/><rect x='40' y='80' width='12' height='28' rx='4' fill='currentColor'/><rect x='95' y='80' width='12' height='28' rx='4' fill='currentColor'/><circle cx='60' cy='48' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='95' cy='58' r='14' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><ellipse cx='65' cy='52' rx='34' ry='20' fill='currentColor'/><path d='M85,48 L104,22 L116,25 L118,34 L102,40 L95,60 Z' fill='currentColor'/><polygon points='102,20 106,12 108,22' fill='currentColor'/><path d='M88,42 C85,34 94,24 102,18' stroke='rgba(0,0,0,0.3)' stroke-width='4' fill='none'/><rect x='40' y='65' width='8' height='32' rx='3' fill='currentColor'/><rect x='50' y='65' width='7' height='32' rx='3' fill='currentColor' opacity='0.8'/><rect x='80' y='65' width='8' height='32' rx='3' fill='currentColor'/><rect x='90' y='65' width='7' height='32' rx='3' fill='currentColor' opacity='0.8'/><path d='M34,48 C24,52 20,70 24,85' stroke='currentColor' stroke-width='6' stroke-linecap='round' fill='none'/></svg>"
         },
         {
             id: 'cavalo_mangalarga',
@@ -3170,7 +3170,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,65 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='75' cy='55' rx='48' ry='30' fill='currentColor'/><path d='M115,40 C125,30 140,30 145,45 C145,55 138,65 125,68 Z' fill='currentColor'/><rect x='40' y='80' width='12' height='28' rx='4' fill='currentColor'/><rect x='95' y='80' width='12' height='28' rx='4' fill='currentColor'/><circle cx='60' cy='48' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='95' cy='58' r='14' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><ellipse cx='65' cy='52' rx='34' ry='20' fill='currentColor'/><path d='M85,48 L104,22 L116,25 L118,34 L102,40 L95,60 Z' fill='currentColor'/><polygon points='102,20 106,12 108,22' fill='currentColor'/><path d='M88,42 C85,34 94,24 102,18' stroke='rgba(0,0,0,0.3)' stroke-width='4' fill='none'/><rect x='40' y='65' width='8' height='32' rx='3' fill='currentColor'/><rect x='50' y='65' width='7' height='32' rx='3' fill='currentColor' opacity='0.8'/><rect x='80' y='65' width='8' height='32' rx='3' fill='currentColor'/><rect x='90' y='65' width='7' height='32' rx='3' fill='currentColor' opacity='0.8'/><path d='M34,48 C24,52 20,70 24,85' stroke='currentColor' stroke-width='6' stroke-linecap='round' fill='none'/></svg>"
         },
         {
             id: 'cavalo_puro_sangue',
@@ -3179,7 +3179,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,70 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='75' cy='55' rx='48' ry='30' fill='currentColor'/><path d='M115,40 C125,30 140,30 145,45 C145,55 138,65 125,68 Z' fill='currentColor'/><rect x='40' y='80' width='12' height='28' rx='4' fill='currentColor'/><rect x='95' y='80' width='12' height='28' rx='4' fill='currentColor'/><circle cx='60' cy='48' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='95' cy='58' r='14' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><ellipse cx='65' cy='52' rx='34' ry='20' fill='currentColor'/><path d='M85,48 L104,22 L116,25 L118,34 L102,40 L95,60 Z' fill='currentColor'/><polygon points='102,20 106,12 108,22' fill='currentColor'/><path d='M88,42 C85,34 94,24 102,18' stroke='rgba(0,0,0,0.3)' stroke-width='4' fill='none'/><rect x='40' y='65' width='8' height='32' rx='3' fill='currentColor'/><rect x='50' y='65' width='7' height='32' rx='3' fill='currentColor' opacity='0.8'/><rect x='80' y='65' width='8' height='32' rx='3' fill='currentColor'/><rect x='90' y='65' width='7' height='32' rx='3' fill='currentColor' opacity='0.8'/><path d='M34,48 C24,52 20,70 24,85' stroke='currentColor' stroke-width='6' stroke-linecap='round' fill='none'/></svg>"
         },
         {
             id: 'burro',
@@ -3242,7 +3242,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,20 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='75' cy='55' rx='48' ry='30' fill='currentColor'/><path d='M115,40 C125,30 140,30 145,45 C145,55 138,65 125,68 Z' fill='currentColor'/><rect x='40' y='80' width='12' height='28' rx='4' fill='currentColor'/><rect x='95' y='80' width='12' height='28' rx='4' fill='currentColor'/><circle cx='60' cy='48' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='95' cy='58' r='14' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><ellipse cx='60' cy='55' rx='38' ry='24' fill='currentColor'/><circle cx='100' cy='42' r='24' fill='rgba(0,0,0,0.3)'/><circle cx='100' cy='42' r='16' fill='currentColor'/><polygon points='94,28 98,20 102,28' fill='currentColor'/><polygon points='104,28 108,20 112,28' fill='currentColor'/><rect x='35' y='72' width='11' height='24' rx='4' fill='currentColor'/><rect x='75' y='72' width='11' height='24' rx='4' fill='currentColor'/><path d='M22,55 C12,45 10,65 14,75' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/></svg>"
         },
         {
             id: 'leao_em_pe',
@@ -3251,7 +3251,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,20 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 90 140' width='100%' height='100%'><ellipse cx='45' cy='80' rx='30' ry='42' fill='currentColor'/><circle cx='45' cy='30' r='18' fill='currentColor'/><circle cx='32' cy='16' r='6' fill='currentColor'/><circle cx='58' cy='16' r='6' fill='currentColor'/><path d='M20,45 C10,55 8,75 16,85' stroke='currentColor' stroke-width='10' fill='none' stroke-linecap='round'/><path d='M70,45 C80,55 82,75 74,85' stroke='currentColor' stroke-width='10' fill='none' stroke-linecap='round'/><rect x='25' y='115' width='14' height='22' rx='5' fill='currentColor'/><rect x='51' y='115' width='14' height='22' rx='5' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><ellipse cx='60' cy='55' rx='38' ry='24' fill='currentColor'/><circle cx='100' cy='42' r='24' fill='rgba(0,0,0,0.3)'/><circle cx='100' cy='42' r='16' fill='currentColor'/><polygon points='94,28 98,20 102,28' fill='currentColor'/><polygon points='104,28 108,20 112,28' fill='currentColor'/><rect x='35' y='72' width='11' height='24' rx='4' fill='currentColor'/><rect x='75' y='72' width='11' height='24' rx='4' fill='currentColor'/><path d='M22,55 C12,45 10,65 14,75' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/></svg>"
         },
         {
             id: 'tigre_siberiano',
@@ -3404,7 +3404,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,50 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='75' cy='55' rx='48' ry='30' fill='currentColor'/><path d='M115,40 C125,30 140,30 145,45 C145,55 138,65 125,68 Z' fill='currentColor'/><rect x='40' y='80' width='12' height='28' rx='4' fill='currentColor'/><rect x='95' y='80' width='12' height='28' rx='4' fill='currentColor'/><circle cx='60' cy='48' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='95' cy='58' r='14' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 95' width='100%' height='100%'><ellipse cx='65' cy='48' rx='38' ry='24' fill='currentColor'/><circle cx='104' cy='36' r='16' fill='currentColor'/><polygon points='98,24 102,16 106,24' fill='white'/><polygon points='108,24 112,16 116,24' fill='white'/><circle cx='60' cy='42' r='10' fill='rgba(0,0,0,0.3)'/><circle cx='80' cy='52' r='8' fill='rgba(0,0,0,0.3)'/><rect x='38' y='68' width='10' height='24' rx='3' fill='currentColor'/><rect x='88' y='68' width='10' height='24' rx='3' fill='currentColor'/></svg>"
         },
         {
             id: 'javali',
@@ -3422,7 +3422,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,85 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 70 140' width='100%' height='100%'><rect x='10' y='10' width='50' height='122' rx='5' fill='currentColor'/><rect x='12' y='12' width='46' height='38' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='32' width='3' height='14' rx='1.5' fill='rgba(255,255,255,0.7)'/><line x1='10' y1='52' x2='60' y2='52' stroke='rgba(0,0,0,0.4)' stroke-width='3'/><rect x='12' y='54' width='46' height='75' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='60' width='3' height='26' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='14' y='132' width='8' height='4' rx='1' fill='currentColor'/><rect x='48' y='132' width='8' height='4' rx='1' fill='currentColor'/></svg>"
         },
         {
             id: 'geladeira_sidebyside',
@@ -3431,7 +3431,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,90 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 70 140' width='100%' height='100%'><rect x='10' y='10' width='50' height='122' rx='5' fill='currentColor'/><rect x='12' y='12' width='46' height='38' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='32' width='3' height='14' rx='1.5' fill='rgba(255,255,255,0.7)'/><line x1='10' y1='52' x2='60' y2='52' stroke='rgba(0,0,0,0.4)' stroke-width='3'/><rect x='12' y='54' width='46' height='75' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='60' width='3' height='26' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='14' y='132' width='8' height='4' rx='1' fill='currentColor'/><rect x='48' y='132' width='8' height='4' rx='1' fill='currentColor'/></svg>"
         },
         {
             id: 'freezer_vertical',
@@ -3440,7 +3440,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,75 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 70 140' width='100%' height='100%'><rect x='10' y='10' width='50' height='122' rx='5' fill='currentColor'/><rect x='12' y='12' width='46' height='38' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='32' width='3' height='14' rx='1.5' fill='rgba(255,255,255,0.7)'/><line x1='10' y1='52' x2='60' y2='52' stroke='rgba(0,0,0,0.4)' stroke-width='3'/><rect x='12' y='54' width='46' height='75' rx='3' fill='rgba(0,0,0,0.15)'/><rect x='15' y='60' width='3' height='26' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='14' y='132' width='8' height='4' rx='1' fill='currentColor'/><rect x='48' y='132' width='8' height='4' rx='1' fill='currentColor'/></svg>"
         },
         {
             id: 'fogao_industrial',
@@ -3449,7 +3449,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,20 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 100' width='100%' height='100%'><rect x='12' y='15' width='66' height='75' rx='4' fill='currentColor'/><ellipse cx='28' cy='12' rx='8' ry='4' fill='currentColor'/><ellipse cx='62' cy='12' rx='8' ry='4' fill='currentColor'/><circle cx='22' cy='24' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='34' cy='24' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='56' cy='24' r='3' fill='rgba(255,255,255,0.6)'/><circle cx='68' cy='24' r='3' fill='rgba(255,255,255,0.6)'/><rect x='24' y='33' width='42' height='4' rx='2' fill='rgba(255,255,255,0.7)'/><rect x='20' y='42' width='50' height='36' rx='3' fill='rgba(0,0,0,0.45)' stroke='rgba(255,255,255,0.2)' stroke-width='2'/><line x1='24' y1='60' x2='66' y2='60' stroke='rgba(255,255,255,0.25)' stroke-width='2'/><rect x='16' y='90' width='8' height='4' fill='currentColor'/><rect x='66' y='90' width='8' height='4' fill='currentColor'/></svg>"
         },
         {
             id: 'vending_machine',
@@ -3467,7 +3467,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,10 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 60 140' width='100%' height='100%'><circle cx='30' cy='18' r='14' fill='currentColor'/><path d='M12,42 C12,36 18,34 30,34 C42,34 48,36 48,42 L45,82 L15,82 Z' fill='currentColor'/><line x1='12' y1='42' x2='3' y2='80' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='48' y1='42' x2='57' y2='80' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><rect x='18' y='84' width='9' height='52' rx='4' fill='currentColor'/><rect x='33' y='84' width='9' height='52' rx='4' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><rect x='10' y='8' width='60' height='138' fill='none' stroke='currentColor' stroke-width='5'/><rect x='14' y='12' width='52' height='130' fill='currentColor'/><rect x='19' y='18' width='18' height='45' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='43' y='18' width='18' height='45' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='19' y='72' width='18' height='58' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='43' y='72' width='18' height='58' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><circle cx='60' cy='82' r='3.5' fill='rgba(255,255,255,0.9)'/><rect x='58' y='78' width='4' height='12' rx='1' fill='rgba(255,255,255,0.4)'/></svg>"
         },
         {
             id: 'porta_pivotante',
@@ -3476,7 +3476,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,40 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 60 140' width='100%' height='100%'><circle cx='30' cy='18' r='14' fill='currentColor'/><path d='M12,42 C12,36 18,34 30,34 C42,34 48,36 48,42 L45,82 L15,82 Z' fill='currentColor'/><line x1='12' y1='42' x2='3' y2='80' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='48' y1='42' x2='57' y2='80' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><rect x='18' y='84' width='9' height='52' rx='4' fill='currentColor'/><rect x='33' y='84' width='9' height='52' rx='4' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 80 160' width='100%' height='100%'><rect x='10' y='6' width='60' height='150' fill='none' stroke='currentColor' stroke-width='5'/><rect x='16' y='10' width='48' height='142' rx='2' fill='currentColor'/><line x1='23' y1='8' x2='23' y2='154' stroke='rgba(0,0,0,0.5)' stroke-width='3' stroke-linecap='round'/><circle cx='23' cy='9' r='3.5' fill='rgba(255,255,255,0.7)'/><circle cx='23' cy='153' r='3.5' fill='rgba(255,255,255,0.7)'/><rect x='52' y='50' width='4' height='60' rx='2' fill='rgba(255,255,255,0.85)'/><line x1='27' y1='35' x2='60' y2='35' stroke='rgba(0,0,0,0.25)' stroke-width='2'/><line x1='27' y1='65' x2='48' y2='65' stroke='rgba(0,0,0,0.25)' stroke-width='2'/><line x1='27' y1='95' x2='48' y2='95' stroke='rgba(0,0,0,0.25)' stroke-width='2'/><line x1='27' y1='125' x2='60' y2='125' stroke='rgba(0,0,0,0.25)' stroke-width='2'/></svg>"
         },
         {
             id: 'guarda_roupa',
@@ -3485,7 +3485,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,30 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 130' width='100%' height='100%'><rect x='12' y='8' width='86' height='114' rx='3' fill='currentColor'/><rect x='16' y='12' width='37' height='86' rx='2' fill='rgba(0,0,0,0.15)'/><rect x='57' y='12' width='37' height='86' rx='2' fill='rgba(0,0,0,0.15)'/><rect x='48' y='45' width='3' height='22' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='59' y='45' width='3' height='22' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='16' y='102' width='37' height='16' rx='2' fill='rgba(0,0,0,0.25)'/><rect x='57' y='102' width='37' height='16' rx='2' fill='rgba(0,0,0,0.25)'/></svg>"
         },
         {
             id: 'armario_alto',
@@ -3494,7 +3494,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,90 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 130' width='100%' height='100%'><rect x='12' y='8' width='86' height='114' rx='3' fill='currentColor'/><rect x='16' y='12' width='37' height='86' rx='2' fill='rgba(0,0,0,0.15)'/><rect x='57' y='12' width='37' height='86' rx='2' fill='rgba(0,0,0,0.15)'/><rect x='48' y='45' width='3' height='22' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='59' y='45' width='3' height='22' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='16' y='102' width='37' height='16' rx='2' fill='rgba(0,0,0,0.25)'/><rect x='57' y='102' width='37' height='16' rx='2' fill='rgba(0,0,0,0.25)'/></svg>"
         },
         {
             id: 'estante_livros',
@@ -3503,7 +3503,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,10 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 130' width='100%' height='100%'><rect x='12' y='8' width='66' height='116' rx='2' fill='currentColor'/><rect x='16' y='12' width='58' height='108' fill='rgba(0,0,0,0.2)'/><line x1='16' y1='38' x2='74' y2='38' stroke='currentColor' stroke-width='4'/><line x1='16' y1='66' x2='74' y2='66' stroke='currentColor' stroke-width='4'/><line x1='16' y1='94' x2='74' y2='94' stroke='currentColor' stroke-width='4'/><rect x='20' y='18' width='6' height='18' fill='#ef4444'/><rect x='27' y='15' width='8' height='21' fill='#3b82f6'/><rect x='36' y='20' width='5' height='16' fill='#eab308'/><rect x='42' y='16' width='7' height='20' fill='#10b981'/><rect x='20' y='46' width='7' height='18' fill='#8b5cf6'/><rect x='28' y='44' width='6' height='20' fill='#ec4899'/><rect x='20' y='74' width='8' height='18' fill='#06b6d4'/><rect x='29' y='72' width='7' height='20' fill='#84cc16'/></svg>"
         },
         {
             id: 'cristaleira',
@@ -3512,7 +3512,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,80 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 130' width='100%' height='100%'><rect x='12' y='8' width='66' height='116' rx='2' fill='currentColor'/><rect x='16' y='12' width='58' height='108' fill='rgba(0,0,0,0.2)'/><line x1='16' y1='38' x2='74' y2='38' stroke='currentColor' stroke-width='4'/><line x1='16' y1='66' x2='74' y2='66' stroke='currentColor' stroke-width='4'/><line x1='16' y1='94' x2='74' y2='94' stroke='currentColor' stroke-width='4'/><rect x='20' y='18' width='6' height='18' fill='#ef4444'/><rect x='27' y='15' width='8' height='21' fill='#3b82f6'/><rect x='36' y='20' width='5' height='16' fill='#eab308'/><rect x='42' y='16' width='7' height='20' fill='#10b981'/><rect x='20' y='46' width='7' height='18' fill='#8b5cf6'/><rect x='28' y='44' width='6' height='20' fill='#ec4899'/><rect x='20' y='74' width='8' height='18' fill='#06b6d4'/><rect x='29' y='72' width='7' height='20' fill='#84cc16'/></svg>"
         },
         {
             id: 'beliche',
@@ -3521,7 +3521,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,65 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 110 130' width='100%' height='100%'><rect x='15' y='10' width='8' height='115' rx='2' fill='currentColor'/><rect x='87' y='10' width='8' height='115' rx='2' fill='currentColor'/><rect x='21' y='25' width='68' height='20' rx='3' fill='currentColor'/><rect x='25' y='20' width='60' height='6' rx='2' fill='currentColor'/><rect x='26' y='28' width='24' height='10' rx='3' fill='rgba(255,255,255,0.4)'/><rect x='21' y='80' width='68' height='20' rx='3' fill='currentColor'/><rect x='26' y='83' width='24' height='10' rx='3' fill='rgba(255,255,255,0.4)'/><rect x='72' y='25' width='4' height='80' fill='currentColor'/><rect x='82' y='25' width='4' height='80' fill='currentColor'/><line x1='72' y1='38' x2='82' y2='38' stroke='currentColor' stroke-width='3'/><line x1='72' y1='52' x2='82' y2='52' stroke='currentColor' stroke-width='3'/><line x1='72' y1='66' x2='82' y2='66' stroke='currentColor' stroke-width='3'/><line x1='72' y1='80' x2='82' y2='80' stroke='currentColor' stroke-width='3'/><line x1='72' y1='94' x2='82' y2='94' stroke='currentColor' stroke-width='3'/></svg>"
         },
         {
             id: 'cama_box',
@@ -3530,7 +3530,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,25 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><rect x='15' y='15' width='100' height='35' rx='5' fill='currentColor'/><rect x='20' y='20' width='42' height='25' rx='3' fill='rgba(0,0,0,0.2)'/><rect x='68' y='20' width='42' height='25' rx='3' fill='rgba(0,0,0,0.2)'/><rect x='22' y='36' width='38' height='16' rx='4' fill='rgba(255,255,255,0.4)'/><rect x='70' y='36' width='38' height='16' rx='4' fill='rgba(255,255,255,0.4)'/><rect x='18' y='46' width='94' height='30' rx='5' fill='currentColor'/><path d='M18,52 L112,52 L112,76 L18,76 Z' fill='rgba(255,255,255,0.2)'/><rect x='15' y='74' width='100' height='6' rx='2' fill='currentColor'/><rect x='20' y='80' width='8' height='8' rx='2' fill='currentColor'/><rect x='102' y='80' width='8' height='8' rx='2' fill='currentColor'/></svg>"
         },
         {
             id: 'guarda_sol',
@@ -3548,7 +3548,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,50 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 60 160' width='100%' height='100%'><line x1='30' y1='20' x2='30' y2='158' stroke='currentColor' stroke-width='6'/><path d='M30,30 C30,10 52,10 52,25' fill='none' stroke='currentColor' stroke-width='5'/><polygon points='45,25 58,25 54,35 48,35' fill='#facc15'/></svg>"
+            svg: "<svg viewBox='0 0 100 90' width='100%' height='100%'><rect x='10' y='15' width='18' height='60' rx='3' fill='currentColor'/><circle cx='19' cy='30' r='2' fill='rgba(255,255,255,0.7)'/><circle cx='19' cy='40' r='2' fill='rgba(255,255,255,0.7)'/><circle cx='19' cy='50' r='2' fill='rgba(255,255,255,0.7)'/><circle cx='19' cy='60' r='2' fill='rgba(255,255,255,0.7)'/><polygon points='28,15 34,22 30,30 36,37 30,45 36,52 30,60 36,67 30,75 70,75 64,67 70,60 64,52 70,45 64,37 70,30 64,22 70,15' fill='rgba(0,0,0,0.3)' stroke='currentColor' stroke-width='2'/><rect x='72' y='12' width='20' height='66' rx='3' fill='currentColor'/><rect x='84' y='16' width='6' height='58' fill='white'/><rect x='84' y='22' width='4' height='4' fill='black'/><rect x='84' y='30' width='4' height='4' fill='black'/><rect x='84' y='42' width='4' height='4' fill='black'/><rect x='84' y='50' width='4' height='4' fill='black'/><rect x='84' y='58' width='4' height='4' fill='black'/></svg>"
         },
         {
             id: 'trave_futsal',
@@ -3557,7 +3557,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,00 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'trave_campo',
@@ -3566,7 +3566,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,44 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'cabine_telefonica',
@@ -3629,7 +3629,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,00 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'betoneira',
@@ -3638,7 +3638,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,50 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 120 100' width='100%' height='100%'><polygon points='35,28 75,18 85,55 45,65' fill='currentColor'/><circle cx='78' cy='36' r='14' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='4'/><line x1='35' y1='50' x2='25' y2='85' stroke='currentColor' stroke-width='6'/><line x1='65' y1='50' x2='85' y2='85' stroke='currentColor' stroke-width='6'/><circle cx='30' cy='85' r='10' fill='currentColor'/><circle cx='85' cy='85' r='10' fill='currentColor'/></svg>"
         },
         {
             id: 'compressor_ar',
@@ -3656,7 +3656,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,30 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 110' width='100%' height='100%'><rect x='15' y='12' width='80' height='45' rx='3' fill='currentColor'/><rect x='20' y='16' width='70' height='36' rx='2' fill='rgba(0,0,0,0.2)'/><rect x='35' y='36' width='40' height='3' rx='1' fill='rgba(255,255,255,0.6)'/><rect x='10' y='57' width='90' height='16' rx='3' fill='currentColor'/><rect x='14' y='60' width='82' height='8' fill='white'/><line x1='24' y1='60' x2='24' y2='65' stroke='black' stroke-width='2'/><line x1='34' y1='60' x2='34' y2='65' stroke='black' stroke-width='2'/><line x1='44' y1='60' x2='44' y2='65' stroke='black' stroke-width='2'/><line x1='54' y1='60' x2='54' y2='65' stroke='black' stroke-width='2'/><line x1='64' y1='60' x2='64' y2='65' stroke='black' stroke-width='2'/><line x1='74' y1='60' x2='74' y2='65' stroke='black' stroke-width='2'/><line x1='84' y1='60' x2='84' y2='65' stroke='black' stroke-width='2'/><rect x='18' y='73' width='74' height='26' fill='currentColor'/><rect x='14' y='73' width='6' height='26' rx='2' fill='currentColor'/><rect x='90' y='73' width='6' height='26' rx='2' fill='currentColor'/><rect x='48' y='99' width='3' height='5' fill='#f59e0b'/><rect x='54' y='99' width='3' height='5' fill='#f59e0b'/><rect x='60' y='99' width='3' height='5' fill='#f59e0b'/></svg>"
         },
         {
             id: 'harpa',
@@ -3674,7 +3674,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,10 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C40,5 40,0 40,5' stroke='currentColor' stroke-width='5' fill='none'/></svg>"
+            svg: "<svg viewBox='0 0 110 150' width='100%' height='100%'><rect x='48' y='80' width='14' height='68' fill='#78350f'/><circle cx='55' cy='52' r='45' fill='currentColor'/><circle cx='38' cy='42' r='25' fill='rgba(255,255,255,0.2)'/><circle cx='70' cy='45' r='25' fill='rgba(255,255,255,0.2)'/></svg>"
         },
         {
             id: 'biombo',
@@ -3701,7 +3701,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,85 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 65 130' width='100%' height='100%'><rect x='3' y='3' width='59' height='124' rx='12' fill='currentColor'/><rect x='8' y='12' width='49' height='106' rx='6' fill='rgba(0,0,0,0.35)'/><circle cx='32.5' cy='7' r='2.5' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 80 130' width='100%' height='100%'><path d='M18,12 L64,12 L64,28 L52,42 L52,70 L64,74 L64,122 L18,122 Z' fill='currentColor'/><polygon points='22,15 60,15 60,26 22,26' fill='#38bdf8'/><polygon points='24,32 50,32 46,64 24,64' fill='rgba(0,0,0,0.5)' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='35' cy='48' r='5' fill='#f43f5e'/><polygon points='20,68 56,68 58,74 20,74' fill='rgba(255,255,255,0.2)'/><line x1='30' y1='70' x2='28' y2='63' stroke='#fff' stroke-width='2.5'/><circle cx='28' cy='63' r='2.5' fill='#ef4444'/><circle cx='40' cy='70' r='2' fill='#3b82f6'/><circle cx='46' cy='70' r='2' fill='#eab308'/><rect x='28' y='86' width='26' height='24' rx='2' fill='rgba(0,0,0,0.3)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='33' y='90' width='4' height='7' fill='orange'/><rect x='45' y='90' width='4' height='7' fill='orange'/></svg>"
         },
         {
             id: 'catraca_onibus',
@@ -3710,7 +3710,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,30 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><rect x='5' y='10' width='160' height='60' rx='8' fill='currentColor'/><rect x='12' y='18' width='30' height='22' rx='3' fill='rgba(0,0,0,0.35)'/><rect x='48' y='18' width='30' height='22' rx='3' fill='rgba(0,0,0,0.35)'/><rect x='84' y='18' width='30' height='22' rx='3' fill='rgba(0,0,0,0.35)'/><rect x='120' y='18' width='40' height='22' rx='3' fill='rgba(0,0,0,0.35)'/><circle cx='45' cy='70' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='130' cy='70' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'bancada_trabalho',
@@ -3719,7 +3719,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,40 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><rect x='10' y='22' width='110' height='14' rx='2' fill='currentColor'/><rect x='8' y='24' width='8' height='18' rx='1' fill='rgba(0,0,0,0.4)'/><line x1='4' y1='33' x2='12' y2='33' stroke='rgba(255,255,255,0.8)' stroke-width='3'/><rect x='22' y='36' width='12' height='46' fill='currentColor'/><rect x='96' y='36' width='12' height='46' fill='currentColor'/><rect x='20' y='65' width='90' height='8' fill='rgba(0,0,0,0.25)'/><rect x='45' y='60' width='25' height='5' rx='1' fill='rgba(255,255,255,0.4)'/></svg>"
         },
         {
             id: 'carrinho_pipoca',
@@ -3728,7 +3728,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,50 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 120 130' width='100%' height='100%'><polygon points='20,25 60,10 100,25 95,32 25,32' fill='currentColor'/><path d='M25,32 Q32,38 40,32 Q48,38 56,32 Q64,38 72,32 Q80,38 88,32 Q95,38 95,32' fill='currentColor'/><rect x='28' y='32' width='4' height='38' fill='currentColor'/><rect x='88' y='32' width='4' height='38' fill='currentColor'/><rect x='28' y='32' width='64' height='38' fill='rgba(255,255,255,0.15)' stroke='currentColor' stroke-width='2'/><path d='M35,65 Q45,45 60,48 Q75,42 85,65 Z' fill='rgba(255,230,100,0.6)'/><circle cx='48' cy='52' r='4' fill='#fef08a'/><circle cx='58' cy='46' r='4.5' fill='#fef08a'/><circle cx='68' cy='50' r='4' fill='#fef08a'/><rect x='26' y='70' width='68' height='32' rx='3' fill='currentColor'/><rect x='32' y='75' width='56' height='22' rx='2' fill='rgba(0,0,0,0.2)'/><path d='M26,75 L12,75 L12,65' fill='none' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><rect x='86' y='102' width='6' height='22' rx='2' fill='currentColor'/><circle cx='45' cy='105' r='18' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='45' cy='105' r='4' fill='currentColor'/><line x1='45' y1='87' x2='45' y2='123' stroke='currentColor' stroke-width='2'/><line x1='27' y1='105' x2='63' y2='105' stroke='currentColor' stroke-width='2'/></svg>"
         },
         {
             id: 'chopeira_bar',
@@ -3773,7 +3773,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,40 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><circle cx='70' cy='62' r='26' fill='currentColor'/><circle cx='70' cy='62' r='22' fill='rgba(0,0,0,0.3)' stroke='rgba(255,255,255,0.2)' stroke-width='2'/><line x1='50' y1='75' x2='38' y2='92' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='90' y1='75' x2='102' y2='92' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><rect x='52' y='22' width='16' height='14' rx='2' fill='currentColor'/><ellipse cx='60' cy='22' rx='8' ry='3' fill='rgba(255,255,255,0.4)'/><rect x='72' y='22' width='16' height='14' rx='2' fill='currentColor'/><ellipse cx='80' cy='22' rx='8' ry='3' fill='rgba(255,255,255,0.4)'/><line x1='34' y1='48' x2='34' y2='88' stroke='currentColor' stroke-width='3'/><rect x='24' y='42' width='20' height='10' rx='2' fill='currentColor'/><ellipse cx='34' cy='42' rx='10' ry='3' fill='rgba(255,255,255,0.5)'/><rect x='96' y='46' width='22' height='20' rx='2' fill='currentColor'/><ellipse cx='107' cy='46' rx='11' ry='3' fill='rgba(255,255,255,0.4)'/><line x1='16' y1='18' x2='16' y2='88' stroke='currentColor' stroke-width='3'/><ellipse cx='16' cy='32' rx='14' ry='3' fill='#f59e0b'/><line x1='124' y1='12' x2='124' y2='88' stroke='currentColor' stroke-width='3'/><ellipse cx='124' cy='22' rx='16' ry='4' fill='#f59e0b'/></svg>"
         },
         {
             id: 'sinuca_mesa',
@@ -3782,7 +3782,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,45 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 150 90' width='100%' height='100%'><polygon points='10,35 140,35 130,55 20,55' fill='currentColor'/><polygon points='20,38 130,38 122,52 28,52' fill='#16a34a'/><circle cx='20' cy='38' r='4' fill='#111'/><circle cx='75' cy='37' r='3.5' fill='#111'/><circle cx='130' cy='38' r='4' fill='#111'/><circle cx='26' cy='52' r='4' fill='#111'/><circle cx='75' cy='53' r='3.5' fill='#111'/><circle cx='124' cy='52' r='4' fill='#111'/><circle cx='100' cy='45' r='2' fill='#fef08a'/><circle cx='104' cy='43' r='2' fill='#ef4444'/><circle cx='104' cy='47' r='2' fill='#3b82f6'/><rect x='20' y='52' width='110' height='12' fill='currentColor'/><rect x='25' y='64' width='12' height='22' rx='3' fill='currentColor'/><rect x='113' y='64' width='12' height='22' rx='3' fill='currentColor'/></svg>"
         },
         {
             id: 'pebolim',
@@ -3791,7 +3791,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,20 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 80 120' width='100%' height='100%'><rect x='22' y='10' width='36' height='42' rx='6' fill='currentColor'/><rect x='15' y='55' width='50' height='12' rx='4' fill='currentColor'/><rect x='36' y='67' width='8' height='30' fill='currentColor'/><polygon points='40,97 15,115 65,115' fill='currentColor'/><circle cx='15' cy='115' r='4' fill='rgba(255,255,255,0.4)'/><circle cx='65' cy='115' r='4' fill='rgba(255,255,255,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><rect x='15' y='25' width='100' height='26' rx='3' fill='currentColor'/><rect x='20' y='28' width='90' height='20' fill='#16a34a'/><line x1='8' y1='32' x2='122' y2='32' stroke='rgba(255,255,255,0.7)' stroke-width='2'/><line x1='8' y1='38' x2='122' y2='38' stroke='rgba(255,255,255,0.7)' stroke-width='2'/><line x1='8' y1='44' x2='122' y2='44' stroke='rgba(255,255,255,0.7)' stroke-width='2'/><circle cx='45' cy='32' r='2.5' fill='#ef4444'/><circle cx='85' cy='32' r='2.5' fill='#3b82f6'/><circle cx='55' cy='38' r='2.5' fill='#ef4444'/><circle cx='75' cy='38' r='2.5' fill='#3b82f6'/><circle cx='45' cy='44' r='2.5' fill='#ef4444'/><circle cx='85' cy='44' r='2.5' fill='#3b82f6'/><polygon points='22,51 32,51 26,82 16,82' fill='currentColor'/><polygon points='98,51 108,51 114,82 104,82' fill='currentColor'/></svg>"
         },
         {
             id: 'fliperama',
@@ -3800,7 +3800,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,80 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 80 130' width='100%' height='100%'><path d='M18,12 L64,12 L64,28 L52,42 L52,70 L64,74 L64,122 L18,122 Z' fill='currentColor'/><polygon points='22,15 60,15 60,26 22,26' fill='#38bdf8'/><polygon points='24,32 50,32 46,64 24,64' fill='rgba(0,0,0,0.5)' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='35' cy='48' r='5' fill='#f43f5e'/><polygon points='20,68 56,68 58,74 20,74' fill='rgba(255,255,255,0.2)'/><line x1='30' y1='70' x2='28' y2='63' stroke='#fff' stroke-width='2.5'/><circle cx='28' cy='63' r='2.5' fill='#ef4444'/><circle cx='40' cy='70' r='2' fill='#3b82f6'/><circle cx='46' cy='70' r='2' fill='#eab308'/><rect x='28' y='86' width='26' height='24' rx='2' fill='rgba(0,0,0,0.3)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='33' y='90' width='4' height='7' fill='orange'/><rect x='45' y='90' width='4' height='7' fill='orange'/></svg>"
         },
         {
             id: 'mesa_pingpong',
@@ -3809,7 +3809,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,60 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 85' width='100%' height='100%'><polygon points='15,40 125,40 115,55 25,55' fill='#1e3a8a'/><line x1='70' y1='32' x2='70' y2='48' stroke='white' stroke-width='4'/><rect x='25' y='55' width='90' height='6' fill='currentColor'/><line x1='30' y1='61' x2='28' y2='80' stroke='currentColor' stroke-width='5'/><line x1='110' y1='61' x2='112' y2='80' stroke='currentColor' stroke-width='5'/></svg>"
         },
         {
             id: 'carrinho_golfe',
@@ -3827,7 +3827,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,25 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,55 C10,50 20,40 35,40 L50,40 C60,25 75,18 95,18 C115,18 135,32 145,45 L155,50 C158,52 160,56 160,60 L160,68 C160,70 158,72 155,72 L145,72 C145,62 135,55 125,55 C115,55 105,62 105,72 L55,72 C55,62 45,55 35,55 C25,55 15,62 15,72 L5,72 C2,72 0,70 0,68 L0,60 Z' fill='currentColor'/><circle cx='35' cy='72' r='15' fill='rgba(0,0,0,0.4)'/><circle cx='125' cy='72' r='15' fill='rgba(0,0,0,0.4)'/><path d='M60,38 C68,26 80,24 95,24 C108,24 122,30 128,38 Z' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><rect x='28' y='18' width='36' height='6' rx='2' fill='currentColor'/><line x1='34' y1='24' x2='34' y2='52' stroke='currentColor' stroke-width='4'/><line x1='60' y1='24' x2='60' y2='52' stroke='currentColor' stroke-width='4'/><rect x='36' y='26' width='22' height='22' fill='rgba(0,0,0,0.3)'/><polygon points='62,40 108,44 108,62 62,62' fill='currentColor'/><line x1='80' y1='40' x2='80' y2='20' stroke='currentColor' stroke-width='3'/><circle cx='42' cy='62' r='24' fill='currentColor'/><circle cx='42' cy='62' r='14' fill='rgba(0,0,0,0.4)' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='42' cy='62' r='5' fill='currentColor'/><circle cx='98' cy='68' r='14' fill='currentColor'/><circle cx='98' cy='68' r='7' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'toldo_comercial',
@@ -3836,7 +3836,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,40 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'poste_placa',
@@ -3872,7 +3872,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,40 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><rect x='10' y='10' width='120' height='80' rx='2' fill='currentColor'/><line x1='10' y1='30' x2='130' y2='30' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='10' y1='50' x2='130' y2='50' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='10' y1='70' x2='130' y2='70' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><rect x='64' y='78' width='12' height='4' rx='1' fill='rgba(255,255,255,0.6)'/></svg>"
         },
         {
             id: 'espelho_corpo',
@@ -3890,7 +3890,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '1,90 m',
             category: 'medio',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 110 130' width='100%' height='100%'><rect x='12' y='8' width='86' height='114' rx='3' fill='currentColor'/><rect x='16' y='12' width='37' height='86' rx='2' fill='rgba(0,0,0,0.15)'/><rect x='57' y='12' width='37' height='86' rx='2' fill='rgba(0,0,0,0.15)'/><rect x='48' y='45' width='3' height='22' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='59' y='45' width='3' height='22' rx='1.5' fill='rgba(255,255,255,0.7)'/><rect x='16' y='102' width='37' height='16' rx='2' fill='rgba(0,0,0,0.25)'/><rect x='57' y='102' width='37' height='16' rx='2' fill='rgba(0,0,0,0.25)'/></svg>"
         },
         {
             id: 'palanque',
@@ -3962,7 +3962,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,10 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 170 80' width='100%' height='100%'><rect x='8' y='15' width='105' height='46' rx='3' fill='currentColor'/><line x1='8' y1='40' x2='113' y2='40' stroke='rgba(0,0,0,0.2)' stroke-width='2'/><path d='M115,35 L135,35 L145,46 L158,46 L158,61 L115,61 Z' fill='currentColor'/><polygon points='128,38 140,38 145,46 128,46' fill='rgba(0,0,0,0.4)'/><rect x='118' y='18' width='3' height='17' fill='currentColor'/><circle cx='24' cy='63' r='10' fill='currentColor'/><circle cx='46' cy='63' r='10' fill='currentColor'/><circle cx='104' cy='63' r='10' fill='currentColor'/><circle cx='124' cy='63' r='10' fill='currentColor'/><circle cx='148' cy='63' r='10' fill='currentColor'/><circle cx='24' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='46' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='104' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='124' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='148' cy='63' r='4' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'caminhao_betoneira',
@@ -3971,7 +3971,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,80 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 170 80' width='100%' height='100%'><rect x='8' y='15' width='105' height='46' rx='3' fill='currentColor'/><line x1='8' y1='40' x2='113' y2='40' stroke='rgba(0,0,0,0.2)' stroke-width='2'/><path d='M115,35 L135,35 L145,46 L158,46 L158,61 L115,61 Z' fill='currentColor'/><polygon points='128,38 140,38 145,46 128,46' fill='rgba(0,0,0,0.4)'/><rect x='118' y='18' width='3' height='17' fill='currentColor'/><circle cx='24' cy='63' r='10' fill='currentColor'/><circle cx='46' cy='63' r='10' fill='currentColor'/><circle cx='104' cy='63' r='10' fill='currentColor'/><circle cx='124' cy='63' r='10' fill='currentColor'/><circle cx='148' cy='63' r='10' fill='currentColor'/><circle cx='24' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='46' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='104' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='124' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='148' cy='63' r='4' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'caminhao_bau',
@@ -3980,7 +3980,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,90 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 170 80' width='100%' height='100%'><rect x='8' y='15' width='105' height='46' rx='3' fill='currentColor'/><line x1='8' y1='40' x2='113' y2='40' stroke='rgba(0,0,0,0.2)' stroke-width='2'/><path d='M115,35 L135,35 L145,46 L158,46 L158,61 L115,61 Z' fill='currentColor'/><polygon points='128,38 140,38 145,46 128,46' fill='rgba(0,0,0,0.4)'/><rect x='118' y='18' width='3' height='17' fill='currentColor'/><circle cx='24' cy='63' r='10' fill='currentColor'/><circle cx='46' cy='63' r='10' fill='currentColor'/><circle cx='104' cy='63' r='10' fill='currentColor'/><circle cx='124' cy='63' r='10' fill='currentColor'/><circle cx='148' cy='63' r='10' fill='currentColor'/><circle cx='24' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='46' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='104' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='124' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='148' cy='63' r='4' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'caminhao_cegonha',
@@ -3989,7 +3989,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '4,30 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 170 80' width='100%' height='100%'><rect x='8' y='15' width='105' height='46' rx='3' fill='currentColor'/><line x1='8' y1='40' x2='113' y2='40' stroke='rgba(0,0,0,0.2)' stroke-width='2'/><path d='M115,35 L135,35 L145,46 L158,46 L158,61 L115,61 Z' fill='currentColor'/><polygon points='128,38 140,38 145,46 128,46' fill='rgba(0,0,0,0.4)'/><rect x='118' y='18' width='3' height='17' fill='currentColor'/><circle cx='24' cy='63' r='10' fill='currentColor'/><circle cx='46' cy='63' r='10' fill='currentColor'/><circle cx='104' cy='63' r='10' fill='currentColor'/><circle cx='124' cy='63' r='10' fill='currentColor'/><circle cx='148' cy='63' r='10' fill='currentColor'/><circle cx='24' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='46' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='104' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='124' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='148' cy='63' r='4' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'caminhao_bombeiros',
@@ -3998,7 +3998,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,60 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 170 80' width='100%' height='100%'><rect x='8' y='15' width='105' height='46' rx='3' fill='currentColor'/><line x1='8' y1='40' x2='113' y2='40' stroke='rgba(0,0,0,0.2)' stroke-width='2'/><path d='M115,35 L135,35 L145,46 L158,46 L158,61 L115,61 Z' fill='currentColor'/><polygon points='128,38 140,38 145,46 128,46' fill='rgba(0,0,0,0.4)'/><rect x='118' y='18' width='3' height='17' fill='currentColor'/><circle cx='24' cy='63' r='10' fill='currentColor'/><circle cx='46' cy='63' r='10' fill='currentColor'/><circle cx='104' cy='63' r='10' fill='currentColor'/><circle cx='124' cy='63' r='10' fill='currentColor'/><circle cx='148' cy='63' r='10' fill='currentColor'/><circle cx='24' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='46' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='104' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='124' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='148' cy='63' r='4' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'carreta_bitrem',
@@ -4007,7 +4007,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '4,20 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 170 80' width='100%' height='100%'><rect x='8' y='15' width='105' height='46' rx='3' fill='currentColor'/><line x1='8' y1='40' x2='113' y2='40' stroke='rgba(0,0,0,0.2)' stroke-width='2'/><path d='M115,35 L135,35 L145,46 L158,46 L158,61 L115,61 Z' fill='currentColor'/><polygon points='128,38 140,38 145,46 128,46' fill='rgba(0,0,0,0.4)'/><rect x='118' y='18' width='3' height='17' fill='currentColor'/><circle cx='24' cy='63' r='10' fill='currentColor'/><circle cx='46' cy='63' r='10' fill='currentColor'/><circle cx='104' cy='63' r='10' fill='currentColor'/><circle cx='124' cy='63' r='10' fill='currentColor'/><circle cx='148' cy='63' r='10' fill='currentColor'/><circle cx='24' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='46' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='104' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='124' cy='63' r='4' fill='rgba(255,255,255,0.5)'/><circle cx='148' cy='63' r='4' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'trator_agricola',
@@ -4016,7 +4016,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,20 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><rect x='28' y='18' width='36' height='6' rx='2' fill='currentColor'/><line x1='34' y1='24' x2='34' y2='52' stroke='currentColor' stroke-width='4'/><line x1='60' y1='24' x2='60' y2='52' stroke='currentColor' stroke-width='4'/><rect x='36' y='26' width='22' height='22' fill='rgba(0,0,0,0.3)'/><polygon points='62,40 108,44 108,62 62,62' fill='currentColor'/><line x1='80' y1='40' x2='80' y2='20' stroke='currentColor' stroke-width='3'/><circle cx='42' cy='62' r='24' fill='currentColor'/><circle cx='42' cy='62' r='14' fill='rgba(0,0,0,0.4)' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='42' cy='62' r='5' fill='currentColor'/><circle cx='98' cy='68' r='14' fill='currentColor'/><circle cx='98' cy='68' r='7' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'colheitadeira',
@@ -4025,7 +4025,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '4,00 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><rect x='28' y='18' width='36' height='6' rx='2' fill='currentColor'/><line x1='34' y1='24' x2='34' y2='52' stroke='currentColor' stroke-width='4'/><line x1='60' y1='24' x2='60' y2='52' stroke='currentColor' stroke-width='4'/><rect x='36' y='26' width='22' height='22' fill='rgba(0,0,0,0.3)'/><polygon points='62,40 108,44 108,62 62,62' fill='currentColor'/><line x1='80' y1='40' x2='80' y2='20' stroke='currentColor' stroke-width='3'/><circle cx='42' cy='62' r='24' fill='currentColor'/><circle cx='42' cy='62' r='14' fill='rgba(0,0,0,0.4)' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='42' cy='62' r='5' fill='currentColor'/><circle cx='98' cy='68' r='14' fill='currentColor'/><circle cx='98' cy='68' r='7' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'retroescavadeira',
@@ -4043,7 +4043,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,40 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 85' width='100%' height='100%'><path d='M15,20 L115,20 L145,45 L145,68 L15,68 Z' fill='currentColor'/><rect x='25' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><rect x='62' y='28' width='30' height='18' rx='3' fill='rgba(0,0,0,0.3)'/><polygon points='100,28 118,28 135,45 100,45' fill='rgba(0,0,0,0.3)'/><circle cx='45' cy='68' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='120' cy='68' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 130 90' width='100%' height='100%'><rect x='28' y='18' width='36' height='6' rx='2' fill='currentColor'/><line x1='34' y1='24' x2='34' y2='52' stroke='currentColor' stroke-width='4'/><line x1='60' y1='24' x2='60' y2='52' stroke='currentColor' stroke-width='4'/><rect x='36' y='26' width='22' height='22' fill='rgba(0,0,0,0.3)'/><polygon points='62,40 108,44 108,62 62,62' fill='currentColor'/><line x1='80' y1='40' x2='80' y2='20' stroke='currentColor' stroke-width='3'/><circle cx='42' cy='62' r='24' fill='currentColor'/><circle cx='42' cy='62' r='14' fill='rgba(0,0,0,0.4)' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='42' cy='62' r='5' fill='currentColor'/><circle cx='98' cy='68' r='14' fill='currentColor'/><circle cx='98' cy='68' r='7' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'container_20',
@@ -4052,7 +4052,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,60 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 160 75' width='100%' height='100%'><rect x='8' y='12' width='144' height='52' rx='2' fill='currentColor'/><line x1='20' y1='15' x2='20' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='32' y1='15' x2='32' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='44' y1='15' x2='44' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='56' y1='15' x2='56' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='68' y1='15' x2='68' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='80' y1='15' x2='80' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='92' y1='15' x2='92' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='104' y1='15' x2='104' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='116' y1='15' x2='116' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='128' y1='15' x2='128' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='140' y1='15' x2='140' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><rect x='9' y='13' width='6' height='6' fill='rgba(255,255,255,0.5)'/><rect x='145' y='13' width='6' height='6' fill='rgba(255,255,255,0.5)'/><rect x='9' y='57' width='6' height='6' fill='rgba(255,255,255,0.5)'/><rect x='145' y='57' width='6' height='6' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'container_40',
@@ -4061,7 +4061,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,90 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 110 80' width='100%' height='100%'><rect x='5' y='10' width='100' height='65' rx='8' fill='currentColor'/><rect x='12' y='18' width='60' height='49' rx='4' fill='rgba(0,0,0,0.35)'/><circle cx='88' cy='28' r='6' fill='rgba(255,255,255,0.3)'/><circle cx='88' cy='46' r='6' fill='rgba(255,255,255,0.3)'/><rect x='80' y='58' width='16' height='4' rx='2' fill='rgba(255,255,255,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 160 75' width='100%' height='100%'><rect x='8' y='12' width='144' height='52' rx='2' fill='currentColor'/><line x1='20' y1='15' x2='20' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='32' y1='15' x2='32' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='44' y1='15' x2='44' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='56' y1='15' x2='56' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='68' y1='15' x2='68' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='80' y1='15' x2='80' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='92' y1='15' x2='92' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='104' y1='15' x2='104' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='116' y1='15' x2='116' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='128' y1='15' x2='128' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='140' y1='15' x2='140' y2='61' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><rect x='9' y='13' width='6' height='6' fill='rgba(255,255,255,0.5)'/><rect x='145' y='13' width='6' height='6' fill='rgba(255,255,255,0.5)'/><rect x='9' y='57' width='6' height='6' fill='rgba(255,255,255,0.5)'/><rect x='145' y='57' width='6' height='6' fill='rgba(255,255,255,0.5)'/></svg>"
         },
         {
             id: 'tabela_basquete_aro',
@@ -4124,7 +4124,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,30 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='70' cy='55' rx='45' ry='35' fill='currentColor'/><circle cx='115' cy='45' r='22' fill='currentColor'/><path d='M125,45 C135,55 130,85 120,95 C115,100 122,102 125,95 C138,80 145,50 130,35' fill='currentColor'/><ellipse cx='102' cy='45' rx='14' ry='22' fill='rgba(0,0,0,0.2)'/><rect x='35' y='80' width='15' height='28' rx='5' fill='currentColor'/><rect x='60' y='80' width='15' height='28' rx='5' fill='currentColor'/><rect x='90' y='80' width='15' height='28' rx='5' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='70' cy='55' rx='45' ry='35' fill='currentColor'/><rect x='34' y='75' width='15' height='32' rx='5' fill='currentColor'/><rect x='54' y='75' width='13' height='32' rx='5' fill='currentColor' opacity='0.8'/><rect x='78' y='75' width='15' height='32' rx='5' fill='currentColor'/><rect x='98' y='75' width='13' height='32' rx='5' fill='currentColor' opacity='0.8'/><circle cx='110' cy='45' r='20' fill='currentColor'/><ellipse cx='98' cy='48' rx='14' ry='20' fill='rgba(0,0,0,0.25)'/><path d='M124,48 C135,55 135,78 126,88 C120,94 128,96 132,90 C144,78 144,50 128,40' fill='currentColor'/><path d='M118,60 C128,64 134,70 138,65 C132,58 122,56 118,58' fill='white'/><circle cx='114' cy='38' r='2' fill='#111'/><line x1='26' y1='52' x2='20' y2='78' stroke='currentColor' stroke-width='3' stroke-linecap='round'/></svg>"
         },
         {
             id: 'elefante_asiatico',
@@ -4133,7 +4133,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,90 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='70' cy='55' rx='45' ry='35' fill='currentColor'/><circle cx='115' cy='45' r='22' fill='currentColor'/><path d='M125,45 C135,55 130,85 120,95 C115,100 122,102 125,95 C138,80 145,50 130,35' fill='currentColor'/><ellipse cx='102' cy='45' rx='14' ry='22' fill='rgba(0,0,0,0.2)'/><rect x='35' y='80' width='15' height='28' rx='5' fill='currentColor'/><rect x='60' y='80' width='15' height='28' rx='5' fill='currentColor'/><rect x='90' y='80' width='15' height='28' rx='5' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='70' cy='55' rx='45' ry='35' fill='currentColor'/><rect x='34' y='75' width='15' height='32' rx='5' fill='currentColor'/><rect x='54' y='75' width='13' height='32' rx='5' fill='currentColor' opacity='0.8'/><rect x='78' y='75' width='15' height='32' rx='5' fill='currentColor'/><rect x='98' y='75' width='13' height='32' rx='5' fill='currentColor' opacity='0.8'/><circle cx='110' cy='45' r='20' fill='currentColor'/><ellipse cx='98' cy='48' rx='14' ry='20' fill='rgba(0,0,0,0.25)'/><path d='M124,48 C135,55 135,78 126,88 C120,94 128,96 132,90 C144,78 144,50 128,40' fill='currentColor'/><path d='M118,60 C128,64 134,70 138,65 C132,58 122,56 118,58' fill='white'/><circle cx='114' cy='38' r='2' fill='#111'/><line x1='26' y1='52' x2='20' y2='78' stroke='currentColor' stroke-width='3' stroke-linecap='round'/></svg>"
         },
         {
             id: 'rinoceronte',
@@ -4160,7 +4160,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '5,50 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='70' cy='55' rx='45' ry='35' fill='currentColor'/><circle cx='115' cy='45' r='22' fill='currentColor'/><path d='M125,45 C135,55 130,85 120,95 C115,100 122,102 125,95 C138,80 145,50 130,35' fill='currentColor'/><ellipse cx='102' cy='45' rx='14' ry='22' fill='rgba(0,0,0,0.2)'/><rect x='35' y='80' width='15' height='28' rx='5' fill='currentColor'/><rect x='60' y='80' width='15' height='28' rx='5' fill='currentColor'/><rect x='90' y='80' width='15' height='28' rx='5' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><path d='M35,100 L52,30 L60,30 L45,100 Z' fill='currentColor'/><polygon points='54,30 68,26 64,36 54,34' fill='currentColor'/><line x1='56' y1='28' x2='56' y2='20' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><line x1='60' y1='28' x2='62' y2='20' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><polygon points='22,100 48,96 46,120 22,115' fill='currentColor'/><line x1='44' y1='115' x2='46' y2='155' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='48' y1='115' x2='52' y2='155' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><line x1='24' y1='115' x2='22' y2='155' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='28' y1='115' x2='28' y2='155' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><circle cx='48' cy='50' r='3.5' fill='rgba(0,0,0,0.3)'/><circle cx='46' cy='68' r='4' fill='rgba(0,0,0,0.3)'/><circle cx='44' cy='85' r='4' fill='rgba(0,0,0,0.3)'/><circle cx='34' cy='105' r='5' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'girafa_femea',
@@ -4169,7 +4169,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '4,80 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 150 110' width='100%' height='100%'><ellipse cx='70' cy='55' rx='45' ry='35' fill='currentColor'/><circle cx='115' cy='45' r='22' fill='currentColor'/><path d='M125,45 C135,55 130,85 120,95 C115,100 122,102 125,95 C138,80 145,50 130,35' fill='currentColor'/><ellipse cx='102' cy='45' rx='14' ry='22' fill='rgba(0,0,0,0.2)'/><rect x='35' y='80' width='15' height='28' rx='5' fill='currentColor'/><rect x='60' y='80' width='15' height='28' rx='5' fill='currentColor'/><rect x='90' y='80' width='15' height='28' rx='5' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><path d='M35,100 L52,30 L60,30 L45,100 Z' fill='currentColor'/><polygon points='54,30 68,26 64,36 54,34' fill='currentColor'/><line x1='56' y1='28' x2='56' y2='20' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><line x1='60' y1='28' x2='62' y2='20' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><polygon points='22,100 48,96 46,120 22,115' fill='currentColor'/><line x1='44' y1='115' x2='46' y2='155' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='48' y1='115' x2='52' y2='155' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><line x1='24' y1='115' x2='22' y2='155' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><line x1='28' y1='115' x2='28' y2='155' stroke='currentColor' stroke-width='3' stroke-linecap='round'/><circle cx='48' cy='50' r='3.5' fill='rgba(0,0,0,0.3)'/><circle cx='46' cy='68' r='4' fill='rgba(0,0,0,0.3)'/><circle cx='44' cy='85' r='4' fill='rgba(0,0,0,0.3)'/><circle cx='34' cy='105' r='5' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'trex',
@@ -4178,7 +4178,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '4,50 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 120' width='100%' height='100%'><path d='M10,85 C30,75 50,70 65,65 L85,45 C95,30 115,25 135,28 L145,35 L125,50 L115,55 L105,75 C95,95 85,115 75,115 C65,115 70,95 60,85 Z' fill='currentColor'/><rect x='75' y='90' width='14' height='28' rx='6' fill='currentColor'/><line x1='90' y1='65' x2='105' y2='72' stroke='currentColor' stroke-width='5' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 160 110' width='100%' height='100%'><path d='M5,72 C25,65 50,55 70,50 L95,25 C108,12 135,10 148,18 C155,22 152,38 140,42 L118,44 L110,55 C102,70 90,82 80,82 C72,82 72,70 65,65 C45,68 25,72 5,72 Z' fill='currentColor'/><polygon points='128,32 145,32 142,38 132,38' fill='rgba(0,0,0,0.4)'/><polygon points='130,32 133,35 136,32 139,35 142,32' fill='white'/><circle cx='128' cy='22' r='2.5' fill='#facc15'/><path d='M98,54 L106,60 L102,64' stroke='currentColor' stroke-width='3' stroke-linecap='round' fill='none'/><path d='M75,60 C85,60 90,75 85,90 L95,102 L75,102 L72,88 Z' fill='currentColor'/></svg>"
         },
         {
             id: 'espinossauro',
@@ -4232,7 +4232,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,00 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 170 75' width='100%' height='100%'><path d='M10,40 C20,20 70,18 120,25 C145,28 160,35 168,22 C168,32 165,45 150,45 C120,45 70,55 30,52 Z' fill='currentColor'/><path d='M60,42 L50,60 L65,50' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,42 C30,30 65,22 105,25 C125,26 142,32 152,40 C140,46 125,50 105,52 C65,54 30,50 10,42 Z' fill='currentColor'/><path d='M75,23 C82,10 94,8 100,24 Z' fill='currentColor'/><path d='M12,42 L0,22 C5,32 8,38 12,42 L0,62 Z' fill='currentColor'/><path d='M100,52 L112,72 L118,50 Z' fill='currentColor'/><path d='M30,48 C60,54 100,52 135,44 C120,48 90,50 30,48 Z' fill='rgba(255,255,255,0.3)'/><circle cx='140' cy='36' r='2.5' fill='#111'/></svg>"
         },
         {
             id: 'orca',
@@ -4241,7 +4241,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,50 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 170 75' width='100%' height='100%'><path d='M10,40 C20,20 70,18 120,25 C145,28 160,35 168,22 C168,32 165,45 150,45 C120,45 70,55 30,52 Z' fill='currentColor'/><path d='M60,42 L50,60 L65,50' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 170 80' width='100%' height='100%'><path d='M15,42 C18,36 10,25 0,22 C5,32 10,38 15,42 C10,46 5,52 0,62 C10,59 18,48 15,42 Z' fill='currentColor'/><path d='M15,42 C40,40 75,32 110,28 C145,24 165,35 168,44 C165,56 135,62 105,62 C70,62 38,48 15,42 Z' fill='currentColor'/><path d='M110,50 Q135,54 160,46' stroke='rgba(0,0,0,0.25)' stroke-width='2' fill='none'/><path d='M115,55 Q135,58 155,50' stroke='rgba(0,0,0,0.25)' stroke-width='2' fill='none'/><polygon points='50,38 58,34 56,40' fill='currentColor'/><path d='M115,52 L102,68 L122,54 Z' fill='currentColor'/><circle cx='154' cy='42' r='2' fill='#111'/></svg>"
         },
         {
             id: 'tubarao_baleia',
@@ -4250,7 +4250,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,20 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 170 75' width='100%' height='100%'><path d='M10,40 C20,20 70,18 120,25 C145,28 160,35 168,22 C168,32 165,45 150,45 C120,45 70,55 30,52 Z' fill='currentColor'/><path d='M60,42 L50,60 L65,50' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,42 C30,30 65,22 105,25 C125,26 142,32 152,40 C140,46 125,50 105,52 C65,54 30,50 10,42 Z' fill='currentColor'/><path d='M75,23 C82,10 94,8 100,24 Z' fill='currentColor'/><path d='M12,42 L0,22 C5,32 8,38 12,42 L0,62 Z' fill='currentColor'/><path d='M100,52 L112,72 L118,50 Z' fill='currentColor'/><path d='M30,48 C60,54 100,52 135,44 C120,48 90,50 30,48 Z' fill='rgba(255,255,255,0.3)'/><circle cx='140' cy='36' r='2.5' fill='#111'/></svg>"
         },
         {
             id: 'casa_terrea',
@@ -4259,7 +4259,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '4,50 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'sobrado_2andares',
@@ -4268,7 +4268,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '7,50 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'casa_3andares',
@@ -4277,7 +4277,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '10 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'chale_montanha',
@@ -4286,7 +4286,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '6,50 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'galpao_industrial',
@@ -4295,7 +4295,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '8,50 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><rect x='10' y='10' width='120' height='80' rx='2' fill='currentColor'/><line x1='10' y1='30' x2='130' y2='30' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='10' y1='50' x2='130' y2='50' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='10' y1='70' x2='130' y2='70' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><rect x='64' y='78' width='12' height='4' rx='1' fill='rgba(255,255,255,0.6)'/></svg>"
         },
         {
             id: 'caixa_dagua_torre',
@@ -4313,7 +4313,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '14 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'moinho_vento',
@@ -4322,7 +4322,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '14 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'veleiro_mastro',
@@ -4340,7 +4340,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '6,00 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 160 90' width='100%' height='100%'><path d='M15,55 L145,55 L130,85 L35,85 Z' fill='currentColor'/><rect x='45' y='30' width='60' height='25' rx='3' fill='currentColor'/><rect x='55' y='35' width='18' height='12' fill='rgba(0,0,0,0.3)'/><rect x='80' y='35' width='18' height='12' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><path d='M10,50 L145,50 C156,50 168,54 165,65 C162,76 142,76 130,76 L25,76 Z' fill='currentColor'/><line x1='25' y1='70' x2='155' y2='70' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><rect x='30' y='38' width='105' height='12' fill='white'/><rect x='45' y='27' width='80' height='11' fill='white'/><rect x='60' y='18' width='55' height='9' fill='white'/><polygon points='75,18 78,8 86,8 84,18' fill='#ef4444'/><polygon points='95,18 98,8 106,8 104,18' fill='#ef4444'/></svg>"
         },
         {
             id: 'rebocador',
@@ -4385,7 +4385,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '2,70 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><path d='M10,48 C30,48 50,45 80,45 L115,20 L130,20 L120,45 L155,46 C165,47 168,52 155,54 L120,54 L105,75 L95,75 L102,54 L10,53 Z' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,40 C10,38 25,32 50,32 L130,34 C148,35 158,38 158,41 C158,44 148,47 130,48 L50,50 C25,50 10,44 10,40 Z' fill='currentColor'/><polygon points='82,34 68,10 82,10 112,34' fill='currentColor'/><polygon points='82,48 112,48 82,72 68,72' fill='currentColor'/><ellipse cx='90' cy='22' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><ellipse cx='90' cy='60' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><polygon points='18,34 32,14 44,14 36,34' fill='currentColor'/><polygon points='18,39 26,30 32,30 26,39' fill='currentColor'/><circle cx='148' cy='38' r='2' fill='rgba(255,255,255,0.8)'/><line x1='60' y1='41' x2='130' y2='41' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-dasharray='2,2'/></svg>"
         },
         {
             id: 'aviao_kingair',
@@ -4394,7 +4394,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '4,50 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><path d='M10,48 C30,48 50,45 80,45 L115,20 L130,20 L120,45 L155,46 C165,47 168,52 155,54 L120,54 L105,75 L95,75 L102,54 L10,53 Z' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,40 C10,38 25,32 50,32 L130,34 C148,35 158,38 158,41 C158,44 148,47 130,48 L50,50 C25,50 10,44 10,40 Z' fill='currentColor'/><polygon points='82,34 68,10 82,10 112,34' fill='currentColor'/><polygon points='82,48 112,48 82,72 68,72' fill='currentColor'/><ellipse cx='90' cy='22' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><ellipse cx='90' cy='60' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><polygon points='18,34 32,14 44,14 36,34' fill='currentColor'/><polygon points='18,39 26,30 32,30 26,39' fill='currentColor'/><circle cx='148' cy='38' r='2' fill='rgba(255,255,255,0.8)'/><line x1='60' y1='41' x2='130' y2='41' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-dasharray='2,2'/></svg>"
         },
         {
             id: 'jato_executivo',
@@ -4412,7 +4412,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '10 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><path d='M10,48 C30,48 50,45 80,45 L115,20 L130,20 L120,45 L155,46 C165,47 168,52 155,54 L120,54 L105,75 L95,75 L102,54 L10,53 Z' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,40 C10,38 25,32 50,32 L130,34 C148,35 158,38 158,41 C158,44 148,47 130,48 L50,50 C25,50 10,44 10,40 Z' fill='currentColor'/><polygon points='82,34 68,10 82,10 112,34' fill='currentColor'/><polygon points='82,48 112,48 82,72 68,72' fill='currentColor'/><ellipse cx='90' cy='22' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><ellipse cx='90' cy='60' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><polygon points='18,34 32,14 44,14 36,34' fill='currentColor'/><polygon points='18,39 26,30 32,30 26,39' fill='currentColor'/><circle cx='148' cy='38' r='2' fill='rgba(255,255,255,0.8)'/><line x1='60' y1='41' x2='130' y2='41' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-dasharray='2,2'/></svg>"
         },
         {
             id: 'aviao_737',
@@ -4421,7 +4421,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '12 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><path d='M10,48 C30,48 50,45 80,45 L115,20 L130,20 L120,45 L155,46 C165,47 168,52 155,54 L120,54 L105,75 L95,75 L102,54 L10,53 Z' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 160 80' width='100%' height='100%'><path d='M10,40 C10,38 25,32 50,32 L130,34 C148,35 158,38 158,41 C158,44 148,47 130,48 L50,50 C25,50 10,44 10,40 Z' fill='currentColor'/><polygon points='82,34 68,10 82,10 112,34' fill='currentColor'/><polygon points='82,48 112,48 82,72 68,72' fill='currentColor'/><ellipse cx='90' cy='22' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><ellipse cx='90' cy='60' rx='10' ry='4' fill='rgba(0,0,0,0.35)'/><polygon points='18,34 32,14 44,14 36,34' fill='currentColor'/><polygon points='18,39 26,30 32,30 26,39' fill='currentColor'/><circle cx='148' cy='38' r='2' fill='rgba(255,255,255,0.8)'/><line x1='60' y1='41' x2='130' y2='41' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-dasharray='2,2'/></svg>"
         },
         {
             id: 'helicoptero_civil',
@@ -4430,7 +4430,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '3,30 m',
             category: 'grande',
-            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><path d='M10,48 C30,48 50,45 80,45 L115,20 L130,20 L120,45 L155,46 C165,47 168,52 155,54 L120,54 L105,75 L95,75 L102,54 L10,53 Z' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 150 90' width='100%' height='100%'><rect x='64' y='18' width='5' height='10' fill='currentColor'/><line x1='15' y1='18' x2='118' y2='18' stroke='currentColor' stroke-width='4' stroke-linecap='round'/><path d='M42,45 C42,28 72,28 92,34 C104,38 108,48 104,58 C98,68 75,68 45,64 Z' fill='currentColor'/><path d='M75,32 C88,36 100,42 98,54 L75,54 Z' fill='rgba(0,0,0,0.35)'/><line x1='45' y1='48' x2='12' y2='40' stroke='currentColor' stroke-width='6'/><polygon points='14,32 18,48 8,48' fill='currentColor'/><line x1='12' y1='28' x2='12' y2='52' stroke='rgba(255,255,255,0.6)' stroke-width='2.5'/><line x1='54' y1='64' x2='50' y2='78' stroke='currentColor' stroke-width='3'/><line x1='82' y1='64' x2='78' y2='78' stroke='currentColor' stroke-width='3'/><line x1='38' y1='78' x2='96' y2='78' stroke='currentColor' stroke-width='4' stroke-linecap='round'/></svg>"
         },
         {
             id: 'bala_ar_quente',
@@ -4448,7 +4448,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '15 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C40,5 40,0 40,5' stroke='currentColor' stroke-width='5' fill='none'/></svg>"
+            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/></svg>"
         },
         {
             id: 'palmeira_imperial',
@@ -4457,7 +4457,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '15 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C40,5 40,0 40,5' stroke='currentColor' stroke-width='5' fill='none'/></svg>"
+            svg: "<svg viewBox='0 0 100 150' width='100%' height='100%'><path d='M50,148 Q42,90 52,38' stroke='#78350f' stroke-width='10' fill='none' stroke-linecap='round'/><path d='M52,38 Q30,15 10,32' stroke='currentColor' stroke-width='8' fill='none' stroke-linecap='round'/><path d='M52,38 Q70,15 90,32' stroke='currentColor' stroke-width='8' fill='none' stroke-linecap='round'/><path d='M52,38 Q50,5 45,5' stroke='currentColor' stroke-width='8' fill='none' stroke-linecap='round'/><path d='M52,38 Q25,35 15,55' stroke='currentColor' stroke-width='8' fill='none' stroke-linecap='round'/><path d='M52,38 Q75,35 85,55' stroke='currentColor' stroke-width='8' fill='none' stroke-linecap='round'/></svg>"
         },
         {
             id: 'ipe_amarelo',
@@ -4466,7 +4466,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '12 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C40,5 40,0 40,5' stroke='currentColor' stroke-width='5' fill='none'/></svg>"
+            svg: "<svg viewBox='0 0 110 150' width='100%' height='100%'><rect x='48' y='80' width='14' height='68' fill='#78350f'/><circle cx='55' cy='52' r='45' fill='currentColor'/><circle cx='38' cy='42' r='25' fill='rgba(255,255,255,0.2)'/><circle cx='70' cy='45' r='25' fill='rgba(255,255,255,0.2)'/></svg>"
         },
         {
             id: 'pau_brasil',
@@ -4475,7 +4475,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '15 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C40,5 40,0 40,5' stroke='currentColor' stroke-width='5' fill='none'/></svg>"
+            svg: "<svg viewBox='0 0 110 150' width='100%' height='100%'><rect x='48' y='80' width='14' height='68' fill='#78350f'/><circle cx='55' cy='52' r='45' fill='currentColor'/><circle cx='38' cy='42' r='25' fill='rgba(255,255,255,0.2)'/><circle cx='70' cy='45' r='25' fill='rgba(255,255,255,0.2)'/></svg>"
         },
         {
             id: 'braquiossauro',
@@ -4484,7 +4484,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '15 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 160 120' width='100%' height='100%'><path d='M10,85 C30,75 50,70 65,65 L85,45 C95,30 115,25 135,28 L145,35 L125,50 L115,55 L105,75 C95,95 85,115 75,115 C65,115 70,95 60,85 Z' fill='currentColor'/><rect x='75' y='90' width='14' height='28' rx='6' fill='currentColor'/><line x1='90' y1='65' x2='105' y2='72' stroke='currentColor' stroke-width='5' stroke-linecap='round'/></svg>"
+            svg: "<svg viewBox='0 0 160 110' width='100%' height='100%'><path d='M5,72 C25,65 50,55 70,50 L95,25 C108,12 135,10 148,18 C155,22 152,38 140,42 L118,44 L110,55 C102,70 90,82 80,82 C72,82 72,70 65,65 C45,68 25,72 5,72 Z' fill='currentColor'/><polygon points='128,32 145,32 142,38 132,38' fill='rgba(0,0,0,0.4)'/><polygon points='130,32 133,35 136,32 139,35 142,32' fill='white'/><circle cx='128' cy='22' r='2.5' fill='#facc15'/><path d='M98,54 L106,60 L102,64' stroke='currentColor' stroke-width='3' stroke-linecap='round' fill='none'/><path d='M75,60 C85,60 90,75 85,90 L95,102 L75,102 L72,88 Z' fill='currentColor'/></svg>"
         },
         {
             id: 'predio_5andares',
@@ -4493,7 +4493,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '16 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'esfinge',
@@ -4520,7 +4520,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '26 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 140 100' width='100%' height='100%'><rect x='10' y='10' width='120' height='80' rx='2' fill='currentColor'/><line x1='10' y1='30' x2='130' y2='30' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='10' y1='50' x2='130' y2='50' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><line x1='10' y1='70' x2='130' y2='70' stroke='rgba(0,0,0,0.35)' stroke-width='3'/><rect x='64' y='78' width='12' height='4' rx='1' fill='rgba(255,255,255,0.6)'/></svg>"
         },
         {
             id: 'baleia_azul',
@@ -4529,7 +4529,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '30 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 170 75' width='100%' height='100%'><path d='M10,40 C20,20 70,18 120,25 C145,28 160,35 168,22 C168,32 165,45 150,45 C120,45 70,55 30,52 Z' fill='currentColor'/><path d='M60,42 L50,60 L65,50' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 170 80' width='100%' height='100%'><path d='M15,42 C18,36 10,25 0,22 C5,32 10,38 15,42 C10,46 5,52 0,62 C10,59 18,48 15,42 Z' fill='currentColor'/><path d='M15,42 C40,40 75,32 110,28 C145,24 165,35 168,44 C165,56 135,62 105,62 C70,62 38,48 15,42 Z' fill='currentColor'/><path d='M110,50 Q135,54 160,46' stroke='rgba(0,0,0,0.25)' stroke-width='2' fill='none'/><path d='M115,55 Q135,58 155,50' stroke='rgba(0,0,0,0.25)' stroke-width='2' fill='none'/><polygon points='50,38 58,34 56,40' fill='currentColor'/><path d='M115,52 L102,68 L122,54 Z' fill='currentColor'/><circle cx='154' cy='42' r='2' fill='#111'/></svg>"
         },
         {
             id: 'predio_10andares',
@@ -4538,7 +4538,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '30 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'cristo_redentor',
@@ -4547,7 +4547,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '38 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 140 150' width='100%' height='100%'><polygon points='45,148 95,148 90,120 50,120' fill='rgba(0,0,0,0.3)'/><path d='M56,120 L58,45 L10,45 L10,38 L59,38 L65,18 C65,12 75,12 75,18 L81,38 L130,38 L130,45 L82,45 L84,120 Z' fill='currentColor'/><circle cx='70' cy='18' r='8' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 150 150' width='100%' height='100%'><rect x='60' y='125' width='30' height='22' rx='2' fill='rgba(0,0,0,0.35)'/><polygon points='56,125 94,125 90,118 60,118' fill='rgba(0,0,0,0.3)'/><polygon points='62,118 88,118 84,45 66,45' fill='currentColor'/><line x1='72' y1='52' x2='70' y2='118' stroke='rgba(0,0,0,0.25)' stroke-width='2'/><line x1='78' y1='52' x2='80' y2='118' stroke='rgba(0,0,0,0.25)' stroke-width='2'/><polygon points='10,42 140,42 140,50 82,56 68,56 10,50' fill='currentColor'/><circle cx='75' cy='32' r='8' fill='currentColor'/></svg>"
         },
         {
             id: 'coliseu',
@@ -4556,7 +4556,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '48 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 150 90' width='100%' height='100%'><path d='M15,80 L135,80 L135,35 L15,20 Z' fill='currentColor'/><rect x='22' y='32' width='12' height='18' rx='6' fill='rgba(0,0,0,0.45)'/><rect x='42' y='35' width='12' height='18' rx='6' fill='rgba(0,0,0,0.45)'/><rect x='62' y='38' width='12' height='18' rx='6' fill='rgba(0,0,0,0.45)'/><rect x='82' y='42' width='12' height='18' rx='6' fill='rgba(0,0,0,0.45)'/></svg>"
         },
         {
             id: 'arco_triunfo',
@@ -4565,7 +4565,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '50 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'onibus_espacial',
@@ -4574,7 +4574,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '56 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 50 160' width='100%' height='100%'><polygon points='25,5 33,25 17,25' fill='currentColor'/><rect x='17' y='25' width='16' height='115' rx='2' fill='currentColor'/><polygon points='17,120 5,145 17,140' fill='currentColor'/><polygon points='33,120 45,145 33,140' fill='currentColor'/><ellipse cx='25' cy='145' rx='8' ry='4' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><rect x='5' y='10' width='160' height='60' rx='8' fill='currentColor'/><rect x='12' y='18' width='30' height='22' rx='3' fill='rgba(0,0,0,0.35)'/><rect x='48' y='18' width='30' height='22' rx='3' fill='rgba(0,0,0,0.35)'/><rect x='84' y='18' width='30' height='22' rx='3' fill='rgba(0,0,0,0.35)'/><rect x='120' y='18' width='40' height='22' rx='3' fill='rgba(0,0,0,0.35)'/><circle cx='45' cy='70' r='14' fill='rgba(0,0,0,0.4)'/><circle cx='130' cy='70' r='14' fill='rgba(0,0,0,0.4)'/></svg>"
         },
         {
             id: 'santa_rita',
@@ -4592,7 +4592,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '57 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 100 160' width='100%' height='100%'><polygon points='48,5 52,5 51,45 49,45' fill='currentColor'/><polygon points='46,45 54,45 58,95 42,95' fill='currentColor'/><path d='M20,158 L42,95 L58,95 L80,158 L68,158 L58,125 C55,118 45,118 42,125 L32,158 Z' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><g transform='rotate(4 45 80)'><rect x='28' y='15' width='34' height='140' rx='2' fill='currentColor'/><line x1='28' y1='35' x2='62' y2='35' stroke='rgba(0,0,0,0.3)' stroke-width='3'/><line x1='28' y1='55' x2='62' y2='55' stroke='rgba(0,0,0,0.3)' stroke-width='3'/><line x1='28' y1='75' x2='62' y2='75' stroke='rgba(0,0,0,0.3)' stroke-width='3'/><line x1='28' y1='95' x2='62' y2='95' stroke='rgba(0,0,0,0.3)' stroke-width='3'/><line x1='28' y1='115' x2='62' y2='115' stroke='rgba(0,0,0,0.3)' stroke-width='3'/><line x1='28' y1='135' x2='62' y2='135' stroke='rgba(0,0,0,0.3)' stroke-width='3'/></g></svg>"
         },
         {
             id: 'predio_20andares',
@@ -4601,7 +4601,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '60 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'navio_cargueiro',
@@ -4610,7 +4610,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '60 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 160 90' width='100%' height='100%'><path d='M15,55 L145,55 L130,85 L35,85 Z' fill='currentColor'/><rect x='45' y='30' width='60' height='25' rx='3' fill='currentColor'/><rect x='55' y='35' width='18' height='12' fill='rgba(0,0,0,0.3)'/><rect x='80' y='35' width='18' height='12' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><path d='M10,50 L145,50 C156,50 168,54 165,65 C162,76 142,76 130,76 L25,76 Z' fill='currentColor'/><line x1='25' y1='70' x2='155' y2='70' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><rect x='30' y='38' width='105' height='12' fill='white'/><rect x='45' y='27' width='80' height='11' fill='white'/><rect x='60' y='18' width='55' height='9' fill='white'/><polygon points='75,18 78,8 86,8 84,18' fill='#ef4444'/><polygon points='95,18 98,8 106,8 104,18' fill='#ef4444'/></svg>"
         },
         {
             id: 'catedral_se',
@@ -4619,7 +4619,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '65 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'obelisco_ba',
@@ -4637,7 +4637,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '69 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'foguete_falcon9',
@@ -4646,7 +4646,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '70 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 50 160' width='100%' height='100%'><polygon points='25,5 33,25 17,25' fill='currentColor'/><rect x='17' y='25' width='16' height='115' rx='2' fill='currentColor'/><polygon points='17,120 5,145 17,140' fill='currentColor'/><polygon points='33,120 45,145 33,140' fill='currentColor'/><ellipse cx='25' cy='145' rx='8' ry='4' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 60 160' width='100%' height='100%'><polygon points='30,6 38,30 22,30' fill='currentColor'/><rect x='21' y='30' width='18' height='4' fill='rgba(0,0,0,0.3)'/><rect x='22' y='34' width='16' height='100' fill='currentColor'/><line x1='22' y1='70' x2='38' y2='70' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><rect x='26' y='46' width='8' height='5' fill='#ef4444'/><polygon points='22,120 8,142 22,138' fill='currentColor'/><polygon points='38,120 52,142 38,138' fill='currentColor'/><polygon points='24,136 30,156 36,136' fill='#f59e0b'/><polygon points='26,136 30,150 34,136' fill='#fef08a'/></svg>"
         },
         {
             id: 'navio_cruzeiro',
@@ -4655,7 +4655,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '70 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 160 90' width='100%' height='100%'><path d='M15,55 L145,55 L130,85 L35,85 Z' fill='currentColor'/><rect x='45' y='30' width='60' height='25' rx='3' fill='currentColor'/><rect x='55' y='35' width='18' height='12' fill='rgba(0,0,0,0.3)'/><rect x='80' y='35' width='18' height='12' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 170 85' width='100%' height='100%'><path d='M10,50 L145,50 C156,50 168,54 165,65 C162,76 142,76 130,76 L25,76 Z' fill='currentColor'/><line x1='25' y1='70' x2='155' y2='70' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><rect x='30' y='38' width='105' height='12' fill='white'/><rect x='45' y='27' width='80' height='11' fill='white'/><rect x='60' y='18' width='55' height='9' fill='white'/><polygon points='75,18 78,8 86,8 84,18' fill='#ef4444'/><polygon points='95,18 98,8 106,8 104,18' fill='#ef4444'/></svg>"
         },
         {
             id: 'buda_leshan',
@@ -4673,7 +4673,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '73 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'porta_avioes',
@@ -4682,7 +4682,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '76 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 160 90' width='100%' height='100%'><path d='M15,55 L145,55 L130,85 L35,85 Z' fill='currentColor'/><rect x='45' y='30' width='60' height='25' rx='3' fill='currentColor'/><rect x='55' y='35' width='18' height='12' fill='rgba(0,0,0,0.3)'/><rect x='80' y='35' width='18' height='12' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><rect x='10' y='8' width='60' height='138' fill='none' stroke='currentColor' stroke-width='5'/><rect x='14' y='12' width='52' height='130' fill='currentColor'/><rect x='19' y='18' width='18' height='45' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='43' y='18' width='18' height='45' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='19' y='72' width='18' height='58' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><rect x='43' y='72' width='18' height='58' rx='2' fill='rgba(0,0,0,0.25)' stroke='rgba(255,255,255,0.2)' stroke-width='1.5'/><circle cx='60' cy='82' r='3.5' fill='rgba(255,255,255,0.9)'/><rect x='58' y='78' width='4' height='12' rx='1' fill='rgba(255,255,255,0.4)'/></svg>"
         },
         {
             id: 'sequoia_gigante',
@@ -4691,7 +4691,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '84 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 80 150' width='100%' height='100%'><line x1='40' y1='35' x2='40' y2='148' stroke='currentColor' stroke-width='7'/><path d='M40,35 C25,20 10,25 5,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C55,20 70,25 75,35' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C30,10 15,10 10,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C50,10 65,10 70,20' stroke='currentColor' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M40,35 C40,5 40,0 40,5' stroke='currentColor' stroke-width='5' fill='none'/></svg>"
+            svg: "<svg viewBox='0 0 110 150' width='100%' height='100%'><rect x='48' y='80' width='14' height='68' fill='#78350f'/><circle cx='55' cy='52' r='45' fill='currentColor'/><circle cx='38' cy='42' r='25' fill='rgba(255,255,255,0.2)'/><circle cx='70' cy='45' r='25' fill='rgba(255,255,255,0.2)'/></svg>"
         },
         {
             id: 'roda_gigante_rio',
@@ -4700,7 +4700,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '88 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 140 150' width='100%' height='100%'><line x1='70' y1='65' x2='25' y2='145' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='70' y1='65' x2='115' y2='145' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='40' y1='120' x2='100' y2='120' stroke='currentColor' stroke-width='4'/><circle cx='70' cy='65' r='52' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='70' cy='65' r='44' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='70' cy='65' r='8' fill='currentColor'/><line x1='70' y1='13' x2='70' y2='117' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><line x1='18' y1='65' x2='122' y2='65' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><line x1='33' y1='28' x2='107' y2='102' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><line x1='33' y1='102' x2='107' y2='28' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><circle cx='70' cy='13' r='5' fill='#f43f5e'/><circle cx='107' cy='28' r='5' fill='#f43f5e'/><circle cx='122' cy='65' r='5' fill='#f43f5e'/><circle cx='107' cy='102' r='5' fill='#f43f5e'/><circle cx='70' cy='117' r='5' fill='#f43f5e'/><circle cx='33' cy='102' r='5' fill='#f43f5e'/><circle cx='18' cy='65' r='5' fill='#f43f5e'/><circle cx='33' cy='28' r='5' fill='#f43f5e'/></svg>"
         },
         {
             id: 'estatua_liberdade',
@@ -4709,7 +4709,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '93 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 140 150' width='100%' height='100%'><polygon points='45,148 95,148 90,120 50,120' fill='rgba(0,0,0,0.3)'/><path d='M56,120 L58,45 L10,45 L10,38 L59,38 L65,18 C65,12 75,12 75,18 L81,38 L130,38 L130,45 L82,45 L84,120 Z' fill='currentColor'/><circle cx='70' cy='18' r='8' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 100 160' width='100%' height='100%'><rect x='30' y='135' width='40' height='22' rx='2' fill='rgba(0,0,0,0.3)'/><path d='M34,65 L36,135 L64,135 L66,65 Z' fill='currentColor'/><path d='M34,68 L24,35 L28,32 L40,65 Z' fill='currentColor'/><rect x='22' y='22' width='6' height='12' rx='1' fill='currentColor'/><polygon points='25,10 32,20 18,20' fill='#f59e0b'/><rect x='58' y='72' width='12' height='16' rx='1' fill='rgba(255,255,255,0.7)'/><circle cx='50' cy='52' r='8' fill='currentColor'/></svg>"
         },
         {
             id: 'big_ben',
@@ -4718,7 +4718,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '96 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 100 160' width='100%' height='100%'><polygon points='48,5 52,5 51,45 49,45' fill='currentColor'/><polygon points='46,45 54,45 58,95 42,95' fill='currentColor'/><path d='M20,158 L42,95 L58,95 L80,158 L68,158 L58,125 C55,118 45,118 42,125 L32,158 Z' fill='currentColor'/></svg>"
+            svg: "<svg viewBox='0 0 70 160' width='100%' height='100%'><polygon points='35,5 40,25 30,25' fill='currentColor'/><rect x='24' y='25' width='22' height='26' rx='1' fill='currentColor'/><circle cx='35' cy='38' r='7' fill='white'/><circle cx='35' cy='38' r='6' fill='#fef08a'/><line x1='35' y1='38' x2='35' y2='34' stroke='black' stroke-width='1.5'/><line x1='35' y1='38' x2='38' y2='38' stroke='black' stroke-width='1.5'/><rect x='26' y='51' width='18' height='104' fill='currentColor'/></svg>"
         },
         {
             id: 'foguete_saturn5',
@@ -4727,7 +4727,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '111 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 50 160' width='100%' height='100%'><polygon points='25,5 33,25 17,25' fill='currentColor'/><rect x='17' y='25' width='16' height='115' rx='2' fill='currentColor'/><polygon points='17,120 5,145 17,140' fill='currentColor'/><polygon points='33,120 45,145 33,140' fill='currentColor'/><ellipse cx='25' cy='145' rx='8' ry='4' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 60 160' width='100%' height='100%'><polygon points='30,6 38,30 22,30' fill='currentColor'/><rect x='21' y='30' width='18' height='4' fill='rgba(0,0,0,0.3)'/><rect x='22' y='34' width='16' height='100' fill='currentColor'/><line x1='22' y1='70' x2='38' y2='70' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><rect x='26' y='46' width='8' height='5' fill='#ef4444'/><polygon points='22,120 8,142 22,138' fill='currentColor'/><polygon points='38,120 52,142 38,138' fill='currentColor'/><polygon points='24,136 30,156 36,136' fill='#f59e0b'/><polygon points='26,136 30,150 34,136' fill='#fef08a'/></svg>"
         },
         {
             id: 'plataforma_petroleo',
@@ -4736,7 +4736,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '110 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 60 120' width='100%' height='100%'><rect x='5' y='10' width='50' height='100' rx='10' fill='currentColor'/><ellipse cx='30' cy='10' rx='22' ry='5' fill='rgba(255,255,255,0.25)'/><ellipse cx='30' cy='110' rx='22' ry='5' fill='rgba(0,0,0,0.2)'/><rect x='15' y='3' width='30' height='6' rx='2' fill='currentColor'/></svg>"
         },
         {
             id: 'foguete_starship',
@@ -4745,7 +4745,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '121 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 50 160' width='100%' height='100%'><polygon points='25,5 33,25 17,25' fill='currentColor'/><rect x='17' y='25' width='16' height='115' rx='2' fill='currentColor'/><polygon points='17,120 5,145 17,140' fill='currentColor'/><polygon points='33,120 45,145 33,140' fill='currentColor'/><ellipse cx='25' cy='145' rx='8' ry='4' fill='rgba(0,0,0,0.4)'/></svg>"
+            svg: "<svg viewBox='0 0 60 160' width='100%' height='100%'><polygon points='30,6 38,30 22,30' fill='currentColor'/><rect x='21' y='30' width='18' height='4' fill='rgba(0,0,0,0.3)'/><rect x='22' y='34' width='16' height='100' fill='currentColor'/><line x1='22' y1='70' x2='38' y2='70' stroke='rgba(0,0,0,0.3)' stroke-width='2'/><rect x='26' y='46' width='8' height='5' fill='#ef4444'/><polygon points='22,120 8,142 22,138' fill='currentColor'/><polygon points='38,120 52,142 38,138' fill='currentColor'/><polygon points='24,136 30,156 36,136' fill='#f59e0b'/><polygon points='26,136 30,150 34,136' fill='#fef08a'/></svg>"
         },
         {
             id: 'turbina_eolica',
@@ -4754,7 +4754,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '120 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 60 160' width='100%' height='100%'><line x1='30' y1='20' x2='30' y2='158' stroke='currentColor' stroke-width='6'/><path d='M30,30 C30,10 52,10 52,25' fill='none' stroke='currentColor' stroke-width='5'/><polygon points='45,25 58,25 54,35 48,35' fill='#facc15'/></svg>"
+            svg: "<svg viewBox='0 0 100 160' width='100%' height='100%'><polygon points='48,50 52,50 56,155 44,155' fill='currentColor'/><ellipse cx='50' cy='50' rx='6' ry='4' fill='currentColor'/><path d='M50,48 Q47,20 50,5 Q53,20 50,48 Z' fill='currentColor'/><path d='M48,51 Q26,65 12,80 Q32,74 48,51 Z' fill='currentColor'/><path d='M52,51 Q74,65 88,80 Q68,74 52,51 Z' fill='currentColor'/><circle cx='50' cy='50' r='3.5' fill='rgba(255,255,255,0.7)'/></svg>"
         },
         {
             id: 'predio_40andares',
@@ -4763,7 +4763,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '120 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'london_eye',
@@ -4772,7 +4772,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '135 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 100 100' width='100%' height='100%'><circle cx='50' cy='50' r='46' fill='currentColor'/><circle cx='50' cy='50' r='36' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='sans-serif' font-weight='900' fill='rgba(0,0,0,0.45)' text-anchor='middle'></text></svg>"
+            svg: "<svg viewBox='0 0 140 150' width='100%' height='100%'><line x1='70' y1='65' x2='25' y2='145' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='70' y1='65' x2='115' y2='145' stroke='currentColor' stroke-width='6' stroke-linecap='round'/><line x1='40' y1='120' x2='100' y2='120' stroke='currentColor' stroke-width='4'/><circle cx='70' cy='65' r='52' fill='none' stroke='currentColor' stroke-width='5'/><circle cx='70' cy='65' r='44' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'/><circle cx='70' cy='65' r='8' fill='currentColor'/><line x1='70' y1='13' x2='70' y2='117' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><line x1='18' y1='65' x2='122' y2='65' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><line x1='33' y1='28' x2='107' y2='102' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><line x1='33' y1='102' x2='107' y2='28' stroke='rgba(255,255,255,0.4)' stroke-width='2'/><circle cx='70' cy='13' r='5' fill='#f43f5e'/><circle cx='107' cy='28' r='5' fill='#f43f5e'/><circle cx='122' cy='65' r='5' fill='#f43f5e'/><circle cx='107' cy='102' r='5' fill='#f43f5e'/><circle cx='70' cy='117' r='5' fill='#f43f5e'/><circle cx='33' cy='102' r='5' fill='#f43f5e'/><circle cx='18' cy='65' r='5' fill='#f43f5e'/><circle cx='33' cy='28' r='5' fill='#f43f5e'/></svg>"
         },
         {
             id: 'basilica_sao_pedro',
@@ -4781,7 +4781,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '136 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'piramide_gize',
@@ -4790,7 +4790,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '138 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 160 100' width='100%' height='100%'><polygon points='80,15 15,85 145,85' fill='currentColor'/><polygon points='80,15 145,85 85,85' fill='rgba(0,0,0,0.25)'/><line x1='40' y1='60' x2='120' y2='60' stroke='rgba(0,0,0,0.2)' stroke-width='2'/><line x1='60' y1='40' x2='100' y2='40' stroke='rgba(0,0,0,0.2)' stroke-width='2'/></svg>"
         },
         {
             id: 'edificio_italia',
@@ -4799,7 +4799,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '165 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'estatua_unidade',
@@ -4817,7 +4817,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '196 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'predio_60andares',
@@ -4826,7 +4826,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '200 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'one_tower_bc',
@@ -4835,7 +4835,7 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '290 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         },
         {
             id: 'torre_eiffel',
@@ -4862,6 +4862,6 @@ window.SIZE_IT_UP_ITEMS = [
             unit: 'm',
             display: '381 m',
             category: 'monumento',
-            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='98' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='118' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
+            svg: "<svg viewBox='0 0 90 160' width='100%' height='100%'><rect x='15' y='10' width='60' height='148' fill='currentColor'/><rect x='23' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='18' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='38' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='58' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='23' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='40' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/><rect x='57' y='78' width='10' height='10' fill='rgba(0,0,0,0.3)'/></svg>"
         }
 ];
