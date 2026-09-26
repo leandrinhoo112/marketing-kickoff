@@ -1175,6 +1175,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'termo_master', title: 'Sabe-Tudo', desc: 'Jogou o Termo diário', icon: '🧠', condition: localStorage.getItem('achv_termo') === 'true' },
             { id: 'caca_palavras', title: 'Olho de Águia', desc: 'Jogou o Caça-Palavras', icon: '🦅', condition: localStorage.getItem('achv_caca') === 'true' },
             { id: 'rei_do_botao', title: 'Rei do Botão', desc: 'Jogou o Futbotão', icon: '⚽', condition: localStorage.getItem('achv_futbotao') === 'true' },
+            { id: 'o_meu_e_maior', title: 'O Meu é Maior', desc: 'Jogou O Meu é Maior', icon: '📏', condition: localStorage.getItem('achv_sizeitup') === 'true' },
             { id: 'pe_na_areia', title: 'Pé na Areia', desc: 'Programou férias (Streak Protect)', icon: '🌴', condition: (window.myVacations && window.myVacations.length > 0) }
         ];
 
@@ -3641,6 +3642,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('game-cacaPalavras').style.display = gameId === 'cacaPalavras' ? 'block' : 'none';
                 const futbotaoContainer = document.getElementById('game-futbotao');
                 if (futbotaoContainer) futbotaoContainer.style.display = gameId === 'futbotao' ? 'block' : 'none';
+                const sizeItUpContainer = document.getElementById('game-sizeItUp');
+                if (sizeItUpContainer) sizeItUpContainer.style.display = gameId === 'sizeItUp' ? 'block' : 'none';
                 const mensalContainer = document.getElementById('game-mensal');
                 if (mensalContainer) mensalContainer.style.display = gameId === 'mensal' ? 'block' : 'none';
                 
@@ -3648,6 +3651,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     fetchMonthlyRankings();
                 } else if (gameId === 'futbotao') {
                     loadFutbotaoGame();
+                } else if (gameId === 'sizeItUp') {
+                    if (window.initSizeItUp) window.initSizeItUp();
                 }
             });
         });
