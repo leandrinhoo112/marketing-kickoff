@@ -7,8 +7,29 @@
 (function () {
     'use strict';
 
-    // Banco de itens com proporções e alturas reais (em metros)
+    // Banco de 70 itens com proporções e alturas reais (em metros)
     const ITEMS = [
+        // =====================================================================
+        // CATEGORIA 1: PEQUENO (0.027m a 0.35m / 2.7 cm a 35 cm)
+        // =====================================================================
+        {
+            id: 'moeda',
+            name: 'Moeda de 1 Real',
+            size: 0.027,
+            unit: 'cm',
+            display: '2,7 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="currentColor"/><circle cx="50" cy="50" r="34" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="6"/><text x="50" y="58" font-size="28" font-family="sans-serif" font-weight="900" fill="rgba(0,0,0,0.4)" text-anchor="middle">R$1</text></svg>`
+        },
+        {
+            id: 'caixa_fosforo',
+            name: 'Caixa de Fósforos',
+            size: 0.05,
+            unit: 'cm',
+            display: '5 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 70 100" width="100%" height="100%"><rect x="10" y="10" width="50" height="80" rx="4" fill="currentColor"/><rect x="15" y="15" width="40" height="70" fill="rgba(0,0,0,0.25)"/><rect x="10" y="35" width="50" height="30" fill="rgba(255,255,255,0.2)"/></svg>`
+        },
         {
             id: 'xicara',
             name: 'Xícara de Café',
@@ -17,6 +38,15 @@
             display: '8 cm',
             category: 'pequeno',
             svg: `<svg viewBox="0 0 100 80" width="100%" height="100%"><path d="M15,10 L85,10 C85,55 70,75 50,75 C30,75 15,55 15,10 Z" fill="currentColor"/><path d="M85,20 C95,20 100,32 98,45 C95,55 85,55 80,52" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><ellipse cx="50" cy="10" rx="35" ry="6" fill="rgba(255,255,255,0.2)"/></svg>`
+        },
+        {
+            id: 'maca',
+            name: 'Maçã',
+            size: 0.085,
+            unit: 'cm',
+            display: '8,5 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 90 90" width="100%" height="100%"><path d="M45,20 C30,10 10,25 15,55 C20,75 38,85 45,85 C52,85 70,75 75,55 C80,25 60,10 45,20 Z" fill="currentColor"/><path d="M45,20 C48,10 55,5 60,4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="4" stroke-linecap="round"/></svg>`
         },
         {
             id: 'lata_refri',
@@ -28,6 +58,15 @@
             svg: `<svg viewBox="0 0 60 120" width="100%" height="100%"><rect x="5" y="10" width="50" height="100" rx="10" fill="currentColor"/><ellipse cx="30" cy="10" rx="22" ry="5" fill="rgba(255,255,255,0.25)"/><ellipse cx="30" cy="110" rx="22" ry="5" fill="rgba(0,0,0,0.2)"/><rect x="15" y="3" width="30" height="6" rx="2" fill="currentColor"/></svg>`
         },
         {
+            id: 'tenis',
+            name: 'Tênis de Corrida',
+            size: 0.13,
+            unit: 'cm',
+            display: '13 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 140 70" width="100%" height="100%"><path d="M10,55 C10,55 20,62 50,62 C90,62 130,55 130,45 C130,30 110,25 95,28 L75,10 C65,10 55,20 45,35 L20,40 C12,43 10,50 10,55 Z" fill="currentColor"/><rect x="10" y="58" width="120" height="8" rx="4" fill="rgba(255,255,255,0.3)"/></svg>`
+        },
+        {
             id: 'iphone',
             name: 'Smartphone (iPhone)',
             size: 0.15,
@@ -35,6 +74,24 @@
             display: '15 cm',
             category: 'pequeno',
             svg: `<svg viewBox="0 0 65 130" width="100%" height="100%"><rect x="3" y="3" width="59" height="124" rx="12" fill="currentColor"/><rect x="8" y="12" width="49" height="106" rx="6" fill="rgba(0,0,0,0.35)"/><circle cx="32.5" cy="7" r="2.5" fill="rgba(255,255,255,0.3)"/></svg>`
+        },
+        {
+            id: 'pao_frances',
+            name: 'Pão Francês',
+            size: 0.15,
+            unit: 'cm',
+            display: '15 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 130 65" width="100%" height="100%"><ellipse cx="65" cy="35" rx="55" ry="25" fill="currentColor"/><path d="M35,20 Q45,35 40,48" stroke="rgba(0,0,0,0.3)" stroke-width="5" fill="none"/><path d="M65,15 Q75,35 70,48" stroke="rgba(0,0,0,0.3)" stroke-width="5" fill="none"/><path d="M95,20 Q105,35 100,48" stroke="rgba(0,0,0,0.3)" stroke-width="5" fill="none"/></svg>`
+        },
+        {
+            id: 'copo_stanley',
+            name: 'Copo Térmico (Stanley)',
+            size: 0.17,
+            unit: 'cm',
+            display: '17 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 60 110" width="100%" height="100%"><polygon points="10,20 50,20 44,105 16,105" fill="currentColor"/><rect x="8" y="10" width="44" height="10" rx="3" fill="rgba(255,255,255,0.3)"/><rect x="26" y="2" width="8" height="8" rx="2" fill="rgba(255,255,255,0.4)"/></svg>`
         },
         {
             id: 'banana',
@@ -46,6 +103,15 @@
             svg: `<svg viewBox="0 0 80 120" width="100%" height="100%"><path d="M20,10 C55,30 65,75 40,110 C50,95 55,60 25,25 C20,20 18,14 20,10 Z" fill="currentColor"/></svg>`
         },
         {
+            id: 'headphone',
+            name: 'Headphone / Fone',
+            size: 0.20,
+            unit: 'cm',
+            display: '20 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 100 110" width="100%" height="100%"><path d="M20,60 C20,25 80,25 80,60" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><rect x="12" y="55" width="16" height="35" rx="7" fill="currentColor"/><rect x="72" y="55" width="16" height="35" rx="7" fill="currentColor"/></svg>`
+        },
+        {
             id: 'bola_futebol',
             name: 'Bola de Futebol',
             size: 0.22,
@@ -53,6 +119,15 @@
             display: '22 cm',
             category: 'pequeno',
             svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="currentColor"/><polygon points="50,30 65,42 60,58 40,58 35,42" fill="rgba(0,0,0,0.3)"/><circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="4"/></svg>`
+        },
+        {
+            id: 'notebook',
+            name: 'Notebook Aberto',
+            size: 0.24,
+            unit: 'cm',
+            display: '24 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 120 90" width="100%" height="100%"><polygon points="30,10 90,10 95,65 25,65" fill="currentColor"/><rect x="32" y="15" width="56" height="45" rx="2" fill="rgba(0,0,0,0.35)"/><polygon points="10,75 110,75 115,80 5,80" fill="currentColor"/><polygon points="25,65 95,65 110,75 10,75" fill="rgba(255,255,255,0.2)"/></svg>`
         },
         {
             id: 'gato',
@@ -64,6 +139,24 @@
             svg: `<svg viewBox="0 0 100 90" width="100%" height="100%"><ellipse cx="45" cy="55" rx="30" ry="25" fill="currentColor"/><circle cx="70" cy="35" r="16" fill="currentColor"/><polygon points="62,25 65,10 74,22" fill="currentColor"/><polygon points="73,22 82,10 85,25" fill="currentColor"/><path d="M20,55 C10,50 5,30 15,20 C18,16 22,25 18,35 C15,45 22,50 25,52" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><rect x="30" y="70" width="8" height="18" rx="4" fill="currentColor"/><rect x="55" y="70" width="8" height="18" rx="4" fill="currentColor"/></svg>`
         },
         {
+            id: 'livro',
+            name: 'Livro Dicionário',
+            size: 0.28,
+            unit: 'cm',
+            display: '28 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 80 110" width="100%" height="100%"><rect x="12" y="10" width="56" height="90" rx="4" fill="currentColor"/><rect x="16" y="15" width="48" height="80" rx="2" fill="rgba(0,0,0,0.25)"/><line x1="12" y1="10" x2="12" y2="100" stroke="rgba(255,255,255,0.4)" stroke-width="6"/></svg>`
+        },
+        {
+            id: 'garrafa_vinho',
+            name: 'Garrafa de Vinho',
+            size: 0.30,
+            unit: 'cm',
+            display: '30 cm',
+            category: 'pequeno',
+            svg: `<svg viewBox="0 0 45 130" width="100%" height="100%"><rect x="18" y="5" width="9" height="30" rx="2" fill="currentColor"/><path d="M18,35 C10,50 8,65 8,85 L8,125 C8,128 10,130 14,130 L31,130 C35,130 37,128 37,125 L37,85 C37,65 35,50 27,35 Z" fill="currentColor"/><rect x="10" y="70" width="25" height="35" rx="3" fill="rgba(255,255,255,0.2)"/></svg>`
+        },
+        {
             id: 'garrafa_pet',
             name: 'Garrafa PET 2L',
             size: 0.33,
@@ -72,14 +165,45 @@
             category: 'pequeno',
             svg: `<svg viewBox="0 0 50 140" width="100%" height="100%"><rect x="18" y="5" width="14" height="12" rx="2" fill="currentColor"/><path d="M19,17 C12,30 6,45 6,65 L6,125 C6,132 12,136 25,136 C38,136 44,132 44,125 L44,65 C44,45 38,30 31,17 Z" fill="currentColor"/><ellipse cx="25" cy="100" rx="18" ry="12" fill="rgba(255,255,255,0.15)"/></svg>`
         },
+
+        // =====================================================================
+        // CATEGORIA 2: MÉDIO-PEQUENO (0.35m a 1.15m / 35 cm a 115 cm)
+        // =====================================================================
+        {
+            id: 'microondas',
+            name: 'Forno Micro-ondas',
+            size: 0.32,
+            unit: 'cm',
+            display: '32 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 110 80" width="100%" height="100%"><rect x="5" y="10" width="100" height="65" rx="8" fill="currentColor"/><rect x="12" y="18" width="60" height="49" rx="4" fill="rgba(0,0,0,0.35)"/><circle cx="88" cy="28" r="6" fill="rgba(255,255,255,0.3)"/><circle cx="88" cy="46" r="6" fill="rgba(255,255,255,0.3)"/><rect x="80" y="58" width="16" height="4" rx="2" fill="rgba(255,255,255,0.3)"/></svg>`
+        },
         {
             id: 'pizza',
             name: 'Pizza Família (Caixa)',
             size: 0.40,
             unit: 'cm',
             display: '40 cm',
-            category: 'pequeno',
+            category: 'medio_pequeno',
             svg: `<svg viewBox="0 0 120 70" width="100%" height="100%"><polygon points="60,5 115,25 60,45 5,25" fill="currentColor"/><polygon points="5,25 60,45 60,65 5,45" fill="rgba(0,0,0,0.25)"/><polygon points="115,25 60,45 60,65 115,45" fill="rgba(0,0,0,0.15)"/></svg>`
+        },
+        {
+            id: 'mochila',
+            name: 'Mochila Escolar',
+            size: 0.45,
+            unit: 'cm',
+            display: '45 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 80 110" width="100%" height="100%"><path d="M20,35 C20,15 60,15 60,35 L65,100 C65,105 60,110 55,110 L25,110 C20,110 15,105 15,100 Z" fill="currentColor"/><rect x="22" y="55" width="36" height="40" rx="5" fill="rgba(0,0,0,0.25)"/><path d="M30,15 C30,8 50,8 50,15" fill="none" stroke="currentColor" stroke-width="4"/></svg>`
+        },
+        {
+            id: 'pneu',
+            name: 'Pneu de Carro',
+            size: 0.60,
+            unit: 'cm',
+            display: '60 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="currentColor"/><circle cx="50" cy="50" r="28" fill="rgba(0,0,0,0.4)"/><circle cx="50" cy="50" r="16" fill="currentColor"/><circle cx="50" cy="50" r="5" fill="rgba(255,255,255,0.5)"/></svg>`
         },
         {
             id: 'capivara',
@@ -87,7 +211,7 @@
             size: 0.60,
             unit: 'cm',
             display: '60 cm',
-            category: 'medio',
+            category: 'medio_pequeno',
             svg: `<svg viewBox="0 0 140 90" width="100%" height="100%"><ellipse cx="65" cy="50" rx="45" ry="30" fill="currentColor"/><path d="M95,35 C105,25 125,25 132,38 C135,45 132,55 125,60 L105,62 Z" fill="currentColor"/><ellipse cx="108" cy="24" rx="4" ry="6" fill="currentColor"/><rect x="35" y="70" width="12" height="18" rx="4" fill="currentColor"/><rect x="85" y="70" width="12" height="18" rx="4" fill="currentColor"/><circle cx="120" cy="38" r="2.5" fill="rgba(255,255,255,0.6)"/></svg>`
         },
         {
@@ -96,8 +220,71 @@
             size: 0.60,
             unit: 'cm',
             display: '60 cm',
-            category: 'medio',
+            category: 'medio_pequeno',
             svg: `<svg viewBox="0 0 130 90" width="100%" height="100%"><ellipse cx="55" cy="50" rx="35" ry="22" fill="currentColor"/><circle cx="95" cy="32" r="15" fill="currentColor"/><path d="M102,32 L116,36 L114,44 L98,42 Z" fill="currentColor"/><path d="M88,26 C85,24 82,34 85,42" fill="currentColor" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M22,48 C14,35 8,40 12,28" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><rect x="35" y="65" width="10" height="23" rx="4" fill="currentColor"/><rect x="75" y="65" width="10" height="23" rx="4" fill="currentColor"/></svg>`
+        },
+        {
+            id: 'barril_chopp',
+            name: 'Barril de Chopp (50L)',
+            size: 0.60,
+            unit: 'cm',
+            display: '60 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 80 110" width="100%" height="100%"><path d="M20,15 C10,35 10,75 20,95 L60,95 C70,75 70,35 60,15 Z" fill="currentColor"/><ellipse cx="40" cy="15" rx="20" ry="6" fill="rgba(255,255,255,0.2)"/><ellipse cx="40" cy="95" rx="20" ry="6" fill="rgba(0,0,0,0.3)"/><line x1="12" y1="40" x2="68" y2="40" stroke="rgba(0,0,0,0.25)" stroke-width="3"/><line x1="12" y1="70" x2="68" y2="70" stroke="rgba(0,0,0,0.25)" stroke-width="3"/></svg>`
+        },
+        {
+            id: 'mala_viagem',
+            name: 'Mala de Viagem Média',
+            size: 0.65,
+            unit: 'cm',
+            display: '65 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 80 115" width="100%" height="100%"><rect x="15" y="25" width="50" height="75" rx="8" fill="currentColor"/><rect x="32" y="10" width="16" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="24" cy="104" r="5" fill="rgba(255,255,255,0.4)"/><circle cx="56" cy="104" r="5" fill="rgba(255,255,255,0.4)"/><line x1="15" y1="55" x2="65" y2="55" stroke="rgba(0,0,0,0.2)" stroke-width="3"/></svg>`
+        },
+        {
+            id: 'banqueta',
+            name: 'Banqueta Alta de Bar',
+            size: 0.75,
+            unit: 'cm',
+            display: '75 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 70 120" width="100%" height="100%"><ellipse cx="35" cy="15" rx="24" ry="7" fill="currentColor"/><line x1="20" y1="20" x2="10" y2="115" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="50" y1="20" x2="60" y2="115" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="15" y1="75" x2="55" y2="75" stroke="currentColor" stroke-width="4"/></svg>`
+        },
+        {
+            id: 'skate',
+            name: 'Skate (Skateboard)',
+            size: 0.80,
+            unit: 'cm',
+            display: '80 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 120 40" width="100%" height="100%"><path d="M5,12 C15,18 105,18 115,12 C118,10 120,15 115,22 C105,25 15,25 5,22 C0,15 2,10 5,12 Z" fill="currentColor"/><circle cx="25" cy="30" r="6" fill="rgba(255,255,255,0.4)"/><circle cx="95" cy="30" r="6" fill="rgba(255,255,255,0.4)"/></svg>`
+        },
+        {
+            id: 'maquina_lavar',
+            name: 'Máquina de Lavar Roupa',
+            size: 0.85,
+            unit: 'cm',
+            display: '85 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 90 110" width="100%" height="100%"><rect x="10" y="10" width="70" height="90" rx="6" fill="currentColor"/><circle cx="45" cy="65" r="24" fill="rgba(0,0,0,0.3)"/><circle cx="45" cy="65" r="16" fill="rgba(255,255,255,0.15)"/><circle cx="25" cy="22" r="4" fill="rgba(255,255,255,0.3)"/><circle cx="40" cy="22" r="4" fill="rgba(255,255,255,0.3)"/></svg>`
+        },
+        {
+            id: 'cadeira_escritorio',
+            name: 'Cadeira de Escritório',
+            size: 0.95,
+            unit: 'cm',
+            display: '95 cm',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 80 120" width="100%" height="100%"><rect x="22" y="10" width="36" height="42" rx="6" fill="currentColor"/><rect x="15" y="55" width="50" height="12" rx="4" fill="currentColor"/><rect x="36" y="67" width="8" height="30" fill="currentColor"/><polygon points="40,97 15,115 65,115" fill="currentColor"/><circle cx="15" cy="115" r="4" fill="rgba(255,255,255,0.4)"/><circle cx="65" cy="115" r="4" fill="rgba(255,255,255,0.4)"/></svg>`
+        },
+        {
+            id: 'violao',
+            name: 'Violão Acústico',
+            size: 1.00,
+            unit: 'm',
+            display: '1,00 m',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 60 130" width="100%" height="100%"><polygon points="27,5 33,5 33,60 27,60" fill="currentColor"/><ellipse cx="30" cy="80" rx="16" ry="18" fill="currentColor"/><ellipse cx="30" cy="105" rx="22" ry="24" fill="currentColor"/><circle cx="30" cy="85" r="7" fill="rgba(0,0,0,0.35)"/></svg>`
         },
         {
             id: 'guitarra',
@@ -105,44 +292,138 @@
             size: 1.00,
             unit: 'm',
             display: '1,00 m',
-            category: 'medio',
-            svg: `<svg viewBox="0 0 50 140" width="100%" height="100%"><path d="M12,85 C6,95 8,125 25,135 C42,125 44,95 38,85 C32,78 36,65 30,60 L20,60 C14,65 18,78 12,85 Z" fill="currentColor"/><rect x="23" y="15" width="4" height="48" fill="currentColor"/><polygon points="21,5 29,5 28,15 22,15" fill="currentColor"/></svg>`
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 60 130" width="100%" height="100%"><polygon points="26,5 34,5 33,60 27,60" fill="currentColor"/><ellipse cx="30" cy="95" rx="22" ry="30" fill="currentColor"/><path d="M12,85 C8,70 18,65 24,75" fill="currentColor"/><path d="M48,85 C52,70 42,65 36,75" fill="currentColor"/><circle cx="30" cy="95" r="8" fill="rgba(0,0,0,0.3)"/></svg>`
         },
         {
-            id: 'carro_fusca',
-            name: 'Carro Fusca',
+            id: 'carrinho_bebe',
+            name: 'Carrinho de Bebê',
+            size: 1.05,
+            unit: 'm',
+            display: '1,05 m',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 100 110" width="100%" height="100%"><path d="M20,45 C20,30 45,25 60,35 L75,55 L35,55 Z" fill="currentColor"/><path d="M60,35 L80,15" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="30" cy="95" r="10" fill="currentColor"/><circle cx="70" cy="95" r="10" fill="currentColor"/><line x1="30" y1="95" x2="48" y2="55" stroke="currentColor" stroke-width="4"/><line x1="70" y1="95" x2="52" y2="55" stroke="currentColor" stroke-width="4"/></svg>`
+        },
+        {
+            id: 'pinguim',
+            name: 'Pinguim-imperador',
+            size: 1.15,
+            unit: 'm',
+            display: '1,15 m',
+            category: 'medio_pequeno',
+            svg: `<svg viewBox="0 0 70 120" width="100%" height="100%"><ellipse cx="35" cy="65" rx="22" ry="45" fill="currentColor"/><ellipse cx="35" cy="70" rx="14" ry="35" fill="rgba(255,255,255,0.25)"/><circle cx="35" cy="22" r="14" fill="currentColor"/><polygon points="35,22 55,26 35,30" fill="#facc15"/><ellipse cx="14" cy="60" rx="4" ry="22" fill="currentColor"/><ellipse cx="56" cy="60" rx="4" ry="22" fill="currentColor"/><polygon points="25,110 32,118 40,110" fill="#facc15"/><polygon points="40,110 48,118 55,110" fill="#facc15"/></svg>`
+        },
+
+        // =====================================================================
+        // CATEGORIA 3: MÉDIO (1.15m a 2.50m)
+        // =====================================================================
+        {
+            id: 'crianca',
+            name: 'Criança de 6 anos',
+            size: 1.15,
+            unit: 'm',
+            display: '1,15 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 60 120" width="100%" height="100%"><circle cx="30" cy="18" r="13" fill="currentColor"/><rect x="18" y="34" width="24" height="42" rx="6" fill="currentColor"/><line x1="16" y1="40" x2="6" y2="70" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><line x1="44" y1="40" x2="54" y2="70" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><rect x="20" y="78" width="8" height="38" rx="4" fill="currentColor"/><rect x="32" y="78" width="8" height="38" rx="4" fill="currentColor"/></svg>`
+        },
+        {
+            id: 'moto',
+            name: 'Moto Scooter',
+            size: 1.20,
+            unit: 'm',
+            display: '1,20 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 130 90" width="100%" height="100%"><circle cx="25" cy="65" r="18" fill="currentColor"/><circle cx="105" cy="65" r="18" fill="currentColor"/><path d="M25,65 L55,65 L65,40 L90,40 L105,65" stroke="currentColor" stroke-width="8" fill="none" stroke-linejoin="round"/><rect x="40" y="32" width="28" height="12" rx="4" fill="currentColor"/><line x1="88" y1="40" x2="80" y2="18" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="74" y1="18" x2="86" y2="18" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>`
+        },
+        {
+            id: 'fusca',
+            name: 'Carro Popular (Fusca / Gol)',
+            size: 1.45,
+            unit: 'm',
+            display: '1,45 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 160 80" width="100%" height="100%"><path d="M10,55 C10,50 20,40 35,40 L50,40 C60,25 75,18 95,18 C115,18 135,32 145,45 L155,50 C158,52 160,56 160,60 L160,68 C160,70 158,72 155,72 L145,72 C145,62 135,55 125,55 C115,55 105,62 105,72 L55,72 C55,62 45,55 35,55 C25,55 15,62 15,72 L5,72 C2,72 0,70 0,68 L0,60 Z" fill="currentColor"/><circle cx="35" cy="72" r="15" fill="rgba(0,0,0,0.4)"/><circle cx="125" cy="72" r="15" fill="rgba(0,0,0,0.4)"/><path d="M60,38 C68,26 80,24 95,24 C108,24 122,30 128,38 Z" fill="rgba(0,0,0,0.3)"/></svg>`
+        },
+        {
+            id: 'vaca',
+            name: 'Vaca Holandesa',
             size: 1.50,
             unit: 'm',
             display: '1,50 m',
             category: 'medio',
-            svg: `<svg viewBox="0 0 160 85" width="100%" height="100%"><path d="M15,62 C15,50 35,42 50,40 C65,22 95,20 115,38 C135,40 150,50 150,62 L15,62 Z" fill="currentColor"/><circle cx="45" cy="65" r="16" fill="rgba(0,0,0,0.6)"/><circle cx="45" cy="65" r="8" fill="rgba(255,255,255,0.5)"/><circle cx="120" cy="65" r="16" fill="rgba(0,0,0,0.6)"/><circle cx="120" cy="65" r="8" fill="rgba(255,255,255,0.5)"/></svg>`
+            svg: `<svg viewBox="0 0 150 110" width="100%" height="100%"><ellipse cx="75" cy="55" rx="48" ry="30" fill="currentColor"/><path d="M115,40 C125,30 140,30 145,45 C145,55 138,65 125,68 Z" fill="currentColor"/><rect x="40" y="80" width="12" height="28" rx="4" fill="currentColor"/><rect x="95" y="80" width="12" height="28" rx="4" fill="currentColor"/><circle cx="60" cy="48" r="10" fill="rgba(0,0,0,0.3)"/><circle cx="95" cy="58" r="14" fill="rgba(0,0,0,0.3)"/></svg>`
         },
         {
-            id: 'homem',
-            name: 'Homem Adulto (Estatura Média)',
+            id: 'cavalo',
+            name: 'Cavalo Manga-larga',
+            size: 1.65,
+            unit: 'm',
+            display: '1,65 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 140 120" width="100%" height="100%"><ellipse cx="65" cy="65" rx="38" ry="24" fill="currentColor"/><path d="M85,55 L108,22 C115,18 122,25 118,35 L102,62 Z" fill="currentColor"/><polygon points="106,18 112,10 116,18" fill="currentColor"/><rect x="38" y="85" width="9" height="32" rx="4" fill="currentColor"/><rect x="85" y="85" width="9" height="32" rx="4" fill="currentColor"/><path d="M30,60 C20,70 18,90 22,100" stroke="currentColor" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`
+        },
+        {
+            id: 'pessoa',
+            name: 'Pessoa Adulta',
             size: 1.75,
             unit: 'm',
             display: '1,75 m',
             category: 'medio',
-            svg: `<svg viewBox="0 0 60 140" width="100%" height="100%"><circle cx="30" cy="14" r="11" fill="currentColor"/><path d="M16,30 C16,28 44,28 44,30 L40,75 L34,75 L36,135 L24,135 L26,75 L20,75 Z" fill="currentColor"/><path d="M16,32 L6,70 L12,72 L18,38" fill="currentColor"/><path d="M44,32 L54,70 L48,72 L42,38" fill="currentColor"/></svg>`
+            svg: `<svg viewBox="0 0 60 140" width="100%" height="100%"><circle cx="30" cy="18" r="14" fill="currentColor"/><path d="M12,42 C12,36 18,34 30,34 C42,34 48,36 48,42 L45,82 L15,82 Z" fill="currentColor"/><line x1="12" y1="42" x2="3" y2="80" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="48" y1="42" x2="57" y2="80" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><rect x="18" y="84" width="9" height="52" rx="4" fill="currentColor"/><rect x="33" y="84" width="9" height="52" rx="4" fill="currentColor"/></svg>`
         },
         {
-            id: 'geladeira',
-            name: 'Geladeira Duplex',
+            id: 'picape',
+            name: 'Picape Hilux',
             size: 1.80,
             unit: 'm',
             display: '1,80 m',
             category: 'medio',
-            svg: `<svg viewBox="0 0 65 140" width="100%" height="100%"><rect x="5" y="5" width="55" height="130" rx="8" fill="currentColor"/><line x1="5" y1="52" x2="60" y2="52" stroke="rgba(0,0,0,0.3)" stroke-width="3"/><rect x="10" y="30" width="4" height="16" rx="2" fill="rgba(255,255,255,0.4)"/><rect x="10" y="60" width="4" height="24" rx="2" fill="rgba(255,255,255,0.4)"/></svg>`
+            svg: `<svg viewBox="0 0 170 80" width="100%" height="100%"><path d="M10,50 L40,50 L65,22 L110,22 L120,50 L160,50 L160,65 L10,65 Z" fill="currentColor"/><circle cx="45" cy="65" r="15" fill="rgba(0,0,0,0.4)"/><circle cx="130" cy="65" r="15" fill="rgba(0,0,0,0.4)"/><rect x="70" y="28" width="40" height="20" rx="3" fill="rgba(0,0,0,0.3)"/></svg>`
+        },
+        {
+            id: 'geladeira',
+            name: 'Geladeira Duplex',
+            size: 1.85,
+            unit: 'm',
+            display: '1,85 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 60 130" width="100%" height="100%"><rect x="5" y="5" width="50" height="42" rx="5" fill="currentColor"/><rect x="5" y="50" width="50" height="75" rx="5" fill="currentColor"/><rect x="44" y="20" width="4" height="14" rx="2" fill="rgba(0,0,0,0.3)"/><rect x="44" y="65" width="4" height="25" rx="2" fill="rgba(0,0,0,0.3)"/><line x1="5" y1="48" x2="55" y2="48" stroke="rgba(0,0,0,0.2)" stroke-width="3"/></svg>`
+        },
+        {
+            id: 'vending_machine',
+            name: 'Máquina de Refrigerante',
+            size: 1.90,
+            unit: 'm',
+            display: '1,90 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 70 125" width="100%" height="100%"><rect x="10" y="5" width="50" height="115" rx="6" fill="currentColor"/><rect x="16" y="15" width="38" height="60" rx="3" fill="rgba(0,0,0,0.35)"/><rect x="16" y="85" width="38" height="25" rx="3" fill="rgba(0,0,0,0.2)"/><circle cx="45" cy="80" r="3" fill="rgba(255,255,255,0.4)"/></svg>`
+        },
+        {
+            id: 'kombi',
+            name: 'Kombi Clássica',
+            size: 2.05,
+            unit: 'm',
+            display: '2,05 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 150 95" width="100%" height="100%"><rect x="15" y="15" width="120" height="65" rx="14" fill="currentColor"/><rect x="22" y="22" width="28" height="22" rx="4" fill="rgba(0,0,0,0.3)"/><rect x="56" y="22" width="32" height="22" rx="4" fill="rgba(0,0,0,0.3)"/><rect x="94" y="22" width="32" height="22" rx="4" fill="rgba(0,0,0,0.3)"/><circle cx="42" cy="80" r="14" fill="rgba(0,0,0,0.4)"/><circle cx="108" cy="80" r="14" fill="rgba(0,0,0,0.4)"/></svg>`
         },
         {
             id: 'porta',
-            name: 'Porta Residencial Padrão',
+            name: 'Porta Residencial',
             size: 2.10,
             unit: 'm',
             display: '2,10 m',
             category: 'medio',
-            svg: `<svg viewBox="0 0 65 140" width="100%" height="100%"><rect x="5" y="5" width="55" height="132" rx="4" fill="currentColor"/><rect x="9" y="9" width="47" height="124" fill="rgba(0,0,0,0.15)"/><circle cx="50" cy="74" r="3.5" fill="rgba(255,255,255,0.7)"/></svg>`
+            svg: `<svg viewBox="0 0 65 140" width="100%" height="100%"><rect x="5" y="5" width="55" height="130" fill="none" stroke="currentColor" stroke-width="4"/><rect x="10" y="10" width="45" height="125" fill="currentColor"/><circle cx="18" cy="75" r="4" fill="rgba(0,0,0,0.35)"/><rect x="18" y="20" width="30" height="40" fill="rgba(0,0,0,0.15)"/><rect x="18" y="70" width="30" height="55" fill="rgba(0,0,0,0.15)"/></svg>`
+        },
+        {
+            id: 'guarda_sol',
+            name: 'Guarda-Sol de Praia',
+            size: 2.10,
+            unit: 'm',
+            display: '2,10 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 110 130" width="100%" height="100%"><path d="M10,45 C25,15 85,15 100,45 Z" fill="currentColor"/><line x1="55" y1="45" x2="55" y2="128" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><polygon points="50,45 60,45 55,10" fill="rgba(255,255,255,0.4)"/></svg>`
         },
         {
             id: 'trave_futebol',
@@ -151,16 +432,56 @@
             unit: 'm',
             display: '2,44 m',
             category: 'medio',
-            svg: `<svg viewBox="0 0 140 100" width="100%" height="100%"><path d="M15,95 L15,10 L125,10 L125,95" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><path d="M15,10 L35,35 L105,35 L125,10" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3"/><line x1="35" y1="35" x2="35" y2="95" stroke="rgba(255,255,255,0.2)" stroke-width="3"/><line x1="105" y1="35" x2="105" y2="95" stroke="rgba(255,255,255,0.2)" stroke-width="3"/></svg>`
+            svg: `<svg viewBox="0 0 140 100" width="100%" height="100%"><rect x="15" y="10" width="110" height="85" fill="none" stroke="currentColor" stroke-width="8"/><line x1="15" y1="10" x2="35" y2="35" stroke="currentColor" stroke-width="4"/><line x1="125" y1="10" x2="105" y2="35" stroke="currentColor" stroke-width="4"/><line x1="35" y1="35" x2="105" y2="35" stroke="currentColor" stroke-width="4"/><line x1="35" y1="35" x2="35" y2="95" stroke="currentColor" stroke-width="4"/><line x1="105" y1="35" x2="105" y2="95" stroke="currentColor" stroke-width="4"/></svg>`
         },
         {
-            id: 'cesta_basquete',
+            id: 'urso',
+            name: 'Urso Pardo em Pé',
+            size: 2.50,
+            unit: 'm',
+            display: '2,50 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 90 140" width="100%" height="100%"><ellipse cx="45" cy="80" rx="30" ry="42" fill="currentColor"/><circle cx="45" cy="30" r="18" fill="currentColor"/><circle cx="32" cy="16" r="6" fill="currentColor"/><circle cx="58" cy="16" r="6" fill="currentColor"/><path d="M20,45 C10,55 8,75 16,85" stroke="currentColor" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M70,45 C80,55 82,75 74,85" stroke="currentColor" stroke-width="10" fill="none" stroke-linecap="round"/><rect x="25" y="115" width="14" height="22" rx="5" fill="currentColor"/><rect x="51" y="115" width="14" height="22" rx="5" fill="currentColor"/></svg>`
+        },
+        {
+            id: 'cabine_telefonica',
+            name: 'Cabine Telefônica',
+            size: 2.50,
+            unit: 'm',
+            display: '2,50 m',
+            category: 'medio',
+            svg: `<svg viewBox="0 0 65 140" width="100%" height="100%"><rect x="10" y="10" width="45" height="125" rx="6" fill="currentColor"/><path d="M10,18 C10,6 55,6 55,18" fill="currentColor"/><rect x="15" y="24" width="35" height="75" fill="rgba(0,0,0,0.3)"/><line x1="15" y1="50" x2="50" y2="50" stroke="rgba(255,255,255,0.2)" stroke-width="2"/><line x1="15" y1="75" x2="50" y2="75" stroke="rgba(255,255,255,0.2)" stroke-width="2"/></svg>`
+        },
+
+        // =====================================================================
+        // CATEGORIA 4: GRANDE (2.60m a 15.0m)
+        // =====================================================================
+        {
+            id: 'van_escolar',
+            name: 'Van Escolar / Sprinter',
+            size: 2.60,
+            unit: 'm',
+            display: '2,60 m',
+            category: 'grande',
+            svg: `<svg viewBox="0 0 160 85" width="100%" height="100%"><path d="M15,20 L115,20 L145,45 L145,68 L15,68 Z" fill="currentColor"/><rect x="25" y="28" width="30" height="18" rx="3" fill="rgba(0,0,0,0.3)"/><rect x="62" y="28" width="30" height="18" rx="3" fill="rgba(0,0,0,0.3)"/><polygon points="100,28 118,28 135,45 100,45" fill="rgba(0,0,0,0.3)"/><circle cx="45" cy="68" r="14" fill="rgba(0,0,0,0.4)"/><circle cx="120" cy="68" r="14" fill="rgba(0,0,0,0.4)"/></svg>`
+        },
+        {
+            id: 'container',
+            name: 'Container Marítimo',
+            size: 2.60,
+            unit: 'm',
+            display: '2,60 m',
+            category: 'grande',
+            svg: `<svg viewBox="0 0 170 70" width="100%" height="100%"><rect x="10" y="10" width="150" height="52" rx="4" fill="currentColor"/><line x1="25" y1="10" x2="25" y2="62" stroke="rgba(0,0,0,0.25)" stroke-width="4"/><line x1="45" y1="10" x2="45" y2="62" stroke="rgba(0,0,0,0.25)" stroke-width="4"/><line x1="65" y1="10" x2="65" y2="62" stroke="rgba(0,0,0,0.25)" stroke-width="4"/><line x1="85" y1="10" x2="85" y2="62" stroke="rgba(0,0,0,0.25)" stroke-width="4"/><line x1="105" y1="10" x2="105" y2="62" stroke="rgba(0,0,0,0.25)" stroke-width="4"/><line x1="125" y1="10" x2="125" y2="62" stroke="rgba(0,0,0,0.25)" stroke-width="4"/><line x1="145" y1="10" x2="145" y2="62" stroke="rgba(0,0,0,0.25)" stroke-width="4"/></svg>`
+        },
+        {
+            id: 'tabela_basquete',
             name: 'Tabela de Basquete (Aro)',
             size: 3.05,
             unit: 'm',
             display: '3,05 m',
-            category: 'medio',
-            svg: `<svg viewBox="0 0 80 140" width="100%" height="100%"><line x1="40" y1="140" x2="40" y2="30" stroke="currentColor" stroke-width="8"/><rect x="15" y="10" width="50" height="35" rx="3" fill="rgba(255,255,255,0.2)" stroke="currentColor" stroke-width="4"/><ellipse cx="40" cy="40" rx="14" ry="5" fill="none" stroke="#ea580c" stroke-width="4"/><path d="M28,42 L32,60 L48,60 L52,42 Z" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="3,3"/></svg>`
+            category: 'grande',
+            svg: `<svg viewBox="0 0 90 140" width="100%" height="100%"><line x1="75" y1="10" x2="75" y2="135" stroke="currentColor" stroke-width="8"/><rect x="15" y="15" width="55" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="6"/><rect x="30" y="25" width="25" height="20" fill="none" stroke="currentColor" stroke-width="4"/><line x1="30" y1="45" x2="10" y2="45" stroke="#facc15" stroke-width="6"/><line x1="10" y1="45" x2="15" y2="60" stroke="rgba(255,255,255,0.4)" stroke-width="3"/></svg>`
         },
         {
             id: 'onibus',
@@ -169,7 +490,7 @@
             unit: 'm',
             display: '3,20 m',
             category: 'grande',
-            svg: `<svg viewBox="0 0 170 75" width="100%" height="100%"><rect x="10" y="8" width="150" height="52" rx="8" fill="currentColor"/><rect x="18" y="16" width="30" height="20" rx="3" fill="rgba(0,0,0,0.4)"/><rect x="54" y="16" width="30" height="20" rx="3" fill="rgba(0,0,0,0.4)"/><rect x="90" y="16" width="30" height="20" rx="3" fill="rgba(0,0,0,0.4)"/><rect x="126" y="16" width="28" height="36" rx="3" fill="rgba(0,0,0,0.4)"/><circle cx="45" cy="62" r="12" fill="rgba(0,0,0,0.7)"/><circle cx="125" cy="62" r="12" fill="rgba(0,0,0,0.7)"/></svg>`
+            svg: `<svg viewBox="0 0 170 85" width="100%" height="100%"><rect x="5" y="10" width="160" height="60" rx="8" fill="currentColor"/><rect x="12" y="18" width="30" height="22" rx="3" fill="rgba(0,0,0,0.35)"/><rect x="48" y="18" width="30" height="22" rx="3" fill="rgba(0,0,0,0.35)"/><rect x="84" y="18" width="30" height="22" rx="3" fill="rgba(0,0,0,0.35)"/><rect x="120" y="18" width="40" height="22" rx="3" fill="rgba(0,0,0,0.35)"/><circle cx="45" cy="70" r="14" fill="rgba(0,0,0,0.4)"/><circle cx="130" cy="70" r="14" fill="rgba(0,0,0,0.4)"/></svg>`
         },
         {
             id: 'elefante',
@@ -178,16 +499,34 @@
             unit: 'm',
             display: '3,30 m',
             category: 'grande',
-            svg: `<svg viewBox="0 0 150 110" width="100%" height="100%"><ellipse cx="75" cy="55" rx="50" ry="38" fill="currentColor"/><circle cx="120" cy="45" r="22" fill="currentColor"/><path d="M130,55 C140,75 142,95 132,100 C128,102 124,92 126,80 L124,65" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"/><ellipse cx="108" cy="45" rx="14" ry="22" fill="rgba(0,0,0,0.2)"/><rect x="45" y="80" width="16" height="28" rx="6" fill="currentColor"/><rect x="85" y="80" width="16" height="28" rx="6" fill="currentColor"/></svg>`
+            svg: `<svg viewBox="0 0 150 110" width="100%" height="100%"><ellipse cx="70" cy="55" rx="45" ry="35" fill="currentColor"/><circle cx="115" cy="45" r="22" fill="currentColor"/><path d="M125,45 C135,55 130,85 120,95 C115,100 122,102 125,95 C138,80 145,50 130,35" fill="currentColor"/><ellipse cx="102" cy="45" rx="14" ry="22" fill="rgba(0,0,0,0.2)"/><rect x="35" y="80" width="15" height="28" rx="5" fill="currentColor"/><rect x="60" y="80" width="15" height="28" rx="5" fill="currentColor"/><rect x="90" y="80" width="15" height="28" rx="5" fill="currentColor"/></svg>`
+        },
+        {
+            id: 'caminhao_betoneira',
+            name: 'Caminhão Betoneira',
+            size: 3.80,
+            unit: 'm',
+            display: '3,80 m',
+            category: 'grande',
+            svg: `<svg viewBox="0 0 160 90" width="100%" height="100%"><rect x="15" y="45" width="130" height="30" rx="4" fill="currentColor"/><polygon points="40,25 105,40 105,60 30,50" fill="currentColor"/><polygon points="115,35 140,40 145,65 115,65" fill="currentColor"/><circle cx="45" cy="75" r="14" fill="rgba(0,0,0,0.4)"/><circle cx="75" cy="75" r="14" fill="rgba(0,0,0,0.4)"/><circle cx="125" cy="75" r="14" fill="rgba(0,0,0,0.4)"/></svg>`
+        },
+        {
+            id: 'semaforo',
+            name: 'Poste com Semáforo',
+            size: 4.50,
+            unit: 'm',
+            display: '4,50 m',
+            category: 'grande',
+            svg: `<svg viewBox="0 0 50 140" width="100%" height="100%"><line x1="25" y1="40" x2="25" y2="138" stroke="currentColor" stroke-width="6"/><rect x="14" y="10" width="22" height="50" rx="5" fill="currentColor"/><circle cx="25" cy="20" r="5" fill="#ef4444"/><circle cx="25" cy="35" r="5" fill="#facc15"/><circle cx="25" cy="50" r="5" fill="#22c55e"/></svg>`
         },
         {
             id: 'trex',
             name: 'Tiranossauro Rex (T-Rex)',
-            size: 4.00,
+            size: 4.50,
             unit: 'm',
-            display: '4,00 m',
+            display: '4,50 m',
             category: 'grande',
-            svg: `<svg viewBox="0 0 160 120" width="100%" height="100%"><path d="M15,95 C45,75 70,60 85,55 L105,40 L135,35 L145,50 L125,58 L110,65 L115,85 L100,115 L85,115 L92,85 C75,90 45,105 15,95 Z" fill="currentColor"/><path d="M102,62 L112,65 L108,72" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>`
+            svg: `<svg viewBox="0 0 160 120" width="100%" height="100%"><path d="M10,85 C30,75 50,70 65,65 L85,45 C95,30 115,25 135,28 L145,35 L125,50 L115,55 L105,75 C95,95 85,115 75,115 C65,115 70,95 60,85 Z" fill="currentColor"/><rect x="75" y="90" width="14" height="28" rx="6" fill="currentColor"/><line x1="90" y1="65" x2="105" y2="72" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>`
         },
         {
             id: 'girafa',
@@ -196,43 +535,65 @@
             unit: 'm',
             display: '5,50 m',
             category: 'grande',
-            svg: `<svg viewBox="0 0 100 160" width="100%" height="100%"><ellipse cx="40" cy="95" rx="28" ry="20" fill="currentColor"/><path d="M50,90 L75,30 L85,25 L88,35 L70,95 Z" fill="currentColor"/><circle cx="85" cy="22" r="8" fill="currentColor"/><line x1="84" y1="16" x2="83" y2="10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line x1="88" y1="16" x2="89" y2="10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><rect x="25" y="105" width="8" height="52" rx="4" fill="currentColor"/><rect x="48" y="105" width="8" height="52" rx="4" fill="currentColor"/></svg>`
+            svg: `<svg viewBox="0 0 100 160" width="100%" height="100%"><path d="M30,105 C30,90 45,85 60,95 L72,30 C74,20 82,18 84,24 L78,95 C82,100 85,110 80,115 Z" fill="currentColor"/><circle cx="84" cy="20" r="7" fill="currentColor"/><line x1="84" y1="16" x2="88" y2="10" stroke="currentColor" stroke-width="3"/><line x1="82" y1="16" x2="80" y2="10" stroke="currentColor" stroke-width="3"/><rect x="35" y="110" width="7" height="48" rx="3" fill="currentColor"/><rect x="50" y="110" width="7" height="48" rx="3" fill="currentColor"/><rect x="68" y="110" width="7" height="48" rx="3" fill="currentColor"/></svg>`
         },
         {
-            id: 'poste',
-            name: 'Poste de Iluminação Pública',
+            id: 'casa_2andares',
+            name: 'Casa de 2 Andares',
+            size: 7.50,
+            unit: 'm',
+            display: '7,50 m',
+            category: 'grande',
+            svg: `<svg viewBox="0 0 120 120" width="100%" height="100%"><polygon points="60,10 110,45 10,45" fill="currentColor"/><rect x="18" y="45" width="84" height="70" fill="currentColor"/><rect x="28" y="55" width="20" height="20" fill="rgba(0,0,0,0.3)"/><rect x="72" y="55" width="20" height="20" fill="rgba(0,0,0,0.3)"/><rect x="50" y="85" width="20" height="30" fill="rgba(0,0,0,0.3)"/></svg>`
+        },
+        {
+            id: 'poste_luz',
+            name: 'Poste de Luz de Rua',
             size: 8.00,
             unit: 'm',
             display: '8,00 m',
             category: 'grande',
-            svg: `<svg viewBox="0 0 60 160" width="100%" height="100%"><rect x="27" y="15" width="6" height="142" fill="currentColor"/><path d="M30,25 C30,12 45,5 55,8" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><polygon points="45,10 58,10 56,18 47,18" fill="#facc15"/></svg>`
+            svg: `<svg viewBox="0 0 60 160" width="100%" height="100%"><line x1="30" y1="20" x2="30" y2="158" stroke="currentColor" stroke-width="6"/><path d="M30,30 C30,10 52,10 52,25" fill="none" stroke="currentColor" stroke-width="5"/><polygon points="45,25 58,25 54,35 48,35" fill="#facc15"/></svg>`
+        },
+        {
+            id: 'palmeira',
+            name: 'Palmeira Imperial',
+            size: 15.00,
+            unit: 'm',
+            display: '15,00 m',
+            category: 'grande',
+            svg: `<svg viewBox="0 0 80 150" width="100%" height="100%"><line x1="40" y1="35" x2="40" y2="148" stroke="currentColor" stroke-width="7"/><path d="M40,35 C25,20 10,25 5,35" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M40,35 C55,20 70,25 75,35" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M40,35 C30,10 15,10 10,20" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M40,35 C50,10 65,10 70,20" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M40,35 C40,5 40,0 40,5" stroke="currentColor" stroke-width="5" fill="none"/></svg>`
         },
         {
             id: 'aviao_737',
-            name: 'Avião Comercial (Boeing 737)',
+            name: 'Avião Boeing 737',
             size: 12.50,
             unit: 'm',
-            display: '12,50 m (altura)',
-            category: 'monumento',
-            svg: `<svg viewBox="0 0 160 80" width="100%" height="100%"><path d="M15,45 L135,45 C150,45 155,52 145,55 L25,55 Z" fill="currentColor"/><polygon points="20,45 35,15 48,15 38,45" fill="currentColor"/><polygon points="80,52 110,75 125,75 105,52" fill="currentColor"/></svg>`
+            display: '12,50 m',
+            category: 'grande',
+            svg: `<svg viewBox="0 0 170 85" width="100%" height="100%"><path d="M10,48 C30,48 50,45 80,45 L115,20 L130,20 L120,45 L155,46 C165,47 168,52 155,54 L120,54 L105,75 L95,75 L102,54 L10,53 Z" fill="currentColor"/></svg>`
         },
+
+        // =====================================================================
+        // CATEGORIA 5: MONUMENTAL (30.0m a 330.0m)
+        // =====================================================================
         {
             id: 'baleia_azul',
-            name: 'Baleia Azul (Comprimento)',
+            name: 'Baleia Azul',
             size: 30.00,
             unit: 'm',
             display: '30,00 m',
             category: 'monumento',
-            svg: `<svg viewBox="0 0 180 70" width="100%" height="100%"><path d="M170,30 C150,15 110,18 70,25 C40,30 20,45 5,30 C12,42 12,55 5,65 C25,50 50,55 80,55 C125,55 160,45 170,30 Z" fill="currentColor"/><polygon points="85,24 95,14 100,22" fill="currentColor"/></svg>`
+            svg: `<svg viewBox="0 0 170 75" width="100%" height="100%"><path d="M10,40 C20,20 70,18 120,25 C145,28 160,35 168,22 C168,32 165,45 150,45 C120,45 70,55 30,52 Z" fill="currentColor"/><path d="M60,42 L50,60 L65,50" fill="currentColor"/></svg>`
         },
         {
-            id: 'predio_10',
-            name: 'Prédio Residencial (10 Andares)',
+            id: 'predio_10andares',
+            name: 'Edifício de 10 Andares',
             size: 30.00,
             unit: 'm',
             display: '30,00 m',
             category: 'monumento',
-            svg: `<svg viewBox="0 0 70 160" width="100%" height="100%"><rect x="10" y="10" width="50" height="148" fill="currentColor"/><g fill="rgba(0,0,0,0.35)"><rect x="16" y="20" width="8" height="8"/><rect x="31" y="20" width="8" height="8"/><rect x="46" y="20" width="8" height="8"/><rect x="16" y="35" width="8" height="8"/><rect x="31" y="35" width="8" height="8"/><rect x="46" y="35" width="8" height="8"/><rect x="16" y="50" width="8" height="8"/><rect x="31" y="50" width="8" height="8"/><rect x="46" y="50" width="8" height="8"/><rect x="16" y="65" width="8" height="8"/><rect x="31" y="65" width="8" height="8"/><rect x="46" y="65" width="8" height="8"/><rect x="16" y="80" width="8" height="8"/><rect x="31" y="80" width="8" height="8"/><rect x="46" y="80" width="8" height="8"/><rect x="16" y="95" width="8" height="8"/><rect x="31" y="95" width="8" height="8"/><rect x="46" y="95" width="8" height="8"/><rect x="16" y="110" width="8" height="8"/><rect x="31" y="110" width="8" height="8"/><rect x="46" y="110" width="8" height="8"/></g><rect x="28" y="138" width="14" height="20" fill="rgba(255,255,255,0.4)"/></svg>`
+            svg: `<svg viewBox="0 0 90 160" width="100%" height="100%"><rect x="15" y="10" width="60" height="148" fill="currentColor"/><rect x="23" y="18" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="40" y="18" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="57" y="18" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="23" y="38" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="40" y="38" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="57" y="38" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="23" y="58" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="40" y="58" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="57" y="58" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="23" y="78" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="40" y="78" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="57" y="78" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="23" y="98" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="40" y="98" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="57" y="98" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="23" y="118" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="40" y="118" width="10" height="10" fill="rgba(0,0,0,0.3)"/><rect x="57" y="118" width="10" height="10" fill="rgba(0,0,0,0.3)"/></svg>`
         },
         {
             id: 'cristo_redentor',
@@ -241,16 +602,52 @@
             unit: 'm',
             display: '38,00 m',
             category: 'monumento',
-            svg: `<svg viewBox="0 0 140 160" width="100%" height="100%"><polygon points="50,158 90,158 80,135 60,135" fill="rgba(0,0,0,0.4)"/><rect x="62" y="35" width="16" height="102" fill="currentColor"/><circle cx="70" cy="24" r="8" fill="currentColor"/><polygon points="10,40 130,40 130,50 78,55 62,55 10,50" fill="currentColor"/></svg>`
+            svg: `<svg viewBox="0 0 140 150" width="100%" height="100%"><polygon points="45,148 95,148 90,120 50,120" fill="rgba(0,0,0,0.3)"/><path d="M56,120 L58,45 L10,45 L10,38 L59,38 L65,18 C65,12 75,12 75,18 L81,38 L130,38 L130,45 L82,45 L84,120 Z" fill="currentColor"/><circle cx="70" cy="18" r="8" fill="currentColor"/></svg>`
+        },
+        {
+            id: 'coliseu',
+            name: 'Coliseu de Roma',
+            size: 48.00,
+            unit: 'm',
+            display: '48,00 m',
+            category: 'monumento',
+            svg: `<svg viewBox="0 0 160 100" width="100%" height="100%"><rect x="15" y="30" width="130" height="65" rx="6" fill="currentColor"/><ellipse cx="80" cy="30" rx="65" ry="15" fill="rgba(255,255,255,0.2)"/><circle cx="35" cy="50" r="7" fill="rgba(0,0,0,0.3)"/><circle cx="65" cy="50" r="7" fill="rgba(0,0,0,0.3)"/><circle cx="95" cy="50" r="7" fill="rgba(0,0,0,0.3)"/><circle cx="125" cy="50" r="7" fill="rgba(0,0,0,0.3)"/><circle cx="35" cy="75" r="7" fill="rgba(0,0,0,0.3)"/><circle cx="65" cy="75" r="7" fill="rgba(0,0,0,0.3)"/><circle cx="95" cy="75" r="7" fill="rgba(0,0,0,0.3)"/><circle cx="125" cy="75" r="7" fill="rgba(0,0,0,0.3)"/></svg>`
+        },
+        {
+            id: 'foguete_falcon',
+            name: 'Foguete Orbital (Falcon 9)',
+            size: 70.00,
+            unit: 'm',
+            display: '70,00 m',
+            category: 'monumento',
+            svg: `<svg viewBox="0 0 50 160" width="100%" height="100%"><polygon points="25,5 33,25 17,25" fill="currentColor"/><rect x="17" y="25" width="16" height="115" rx="2" fill="currentColor"/><polygon points="17,120 5,145 17,140" fill="currentColor"/><polygon points="33,120 45,145 33,140" fill="currentColor"/><ellipse cx="25" cy="145" rx="8" ry="4" fill="rgba(0,0,0,0.4)"/></svg>`
+        },
+        {
+            id: 'roda_gigante',
+            name: 'Roda-Gigante (Yup Star)',
+            size: 88.00,
+            unit: 'm',
+            display: '88,00 m',
+            category: 'monumento',
+            svg: `<svg viewBox="0 0 130 150" width="100%" height="100%"><circle cx="65" cy="65" r="55" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="65" cy="65" r="6" fill="currentColor"/><line x1="65" y1="10" x2="65" y2="120" stroke="currentColor" stroke-width="3"/><line x1="10" y1="65" x2="120" y2="65" stroke="currentColor" stroke-width="3"/><line x1="26" y1="26" x2="104" y2="104" stroke="currentColor" stroke-width="3"/><line x1="104" y1="26" x2="26" y2="104" stroke="currentColor" stroke-width="3"/><line x1="65" y1="65" x2="35" y2="148" stroke="currentColor" stroke-width="6"/><line x1="65" y1="65" x2="95" y2="148" stroke="currentColor" stroke-width="6"/></svg>`
         },
         {
             id: 'estatua_liberdade',
-            name: 'Estátua da Liberdade (com pedestal)',
+            name: 'Estátua da Liberdade (Nova York)',
             size: 93.00,
             unit: 'm',
             display: '93,00 m',
             category: 'monumento',
             svg: `<svg viewBox="0 0 90 160" width="100%" height="100%"><polygon points="25,158 65,158 60,115 30,115" fill="rgba(0,0,0,0.3)"/><path d="M36,115 L32,60 L54,60 L50,115 Z" fill="currentColor"/><circle cx="43" cy="50" r="7" fill="currentColor"/><polygon points="38,44 48,44 43,36" fill="#facc15"/><line x1="53" y1="62" x2="68" y2="28" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><polygon points="65,22 72,25 70,30 63,27" fill="#ea580c"/></svg>`
+        },
+        {
+            id: 'piramide_gize',
+            name: 'Grande Pirâmide de Gizé',
+            size: 138.00,
+            unit: 'm',
+            display: '138,00 m',
+            category: 'monumento',
+            svg: `<svg viewBox="0 0 150 100" width="100%" height="100%"><polygon points="75,10 140,90 10,90" fill="currentColor"/><polygon points="75,10 140,90 95,90" fill="rgba(0,0,0,0.25)"/></svg>`
         },
         {
             id: 'torre_eiffel',
@@ -283,18 +680,18 @@
         return x - Math.floor(x);
     }
 
-    // Gera as 5 rodadas diárias
+    // Gera as 5 rodadas diárias com proporções controladas e balanceadas
     function generateDailyRounds(isUnlimited = false) {
         const seedBase = isUnlimited ? Math.floor(Math.random() * 1000000) : getSeedFromString(getTodayKey());
         let seed = seedBase;
 
-        // Categorias balanceadas: pequeno x pequeno, pequeno x médio, médio x médio, médio x grande, grande x monumento
+        // Plano balanceado de categorias: pares comparáveis visualmente
         const plan = [
-            { refCat: ['pequeno'], targetCat: ['pequeno', 'medio'] },
-            { refCat: ['pequeno', 'medio'], targetCat: ['medio'] },
-            { refCat: ['medio'], targetCat: ['medio', 'grande'] },
-            { refCat: ['medio', 'grande'], targetCat: ['grande'] },
-            { refCat: ['grande'], targetCat: ['monumento'] }
+            { refCat: ['pequeno'], targetCat: ['pequeno', 'medio_pequeno'], minRatio: 0.35, maxRatio: 4.5 },
+            { refCat: ['pequeno', 'medio_pequeno'], targetCat: ['medio_pequeno'], minRatio: 0.4, maxRatio: 4.5 },
+            { refCat: ['medio_pequeno', 'medio'], targetCat: ['medio'], minRatio: 0.35, maxRatio: 4.5 },
+            { refCat: ['medio'], targetCat: ['medio', 'grande'], minRatio: 0.4, maxRatio: 5.0 },
+            { refCat: ['grande'], targetCat: ['grande', 'monumento'], minRatio: 0.4, maxRatio: 6.0 }
         ];
 
         const rounds = [];
@@ -307,28 +704,47 @@
             const refItem = refPool[refIdx];
             usedIds.add(refItem.id);
 
-            const availableTargets = ITEMS.filter(it => p.targetCat.includes(it.category) && it.id !== refItem.id && !usedIds.has(it.id));
-            const targetPool = availableTargets.length > 0 ? availableTargets : ITEMS.filter(it => it.id !== refItem.id);
-            const targetIdx = Math.floor(pseudoRandom(seed++) * targetPool.length);
-            const targetItem = targetPool[targetIdx];
+            // Filtra alvos dentro do intervalo aceitável de proporção (minRatio a maxRatio)
+            let eligibleTargets = ITEMS.filter(it => {
+                if (it.id === refItem.id || usedIds.has(it.id)) return false;
+                if (!p.targetCat.includes(it.category)) return false;
+                const ratio = it.size / refItem.size;
+                return ratio >= p.minRatio && ratio <= p.maxRatio;
+            });
+
+            if (eligibleTargets.length === 0) {
+                eligibleTargets = ITEMS.filter(it => it.id !== refItem.id && p.targetCat.includes(it.category));
+            }
+            if (eligibleTargets.length === 0) {
+                eligibleTargets = ITEMS.filter(it => it.id !== refItem.id);
+            }
+
+            const targetIdx = Math.floor(pseudoRandom(seed++) * eligibleTargets.length);
+            const targetItem = eligibleTargets[targetIdx];
             usedIds.add(targetItem.id);
 
-            // Escala inicial aleatória distante da real para dar desafio
             const trueRatio = targetItem.size / refItem.size;
+
+            // Escala inicial afastada da real para propor desafio
             let initialGuessScale;
-            // Se o alvo for maior, começa menor; se for menor, começa maior
             if (trueRatio > 1.2) {
-                initialGuessScale = Math.max(0.2, trueRatio * (0.3 + pseudoRandom(seed++) * 0.3));
+                initialGuessScale = Math.max(0.3, trueRatio * (0.35 + pseudoRandom(seed++) * 0.35));
             } else {
-                initialGuessScale = Math.min(3.5, trueRatio * (1.8 + pseudoRandom(seed++) * 0.8));
+                initialGuessScale = Math.min(3.5, trueRatio * (1.6 + pseudoRandom(seed++) * 0.7));
             }
+
+            // Limites de slider calculados dinamicamente para que a resposta NUNCA seja cortada!
+            const sliderMin = Math.max(0.05, Math.floor(Math.min(0.2, trueRatio * 0.2) * 100) / 100);
+            const sliderMax = Math.max(4.0, Math.ceil(Math.max(trueRatio * 2.3, 3.5) * 10) / 10);
 
             rounds.push({
                 roundNum: idx + 1,
                 ref: refItem,
                 target: targetItem,
                 trueRatio: trueRatio,
-                initialGuessScale: Math.round(initialGuessScale * 100) / 100
+                initialGuessScale: Math.round(initialGuessScale * 100) / 100,
+                sliderMin: sliderMin,
+                sliderMax: sliderMax
             });
         });
 
@@ -433,7 +849,9 @@
             minusBtn.dataset.bound = 'true';
             minusBtn.addEventListener('click', () => {
                 if (gameState.isLocked) return;
-                setGuessScale(Math.max(0.05, gameState.currentGuessScale - 0.05));
+                const round = gameState.rounds[gameState.currentRoundIndex];
+                const minS = round ? round.sliderMin : 0.05;
+                setGuessScale(Math.max(minS, gameState.currentGuessScale - 0.05));
             });
         }
 
@@ -441,7 +859,9 @@
             plusBtn.dataset.bound = 'true';
             plusBtn.addEventListener('click', () => {
                 if (gameState.isLocked) return;
-                setGuessScale(Math.min(5.0, gameState.currentGuessScale + 0.05));
+                const round = gameState.rounds[gameState.currentRoundIndex];
+                const maxS = round ? round.sliderMax : 6.0;
+                setGuessScale(Math.min(maxS, gameState.currentGuessScale + 0.05));
             });
         }
 
@@ -486,6 +906,7 @@
     }
 
     function setGuessScale(val) {
+        const round = gameState.rounds[gameState.currentRoundIndex];
         gameState.currentGuessScale = Math.round(val * 100) / 100;
         
         const slider = document.getElementById('sizeitup-slider');
@@ -494,6 +915,13 @@
         const ratioLabel = document.getElementById('sizeitup-relative-ratio-label');
         if (ratioLabel) {
             ratioLabel.textContent = `${gameState.currentGuessScale.toFixed(2)}x`;
+        }
+
+        // Mostra a altura estimada em metros/cm em tempo real
+        const estimateDesc = document.getElementById('sizeitup-estimate-dimension');
+        if (estimateDesc && round) {
+            const estimatedMeters = round.ref.size * gameState.currentGuessScale;
+            estimateDesc.innerHTML = `Estimando: <strong style="color: #02ceff;">${formatDimension(estimatedMeters)}</strong> <span style="opacity: 0.7;">(${gameState.currentGuessScale.toFixed(2)}x da ref)</span>`;
         }
 
         updateStageSilhouettes();
@@ -523,6 +951,12 @@
             totalScoreEl.textContent = `${gameState.totalScore} pts`;
         }
 
+        // Pergunta clara em destaque
+        const promptEl = document.getElementById('sizeitup-prompt-text');
+        if (promptEl && round) {
+            promptEl.innerHTML = `Quantas vezes o(a) <strong style="color: #02ceff;">${round.target.name}</strong> é maior ou menor que o(a) <strong style="color: #c4b5fd;">${round.ref.name}</strong>?`;
+        }
+
         renderDots();
 
         // Se o jogo já terminou
@@ -532,6 +966,21 @@
             if (gameoverCard) renderGameOverCard();
             updateStageSilhouettes(true);
             return;
+        }
+
+        // Configura limites dinâmicos do slider para esta rodada
+        if (round) {
+            const slider = document.getElementById('sizeitup-slider');
+            const minLabel = document.getElementById('sizeitup-slider-min-label');
+            const maxLabel = document.getElementById('sizeitup-slider-max-label');
+
+            if (slider) {
+                slider.min = round.sliderMin || 0.05;
+                slider.max = round.sliderMax || 6.0;
+                slider.step = (round.sliderMax > 10) ? '0.05' : '0.01';
+            }
+            if (minLabel) minLabel.textContent = `${(round.sliderMin || 0.05).toFixed(2)}x`;
+            if (maxLabel) maxLabel.textContent = `${(round.sliderMax || 6.0).toFixed(1)}x`;
         }
 
         // Se a rodada atual já foi travada (revelação)
@@ -578,17 +1027,16 @@
         const refSilh = document.getElementById('sizeitup-ref-silhouette');
         const targetBadge = document.getElementById('sizeitup-target-badge');
         const targetSilh = document.getElementById('sizeitup-target-silhouette');
-        const targetGhost = document.getElementById('sizeitup-target-ghost');
         const scaleIndicator = document.getElementById('sizeitup-scale-indicator');
 
         if (refBadge) {
-            refBadge.innerHTML = `${round.ref.name}: <strong>${round.ref.display}</strong>`;
+            refBadge.innerHTML = `<span style="opacity:0.7; font-size:0.85em; display:block;">REFERÊNCIA</span>${round.ref.name}: <strong>${round.ref.display}</strong>`;
         }
 
         if (targetBadge) {
             targetBadge.innerHTML = gameState.isLocked 
-                ? `${round.target.name}: <strong>${round.target.display}</strong>`
-                : `${round.target.name} <strong>(?)</strong>`;
+                ? `<span style="opacity:0.7; font-size:0.85em; display:block;">ALVO REVELADO</span>${round.target.name}: <strong>${round.target.display}</strong>`
+                : `<span style="opacity:0.7; font-size:0.85em; display:block;">ALVO A AJUSTAR</span>${round.target.name} <strong>(?)</strong>`;
         }
 
         if (scaleIndicator) {
@@ -602,18 +1050,17 @@
         // Renderiza silhueta de referência
         if (refSilh) {
             refSilh.innerHTML = `
-                <div style="width: ${refWidthPx}px; height: ${baseRefHeightPx}px; color: #8e6eff; filter: drop-shadow(0 0 12px rgba(142, 110, 255, 0.4)); display: flex; align-items: flex-end; justify-content: center;">
+                <div style="width: ${refWidthPx}px; height: ${baseRefHeightPx}px; color: #8e6eff; filter: drop-shadow(0 0 14px rgba(142, 110, 255, 0.45)); display: flex; align-items: flex-end; justify-content: center;">
                     ${round.ref.svg}
                 </div>
             `;
         }
 
         // Calcula a altura desenhada do alvo pelo palpite do jogador
-        // targetHeightPx = baseRefHeightPx * (currentGuessScale)
         const targetHeightPx = Math.max(16, baseRefHeightPx * gameState.currentGuessScale);
         const targetWidthPx = Math.max(16, 110 * gameState.currentGuessScale);
 
-        // Auto zoom/fit para não estourar os 300px do palco
+        // Auto zoom/fit para não estourar o palco
         const maxHeight = Math.max(baseRefHeightPx, targetHeightPx, baseRefHeightPx * round.trueRatio);
         let stageZoom = 1.0;
         if (maxHeight > 240) {
@@ -753,7 +1200,6 @@
             saveLocalState();
             renderGameView();
         } else {
-            // Final do jogo
             finishGame();
         }
     }
@@ -793,7 +1239,7 @@
         let desc = 'Você tem uma percepção espacial impressionante!';
         if (gameState.totalScore < 150) {
             title = '🙈 Miopia de Proporção!';
-            desc = 'Treine mais um pouco para calibrar seu olho visual!';
+            desc = 'Treine mais um pouco no modo treino para calibrar seu olho!';
         } else if (gameState.totalScore < 300) {
             title = '👌 Tá no Caminho!';
             desc = 'Bons palpites, quase acertou a maioria na mosca!';
