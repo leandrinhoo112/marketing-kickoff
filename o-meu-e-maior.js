@@ -1309,7 +1309,7 @@
         const loggedInUser = localStorage.getItem('currentUser') || 'Jogador';
         const todayStr = new Date().toLocaleDateString('pt-BR');
 
-        // Salvar também no ranking local do dia
+        // Salvar sempre no ranking local do dia como garantia
         saveToLocalRanking(loggedInUser, todayStr, totalScore, details);
 
         if (!window.supabaseClient) {
@@ -1318,21 +1318,27 @@
         }
 
         try {
-            const { data } = await window.supabaseClient
+            const { data, error } = await window.supabaseClient
                 .from('omeuemaior_scores')
                 .select('id, pontos')
                 .eq('usuario', loggedInUser)
                 .eq('data_jogo', todayStr);
 
+            if (error) {
+                console.warn("Aviso ao consultar omeuemaior_scores no Supabase:", error);
+                throw error;
+            }
+
             if (data && data.length > 0) {
                 if (data[0].pontos < totalScore) {
-                    await window.supabaseClient
+                    const { error: updErr } = await window.supabaseClient
                         .from('omeuemaior_scores')
                         .update({ pontos: totalScore, detalhes: details })
                         .eq('id', data[0].id);
+                    if (updErr) throw updErr;
                 }
             } else {
-                await window.supabaseClient
+                const { error: insErr } = await window.supabaseClient
                     .from('omeuemaior_scores')
                     .insert([{
                         usuario: loggedInUser,
@@ -1340,11 +1346,12 @@
                         pontos: totalScore,
                         detalhes: details
                     }]);
+                if (insErr) throw insErr;
             }
 
             fetchSizeItUpScores();
         } catch (e) {
-            console.warn("Erro ao salvar placar no Supabase, usando ranking local:", e);
+            console.warn("Erro ao salvar placar no Supabase, mantendo ranking local:", e);
             fetchSizeItUpScores();
         }
     }
@@ -1372,11 +1379,63 @@
         localStorage.setItem(key, JSON.stringify(list));
     }
 
+    async function syncLocalScoreToSupabase(todayStr, user, remoteScores) {
+        if (!window.supabaseClient) return;
+        try {
+            const localStateKey = `sizeitupState_${todayStr}`;
+            let localTotal = null;
+            let localDetails = [];
+            const stateStr = localStorage.getItem(localStateKey);
+            if (stateStr) {
+                try {
+                    const parsed = JSON.parse(stateStr);
+                    if (parsed && parsed.gameOver && typeof parsed.totalScore === 'number') {
+                        localTotal = parsed.totalScore;
+                        localDetails = parsed.roundScores || [];
+                    }
+                } catch (err) {}
+            }
+            if (localTotal === null) {
+                const rankingKey = `sizeitup_ranking_${todayStr}`;
+                try {
+                    const localRanking = JSON.parse(localStorage.getItem(rankingKey) || '[]');
+                    const found = localRanking.find(r => r.usuario === user);
+                    if (found) {
+                        localTotal = found.pontos;
+                        localDetails = found.detalhes || [];
+                    }
+                } catch (err) {}
+            }
+
+            if (localTotal !== null && localTotal > 0) {
+                const remoteUserEntry = (remoteScores || []).find(r => r.usuario === user);
+                if (!remoteUserEntry) {
+                    await window.supabaseClient.from('omeuemaior_scores').insert([{
+                        usuario: user,
+                        data_jogo: todayStr,
+                        pontos: localTotal,
+                        detalhes: localDetails
+                    }]);
+                } else if (remoteUserEntry.pontos < localTotal) {
+                    await window.supabaseClient.from('omeuemaior_scores').update({
+                        pontos: localTotal,
+                        detalhes: localDetails
+                    }).eq('id', remoteUserEntry.id);
+                }
+            }
+        } catch (e) {
+            console.warn("Aviso ao auto-sincronizar pontuação local com Supabase:", e);
+        }
+    }
+
     async function fetchSizeItUpScores() {
         const listContainer = document.getElementById('sizeitupLeaderboardList');
         if (!listContainer) return;
 
         const todayStr = new Date().toLocaleDateString('pt-BR');
+        const loggedInUser = localStorage.getItem('currentUser') || 'Jogador';
+
+        let isTableMissing = false;
 
         // Tenta buscar no Supabase
         if (window.supabaseClient) {
@@ -1388,9 +1447,27 @@
                     .eq('data_jogo', todayStr)
                     .order('pontos', { ascending: false });
 
-                if (!error && data && data.length > 0) {
-                    renderLeaderboard(data);
+                if (!error && data) {
+                    // Sincroniza score local para o Supabase se ainda não foi enviado
+                    await syncLocalScoreToSupabase(todayStr, loggedInUser, data);
+
+                    // Re-renderiza com os dados atualizados
+                    const { data: refreshedData } = await window.supabaseClient
+                        .from('omeuemaior_scores')
+                        .select('*')
+                        .eq('data_jogo', todayStr)
+                        .order('pontos', { ascending: false });
+
+                    renderLeaderboard(refreshedData || data, false);
                     return;
+                }
+
+                if (error) {
+                    console.warn("Supabase omeuemaior_scores error:", error);
+                    const errMsg = (error.message || '').toLowerCase();
+                    if (error.code === '42P01' || errMsg.includes('does not exist') || errMsg.includes('not found') || error.code === 'PGRST204') {
+                        isTableMissing = true;
+                    }
                 }
             } catch (e) {
                 console.warn("Falha ao buscar Supabase, carregando ranking local", e);
@@ -1404,19 +1481,32 @@
             localData = JSON.parse(localStorage.getItem(key) || '[]');
         } catch (e) {}
 
-        renderLeaderboard(localData);
+        renderLeaderboard(localData, isTableMissing);
     }
 
-    function renderLeaderboard(scores) {
+    function renderLeaderboard(scores, isTableMissing = false) {
         const list = document.getElementById('sizeitupLeaderboardList');
         if (!list) return;
 
+        let warningHtml = '';
+        if (isTableMissing) {
+            warningHtml = `
+                <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85em; color: #fde68a; line-height: 1.4;">
+                    <span style="font-size: 1.3em; line-height: 1;">⚠️</span>
+                    <div>
+                        <strong style="color: #fbbf24;">Atenção: Tabela 'omeuemaior_scores' pendente no Supabase</strong><br>
+                        O jogo está exibindo apenas as pontuações salvas neste computador. Para compartilhar o ranking entre toda a equipe, execute o script SQL da tabela <code>omeuemaior_scores</code> no SQL Editor do Supabase. Assim que criada, os pontos sincronizam automaticamente!
+                    </div>
+                </div>
+            `;
+        }
+
         if (!scores || scores.length === 0) {
-            list.innerHTML = '<p style="opacity: 0.5; text-align: center; margin: 0;">Ninguém jogou hoje ainda. Seja o primeiro a cravar as medidas!</p>';
+            list.innerHTML = warningHtml + '<p style="opacity: 0.5; text-align: center; margin: 0;">Ninguém jogou hoje ainda. Seja o primeiro a cravar as medidas!</p>';
             return;
         }
 
-        let html = '';
+        let html = warningHtml;
         scores.forEach((s, i) => {
             let icon = '📏';
             if (i === 0) icon = '🥇';
@@ -1426,7 +1516,7 @@
             const ptsColor = s.pontos >= 400 ? '#22c55e' : (s.pontos >= 250 ? '#02ceff' : '#facc15');
 
             html += `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); transition: transform 0.15s ease;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <span style="font-size: 1.3em;">${icon}</span>
                         <span style="font-weight: bold; color: white;">${s.usuario}</span>
