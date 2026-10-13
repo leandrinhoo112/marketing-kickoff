@@ -24,16 +24,16 @@ Scope: Implementar na área de minigames do Radar Diário o jogo "O MEU É MAIOR
   CHECK: powershell -ExecutionPolicy Bypass -File "verify_sizeitup.ps1" -Gate G5
   EXPECT: G5_PASSED
 
-- [ ] G6: Proteção de Ofensiva contra Feriados (09/10/2026 e 12/10/2026) e Sincronização
-  - [ ] G6.1: Inclusão de '2026-10-09' e '2026-10-12' em OFFICIAL_HOLIDAYS do app.js
+- [x] G6: Proteção de Ofensiva contra Feriados (09/10/2026 e 12/10/2026) e Sincronização
+  - [x] G6.1: Inclusão de '2026-10-09' e '2026-10-12' em OFFICIAL_HOLIDAYS do app.js
     CHECK: powershell -ExecutionPolicy Bypass -File "verify_holiday_streak.ps1" -Gate G6_HOLIDAY_CONFIG
     EXPECT: G6_HOLIDAY_CONFIG_PASSED
-  - [ ] G6.2: Bateria de testes unitários para cálculo de sequência/streak cobrindo todas as variações de feriado
+  - [x] G6.2: Bateria de testes unitários para cálculo de sequência/streak cobrindo todas as variações de feriado
     CHECK: powershell -ExecutionPolicy Bypass -File "verify_holiday_streak.ps1" -Gate G6_CALCULATION_TESTS
     EXPECT: G6_CALCULATION_TESTS_PASSED
-  - [ ] G6.3: Sincronização em C:\Users\Usuario\Desktop\arquivos_github e C:\Users\Usuario\Desktop\ARRASTE_PARA_O_GITHUB
+  - [x] G6.3: Sincronização em C:\Users\Usuario\Desktop\arquivos_github e C:\Users\Usuario\Desktop\ARRASTE_PARA_O_GITHUB
     CHECK: powershell -ExecutionPolicy Bypass -File "verify_holiday_streak.ps1" -Gate G6_DESKTOP_SYNC
     EXPECT: G6_DESKTOP_SYNC_PASSED
-  - [ ] G6.4: Envio e commit para o repositório GitHub leandrinhoo112/marketing-kickoff
+  - [x] G6.4: Envio e commit para o repositório GitHub leandrinhoo112/marketing-kickoff
     CHECK: powershell -ExecutionPolicy Bypass -File "verify_holiday_streak.ps1" -Gate G6_GITHUB_PUSH
     EXPECT: G6_GITHUB_PUSH_PASSED
