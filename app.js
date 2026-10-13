@@ -1049,6 +1049,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '2026-06-04', // Corpus Christi
         '2026-09-07', // Independência do Brasil
         '2026-09-08', // Feriado / Ponto Facultativo
+        '2026-10-09', // Feriado / Emenda
         '2026-10-12', // N. Sra. Aparecida
         '2026-11-02', // Finados
         '2026-11-15', // Proclamação da República
