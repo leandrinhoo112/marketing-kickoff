@@ -78,21 +78,21 @@
     // PESSOAS
     // ------------------------------------------------------------------
     add('seguranca_inspirar', 'Segurança da Faculdade Inspirar', 2.0, 'medio', person({
-        skin: '#c98f66', top: '#14161b', pants: '#14161b', shoes: '#050505',
+        skin: '#4a2c1d', top: '#14161b', pants: '#14161b', shoes: '#050505',
         sleeve: '#14161b',
         torso: `<polygon points='29,22 41,22 35,42' fill='#f5f5f5'/><polygon points='34,25 36,25 37.5,40 35,44 32.5,40' fill='#b91c1c'/><polygon points='29,22 35,42 24,64 19,64' fill='#1d2027'/><polygon points='41,22 35,42 46,64 51,64' fill='#1d2027'/><rect x='38' y='44' width='9' height='6' rx='1' fill='#facc15'/><text x='42.5' y='48.7' font-size='3.2' font-family='Arial' font-weight='bold' fill='#111' text-anchor='middle'>INSP.</text>`,
-        hair: `<path d='M27.5,6 C27,-1 43,-1 42.5,6 C41,2.5 29,2.5 27.5,6Z' fill='#0d0d10'/>`,
-        face: `<rect x='28' y='7' width='6.5' height='3.6' rx='1.2' fill='#050505'/><rect x='36' y='7' width='6.5' height='3.6' rx='1.2' fill='#050505'/><line x1='34.5' y1='8.5' x2='36' y2='8.5' stroke='#050505' stroke-width='1'/><path d='M32,14.5 L38,14.5' stroke='#5a2e1e' stroke-width='1.2'/><circle cx='27.6' cy='10.5' r='1.5' fill='#d8d8d8'/><path d='M27.6,12 C24,18 28,22 25,26' stroke='#d8d8d8' stroke-width='0.9' fill='none'/>`
+        hair: `<ellipse cx='32.5' cy='3.2' rx='3' ry='1.5' fill='#ffffff' opacity='0.28'/><ellipse cx='27.4' cy='10' rx='1.4' ry='2.4' fill='#4a2c1d'/><ellipse cx='42.6' cy='10' rx='1.4' ry='2.4' fill='#4a2c1d'/>`,
+        face: `<rect x='28' y='7' width='6.5' height='3.6' rx='1.2' fill='#050505'/><rect x='36' y='7' width='6.5' height='3.6' rx='1.2' fill='#050505'/><line x1='34.5' y1='8.5' x2='36' y2='8.5' stroke='#050505' stroke-width='1'/><path d='M32,14.5 L38,14.5' stroke='#2a140b' stroke-width='1.2'/><circle cx='27.4' cy='10.5' r='1.3' fill='#d8d8d8'/><path d='M27.4,12 C24,18 28,22 25,26' stroke='#d8d8d8' stroke-width='0.9' fill='none'/>`
     }));
 
     add('leandrao_campeao', 'Leandrão Campeão', 1.82, 'medio', person({
-        skin: '#e0ac82', top: '#f6cf1d', pants: '#1b4fa0', shoes: '#16a34a', sleeve: '#f6cf1d',
-        legs: `<rect x='21' y='86' width='12' height='24' fill='#e0ac82'/><rect x='37' y='86' width='12' height='24' fill='#e0ac82'/><rect x='21' y='98' width='12' height='12' fill='#ffffff'/><rect x='37' y='98' width='12' height='12' fill='#ffffff'/><rect x='21' y='101' width='12' height='2' fill='#16a34a'/><rect x='37' y='101' width='12' height='2' fill='#16a34a'/>`,
-        arms: `<path d='M18,27 L12,62' stroke='#f6cf1d' stroke-width='9' stroke-linecap='round' fill='none'/><circle cx='12' cy='65' r='4.5' fill='#e0ac82'/><path d='M52,27 L61,42' stroke='#f6cf1d' stroke-width='9' stroke-linecap='round' fill='none'/><path d='M61,42 L62,29' stroke='#e0ac82' stroke-width='7' stroke-linecap='round' fill='none'/><circle cx='62' cy='28' r='4.6' fill='#e0ac82'/>
+        skin: '#f1c7a8', top: '#f6cf1d', pants: '#1b4fa0', shoes: '#16a34a', sleeve: '#f6cf1d',
+        legs: `<rect x='21' y='86' width='12' height='24' fill='#f1c7a8'/><rect x='37' y='86' width='12' height='24' fill='#f1c7a8'/><rect x='21' y='98' width='12' height='12' fill='#ffffff'/><rect x='37' y='98' width='12' height='12' fill='#ffffff'/><rect x='21' y='101' width='12' height='2' fill='#16a34a'/><rect x='37' y='101' width='12' height='2' fill='#16a34a'/>`,
+        arms: `<path d='M18,27 L12,62' stroke='#f6cf1d' stroke-width='9' stroke-linecap='round' fill='none'/><circle cx='12' cy='65' r='4.5' fill='#f1c7a8'/><path d='M52,27 L61,42' stroke='#f6cf1d' stroke-width='9' stroke-linecap='round' fill='none'/><path d='M61,42 L62,29' stroke='#f1c7a8' stroke-width='7' stroke-linecap='round' fill='none'/><circle cx='62' cy='28' r='4.6' fill='#f1c7a8'/>
             <path d='M56,5 L68,5 L67,13 C67,19 63,21 62,22 C61,21 57,19 57,13 Z' fill='#fbbf24' stroke='#92610a' stroke-width='1'/><path d='M56,7 C52,7 52,15 58,15' stroke='#fbbf24' stroke-width='1.6' fill='none'/><path d='M68,7 C72,7 72,15 66,15' stroke='#fbbf24' stroke-width='1.6' fill='none'/><rect x='60.8' y='21' width='2.4' height='4' fill='#fbbf24'/><rect x='58' y='25' width='8' height='3' rx='1' fill='#92610a'/>`,
         torso: `<path d='M28,22 Q35,29 42,22 L42,25 Q35,32 28,25Z' fill='#16a34a'/><text x='35' y='48' font-size='13' font-family='Arial' font-weight='bold' fill='#16a34a' text-anchor='middle'>10</text><path d='M31,26 L29,36 L35,34 L41,36 L39,26' fill='none' stroke='#fbbf24' stroke-width='1.2'/><circle cx='35' cy='38' r='3.4' fill='#fbbf24' stroke='#92610a' stroke-width='0.8'/><rect x='19' y='64' width='32' height='23' rx='3' fill='#1b4fa0'/>`,
-        hair: `<path d='M27.5,7 C26,-1 44,-1 42.5,7 C41,3.5 29,3.5 27.5,7Z' fill='#2b1b12'/><path d='M28,11 C28,19 42,19 42,11 C41,15 29,15 28,11Z' fill='#2b1b12' opacity='0.85'/>`,
-        face: `<circle cx='32' cy='9' r='1' fill='#222'/><circle cx='38' cy='9' r='1' fill='#222'/><path d='M31.5,13.5 Q35,17 38.5,13.5' stroke='#fff' stroke-width='1.3' fill='none'/>`
+        hair: `<ellipse cx='35' cy='10' rx='8.6' ry='9.2' fill='#f1c7a8'/><ellipse cx='26.6' cy='10.5' rx='1.6' ry='2.4' fill='#f1c7a8'/><ellipse cx='43.4' cy='10.5' rx='1.6' ry='2.4' fill='#f1c7a8'/><path d='M26.5,9 C25,1 30,-1.5 35,-1 C41,-1.5 45.5,1.5 43.5,9 C43,5 41,3.6 39,4.2 C36,3 31,3.2 28.5,4.6 C27.5,5.5 27,7 26.5,9Z' fill='#2a1a12'/><path d='M27.5,4 L26.8,9 L28,8Z M42.5,4 L43.2,9 L42,8Z' fill='#2a1a12'/>`,
+        face: `<path d='M30,7.6 L33.6,7.3 M36.4,7.3 L40,7.6' stroke='#2a1a12' stroke-width='0.9' stroke-linecap='round'/><ellipse cx='32' cy='9.4' rx='1' ry='0.75' fill='#222'/><ellipse cx='38' cy='9.4' rx='1' ry='0.75' fill='#222'/><path d='M34.6,10 L34,12.6 L35.6,12.6' stroke='#c99777' stroke-width='0.6' fill='none'/><path d='M31.5,13.8 Q35,12.6 38.5,13.8 L38,14.5 Q35,13.6 32,14.5Z' fill='#3a2418'/><path d='M32.6,15.2 Q35,16.4 37.4,15.2' stroke='#a5574a' stroke-width='0.8' fill='none'/><path d='M31.4,15.4 Q32,19.4 35,19.4 Q38,19.4 38.6,15.4 Q37.5,17.6 35,17.4 Q32.5,17.6 31.4,15.4Z' fill='#3a2418'/>`
     }));
 
     // Bruno sentado usando Claude (altura sentado ≈ 1,30 m)
@@ -109,18 +109,22 @@
         <!-- pernas e pés -->
         <path d='M34,62 L64,62 L66,86' stroke='#1f2937' stroke-width='11' stroke-linecap='round' stroke-linejoin='round' fill='none'/>
         <ellipse cx='71' cy='96' rx='9' ry='4.5' fill='#111'/>
-        <!-- tronco (moletom roxo) -->
-        <path d='M22,64 L24,22 Q34,16 44,24 L46,64 Z' fill='#7c3aed'/>
-        <path d='M36,30 L58,44 L52,52 L38,44Z' fill='#7c3aed'/>
-        <path d='M42,38 L66,40' stroke='#e0ac82' stroke-width='7' stroke-linecap='round'/>
-        <!-- pescoço e cabeça -->
-        <rect x='30' y='15' width='8' height='9' rx='2' fill='#e0ac82'/>
-        <ellipse cx='36' cy='9' rx='8.5' ry='9' fill='#e0ac82'/>
-        <path d='M27,8 C26,-1 45,-1 44,8 C42,3.5 31,3.5 27,8Z' fill='#1f1410'/>
-        <path d='M27,6 C25,12 27,14 28,15 L29,8Z' fill='#1f1410'/>
-        <circle cx='41' cy='9' r='1.1' fill='#222'/>
-        <rect x='38' y='6.5' width='8' height='5.2' rx='2' fill='none' stroke='#111' stroke-width='1.1'/>
-        <path d='M42,14.2 Q44,15.4 46,14' stroke='#7a3b2a' stroke-width='1' fill='none'/>
+        <!-- tronco (polo preta, corpo largo) -->
+        <path d='M20,64 L22,24 Q34,15 46,24 L48,64 Z' fill='#151515'/>
+        <path d='M36,30 L58,44 L52,52 L38,44Z' fill='#151515'/>
+        <path d='M42,38 L66,40' stroke='#e8b48f' stroke-width='7' stroke-linecap='round'/>
+        <path d='M31,21 L36,27 L41,21 L39,19 L36,23 L33,19Z' fill='#262626'/>
+        <circle cx='36' cy='30' r='0.8' fill='#444'/>
+        <!-- pescoço e cabeça (careca + barba cheia) -->
+        <rect x='30' y='15' width='9' height='9' rx='2' fill='#e8b48f'/>
+        <ellipse cx='36' cy='8.5' rx='9' ry='9.5' fill='#e8b48f'/>
+        <ellipse cx='27.4' cy='9.5' rx='1.6' ry='2.4' fill='#e8b48f'/>
+        <ellipse cx='33' cy='2.4' rx='3.4' ry='1.4' fill='#ffffff' opacity='0.35'/>
+        <path d='M28,9 C27.5,19 32,23 38,23 C43,23 45.5,18 45,9 C44,12 43,13.5 41,13.5 C39,12.5 37,12.5 35,13 C32.5,13.5 30,12.5 28,9Z' fill='#1a1210'/>
+        <path d='M37.5,6.2 L43.5,6.6' stroke='#1a1210' stroke-width='1' stroke-linecap='round'/>
+        <ellipse cx='40.8' cy='8.4' rx='1.1' ry='0.75' fill='#222'/>
+        <path d='M43.8,8.5 L45.4,11.5 L44,11.8' stroke='#c08a66' stroke-width='0.6' fill='none'/>
+        <path d='M40,15.4 Q42.5,14.8 44.6,15.4' stroke='#c47a6a' stroke-width='0.9' fill='none'/>
         <!-- notebook -->
         <rect x='80' y='41' width='28' height='5' rx='1.5' fill='#9ca3af'/>
         <path d='M82,41 L78,13 L108,13 L106,41Z' fill='#1f2937' stroke='#9ca3af' stroke-width='1.6'/>
