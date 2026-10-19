@@ -3175,8 +3175,54 @@ document.addEventListener('DOMContentLoaded', () => {
         "CORACAO", "ESPERANCA", "FUTURO", "PASSADO", "PRESENTE", "VITORIA",
         "PODER", "FORCA", "ENERGIA", "CAMINHO", "DESTINO", "SORTE", "VIAGEM",
         "INVERNO", "ESTRADA", "FLORESTA", "DESERTO", "PLANETA", "UNIVERSO",
-        "AMIZADE", "CARINHO", "ABRACO", "SAUDADE", "LEMBRANCA", "MEMORIA"
-    ].map(w => w.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        "AMIZADE", "CARINHO", "ABRACO", "SAUDADE", "LEMBRANCA", "MEMORIA",
+        // Marketing e comunica\u00e7\u00e3o
+        "CAMPANHA", "ANUNCIO", "BRIEFING", "PUBLICO", "ALCANCE", "CONVERSAO",
+        "STORIES", "REELS", "POST", "FEED", "LEGENDA", "HASHTAG",
+        "BANNER", "LOGO", "SLOGAN", "BRANDING", "PERSONA", "CRIATIVO", "ROTEIRO",
+        "PAUTA", "AGENDA", "PRAZO", "ENTREGA", "REUNIAO", "META", "RESULTADO",
+        "ESTRATEGIA", "CONTEUDO", "VIRAL", "SEGUIDOR", "CURTIDA",
+        "COMENTARIO", "PARCERIA", "EVENTO", "LIVE", "PODCAST", "WEBINAR",
+        "CLIQUE", "TRAFEGO", "ORCAMENTO", "INSIGHT", "TENDENCIA",
+        "PIXEL", "FONTE", "PALETA", "LAYOUT", "MOCKUP", "EDICAO", "CORTE",
+        "CAPA", "FILTRO", "CAMERA", "LENTE", "MICROFONE", "TELAO", "SLIDE",
+        // Educa\u00e7\u00e3o e sa\u00fade (Inspirar)
+        "INSPIRAR", "FACULDADE", "CURSO", "AULA", "ALUNO", "PROFESSOR", "TURMA",
+        "VAGA", "MATRICULA", "DIPLOMA", "PALESTRA", "SIMPOSIO",
+        "CONGRESSO", "MENTOR", "PESQUISA", "ARTIGO", "PRATICA", "TEORIA",
+        "PILATES", "ACUPUNTURA", "OSTEOPATIA",
+        "MUSCULO", "OSSO", "COLUNA", "JOELHO", "OMBRO", "POSTURA", "MOVIMENTO",
+        "RESPIRAR", "PULMAO", "CEREBRO", "NERVO", "TENDAO",
+        "TERAPIA", "PACIENTE", "CLINICA", "ESTETICA",
+        "MASSAGEM", "AGULHA", "EXERCICIO", "EQUILIBRIO", "CUIDADO",
+        // Comidas e cotidiano
+        "CAFE", "PAO", "QUEIJO", "PIZZA", "PASTEL", "COXINHA", "BRIGADEIRO",
+        "PIPOCA", "SORVETE", "CHOCOLATE", "ARROZ", "FEIJAO", "SALADA", "FRUTA",
+        "BANANA", "MANGA", "LARANJA", "ABACAXI", "MORANGO", "LIMAO", "SUCO",
+        "MESA", "CADEIRA", "JANELA", "PORTA", "CHAVE", "ESPELHO", "TOALHA",
+        "CELULAR", "TECLADO", "MOUSE", "FONE", "CARREGADOR", "MOCHILA",
+        // Animais
+        "LEAO", "TIGRE", "GIRAFA", "ZEBRA", "MACACO", "COELHO", "TARTARUGA",
+        "GOLFINHO", "BALEIA", "TUBARAO", "PINGUIM", "CORUJA", "ARARA", "TUCANO",
+        "PAPAGAIO", "BORBOLETA", "ABELHA", "FORMIGA", "CAVALO", "VACA", "PATO",
+        "ONCA", "JACARE", "CAPIVARA", "LOBO", "URSO", "RAPOSA", "POLVO",
+        // Esportes e lazer
+        "FUTEBOL", "VOLEI", "BASQUETE", "TENIS", "NATACAO", "CORRIDA", "SKATE",
+        "SURF", "XADREZ", "BOLA", "GOL", "TORCIDA", "CAMPEAO", "MEDALHA",
+        "TROFEU", "DANCA", "SAMBA", "FORRO", "VIOLAO", "PIANO", "BATERIA",
+        "GUITARRA", "SHOW", "PALCO", "JOGO", "PUZZLE", "DESAFIO", "PREMIO",
+        // Brasil e lugares
+        "BRASIL", "BRASILIA", "AMAZONIA", "PANTANAL", "CERRADO", "SERTAO",
+        "ILHA", "RIO", "LAGO", "CACHOEIRA", "VULCAO", "CASTELO",
+        "PONTE", "TORRE", "FAROL", "FEIRA", "PRACA", "BAIRRO",
+        // Sentimentos e valores
+        "GRATIDAO", "PACIENCIA", "HUMILDADE", "CONFIANCA", "LEALDADE", "HONRA",
+        "CALMA", "PAZ", "UNIAO", "GENTILEZA", "OTIMISMO", "PROPOSITO",
+        "ATITUDE", "DISCIPLINA", "GARRA", "TALENTO",
+        "CURIOSIDADE", "ENTUSIASMO", "COLABORAR", "LIDERANCA", "CONQUISTA"
+    ].map(w => w.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase())
+     // remove duplicadas e palavras que n\u00e3o cabem na grade 10x10
+     .filter((w, i, arr) => w.length >= 3 && w.length <= 10 && arr.indexOf(w) === i);
 
     const GRID_SIZE = 10;
     let grid = [];
@@ -3203,14 +3249,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wordsToFind = [];
         let tempWords = [...ALL_WORDS];
-        for (let i = 0; i < 5; i++) {
-            const idx = Math.floor(randomSeed(seed++) * tempWords.length);
-            wordsToFind.push(tempWords.splice(idx, 1)[0]);
-        }
-
         grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(''));
 
-        wordsToFind.forEach(word => {
+        // Sorteia até ter 5 palavras que realmente couberam na grade
+        while (wordsToFind.length < 5 && tempWords.length > 0) {
+            const idx = Math.floor(randomSeed(seed++) * tempWords.length);
+            const word = tempWords.splice(idx, 1)[0];
             let placed = false;
             let attempts = 0;
             while (!placed && attempts < 100) {
@@ -3239,7 +3283,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     placed = true;
                 }
             }
-        });
+            if (placed) wordsToFind.push(word);
+        }
 
         const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for (let r = 0; r < GRID_SIZE; r++) {
