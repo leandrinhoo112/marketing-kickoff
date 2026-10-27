@@ -1051,6 +1051,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '2026-09-08', // Feriado / Ponto Facultativo
         '2026-10-09', // Feriado / Emenda
         '2026-10-12', // N. Sra. Aparecida
+        '2026-10-26', // Folga da equipe
         '2026-11-02', // Finados
         '2026-11-15', // Proclamação da República
         '2026-11-20', // Consciência Negra
