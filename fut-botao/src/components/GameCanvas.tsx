@@ -8,14 +8,27 @@
  *  - React props (gameState) are only synced into localRef when the phase is NOT 'moving'.
  *  - onStateChange / onGoal are called ONCE when a turn ends or a goal is scored.
  *
- * This avoids the React-state-as-physics-state anti-pattern that caused buttons and
- * the ball to pass through each other (stale positions between async re-renders).
+ * The canvas also owns the "world" of the match (arena layout, power-ups on the
+ * pitch, Super Chute meters). It is reset whenever gameState.matchId changes.
  */
-import React, { useRef, useEffect, useCallback } from 'react';
-import { ButtonPiece, Ball, GameState, Vec2, Intruder, GameModifiers } from '@/game/types';
-import { FIELD, stepPhysics, isMoving, MAX_LAUNCH_FORCE } from '@/game/physics';
-import { computeAILaunch } from '@/game/ai';
-import { playSlide, playGoal, playTeamAnthem, playRandomNarration, stopNarration } from '@/game/sounds';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
+import {
+  ButtonPiece, Ball, GameState, Vec2, Intruder, GameModifiers,
+  World, ArenaLayout, PowerUp, PhysEvent, TeamSide,
+} from '@/game/types';
+import {
+  FIELD, stepPhysics, isMoving, MAX_LAUNCH_FORCE, SUPER_MULT, TURN_FRAME_LIMIT,
+} from '@/game/physics';
+import { aiDecisionSteps, AIDecision } from '@/game/ai';
+import {
+  Meters, newMeters, pickArena, spawnPowerUp, applyPowerUp, endOfTurnEffects,
+  ensurePlayable, canLaunch, simulateLaunch, SimTrace,
+  POWERUP_INFO, ENERGY_PER_TURN, ENERGY_ON_CONCEDE,
+} from '@/game/mechanics';
+import {
+  playSlide, playGoal, playTeamAnthem, playRandomNarration, stopNarration,
+  playKick, playBumper, playPowerUp, playPowerSpawn, playSuperArm, playSuperShot, playPortal,
+} from '@/game/sounds';
 import { spawnIntruder, stepIntruderPhysics } from '@/game/intruders';
 
 // ── Props ──────────────────────────────────────────────────────────────────
@@ -31,6 +44,16 @@ interface GameCanvasProps {
 
 // ── Local physics state ────────────────────────────────────────────────────
 
+interface Particle {
+  x: number; y: number; vx: number; vy: number;
+  life: number; max: number; color: string; size: number;
+}
+
+interface AIAim {
+  buttonId: string; vx: number; vy: number; useSuper: boolean;
+  label: string; start: number; until: number;
+}
+
 interface Local {
   buttons: ButtonPiece[];
   ball: Ball;
@@ -39,11 +62,39 @@ interface Local {
   selectedButtonId: string | null;
   dragStart: Vec2 | null;
   dragCurrent: Vec2 | null;
-  goalFlash: { scorer: string; until: number } | null;
+  goalFlash: { scorer: string; until: number; title: string } | null;
   intruders: Intruder[];
   modifiers?: GameModifiers;
   lastIntruderSpawnTime: number;
-  movingPhaseStartTime: number;
+
+  // ── match world ──
+  matchId: number | undefined;
+  world: World;
+  meters: Meters;
+  turnCount: number;
+  superArmed: boolean;
+
+  // ── current move ──
+  movingFrames: number;
+  superMove: boolean;
+  lastTouchSide: TeamSide | null;
+  bouncesSinceTouch: number;
+  slowTick: number;
+
+  // ── visuals ──
+  particles: Particle[];
+  trail: Vec2[];
+  shake: number;
+  banner: { text: string; color: string; start: number; until: number } | null;
+  bumperFlash: number[];
+  aiAim: AIAim | null;
+  aiThink: { side: TeamSide; count: number } | null;
+  preview: SimTrace | null;
+  previewKey: string;
+}
+
+function newWorld(modifiers?: GameModifiers): World {
+  return { arena: modifiers?.arenaMaluca ? pickArena() : null, powerups: [] };
 }
 
 function copyFromState(gs: GameState): Local {
@@ -59,8 +110,37 @@ function copyFromState(gs: GameState): Local {
     intruders:       gs.intruders ? gs.intruders.map(i => ({ ...i })) : [],
     modifiers:       gs.modifiers,
     lastIntruderSpawnTime: Date.now(),
-    movingPhaseStartTime: 0,
+
+    matchId:    gs.matchId,
+    world:      newWorld(gs.modifiers),
+    meters:     newMeters(),
+    turnCount:  0,
+    superArmed: false,
+
+    movingFrames: 0,
+    superMove: false,
+    lastTouchSide: null,
+    bouncesSinceTouch: 0,
+    slowTick: 0,
+
+    particles: [],
+    trail: [],
+    shake: 0,
+    banner: null,
+    bumperFlash: [],
+    aiAim: null,
+    aiThink: null,
+    preview: null,
+    previewKey: '',
   };
+}
+
+interface Hud {
+  eA: number; eB: number;
+  colorA: string; colorB: string;
+  armed: boolean;
+  canArm: boolean;
+  arena: string | null;
 }
 
 // ── Component ──────────────────────────────────────────────────────────────
@@ -76,23 +156,74 @@ export default function GameCanvas({
   const rafRef      = useRef<number>(0);
   const imagesRef   = useRef<Map<string, HTMLImageElement>>(new Map());
   const aiTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const aiTimer2Ref = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // The authoritative local state
   const local = useRef<Local>(copyFromState(gameState));
+
+  const [hud, setHud] = useState<Hud>({
+    eA: 0, eB: 0, colorA: '#22d3ee', colorB: '#fb923c', armed: false, canArm: false,
+    arena: null,
+  });
 
   // Keep callbacks and latest gameState stable in refs
   const onStateChangeRef = useRef(onStateChange);
   const onGoalRef        = useRef(onGoal);
   const onLaunchRef      = useRef(onLaunch);
   const gameStateRef     = useRef(gameState);
+  const localSideRef     = useRef(localSide);
   useEffect(() => { onStateChangeRef.current = onStateChange; }, [onStateChange]);
   useEffect(() => { onGoalRef.current = onGoal; }, [onGoal]);
   useEffect(() => { onLaunchRef.current = onLaunch; }, [onLaunch]);
   useEffect(() => { gameStateRef.current = gameState; }, [gameState]);
+  useEffect(() => { localSideRef.current = localSide; }, [localSide]);
+
+  // ── HUD sync (energy bars + Super Chute button) ─────────────────────────
+
+  const syncHud = useCallback(() => {
+    const L = local.current;
+    const humanTurn = L.currentTurn === localSideRef.current
+      && (L.phase === 'selecting' || L.phase === 'dragging');
+    const next: Hud = {
+      eA: L.meters.energy.A,
+      eB: L.meters.energy.B,
+      colorA: L.buttons.find(b => b.teamSide === 'A')?.primaryColor ?? '#22d3ee',
+      colorB: L.buttons.find(b => b.teamSide === 'B')?.primaryColor ?? '#fb923c',
+      armed: L.superArmed,
+      canArm: humanTurn && L.meters.energy[L.currentTurn] >= 100,
+      arena: L.world.arena?.name ?? null,
+    };
+    setHud(prev => (
+      prev.eA === next.eA && prev.eB === next.eB && prev.armed === next.armed
+      && prev.canArm === next.canArm && prev.arena === next.arena
+      && prev.colorA === next.colorA && prev.colorB === next.colorB
+    ) ? prev : next);
+  }, []);
+
+  const showBanner = useCallback((text: string, color = '#ffffff', ms = 1500) => {
+    const now = Date.now();
+    local.current.banner = { text, color, start: now, until: now + ms };
+  }, []);
 
   // Sync React props → local ref (only when safe to do so)
   useEffect(() => {
     const L = local.current;
+    const wasMoving = L.phase === 'moving';
+
+    // New match → fresh world (arena, power-ups, energy)
+    if (gameState.matchId !== L.matchId) {
+      L.matchId    = gameState.matchId;
+      L.world      = newWorld(gameState.modifiers);
+      L.meters     = newMeters();
+      L.turnCount  = 0;
+      L.superArmed = false;
+      L.particles  = [];
+      L.trail      = [];
+      L.aiAim      = null;
+      L.aiThink    = null;
+      L.goalFlash  = null;
+      if (L.world.arena) showBanner(`🎪 Arena: ${L.world.arena.name}`, '#fde68a', 2200);
+    }
 
     // Always sync input/phase
     L.phase           = gameState.phase;
@@ -105,12 +236,31 @@ export default function GameCanvas({
     // Only sync positions when NOT in the middle of simulating
     // (during 'moving', localRef IS the truth)
     if (gameState.phase !== 'moving') {
-      console.log("DEBUG: GameCanvas useEffect syncing L.buttons. Prop count:", gameState.buttons.length);
       L.buttons = gameState.buttons.map(b => ({ ...b }));
       L.ball    = { ...gameState.ball };
       L.intruders = gameState.intruders ? gameState.intruders.map(i => ({ ...i })) : [];
+    } else if (!wasMoving) {
+      // A launch that arrived through props (online opponent) — copy its velocity in
+      for (const pb of gameState.buttons) {
+        const sp = Math.hypot(pb.vx, pb.vy);
+        if (sp <= 0) continue;
+        const lb = L.buttons.find(b => b.id === pb.id);
+        if (!lb) continue;
+        lb.vx = pb.vx; lb.vy = pb.vy;
+        if (sp > MAX_LAUNCH_FORCE * 1.05) {
+          lb.superActive = true;
+          L.superMove = true;
+          L.meters.energy[lb.teamSide] = 0;
+          playSuperShot();
+          showBanner('⚡ SUPER CHUTE!', '#facc15');
+        }
+      }
+      L.movingFrames = 0;
+      L.lastTouchSide = null;
+      L.bouncesSinceTouch = 0;
     }
-  }, [gameState]);
+    syncHud();
+  }, [gameState, syncHud, showBanner]);
 
   // Preload team logos
   useEffect(() => {
@@ -122,6 +272,12 @@ export default function GameCanvas({
       }
     });
   }, [gameState.buttons]);
+
+  // First render of a match with an arena → announce it
+  useEffect(() => {
+    const a = local.current.world.arena;
+    if (a) showBanner(`🎪 Arena: ${a.name}`, '#fde68a', 2200);
+  }, [showBanner]);
 
   // ── Narration Audio Interval ──────────────────────────────────────────────
   useEffect(() => {
@@ -138,6 +294,38 @@ export default function GameCanvas({
     };
   }, []);
 
+  // ── Launch (shared by human, AI and touch) ──────────────────────────────
+
+  const launch = useCallback((btn: ButtonPiece, vx: number, vy: number, useSuper: boolean) => {
+    const L = local.current;
+    if (useSuper) {
+      vx *= SUPER_MULT; vy *= SUPER_MULT;
+      btn.superActive = true;
+      L.superMove = true;
+      L.meters.energy[btn.teamSide] = 0;
+      L.shake = 9;
+      playSuperShot();
+      showBanner('⚡ SUPER CHUTE!', '#facc15');
+    } else {
+      L.superMove = false;
+      playSlide();
+    }
+    btn.vx = vx;
+    btn.vy = vy;
+    L.phase            = 'moving';
+    L.movingFrames     = 0;
+    L.lastTouchSide    = null;
+    L.bouncesSinceTouch = 0;
+    L.superArmed       = false;
+    L.selectedButtonId = null;
+    L.dragStart = L.dragCurrent = null;
+    L.preview = null; L.previewKey = '';
+    // Sync phase to React so HUD updates
+    onStateChangeRef.current({ phase: 'moving', selectedButtonId: null });
+    syncHud();
+    return { vx, vy };
+  }, [syncHud, showBanner]);
+
   // ── AI ──────────────────────────────────────────────────────────────────
 
   useEffect(() => {
@@ -146,28 +334,62 @@ export default function GameCanvas({
     if (gameState.currentTurn === localSide) return; // human's turn
 
     if (aiTimerRef.current) clearTimeout(aiTimerRef.current);
+    if (aiTimer2Ref.current) clearTimeout(aiTimer2Ref.current);
+
     aiTimerRef.current = setTimeout(() => {
       const L = local.current;
       if (L.phase !== 'selecting' || L.currentTurn === localSide) return;
 
-      const launch = computeAILaunch(L.currentTurn, L.buttons, L.ball, gameState.aiDifficulty || 'medium');
-      const btn = L.buttons.find(b => b.id === launch.buttonId);
-      if (!btn) return;
+      // The AI plays hundreds of candidate launches forward before choosing.
+      // It works on a snapshot and thinks in ~12ms slices so the page never freezes.
+      const gen = aiDecisionSteps({
+        side: L.currentTurn,
+        buttons: L.buttons.map(b => ({ ...b })),
+        ball: { ...L.ball },
+        world: { arena: L.world.arena, powerups: L.world.powerups.slice() },
+        difficulty: gameState.aiDifficulty || 'medium',
+        energy: { ...L.meters.energy },
+      });
+      L.aiThink = { side: L.currentTurn, count: 0 };
 
-      btn.vx = launch.vx;
-      btn.vy = launch.vy;
-      L.phase = 'moving';
-      L.movingPhaseStartTime = Date.now();
-      L.selectedButtonId = null;
-      L.dragStart = null;
-      L.dragCurrent = null;
-      playSlide();
-      // Sync phase to React so HUD updates
-      onStateChangeRef.current({ phase: 'moving' });
-    }, 600 + Math.random() * 700);
+      const decided = (d: AIDecision) => {
+        const L1 = local.current;
+        L1.aiThink = null;
+        if (L1.phase !== 'selecting' || L1.currentTurn === localSide) return;
 
-    return () => { if (aiTimerRef.current) clearTimeout(aiTimerRef.current); };
-  }, [gameState.phase, gameState.currentTurn, gameState.mode, gameState.aiDifficulty, localSide]);
+        // Show the aim for a moment (arrow + thought bubble), then shoot
+        const now = Date.now();
+        const aimMs = 750;
+        L1.aiAim = { ...d, start: now, until: now + aimMs };
+
+        aiTimer2Ref.current = setTimeout(() => {
+          const L2 = local.current;
+          L2.aiAim = null;
+          if (L2.phase !== 'selecting' || L2.currentTurn === localSide) return;
+          const btn = L2.buttons.find(b => b.id === d.buttonId);
+          if (!btn) return;
+          launch(btn, d.vx, d.vy, d.useSuper && L2.meters.energy[btn.teamSide] >= 100);
+        }, aimMs);
+      };
+
+      const pump = () => {
+        const t0 = performance.now();
+        let r = gen.next();
+        while (!r.done && performance.now() - t0 < 12) r = gen.next();
+        if (r.done) { decided(r.value); return; }
+        if (local.current.aiThink) local.current.aiThink.count = r.value;
+        aiTimerRef.current = setTimeout(pump, 0);
+      };
+      pump();
+    }, 200 + Math.random() * 250);
+
+    return () => {
+      if (aiTimerRef.current) clearTimeout(aiTimerRef.current);
+      if (aiTimer2Ref.current) clearTimeout(aiTimer2Ref.current);
+      local.current.aiAim = null;
+      local.current.aiThink = null;
+    };
+  }, [gameState.phase, gameState.currentTurn, gameState.mode, gameState.aiDifficulty, localSide, launch]);
 
   // ── Main loop (physics + render) ────────────────────────────────────────
 
@@ -178,6 +400,130 @@ export default function GameCanvas({
     if (!ctx) return;
     const L = local.current;
     const now = Date.now();
+    const events: PhysEvent[] = [];
+
+    const burst = (x: number, y: number, n: number, color: string, speed = 3, size = 3) => {
+      for (let i = 0; i < n; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const s = speed * (0.35 + Math.random() * 0.65);
+        const max = 18 + Math.random() * 18;
+        L.particles.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: max, max, color, size });
+      }
+      if (L.particles.length > 400) L.particles.splice(0, L.particles.length - 400);
+    };
+
+    const handleEvents = () => {
+      let pushButtons = false;
+      for (const ev of events) {
+        if (ev.type === 'hit') {
+          if (ev.ball) {
+            L.lastTouchSide = ev.side ?? L.lastTouchSide;
+            L.bouncesSinceTouch = 0;
+          }
+          if (ev.power > 1.6) {
+            playKick(ev.power);
+            burst(ev.x, ev.y, Math.min(14, 3 + Math.floor(ev.power)), L.superMove ? '#fb923c' : '#ffffff', 1.5 + ev.power * 0.25, 2.5);
+            if (ev.power > 8) L.shake = Math.max(L.shake, Math.min(10, ev.power * 0.6));
+          }
+        } else if (ev.type === 'wall') {
+          L.bouncesSinceTouch++;
+          if (ev.power > 3) burst(ev.x, ev.y, 5, '#d9f99d', 2, 2);
+        } else if (ev.type === 'bumper') {
+          L.bouncesSinceTouch++;
+          L.bumperFlash[ev.index] = now;
+          playBumper();
+          burst(ev.x, ev.y, 10, '#f472b6', 3.5, 3);
+        } else if (ev.type === 'portal') {
+          playPortal();
+          burst(ev.x, ev.y, 14, '#c084fc', 3, 3);
+          burst(ev.tx, ev.ty, 14, '#c084fc', 3, 3);
+          L.trail = [];
+        } else if (ev.type === 'pickup') {
+          const text = applyPowerUp(ev.powerup.kind, ev.buttonId, ev.side, L.buttons, L.ball, L.meters, L.currentTurn);
+          const info = POWERUP_INFO[ev.powerup.kind];
+          playPowerUp();
+          burst(ev.powerup.x, ev.powerup.y, 26, info.color, 4.5, 3.5);
+          showBanner(text, info.color);
+          pushButtons = true;
+        }
+      }
+      if (pushButtons) {
+        syncHud();
+        if (L.phase !== 'moving') {
+          onStateChangeRef.current({ buttons: L.buttons.map(b => ({ ...b })), ball: { ...L.ball } });
+        }
+      }
+    };
+
+    const onGoalScored = (scorer: TeamSide) => {
+      L.phase = 'finished'; // stop simulation
+      playGoal();
+      // Play the scoring team's anthem
+      const gs = gameStateRef.current;
+      playTeamAnthem(scorer === 'A' ? gs.teamA : gs.teamB);
+
+      const ownGoal = L.lastTouchSide !== null && L.lastTouchSide !== scorer;
+      const title = ownGoal ? 'GOL CONTRA! 😱'
+        : L.superMove ? 'SUPER GOL! ⚡'
+        : L.bouncesSinceTouch > 0 ? 'GOLAÇO DE TABELA! 🧱'
+        : 'GOL! ⚽';
+      L.goalFlash = { scorer, until: now + 2000, title };
+      L.shake = 14;
+      burst(L.ball.x, L.ball.y, 60, '#fde047', 7, 4);
+      burst(L.ball.x, L.ball.y, 40, '#ffffff', 5, 3);
+
+      // Comeback mechanic: conceding charges the Super Chute
+      const conceding: TeamSide = scorer === 'A' ? 'B' : 'A';
+      L.meters.energy[conceding] = Math.min(100, L.meters.energy[conceding] + ENERGY_ON_CONCEDE);
+      L.superArmed = false;
+      L.superMove = false;
+      L.trail = [];
+      syncHud();
+      onGoalRef.current(scorer);
+    };
+
+    const endTurn = () => {
+      const side = L.currentTurn;
+      if (L.movingFrames >= TURN_FRAME_LIMIT) {
+        L.buttons.forEach(b => { b.vx = 0; b.vy = 0; });
+        L.ball.vx = 0; L.ball.vy = 0;
+      }
+      endOfTurnEffects(L.buttons, side);
+      L.meters.energy[side] = Math.min(100, L.meters.energy[side] + ENERGY_PER_TURN);
+
+      let nextTurn: TeamSide = side === 'A' ? 'B' : 'A';
+      if (L.meters.extraTurns[side] > 0) {
+        L.meters.extraTurns[side] -= 1;
+        nextTurn = side;
+        showBanner('🔁 JOGADA EXTRA!', '#4ade80');
+      }
+      ensurePlayable(L.buttons, nextTurn);
+
+      L.turnCount++;
+      if (L.modifiers?.poderes && L.turnCount % 2 === 0 && L.world.powerups.length < 2) {
+        const pu = spawnPowerUp(L.buttons, L.ball, L.world);
+        if (pu) {
+          L.world.powerups.push(pu);
+          playPowerSpawn();
+          burst(pu.x, pu.y, 12, POWERUP_INFO[pu.kind].color, 2.5, 2.5);
+        }
+      }
+
+      L.phase       = 'selecting';
+      L.currentTurn = nextTurn;
+      L.selectedButtonId = null;
+      L.superMove   = false;
+      // Push final positions + new turn to React
+      onStateChangeRef.current({
+        buttons:         L.buttons.map(b => ({ ...b })),
+        ball:            { ...L.ball },
+        phase:           'selecting',
+        currentTurn:     nextTurn,
+        selectedButtonId: null,
+        intruders:       L.intruders.map(i => ({ ...i })),
+      });
+      syncHud();
+    };
 
     // Spawn intruder logic (max 2 active)
     if (L.modifiers?.intrusoNoCampo && L.phase !== 'finished') {
@@ -197,49 +543,31 @@ export default function GameCanvas({
 
     // ─ Physics ────────────────────────────────────────────────────────────
     if (L.phase === 'moving') {
-      const scorer = stepPhysics(L.buttons, L.ball); // mutates in place, returns goal or null
+      // Dramatic slow motion when a fast ball is about to reach a goal mouth
+      const bs = Math.hypot(L.ball.vx, L.ball.vy);
+      const nearGoal = bs > 2.5 && Math.abs(L.ball.y - FIELD.HEIGHT / 2) < 75 && (
+        (L.ball.vx < 0 && L.ball.x < 120) || (L.ball.vx > 0 && L.ball.x > FIELD.WIDTH - 120));
+      L.slowTick = nearGoal ? (L.slowTick + 1) % 3 : 0;
 
-      if (scorer) {
-        L.phase = 'finished'; // stop simulation
-        playGoal();
-        // Play the scoring team's anthem
-        const gs = gameStateRef.current;
-        const scoringTeamId = scorer === 'A' ? gs.teamA : gs.teamB;
-        playTeamAnthem(scoringTeamId);
-        L.goalFlash = { scorer, until: Date.now() + 2000 };
-        onGoalRef.current(scorer);
-      } else if (!isMoving(L.buttons, L.ball) || (Date.now() - L.movingPhaseStartTime > 3500)) {
-        // Movement stopped or 3.5s timeout reached → end turn
-        const nextTurn: 'A' | 'B' = L.currentTurn === 'A' ? 'B' : 'A';
-        L.phase       = 'selecting';
-        L.currentTurn = nextTurn;
-        L.selectedButtonId = null;
-        if (Date.now() - L.movingPhaseStartTime > 3500) {
-          L.buttons.forEach(b => { b.vx = 0; b.vy = 0; });
-          L.ball.vx = 0; L.ball.vy = 0;
+      if (!nearGoal || L.slowTick === 0) {
+        const scorer = stepPhysics(L.buttons, L.ball, L.world, events); // mutates in place
+        L.movingFrames++;
+        handleEvents();
+
+        if (scorer) {
+          onGoalScored(scorer);
+        } else if (!isMoving(L.buttons, L.ball) || L.movingFrames >= TURN_FRAME_LIMIT) {
+          // Movement stopped or 3.5s limit reached → end turn
+          endTurn();
         }
-        // Push final positions + new turn to React
-        onStateChangeRef.current({
-          buttons:         L.buttons.map(b => ({ ...b })),
-          ball:            { ...L.ball },
-          phase:           'selecting',
-          currentTurn:     nextTurn,
-          selectedButtonId: null,
-          intruders:       L.intruders.map(i => ({ ...i })),
-        });
       }
     } else if (L.phase === 'selecting' || L.phase === 'dragging') {
       // Simulate physics for moving pieces even during player turns, so they keep rolling!
       if (isMoving(L.buttons, L.ball)) {
-        const scorer = stepPhysics(L.buttons, L.ball);
+        const scorer = stepPhysics(L.buttons, L.ball, L.world, events);
+        handleEvents();
         if (scorer) {
-          L.phase = 'finished';
-          playGoal();
-          const gs = gameStateRef.current;
-          const scoringTeamId = scorer === 'A' ? gs.teamA : gs.teamB;
-          playTeamAnthem(scoringTeamId);
-          L.goalFlash = { scorer, until: Date.now() + 2000 };
-          onGoalRef.current(scorer);
+          onGoalScored(scorer);
         } else if (!isMoving(L.buttons, L.ball)) {
           // Finished rolling during turn → sync final positions
           onStateChangeRef.current({
@@ -250,13 +578,74 @@ export default function GameCanvas({
       }
     }
 
+    // Ball trail
+    const ballSpeed = Math.hypot(L.ball.vx, L.ball.vy);
+    if (ballSpeed > 2.2 && L.phase !== 'finished') {
+      L.trail.push({ x: L.ball.x, y: L.ball.y });
+      if (L.trail.length > 16) L.trail.shift();
+    } else if (L.trail.length) {
+      L.trail.shift();
+    }
+
+    // Aim preview (short simulated look-ahead while dragging)
+    if (L.phase === 'dragging' && L.selectedButtonId && L.dragCurrent) {
+      const sel = L.buttons.find(b => b.id === L.selectedButtonId);
+      if (sel) {
+        const key = `${sel.id}|${Math.round(L.dragCurrent.x)}|${Math.round(L.dragCurrent.y)}|${L.superArmed}`;
+        if (key !== L.previewKey) {
+          L.previewKey = key;
+          const dx = sel.x - L.dragCurrent.x;
+          const dy = sel.y - L.dragCurrent.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist >= 8) {
+            const force = Math.min(dist / (MAX_LAUNCH_FORCE * 5), 1) * MAX_LAUNCH_FORCE;
+            const trace: SimTrace = { button: [], ball: [] };
+            simulateLaunch(L.buttons, L.ball, L.world, sel.id, (dx / dist) * force, (dy / dist) * force, L.superArmed, 46, trace);
+            L.preview = trace;
+          } else {
+            L.preview = null;
+          }
+        }
+      }
+    } else if (L.preview) {
+      L.preview = null; L.previewKey = '';
+    }
+
     // ─ Render ─────────────────────────────────────────────────────────────
     ctx.clearRect(0, 0, FIELD.WIDTH, FIELD.HEIGHT);
+    ctx.save();
+    if (L.shake > 0.4) {
+      ctx.translate((Math.random() - 0.5) * L.shake, (Math.random() - 0.5) * L.shake);
+      L.shake *= 0.86;
+    } else {
+      L.shake = 0;
+    }
+
     drawField(ctx);
+    if (L.world.arena) drawArena(ctx, L.world.arena, now, L.bumperFlash);
+    L.world.powerups.forEach(pu => drawPowerUp(ctx, pu, now));
+
+    if (L.preview) drawPreview(ctx, L.preview, L.superArmed);
 
     if (L.phase === 'dragging' && L.selectedButtonId && L.dragCurrent) {
       const sel = L.buttons.find(b => b.id === L.selectedButtonId);
       if (sel) drawDragGuide(ctx, sel, L.dragCurrent);
+    }
+
+    // AI aiming: growing arrow on the chosen button
+    let aimBtn: ButtonPiece | undefined;
+    if (L.aiAim && now < L.aiAim.until) {
+      aimBtn = L.buttons.find(b => b.id === L.aiAim!.buttonId);
+      if (aimBtn) {
+        const t = Math.min(1, (now - L.aiAim.start) / 450);
+        const ease = 1 - Math.pow(1 - t, 3);
+        const sp = Math.hypot(L.aiAim.vx, L.aiAim.vy) || 1;
+        const pull = (sp / MAX_LAUNCH_FORCE) * MAX_LAUNCH_FORCE * 5 * ease;
+        drawDragGuide(ctx, aimBtn, {
+          x: aimBtn.x - (L.aiAim.vx / sp) * pull,
+          y: aimBtn.y - (L.aiAim.vy / sp) * pull,
+        });
+      }
     }
 
     // Draw intruders
@@ -265,16 +654,46 @@ export default function GameCanvas({
     }
 
     // Draw opponent buttons first (under own)
-    const opponents = L.buttons.filter(b => b.teamSide !== localSide);
-    const own       = L.buttons.filter(b => b.teamSide === localSide);
-    opponents.forEach(b => drawButton(ctx, b, false, imagesRef.current));
-    own.forEach(b       => drawButton(ctx, b, b.id === L.selectedButtonId, imagesRef.current));
+    const side = localSideRef.current;
+    const armedId = L.superArmed ? L.selectedButtonId : null;
+    L.buttons.filter(b => b.teamSide !== side)
+      .forEach(b => drawButton(ctx, b, b.id === aimBtn?.id, imagesRef.current, now, false));
+    L.buttons.filter(b => b.teamSide === side)
+      .forEach(b => drawButton(ctx, b, b.id === L.selectedButtonId, imagesRef.current, now, b.id === armedId));
 
-    drawBall(ctx, L.ball);
+    drawTrail(ctx, L.trail, L.ball.radius, L.superMove);
+    drawBall(ctx, L.ball, L.superMove && L.phase === 'moving');
+
+    // Particles
+    for (let i = L.particles.length - 1; i >= 0; i--) {
+      const p = L.particles[i];
+      p.x += p.vx; p.y += p.vy;
+      p.vx *= 0.93; p.vy *= 0.93;
+      p.life -= 1;
+      if (p.life <= 0) { L.particles.splice(i, 1); continue; }
+      ctx.globalAlpha = p.life / p.max;
+      ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * (0.4 + 0.6 * p.life / p.max), 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // AI thought bubble
+    if (L.aiAim && aimBtn && now < L.aiAim.until) drawBubble(ctx, aimBtn, L.aiAim.label);
+
+    ctx.restore(); // end of screen shake
+
+    // AI "thinking" indicator with the live count of simulated plays
+    if (L.aiThink) drawThinking(ctx, L.aiThink.side, L.aiThink.count, now);
+
+    // Banner (power-ups, arena name, extra turn...)
+    if (L.banner) {
+      if (now >= L.banner.until) L.banner = null;
+      else drawBanner(ctx, L.banner, now);
+    }
 
     // Goal flash overlay
-    if (L.goalFlash && Date.now() < L.goalFlash.until) {
-      const t = 1 - (L.goalFlash.until - Date.now()) / 2000;
+    if (L.goalFlash && now < L.goalFlash.until) {
+      const t = 1 - (L.goalFlash.until - now) / 2000;
       const pulse = Math.abs(Math.sin(t * Math.PI * 4));
       ctx.save();
       ctx.fillStyle = L.goalFlash.scorer === 'A'
@@ -282,76 +701,82 @@ export default function GameCanvas({
         : `rgba(255,60,0,${0.15 * pulse})`;
       ctx.fillRect(0, 0, FIELD.WIDTH, FIELD.HEIGHT);
 
-      ctx.font = 'bold 86px Inter, sans-serif';
+      const title = L.goalFlash.title;
+      ctx.font = `bold ${title.length > 10 ? 54 : 86}px Inter, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.shadowColor = 'rgba(0,0,0,0.9)';
       ctx.shadowBlur = 24;
       ctx.fillStyle = `rgba(255,255,255,${0.7 + 0.3 * pulse})`;
-      ctx.fillText('GOL! ⚽', FIELD.WIDTH / 2, FIELD.HEIGHT / 2);
+      const scale = 1 + 0.06 * pulse;
+      ctx.translate(FIELD.WIDTH / 2, FIELD.HEIGHT / 2);
+      ctx.scale(scale, scale);
+      ctx.fillText(title, 0, 0);
       ctx.restore();
-    } else if (L.goalFlash && Date.now() >= L.goalFlash.until) {
+    } else if (L.goalFlash && now >= L.goalFlash.until) {
       L.goalFlash = null;
     }
 
     rafRef.current = requestAnimationFrame(loop);
-  }, [localSide]);
+  }, [syncHud, showBanner]);
 
   useEffect(() => {
     rafRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(rafRef.current);
   }, [loop]);
 
+  // ── Super Chute arming (button + Space key) ─────────────────────────────
+
+  const toggleSuper = useCallback(() => {
+    const L = local.current;
+    if (L.phase !== 'selecting' && L.phase !== 'dragging') return;
+    if (L.currentTurn !== localSideRef.current) return;
+    if (L.meters.energy[L.currentTurn] < 100) return;
+    L.superArmed = !L.superArmed;
+    if (L.superArmed) playSuperArm();
+    syncHud();
+  }, [syncHud]);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.code !== 'Space') return;
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      e.preventDefault();
+      toggleSuper();
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [toggleSuper]);
+
   // ── Input ──────────────────────────────────────────────────────────────
 
-  function getPos(e: React.MouseEvent | React.TouchEvent): Vec2 {
-    const rect = canvasRef.current!.getBoundingClientRect();
-    const sx   = FIELD.WIDTH  / rect.width;
-    const sy   = FIELD.HEIGHT / rect.height;
-    let cx: number, cy: number;
-    if ('touches' in e && e.touches.length > 0) {
-      cx = e.touches[0].clientX; cy = e.touches[0].clientY;
-    } else if ('changedTouches' in e) {
-      cx = (e as React.TouchEvent).changedTouches[0].clientX;
-      cy = (e as React.TouchEvent).changedTouches[0].clientY;
-    } else {
-      cx = (e as React.MouseEvent).clientX;
-      cy = (e as React.MouseEvent).clientY;
-    }
-    return { x: (cx - rect.left) * sx, y: (cy - rect.top) * sy };
+  function getPosFromClient(clientX: number, clientY: number): Vec2 {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (clientX - rect.left) * (FIELD.WIDTH  / rect.width),
+      y: (clientY - rect.top)  * (FIELD.HEIGHT / rect.height),
+    };
   }
 
-  const handleDown = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    const L = local.current;
-    if (L.phase !== 'selecting') return;
-    if (L.currentTurn !== localSide) return;
+  function getPos(e: React.MouseEvent | React.TouchEvent): Vec2 {
+    if ('touches' in e && e.touches.length > 0) {
+      return getPosFromClient(e.touches[0].clientX, e.touches[0].clientY);
+    }
+    if ('changedTouches' in e) {
+      const t = (e as React.TouchEvent).changedTouches[0];
+      return getPosFromClient(t.clientX, t.clientY);
+    }
+    return getPosFromClient((e as React.MouseEvent).clientX, (e as React.MouseEvent).clientY);
+  }
 
-    const pos = getPos(e);
-    const hit = L.buttons.find(b =>
-      b.teamSide === L.currentTurn && Math.hypot(b.x - pos.x, b.y - pos.y) <= b.radius
-    );
-    if (!hit) return;
-
-    L.selectedButtonId = hit.id;
-    L.dragStart        = { x: hit.x, y: hit.y };
-    L.dragCurrent      = pos;
-    L.phase            = 'dragging';
-    // Lightweight React sync for HUD
-    onStateChangeRef.current({ phase: 'dragging', selectedButtonId: hit.id });
-  }, [localSide]);
-
-  const handleMove = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    const L = local.current;
-    if (L.phase !== 'dragging') return;
-    e.preventDefault();
-    L.dragCurrent = getPos(e);
-  }, []);
-
-  const handleUp = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+  /** Finishes a slingshot drag at `pos`: launches the button or cancels. */
+  const releaseDrag = useCallback((pos: Vec2) => {
     const L = local.current;
     if (L.phase !== 'dragging' || !L.selectedButtonId) return;
 
-    const pos = getPos(e);
     const btn = L.buttons.find(b => b.id === L.selectedButtonId);
     if (!btn) { L.phase = 'selecting'; return; }
 
@@ -370,75 +795,56 @@ export default function GameCanvas({
     }
 
     const force = Math.min(dist / (MAX_LAUNCH_FORCE * 5), 1) * MAX_LAUNCH_FORCE;
-    const vx = (dx / dist) * force;
-    const vy = (dy / dist) * force;
+    const useSuper = L.superArmed && L.meters.energy[btn.teamSide] >= 100;
+    const v = launch(btn, (dx / dist) * force, (dy / dist) * force, useSuper);
+    // The broadcast carries the boosted velocity, so the other side replays the Super Chute too
+    if (onLaunchRef.current) onLaunchRef.current(btn.id, v.vx, v.vy);
+  }, [launch]);
 
-    btn.vx = vx;
-    btn.vy = vy;
-    L.phase            = 'moving';
-    L.movingPhaseStartTime = Date.now();
-    L.selectedButtonId = null;
-    L.dragStart = L.dragCurrent = null;
+  const handleDown = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    const L = local.current;
+    if (L.phase !== 'selecting') return;
+    if (L.currentTurn !== localSideRef.current) return;
 
-    playSlide();
-    onStateChangeRef.current({ phase: 'moving', selectedButtonId: null });
+    const pos = getPos(e);
+    const hit = L.buttons.find(b =>
+      b.teamSide === L.currentTurn && Math.hypot(b.x - pos.x, b.y - pos.y) <= b.radius
+    );
+    if (!hit) return;
+    if (!canLaunch(hit)) {
+      showBanner('🧊 Botão congelado!', '#7dd3fc', 900);
+      return;
+    }
 
-    if (onLaunchRef.current) onLaunchRef.current(btn.id, vx, vy);
+    L.selectedButtonId = hit.id;
+    L.dragStart        = { x: hit.x, y: hit.y };
+    L.dragCurrent      = pos;
+    L.phase            = 'dragging';
+    // Lightweight React sync for HUD
+    onStateChangeRef.current({ phase: 'dragging', selectedButtonId: hit.id });
+  }, [showBanner]);
+
+  const handleMove = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    const L = local.current;
+    if (L.phase !== 'dragging') return;
+    e.preventDefault();
+    L.dragCurrent = getPos(e);
   }, []);
+
+  const handleUp = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    releaseDrag(getPos(e));
+  }, [releaseDrag]);
 
   // ── Global mouse listeners (keeps drag alive when cursor leaves canvas) ──
 
   useEffect(() => {
-    function getPosFromClient(clientX: number, clientY: number): Vec2 {
-      const canvas = canvasRef.current;
-      if (!canvas) return { x: 0, y: 0 };
-      const rect = canvas.getBoundingClientRect();
-      return {
-        x: (clientX - rect.left) * (FIELD.WIDTH  / rect.width),
-        y: (clientY - rect.top)  * (FIELD.HEIGHT / rect.height),
-      };
-    }
-
     function onWindowMove(e: MouseEvent) {
       const L = local.current;
       if (L.phase !== 'dragging') return;
       L.dragCurrent = getPosFromClient(e.clientX, e.clientY);
     }
-
     function onWindowUp(e: MouseEvent) {
-      const L = local.current;
-      if (L.phase !== 'dragging' || !L.selectedButtonId) return;
-
-      const pos = getPosFromClient(e.clientX, e.clientY);
-      const btn = L.buttons.find(b => b.id === L.selectedButtonId);
-      if (!btn) { L.phase = 'selecting'; return; }
-
-      const dx = btn.x - pos.x;
-      const dy = btn.y - pos.y;
-      const dist = Math.hypot(dx, dy);
-
-      if (dist < 8) {
-        L.phase = 'selecting';
-        L.selectedButtonId = null;
-        L.dragStart = L.dragCurrent = null;
-        onStateChangeRef.current({ phase: 'selecting', selectedButtonId: null });
-        return;
-      }
-
-      const force = Math.min(dist / (MAX_LAUNCH_FORCE * 5), 1) * MAX_LAUNCH_FORCE;
-      const vx = (dx / dist) * force;
-      const vy = (dy / dist) * force;
-
-      btn.vx = vx;
-      btn.vy = vy;
-      L.phase            = 'moving';
-      L.movingPhaseStartTime = Date.now();
-      L.selectedButtonId = null;
-      L.dragStart = L.dragCurrent = null;
-
-      playSlide();
-      onStateChangeRef.current({ phase: 'moving', selectedButtonId: null });
-      if (onLaunchRef.current) onLaunchRef.current(btn.id, vx, vy);
+      releaseDrag(getPosFromClient(e.clientX, e.clientY));
     }
 
     window.addEventListener('mousemove', onWindowMove);
@@ -447,21 +853,72 @@ export default function GameCanvas({
       window.removeEventListener('mousemove', onWindowMove);
       window.removeEventListener('mouseup',   onWindowUp);
     };
-  }, []); // runs once — handlers read from refs so they never go stale
+  }, [releaseDrag]);
+
+  const poderes = !!gameState.modifiers?.poderes;
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={FIELD.WIDTH}
-      height={FIELD.HEIGHT}
-      style={{ width: '100%', aspectRatio: `${FIELD.WIDTH}/${FIELD.HEIGHT}`, cursor: 'crosshair', display: 'block' }}
-      className="rounded-lg touch-none select-none"
-      onMouseDown={handleDown}
-      /* move/up handled globally via window listeners above */
-      onTouchStart={handleDown}
-      onTouchMove={handleMove}
-      onTouchEnd={handleUp}
-    />
+    <div className="bg-gray-900">
+      <canvas
+        ref={canvasRef}
+        width={FIELD.WIDTH}
+        height={FIELD.HEIGHT}
+        style={{ width: '100%', aspectRatio: `${FIELD.WIDTH}/${FIELD.HEIGHT}`, cursor: 'crosshair', display: 'block' }}
+        className="touch-none select-none"
+        onMouseDown={handleDown}
+        /* move/up handled globally via window listeners above */
+        onTouchStart={handleDown}
+        onTouchMove={handleMove}
+        onTouchEnd={handleUp}
+      />
+
+      {/* Super Chute strip */}
+      <div className="flex items-center gap-3 px-3 py-2 border-t border-white/10">
+        <EnergyBar value={hud.eA} color={hud.colorA} />
+        <button
+          type="button"
+          id="btn-super-chute"
+          onClick={toggleSuper}
+          disabled={!hud.canArm}
+          className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-black tracking-wide transition-all ${
+            hud.armed
+              ? 'bg-yellow-400 text-gray-900 shadow-lg shadow-yellow-400/40 scale-105 animate-pulse'
+              : hud.canArm
+                ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-400/60 hover:bg-yellow-500/30'
+                : 'bg-white/5 text-white/30 border border-white/10 cursor-default'
+          }`}
+          title="Barra cheia = Super Chute (atalho: Espaço)"
+        >
+          {hud.armed ? '⚡ SUPER ARMADO — LANCE!' : hud.canArm ? '⚡ ATIVAR SUPER CHUTE' : '⚡ Super Chute'}
+        </button>
+        <EnergyBar value={hud.eB} color={hud.colorB} reverse />
+      </div>
+
+      {(poderes || hud.arena) && (
+        <div className="px-3 pb-2 text-[10px] text-white/40 flex flex-wrap gap-x-3 gap-y-0.5 justify-center">
+          {hud.arena && <span>🎪 Arena: <b className="text-white/60">{hud.arena}</b></span>}
+          {poderes && (Object.keys(POWERUP_INFO) as (keyof typeof POWERUP_INFO)[]).map(k => (
+            <span key={k}>{POWERUP_INFO[k].emoji} {POWERUP_INFO[k].desc}</span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EnergyBar({ value, color, reverse }: { value: number; color: string; reverse?: boolean }) {
+  const full = value >= 100;
+  return (
+    <div className={`flex-1 h-3 rounded-full bg-white/10 overflow-hidden flex ${reverse ? 'justify-end' : ''}`}>
+      <div
+        className={`h-full rounded-full transition-all duration-500 ${full ? 'animate-pulse' : ''}`}
+        style={{
+          width: `${Math.max(0, Math.min(100, value))}%`,
+          background: full ? 'linear-gradient(90deg,#facc15,#fb923c)' : color,
+          boxShadow: full ? '0 0 10px #facc15' : undefined,
+        }}
+      />
+    </div>
   );
 }
 
@@ -474,7 +931,7 @@ function drawField(ctx: CanvasRenderingContext2D) {
 
   // Grass
   ctx.fillStyle = '#2a7a30';
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(-20, -20, W + 40, H + 40);
 
   // Darker stripe pattern
   ctx.fillStyle = 'rgba(0,0,0,0.055)';
@@ -533,16 +990,217 @@ function drawField(ctx: CanvasRenderingContext2D) {
   ctx.restore();
 }
 
+function drawArena(ctx: CanvasRenderingContext2D, arena: ArenaLayout, now: number, flashes: number[]) {
+  ctx.save();
+
+  // Lama
+  for (const m of arena.mud) {
+    const g = ctx.createRadialGradient(m.x, m.y, 2, m.x, m.y, m.r);
+    g.addColorStop(0, 'rgba(92,58,24,0.95)');
+    g.addColorStop(0.75, 'rgba(105,70,32,0.85)');
+    g.addColorStop(1, 'rgba(105,70,32,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(m.x, m.y, m.r + 3, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(60,36,12,0.55)';
+    for (let i = 0; i < 5; i++) {
+      const a = i * 1.9 + 0.4;
+      ctx.beginPath();
+      ctx.arc(m.x + Math.cos(a) * m.r * 0.45, m.y + Math.sin(a) * m.r * 0.45, m.r * 0.16, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Aceleradores
+  for (const p of arena.boosts) {
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(34,211,238,0.16)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(103,232,249,0.7)'; ctx.lineWidth = 2;
+    ctx.setLineDash([6, 5]); ctx.lineDashOffset = -(now / 40) % 11; ctx.stroke(); ctx.setLineDash([]);
+
+    const ang = Math.atan2(p.dy, p.dx);
+    ctx.save();
+    ctx.translate(p.x, p.y); ctx.rotate(ang);
+    ctx.beginPath(); ctx.arc(0, 0, p.r - 2, 0, Math.PI * 2); ctx.clip();
+    ctx.strokeStyle = 'rgba(165,243,252,0.95)'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const shift = ((now / 12) % 22);
+    for (let i = -3; i <= 3; i++) {
+      const cx = i * 22 + shift;
+      ctx.beginPath(); ctx.moveTo(cx - 7, -10); ctx.lineTo(cx + 3, 0); ctx.lineTo(cx - 7, 10); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // Portais
+  for (const p of arena.portals) {
+    for (const [x, y] of [[p.ax, p.ay], [p.bx, p.by]] as const) {
+      const g = ctx.createRadialGradient(x, y, 1, x, y, p.r);
+      g.addColorStop(0, 'rgba(15,5,40,0.95)');
+      g.addColorStop(0.7, 'rgba(126,34,206,0.85)');
+      g.addColorStop(1, 'rgba(192,132,252,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, p.r + 5, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = 'rgba(233,213,255,0.9)'; ctx.lineWidth = 2;
+      for (let k = 0; k < 3; k++) {
+        const a0 = now / 260 + k * 2.1;
+        ctx.beginPath(); ctx.arc(x, y, p.r * (0.45 + k * 0.25), a0, a0 + 1.7); ctx.stroke();
+      }
+    }
+  }
+
+  // Bumpers
+  arena.bumpers.forEach((b, i) => {
+    const age = now - (flashes[i] || 0);
+    const flash = age < 220 ? 1 - age / 220 : 0;
+    const r = b.r * (1 + 0.22 * flash);
+    ctx.shadowColor = 'rgba(0,0,0,0.45)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+    const g = ctx.createRadialGradient(b.x - r * 0.3, b.y - r * 0.3, 1, b.x, b.y, r);
+    g.addColorStop(0, flash > 0 ? '#ffffff' : '#fda4af');
+    g.addColorStop(1, '#e11d48');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(b.x, b.y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowColor = 'transparent';
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(b.x, b.y, r - 1.5, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(b.x, b.y, r * 0.5, 0, Math.PI * 2); ctx.stroke();
+  });
+
+  ctx.restore();
+}
+
+function drawPowerUp(ctx: CanvasRenderingContext2D, pu: PowerUp, now: number) {
+  const info = POWERUP_INFO[pu.kind];
+  const bob = Math.sin(now / 260 + pu.x) * 2.5;
+  const pulse = 0.5 + 0.5 * Math.sin(now / 200 + pu.y);
+  const x = pu.x, y = pu.y + bob, r = pu.r;
+  ctx.save();
+  ctx.globalAlpha = 0.25 + 0.3 * pulse;
+  ctx.strokeStyle = info.color; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(x, y, r + 5 + pulse * 4, 0, Math.PI * 2); ctx.stroke();
+  ctx.globalAlpha = 1;
+  ctx.shadowColor = info.color; ctx.shadowBlur = 14;
+  ctx.fillStyle = 'rgba(17,24,39,0.92)';
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  ctx.shadowColor = 'transparent';
+  ctx.strokeStyle = info.color; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.font = '16px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#fff';
+  ctx.fillText(info.emoji, x, y + 1);
+  ctx.restore();
+}
+
+function drawPreview(ctx: CanvasRenderingContext2D, trace: SimTrace, superArmed: boolean) {
+  ctx.save();
+  const dots = (pts: Vec2[], color: string, r0: number) => {
+    for (let i = 0; i < pts.length; i++) {
+      ctx.globalAlpha = 0.75 * (1 - i / (pts.length + 2));
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(pts[i].x, pts[i].y, r0, 0, Math.PI * 2); ctx.fill();
+    }
+  };
+  dots(trace.button, superArmed ? '#fdba74' : '#ffffff', 2.6);
+  dots(trace.ball, '#fde047', 3.4);
+  ctx.restore();
+}
+
+function drawTrail(ctx: CanvasRenderingContext2D, trail: Vec2[], r: number, fire: boolean) {
+  if (trail.length < 2) return;
+  ctx.save();
+  for (let i = 0; i < trail.length; i++) {
+    const t = (i + 1) / trail.length;
+    ctx.globalAlpha = 0.32 * t;
+    ctx.fillStyle = fire ? (i % 2 ? '#fb923c' : '#fde047') : '#ffffff';
+    ctx.beginPath(); ctx.arc(trail[i].x, trail[i].y, r * (0.35 + 0.6 * t) * (fire ? 1.25 : 1), 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawBubble(ctx: CanvasRenderingContext2D, btn: ButtonPiece, label: string) {
+  ctx.save();
+  ctx.font = 'bold 12px Inter, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const w = ctx.measureText(label).width + 18;
+  const h = 24;
+  const above = btn.y - btn.radius - 22 > h;
+  const cx = Math.max(w / 2 + 6, Math.min(FIELD.WIDTH - w / 2 - 6, btn.x));
+  const cy = above ? btn.y - btn.radius - 22 : btn.y + btn.radius + 34;
+  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 8;
+  ctx.fillStyle = 'rgba(17,24,39,0.93)';
+  ctx.beginPath(); ctx.roundRect(cx - w / 2, cy - h / 2, w, h, 12); ctx.fill();
+  ctx.shadowColor = 'transparent';
+  ctx.strokeStyle = 'rgba(192,132,252,0.9)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.roundRect(cx - w / 2, cy - h / 2, w, h, 12); ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.fillText(label, cx, cy + 1);
+  ctx.restore();
+}
+
+function drawThinking(ctx: CanvasRenderingContext2D, side: TeamSide, count: number, now: number) {
+  const dots = '.'.repeat(1 + Math.floor(now / 300) % 3);
+  const text = count > 0 ? `🤖 analisando ${count} jogadas${dots}` : `🤖 pensando${dots}`;
+  ctx.save();
+  ctx.font = 'bold 12px Inter, sans-serif';
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = side === 'A' ? 'left' : 'right';
+  const w = ctx.measureText('🤖 analisando 8888 jogadas...').width + 20;
+  const x = side === 'A' ? 18 : FIELD.WIDTH - 18 - w;
+  const y = FIELD.HEIGHT - 30;
+  ctx.fillStyle = 'rgba(17,24,39,0.85)';
+  ctx.beginPath(); ctx.roundRect(x, y - 12, w, 24, 12); ctx.fill();
+  ctx.strokeStyle = 'rgba(192,132,252,0.8)'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.roundRect(x, y - 12, w, 24, 12); ctx.stroke();
+  ctx.fillStyle = '#e9d5ff';
+  ctx.fillText(text, side === 'A' ? x + 10 : x + w - 10, y + 1);
+  ctx.restore();
+}
+
+function drawBanner(
+  ctx: CanvasRenderingContext2D,
+  banner: { text: string; color: string; start: number; until: number },
+  now: number,
+) {
+  const inT = Math.min(1, (now - banner.start) / 180);
+  const outT = Math.min(1, (banner.until - now) / 300);
+  const a = Math.min(inT, outT);
+  ctx.save();
+  ctx.globalAlpha = a;
+  ctx.font = 'bold 26px Inter, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const w = ctx.measureText(banner.text).width + 36;
+  const y = 46 - (1 - inT) * 14;
+  ctx.fillStyle = 'rgba(10,10,20,0.78)';
+  ctx.beginPath(); ctx.roundRect(FIELD.WIDTH / 2 - w / 2, y - 21, w, 42, 21); ctx.fill();
+  ctx.strokeStyle = banner.color; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.roundRect(FIELD.WIDTH / 2 - w / 2, y - 21, w, 42, 21); ctx.stroke();
+  ctx.fillStyle = banner.color;
+  ctx.fillText(banner.text, FIELD.WIDTH / 2, y + 1);
+  ctx.restore();
+}
+
 function drawButton(
   ctx: CanvasRenderingContext2D,
   btn: ButtonPiece,
   selected: boolean,
   images: Map<string, HTMLImageElement>,
+  now: number,
+  superArmed: boolean,
 ) {
   const { x, y, radius: r, isGoalkeeper, primaryColor, logoUrl, shortName } = btn;
   const img = images.get(logoUrl);
+  const onFire = superArmed || !!btn.superActive;
 
   ctx.save();
+
+  // Super Chute aura
+  if (onFire) {
+    const pulse = 0.5 + 0.5 * Math.sin(now / 70);
+    ctx.beginPath(); ctx.arc(x, y, r + 7 + pulse * 4, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(251,146,60,${0.25 + 0.2 * pulse})`; ctx.fill();
+    ctx.beginPath(); ctx.arc(x, y, r + 4, 0, Math.PI * 2);
+    ctx.strokeStyle = '#facc15'; ctx.lineWidth = 3; ctx.stroke();
+  }
 
   // Shadow
   ctx.shadowColor   = 'rgba(0,0,0,0.5)';
@@ -574,6 +1232,12 @@ function drawButton(
     ctx.strokeStyle = '#FFD700'; ctx.lineWidth = 4; ctx.stroke();
   }
 
+  // Giant ring
+  if (btn.giantTurns) {
+    ctx.beginPath(); ctx.arc(x, y, r + (isGoalkeeper ? 7 : 3), 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(192,132,252,0.95)'; ctx.lineWidth = 2.5; ctx.stroke();
+  }
+
   // Selected glow
   if (selected) {
     ctx.beginPath(); ctx.arc(x, y, r + (isGoalkeeper ? 8 : 5), 0, Math.PI * 2);
@@ -584,6 +1248,17 @@ function drawButton(
   // Thin dark outline
   ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Frozen overlay
+  if (btn.frozenTurns) {
+    ctx.beginPath(); ctx.arc(x, y, r + 1, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(125,211,252,0.62)'; ctx.fill();
+    ctx.strokeStyle = '#e0f2fe'; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.font = `${Math.round(r * 0.95)}px sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#fff';
+    ctx.fillText('❄️', x, y + 1);
+  }
 
   // Name tag below
   const label = shortName.length > 9 ? shortName.slice(0, 9) : shortName;
@@ -600,16 +1275,20 @@ function drawButton(
   ctx.restore();
 }
 
-function drawBall(ctx: CanvasRenderingContext2D, ball: Ball) {
+function drawBall(ctx: CanvasRenderingContext2D, ball: Ball, fire: boolean) {
   const { x, y, radius: r } = ball;
   ctx.save();
 
-  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
+  if (fire) {
+    ctx.shadowColor = '#fb923c'; ctx.shadowBlur = 22;
+  } else {
+    ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
+  }
 
   const grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.35, 1, x, y, r);
   grad.addColorStop(0, '#ffffff');
-  grad.addColorStop(0.5, '#e0e0e0');
-  grad.addColorStop(1, '#888888');
+  grad.addColorStop(0.5, fire ? '#fde68a' : '#e0e0e0');
+  grad.addColorStop(1, fire ? '#f97316' : '#888888');
   ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fillStyle = grad; ctx.fill();
   ctx.shadowColor = 'transparent';
@@ -704,7 +1383,7 @@ function drawDragGuide(ctx: CanvasRenderingContext2D, btn: ButtonPiece, dragTo: 
 function drawIntruder(ctx: CanvasRenderingContext2D, intruder: Intruder) {
   const { x, y, radius: r, type, spawnTime } = intruder;
   ctx.save();
-  
+
   // Shadow
   ctx.shadowColor = 'rgba(0,0,0,0.4)';
   ctx.shadowBlur = 8;
@@ -725,7 +1404,7 @@ function drawIntruder(ctx: CanvasRenderingContext2D, intruder: Intruder) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('😆', x, y);
-    
+
     // Draw funny waving arms based on wave time
     const wave = Math.sin((Date.now() - spawnTime) / 100) * 10;
     ctx.strokeStyle = '#ff6b35';
@@ -741,7 +1420,7 @@ function drawIntruder(ctx: CanvasRenderingContext2D, intruder: Intruder) {
     ctx.moveTo(x + r, y);
     ctx.lineTo(x + r + 8, y - 5 - wave);
     ctx.stroke();
-    
+
   } else if (type === 'cachorro') {
     // Brown circle
     ctx.fillStyle = '#8B4513';
@@ -764,7 +1443,7 @@ function drawIntruder(ctx: CanvasRenderingContext2D, intruder: Intruder) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('🐕', x, y);
-    
+
   } else if (type === 'guarda') {
     // Blue circle
     ctx.fillStyle = '#1e3d59';
