@@ -104,6 +104,60 @@ export function playTeamAnthem(teamId: string, volume = 1): void {
 
 // ── Synthetic sounds ──────────────────────────────────────────────────────────
 
+/** Short synthesized tone sweep — building block for the arcade effects below. */
+function tone(
+  type: OscillatorType, f0: number, f1: number, dur: number, vol: number, delay = 0,
+) {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime + delay;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.setValueAtTime(f0, t);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+    gain.gain.setValueAtTime(vol, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    osc.start(t);
+    osc.stop(t + dur);
+  } catch (_) {}
+}
+
+/** Button/ball impact — louder and lower the harder the hit. */
+export function playKick(power: number) {
+  const p = Math.min(power / 14, 1);
+  tone('triangle', 170 + 90 * p, 60, 0.07 + 0.05 * p, 0.12 + 0.28 * p);
+}
+
+export function playBumper() {
+  tone('square', 520, 980, 0.09, 0.14);
+  tone('sine', 980, 1400, 0.08, 0.1, 0.05);
+}
+
+export function playPowerUp() {
+  [523, 659, 784, 1047].forEach((f, i) => tone('triangle', f, f * 1.01, 0.12, 0.2, i * 0.06));
+}
+
+export function playPowerSpawn() {
+  tone('sine', 900, 1500, 0.12, 0.1);
+}
+
+export function playSuperArm() {
+  tone('sawtooth', 180, 720, 0.28, 0.14);
+}
+
+export function playSuperShot() {
+  tone('sawtooth', 620, 70, 0.45, 0.26);
+  tone('square', 110, 40, 0.3, 0.22);
+}
+
+export function playPortal() {
+  tone('sine', 300, 1300, 0.16, 0.16);
+  tone('sine', 1300, 400, 0.16, 0.12, 0.1);
+}
+
 export function playWhistle() {
   try {
     const ctx = getCtx();
