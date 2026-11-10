@@ -5,7 +5,7 @@ import { preloadAnthem, playTeamAnthem, stopAnthem } from '@/game/sounds';
 
 interface TeamSelectProps {
   mode: 'online' | 'local' | 'ai';
-  aiDifficulty?: 'easy' | 'medium' | 'hard';
+  aiDifficulty?: 'easy' | 'medium' | 'hard' | 'legend';
   onSelect: (teamA: Team, teamB: Team) => void;
   onBack: () => void;
 }
@@ -63,7 +63,7 @@ export default function TeamSelect({ mode, aiDifficulty, onSelect, onBack }: Tea
             </p>
           )}
           {mode === 'ai' && (
-            <p className="text-green-400 font-bold">Escolha seu time — IA no nível <span className="capitalize">{aiDifficulty}</span></p>
+            <p className="text-green-400 font-bold">Escolha seu time — IA no nível <span>{aiDifficulty === 'easy' ? 'Fácil' : aiDifficulty === 'hard' ? 'Difícil' : aiDifficulty === 'legend' ? 'Lendário' : 'Médio'}</span></p>
           )}
           {mode === 'online' && (
             <p className="text-blue-400 font-bold">🌐 Escolha <u>seu</u> time — o adversário escolherá o dele</p>
