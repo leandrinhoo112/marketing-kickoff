@@ -31,6 +31,10 @@ function buildInitialState(
   roomCode?: string,
   modifiers?: GameModifiers
 ): GameState {
+  // Arena and power-ups rely on local randomness, so they stay off in online matches
+  if (modifiers && mode === 'online') {
+    modifiers = { ...modifiers, arenaMaluca: false, poderes: false };
+  }
   const { buttons, ball } = getInitialPositions(
     teamA.id, teamB.id,
     teamA.players.map(p => p.shortName),
@@ -52,11 +56,11 @@ function buildInitialState(
     modifiers,
     intruders: [],
     eliminatedButtons: [],
+    matchId: Date.now() + Math.random(),
   };
 }
 
 function resetPositions(prev: GameState, nextTurn: 'A' | 'B'): Partial<GameState> {
-  console.log("DEBUG: resetPositions called. Excluded IDs:", prev.eliminatedButtons);
   const ta = TEAMS.find(t => t.id === prev.teamA)!;
   const tb = TEAMS.find(t => t.id === prev.teamB)!;
   const { buttons, ball } = getInitialPositions(
@@ -86,7 +90,7 @@ export default function App() {
   const [opponentJoined, setOpponentJoined] = useState(false);
   const [connStatus, setConnStatus] = useState<'idle' | 'connecting' | 'connected' | 'disconnected'>('idle');
   const [mySelectedTeam, setMySelectedTeam] = useState<Team | null>(null);
-  const [modifiers, setModifiers]   = useState<GameModifiers>({ intrusoNoCampo: false, ultimoBotao: false });
+  const [modifiers, setModifiers]   = useState<GameModifiers>({ intrusoNoCampo: false, ultimoBotao: false, arenaMaluca: false, poderes: false });
   const [pendingEliminationSide, setPendingEliminationSide] = useState<'A' | 'B' | null>(null);
   const [isLegendaryWinner, setIsLegendaryWinner] = useState(false);
 
@@ -528,15 +532,15 @@ function HomeScreen({ onSelectMode, aiDifficulty, onAiDifficultyChange, modifier
               <div className="flex-1">
                 <div className="font-black text-lg">vs Computador</div>
                 <div className="text-sm opacity-70">
-                  Dificuldade: <span className="font-bold capitalize">{aiDifficulty === 'easy' ? 'Fácil' : aiDifficulty === 'medium' ? 'Médio' : 'Difícil'}</span>
+                  Dificuldade: <span className="font-bold capitalize">{aiDifficulty === 'easy' ? 'Fácil' : aiDifficulty === 'medium' ? 'Médio' : aiDifficulty === 'hard' ? 'Difícil' : 'Lendário'}</span>
                 </div>
               </div>
               <span className="text-white/40 text-sm">{showAI ? '▲' : '▼'}</span>
             </button>
 
             {showAI && (
-              <div className="flex gap-2 px-1">
-                {(['easy', 'medium', 'hard'] as AIDifficulty[]).map(d => (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-1">
+                {(['easy', 'medium', 'hard', 'legend'] as AIDifficulty[]).map(d => (
                   <button
                     key={d}
                     id={`btn-ai-${d}`}
@@ -547,10 +551,15 @@ function HomeScreen({ onSelectMode, aiDifficulty, onAiDifficultyChange, modifier
                         : 'bg-purple-900/40 text-purple-300 hover:bg-purple-800/60 hover:text-white'
                     }`}
                   >
-                    {d === 'easy' ? '😊 Fácil' : d === 'medium' ? '😐 Médio' : '😈 Difícil'}
+                    {d === 'easy' ? '😊 Fácil' : d === 'medium' ? '😐 Médio' : d === 'hard' ? '😈 Difícil' : '👑 Lendário'}
                   </button>
                 ))}
               </div>
+            )}
+            {showAI && (
+              <p className="text-white/35 text-[10px] leading-snug px-2">
+                🧠 A IA simula centenas de jogadas com a física real antes de chutar. No Lendário ela ainda prevê a sua resposta.
+              </p>
             )}
           </div>
         </div>
@@ -581,6 +590,40 @@ function HomeScreen({ onSelectMode, aiDifficulty, onAiDifficultyChange, modifier
             <label className="flex items-start gap-3 cursor-pointer group">
               <input
                 type="checkbox"
+                checked={modifiers.arenaMaluca}
+                onChange={(e) => onModifiersChange({ ...modifiers, arenaMaluca: e.target.checked })}
+                className="mt-0.5 w-4 h-4 rounded border-white/20 bg-gray-800 text-pink-500 focus:ring-0 cursor-pointer"
+              />
+              <div>
+                <div className="text-white text-xs font-bold group-hover:text-pink-400 transition-colors">
+                  🎪 Arena Maluca
+                </div>
+                <div className="text-white/40 text-[10px] leading-snug">
+                  Bumpers de pinball, lama, aceleradores e portais no gramado. A arena é sorteada a cada partida. (Local e vs Computador)
+                </div>
+              </div>
+            </label>
+
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={modifiers.poderes}
+                onChange={(e) => onModifiersChange({ ...modifiers, poderes: e.target.checked })}
+                className="mt-0.5 w-4 h-4 rounded border-white/20 bg-gray-800 text-yellow-500 focus:ring-0 cursor-pointer"
+              />
+              <div>
+                <div className="text-white text-xs font-bold group-hover:text-yellow-300 transition-colors">
+                  ✨ Poderes
+                </div>
+                <div className="text-white/40 text-[10px] leading-snug">
+                  Power-ups surgem no campo: ⚡ Turbo, 🧊 Gelo, 🐘 Gigante e 🔁 Jogada Extra. Quem encostar primeiro leva! (Local e vs Computador)
+                </div>
+              </div>
+            </label>
+
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
                 checked={modifiers.ultimoBotao}
                 onChange={(e) => onModifiersChange({ ...modifiers, ultimoBotao: e.target.checked })}
                 className="mt-0.5 w-4 h-4 rounded border-white/20 bg-gray-800 text-red-500 focus:ring-0 cursor-pointer"
@@ -596,6 +639,11 @@ function HomeScreen({ onSelectMode, aiDifficulty, onAiDifficultyChange, modifier
             </label>
           </div>
         </div>
+
+        <p className="text-white/40 text-[11px] mt-4 leading-snug">
+          ⚡ <b className="text-yellow-300/80">Super Chute</b>: a barra enche a cada jogada (e quando você leva gol).
+          Cheia, ative o botão ou aperte <b>Espaço</b> e lance com força extra!
+        </p>
 
         {/* Teams mini-preview */}
         <div className="mt-10 flex justify-center gap-3 flex-wrap">
