@@ -1015,7 +1015,11 @@ document.addEventListener('DOMContentLoaded', () => {
             window.renderVacationsList();
         }
 
+        // Folgas individuais (não quebram a ofensiva só de quem estava de folga)
+        (USER_DAYOFFS[currentUserNorm] || []).forEach(d => vacationDates.push(d));
+
         window.currentVacationDates = vacationDates;
+        window.currentCheckinDates = [...new Set(myCheckins.map(e => new Date(e.created_at).toLocaleDateString('en-CA')))];
         const streak = calculateStreak(myCheckins, vacationDates);
         
         const streakBadge = document.getElementById('streakBadge');
@@ -1057,6 +1061,12 @@ document.addEventListener('DOMContentLoaded', () => {
         '2026-11-20', // Consciência Negra
         '2026-12-25'  // Natal
     ];
+
+    // Folgas individuais por pessoa (nome normalizado, sem acento)
+    const USER_DAYOFFS = {
+        'LUIZ':   ['2026-11-13'], // Folga sexta 13/11
+        'YASMIM': ['2026-11-13']  // Folga sexta 13/11
+    };
 
     function calculateStreak(myCheckins, vacationDates = (window.currentVacationDates || [])) {
         if (!myCheckins.length) return 0;
@@ -1123,39 +1133,125 @@ document.addEventListener('DOMContentLoaded', () => {
         return streak;
     }
 
-    window.showStreakPopup = function(streak) {
-        const popup = document.getElementById('streakPopup');
-        const content = document.getElementById('streakPopupContent');
-        const number = document.getElementById('streakPopupNumber');
-        if (!popup) return;
+    // ===== POPUP DE OFENSIVA ESTILO DUOLINGO =====
+    window.showStreakPopup = function(streak, opts = {}) {
+        const celebrate = opts.celebrate !== false;
+        const old = document.getElementById('streakPopup');
+        if (old) old.remove();
 
-        popup.style.display = 'flex';
-        number.innerText = streak;
-        
-        setTimeout(() => {
-            content.style.transform = 'scale(1)';
-            number.style.opacity = '1';
-        }, 10);
-
-        if (window.confetti) {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#6841f1', '#ff5470', '#00e676', '#fdd835']
-            });
+        if (!document.getElementById('duoStreakStyles')) {
+            const st = document.createElement('style');
+            st.id = 'duoStreakStyles';
+            st.textContent = `
+            #streakPopup{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,#ff9600 0%,#ff4b4b 45%,#1a0b2e 100%);opacity:0;transition:opacity .3s;cursor:pointer;overflow:hidden;font-family:inherit}
+            #streakPopup.show{opacity:1}
+            #streakPopup .sp-rays{position:absolute;width:200vmax;height:200vmax;background:repeating-conic-gradient(rgba(255,255,255,.10) 0 10deg,transparent 10deg 20deg);animation:spSpin 18s linear infinite}
+            #streakPopup .sp-box{position:relative;text-align:center;color:#fff;display:flex;flex-direction:column;align-items:center;padding:0 16px}
+            #streakPopup .sp-flame{font-size:150px;line-height:1;filter:drop-shadow(0 0 30px #ffd900);transform:scale(0);animation:spPop .7s cubic-bezier(.2,1.6,.4,1) .15s forwards, spFlicker 1.2s ease-in-out .9s infinite}
+            #streakPopup .sp-num{font-size:120px;font-weight:900;line-height:1;margin-top:-10px;text-shadow:0 6px 0 #c43b00,0 0 30px rgba(255,217,0,.6);display:inline-block}
+            #streakPopup .sp-num.bump{animation:spBump .5s cubic-bezier(.2,1.8,.4,1)}
+            #streakPopup .sp-label{font-size:26px;font-weight:900;color:#ffd900;letter-spacing:2px;text-transform:uppercase;opacity:0;animation:spUp .5s ease .6s forwards}
+            #streakPopup .sp-week{display:flex;gap:10px;margin-top:28px;background:rgba(0,0,0,.25);padding:14px 18px;border-radius:20px;opacity:0;animation:spUp .5s ease .8s forwards}
+            #streakPopup .sp-day{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:800;color:rgba(255,255,255,.7)}
+            #streakPopup .sp-dot{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px;transform:scale(.6)}
+            #streakPopup .sp-dot.on{background:linear-gradient(#ffc800,#ff9600);box-shadow:0 4px 0 #c46a00;animation:spPop .45s cubic-bezier(.2,1.8,.4,1) both}
+            #streakPopup .sp-dot.ice{background:linear-gradient(#84d8ff,#1cb0f6);box-shadow:0 4px 0 #1480b5;animation:spPop .45s cubic-bezier(.2,1.8,.4,1) both}
+            #streakPopup .sp-dot.off{transform:scale(1)}
+            #streakPopup .sp-dot.today{outline:3px solid #fff;outline-offset:3px}
+            #streakPopup .sp-msg{margin-top:22px;font-size:18px;font-weight:700;max-width:340px;opacity:0;animation:spUp .5s ease 1.1s forwards}
+            #streakPopup .sp-btn{margin-top:26px;background:#58cc02;color:#fff;border:none;border-radius:16px;padding:16px 56px;font-size:18px;font-weight:900;letter-spacing:1px;box-shadow:0 5px 0 #46a302;cursor:pointer;text-transform:uppercase;opacity:0;animation:spUp .5s ease 1.3s forwards}
+            #streakPopup .sp-btn:active{transform:translateY(4px);box-shadow:0 1px 0 #46a302}
+            #streakPopup .sp-spark{position:absolute;font-size:22px;pointer-events:none;animation:spFly 1.4s ease-out forwards}
+            @keyframes spSpin{to{transform:rotate(360deg)}}
+            @keyframes spPop{0%{transform:scale(0)}100%{transform:scale(1)}}
+            @keyframes spFlicker{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.08) rotate(3deg)}}
+            @keyframes spBump{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
+            @keyframes spUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+            @keyframes spFly{0%{opacity:1;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(var(--rot))}}
+            @media (max-width:480px){#streakPopup .sp-flame{font-size:110px}#streakPopup .sp-num{font-size:90px}#streakPopup .sp-dot{width:30px;height:30px;font-size:16px}#streakPopup .sp-week{gap:6px;padding:10px}}
+            `;
+            document.head.appendChild(st);
         }
 
-        // Esconde depois de 4 segundos para a pessoa aproveitar a glória
+        // Semana atual (seg -> dom)
+        const toStr = d => d.toLocaleDateString('en-CA');
+        const today = new Date();
+        const todayStr = toStr(today);
+        const monday = new Date(today);
+        monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+        const checks = window.currentCheckinDates || [];
+        const vac = window.currentVacationDates || [];
+        const labels = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'];
+        let order = 0;
+        const week = labels.map((lab, i) => {
+            const d = new Date(monday); d.setDate(monday.getDate() + i);
+            const ds = toStr(d);
+            let cls = 'off', icon = '';
+            if (checks.includes(ds)) { cls = 'on'; icon = '🔥'; }
+            else if (ds < todayStr && (vac.includes(ds) || OFFICIAL_HOLIDAYS.includes(ds))) { cls = 'ice'; icon = '🧊'; }
+            const delay = cls === 'off' ? 0 : (0.9 + (order++) * 0.12);
+            return `<div class="sp-day"><span>${lab}</span><div class="sp-dot ${cls}${ds === todayStr ? ' today' : ''}" style="animation-delay:${delay}s">${icon}</div></div>`;
+        }).join('');
+
+        const msg = streak >= 30 ? 'LENDÁRIO! Ninguém segura essa chama! 🏆'
+            : streak >= 10 ? 'Você está pegando fogo! Continue assim! 💪'
+            : streak >= 5 ? 'Que sequência! O time está orgulhoso! 🚀'
+            : streak > 1 ? 'Mantenha a chama acesa amanhã também!'
+            : 'Começou! Volte amanhã para aumentar a ofensiva!';
+
+        const popup = document.createElement('div');
+        popup.id = 'streakPopup';
+        popup.innerHTML = `
+            <div class="sp-rays"></div>
+            <div class="sp-box">
+                <div class="sp-flame">🔥</div>
+                <div class="sp-num" id="streakPopupNumber">${celebrate ? Math.max(streak - 1, 0) : streak}</div>
+                <div class="sp-label">${streak === 1 ? 'dia de ofensiva!' : 'dias de ofensiva!'}</div>
+                <div class="sp-week">${week}</div>
+                <div class="sp-msg">${msg}</div>
+                <button class="sp-btn">Continuar</button>
+            </div>`;
+        document.body.appendChild(popup);
+        requestAnimationFrame(() => popup.classList.add('show'));
+
+        const box = popup.querySelector('.sp-box');
+        const sparks = (n) => {
+            const em = ['✨', '⭐', '🔥', '💥'];
+            for (let i = 0; i < n; i++) {
+                const s = document.createElement('span');
+                s.className = 'sp-spark';
+                s.textContent = em[i % em.length];
+                const a = Math.random() * Math.PI * 2, r = 120 + Math.random() * 180;
+                s.style.cssText = `left:50%;top:90px;--dx:${Math.cos(a) * r}px;--dy:${Math.sin(a) * r}px;--rot:${Math.random() * 360}deg`;
+                box.appendChild(s);
+                setTimeout(() => s.remove(), 1500);
+            }
+        };
+
+        // Número sobe com "bump" + explosão
+        const numEl = popup.querySelector('.sp-num');
         setTimeout(() => {
-            content.style.transform = 'scale(0.8)';
-            content.style.opacity = '0';
-            setTimeout(() => {
-                popup.style.display = 'none';
-                content.style.opacity = '1';
-                content.style.transform = 'scale(1)';
-            }, 300);
-        }, 4000);
+            numEl.textContent = streak;
+            numEl.classList.remove('bump'); void numEl.offsetWidth; numEl.classList.add('bump');
+            sparks(18);
+            if (window.confetti) {
+                confetti({ particleCount: 150, spread: 100, origin: { y: 0.45 }, zIndex: 100000, colors: ['#ff9600', '#ffc800', '#ff4b4b', '#58cc02', '#1cb0f6'] });
+                setTimeout(() => {
+                    confetti({ particleCount: 60, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, zIndex: 100000 });
+                    confetti({ particleCount: 60, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, zIndex: 100000 });
+                }, 300);
+            }
+            if (navigator.vibrate) { try { navigator.vibrate([40, 30, 80]); } catch (e) {} }
+        }, 800);
+
+        let closed = false;
+        const close = () => {
+            if (closed) return; closed = true;
+            popup.classList.remove('show');
+            setTimeout(() => popup.remove(), 300);
+        };
+        popup.addEventListener('click', close);
+        setTimeout(close, 7000);
     };
 
     window.updateMinigameAchievements = function(game) {
@@ -1992,7 +2088,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Re-calcular a streak rapidinho e somar 1 para mostrar o novo valor na hora
                         const myCheckins = allEntries.filter(e => decodeUser(e.username).name.toUpperCase() === currentUser);
                         const currentStreak = calculateStreak(myCheckins);
-                        showStreakPopup(currentStreak + 1);
+                        const tStr = new Date().toLocaleDateString('en-CA');
+                        const already = myCheckins.some(e => new Date(e.created_at).toLocaleDateString('en-CA') === tStr);
+                        window.currentCheckinDates = [...new Set([...(window.currentCheckinDates || []), tStr])];
+                        showStreakPopup(already ? currentStreak : currentStreak + 1, { celebrate: !already });
                     }
                     await sendTeamsAlert(entry); showToast("Enviado!");
                 }
