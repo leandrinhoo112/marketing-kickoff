@@ -1045,7 +1045,7 @@
         if (targetBadge) {
             targetBadge.innerHTML = gameState.isLocked 
                 ? `<span style="opacity:0.7; font-size:0.85em; display:block;">ALVO REVELADO</span>${round.target.name}: <strong>${round.target.display}</strong>`
-                : `<span style="opacity:0.7; font-size:0.85em; display:block;">ALVO A AJUSTAR</span>${round.target.name} <strong>(?)</strong>`;
+                : `<span style="opacity:0.7; font-size:0.85em; display:block;">ALVO A AJUSTAR</span>${round.target.name}`;
         }
 
         if (scaleIndicator) {
