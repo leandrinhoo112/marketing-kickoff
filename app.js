@@ -16,7 +16,7 @@ try {
     console.warn('localStorage access error:', e);
 }
 
-const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "JOÃO", "EDSON", "LUIZ", "JORGE", "MARIANA", "VANESSA", "BRUNO", "VITOR"];
+const TEAM_MEMBERS = ["LEANDRO", "IGOR", "YASMIM", "JOÃO", "EDSON", "LUIZ", "MARIANA", "VANESSA", "BRUNO", "VITOR"];
 
 
 let supabaseClient;
@@ -419,6 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (btn.dataset.target === 'tab-tutoriais') activeBg = '#f59e0b';
             else if (btn.dataset.target === 'tab-enquetes') activeBg = '#8e6eff';
             else if (btn.dataset.target === 'tab-planejamento') activeBg = '#8e6eff';
+            else if (btn.dataset.target === 'tab-presenca') activeBg = '#22c55e';
             
             btn.style.background = activeBg;
             btn.style.color = (btn.dataset.target === 'tab-radar' || btn.dataset.target === 'tab-minigame' || btn.dataset.target === 'tab-enquetes' || btn.dataset.target === 'tab-planejamento') ? 'white' : '#0f0a1e';
@@ -691,7 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Pega só o primeiro nome e limpa acentos (ex: JOÃO -> JOAO)
         const firstName = nameStr.split(' ')[0].toUpperCase();
         const normalized = firstName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        const validNames = ['BRUNO', 'EDSON', 'IGOR', 'JOAO', 'JORGE', 'LEANDRO', 'LUIZ', 'MARIANA', 'VANESSA', 'VITOR', 'YASMIM'];
+        const validNames = ['BRUNO', 'EDSON', 'IGOR', 'JOAO', 'LEANDRO', 'LUIZ', 'MARIANA', 'VANESSA', 'VITOR', 'YASMIM'];
         
         if (validNames.includes(normalized)) {
             const sound = new Audio(`${normalized}.wav`);
@@ -1017,6 +1018,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Folgas individuais (não quebram a ofensiva só de quem estava de folga)
         (USER_DAYOFFS[currentUserNorm] || []).forEach(d => vacationDates.push(d));
+
+        // Folgas e férias marcadas no Calendário de Presença (home office NÃO protege a ofensiva)
+        try {
+            const { data: ausData } = await window.supabaseClient
+                .from('sugestoes')
+                .select('username, sugestao')
+                .like('sugestao', 'AUSENCIA:%');
+            (ausData || []).forEach(item => {
+                if (norm(item.username) !== currentUserNorm) return;
+                try {
+                    const a = JSON.parse(item.sugestao.replace('AUSENCIA:', ''));
+                    if (a.type !== 'folga' && a.type !== 'ferias') return;
+                    const cur = new Date(a.start + 'T12:00:00');
+                    const end = new Date(a.end + 'T12:00:00');
+                    while (cur <= end) {
+                        vacationDates.push(cur.toLocaleDateString('en-CA'));
+                        cur.setDate(cur.getDate() + 1);
+                    }
+                } catch (e) {}
+            });
+        } catch (e) {
+            console.error("Erro ao carregar folgas do calendário:", e);
+        }
 
         window.currentVacationDates = vacationDates;
         window.currentCheckinDates = [...new Set(myCheckins.map(e => new Date(e.created_at).toLocaleDateString('en-CA')))];
