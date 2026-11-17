@@ -928,7 +928,6 @@ footer {
                     <option value="JOÃO">JOÃO</option>
                     <option value="EDSON">EDSON</option>
                     <option value="LUIZ">LUIZ</option>
-                    <option value="JORGE">JORGE</option>
                     <option value="MARIANA">MARIANA</option>
                     <option value="VANESSA">VANESSA</option>
                     <option value="BRUNO">BRUNO</option>
@@ -990,6 +989,9 @@ footer {
         <div class="tabs-container" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; flex-wrap: wrap;">
             <button class="tab-btn active" data-target="tab-radar" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: #6841f1; color: white;">
                 <i data-lucide="activity"></i> Radar Diário
+            </button>
+            <button class="tab-btn tab-presenca-btn" data-target="tab-presenca" style="padding: 12px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
+                <i data-lucide="calendar-check"></i> Quem vem hoje? <span id="presencaTodayCount" class="pz-badge">…</span>
             </button>
             <button class="tab-btn" data-target="tab-sucesso" style="padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; transition: all 0.3s; background: transparent; color: #a0aec0;">
                 <i data-lucide="star"></i> Sucesso Semanal
@@ -1207,7 +1209,6 @@ footer {
                             <option value="JOÃO">JOÃO</option>
                             <option value="EDSON">EDSON</option>
                             <option value="LUIZ">LUIZ</option>
-                            <option value="JORGE">JORGE</option>
                             <option value="MARIANA">MARIANA</option>
                             <option value="VANESSA">VANESSA</option>
                             <option value="BRUNO">BRUNO</option>
@@ -1253,7 +1254,6 @@ footer {
                                 <option value="JOÃO">JOÃO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
-                                <option value="JORGE">JORGE</option>
                                 <option value="MARIANA">MARIANA</option>
                                 <option value="VANESSA">VANESSA</option>
                                 <option value="BRUNO">BRUNO</option>
@@ -1390,7 +1390,6 @@ footer {
                                 <option value="JOÃO">JOÃO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
-                                <option value="JORGE">JORGE</option>
                                 <option value="MARIANA">MARIANA</option>
                                 <option value="VANESSA">VANESSA</option>
                                 <option value="BRUNO">BRUNO</option>
@@ -1415,7 +1414,6 @@ footer {
                                 <option value="JOÃO">JOÃO</option>
                                 <option value="EDSON">EDSON</option>
                                 <option value="LUIZ">LUIZ</option>
-                                <option value="JORGE">JORGE</option>
                                 <option value="MARIANA">MARIANA</option>
                                 <option value="VANESSA">VANESSA</option>
                                 <option value="BRUNO">BRUNO</option>
@@ -2148,6 +2146,88 @@ footer {
         </div>
     </section>
 
+    <!-- SEÇÃO: CALENDÁRIO DE PRESENÇA (FOLGAS / FÉRIAS / HOME OFFICE) -->
+    <style>
+        .tab-presenca-btn{border:2px solid #22c55e !important;animation:pzGlow 2.4s ease-in-out infinite}
+        @keyframes pzGlow{0%,100%{box-shadow:0 0 10px rgba(34,197,94,.25)}50%{box-shadow:0 0 22px rgba(34,197,94,.6)}}
+        .pz-badge{background:#22c55e;color:#0f0a1e;border-radius:999px;padding:2px 8px;font-size:.8em;margin-left:4px}
+        .pz-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:20px}
+        @media (max-width:900px){.pz-layout{grid-template-columns:1fr}}
+        .pz-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+        .pz-wd{text-align:center;font-size:.75em;font-weight:800;color:#a0aec0;text-transform:uppercase;padding:4px 0}
+        .pz-day{min-height:92px;text-align:left;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:6px;cursor:pointer;color:white;display:flex;flex-direction:column;gap:4px;font-family:inherit;transition:background .2s;min-width:0;overflow:hidden}
+        .pz-day:hover{background:rgba(255,255,255,.08)}
+        .pz-day.off{opacity:.45}
+        .pz-day.today{border-color:#22c55e;box-shadow:inset 0 0 0 1px #22c55e}
+        .pz-day.sel{background:rgba(104,65,241,.25);border-color:#8e6eff}
+        .pz-dn{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:.9em}
+        .pz-count{font-size:.7em;color:#a0aec0;font-weight:700}
+        .pz-hol{font-size:.65em;color:#ffd700;font-weight:700}
+        .pz-chips{display:flex;flex-wrap:wrap;gap:3px}
+        .pz-input{width:100%;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);color:white;padding:8px 10px;border-radius:8px;font-family:inherit;box-sizing:border-box}
+        .pz-input option{color:#0f0a1e}
+        .pz-types{display:flex;gap:6px;flex-wrap:wrap}
+        .pz-types label{flex:1;min-width:90px;text-align:center;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.12);cursor:pointer;font-size:.85em;font-weight:700;color:white}
+        .pz-types input{display:none}
+        .pz-types label:has(input:checked){background:var(--c);border-color:var(--c);color:#0f0a1e}
+        .pz-wds{gap:6px}.pz-wds label{flex:1;text-align:center;padding:6px 0;border-radius:8px;border:1px solid rgba(2,206,255,.35);color:#02ceff;font-size:.8em;font-weight:700;cursor:pointer}.pz-wds input{display:none}.pz-wds label:has(input:checked){background:#02ceff;color:#0f0a1e}
+        .pz-nav{background:rgba(255,255,255,.06);border:none;color:white;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+        @media (max-width:600px){.pz-day{min-height:64px;padding:4px}.pz-chips span{font-size:.6em !important}.pz-count{display:none}}
+    </style>
+    <section id="tab-presenca" class="tab-pane" style="display: none; max-width: 1400px; margin: 0 auto; padding: 0 15px 40px 15px;">
+        <div class="glass-card" style="padding: 22px; margin-bottom: 20px; border-left: 4px solid #22c55e;">
+            <h2 style="margin: 0 0 6px 0; color: #22c55e; display: flex; align-items: center; gap: 8px;"><i data-lucide="calendar-check"></i> Calendário de Presença</h2>
+            <p style="margin: 0; color: #a0aec0; font-size: 0.9em;">Marque folgas, férias e home office para todo mundo saber quem vem em cada dia. <strong style="color:#ff9f43">Folga</strong> e <strong style="color:#22c55e">férias</strong> protegem a ofensiva 🔥 · <strong style="color:#02ceff">home office</strong> é só para informar a presença.</p>
+        </div>
+        <div class="pz-layout">
+            <div class="glass-card" style="padding: 18px; min-width: 0;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap">
+                    <button id="presencaPrev" class="pz-nav">‹</button>
+                    <h3 id="presencaMonthTitle" style="margin:0;color:white;text-transform:capitalize"></h3>
+                    <div style="display:flex;gap:6px"><button id="presencaToday" class="pz-nav">Hoje</button><button id="presencaNext" class="pz-nav">›</button></div>
+                </div>
+                <div id="presencaGrid" class="pz-grid"></div>
+                <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.8em;color:#a0aec0">
+                    <span>🏢 = presenciais</span><span style="color:#02ceff">🏠 Home Office</span><span style="color:#ff9f43">😴 Folga</span><span style="color:#22c55e">🌴 Férias</span>
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+                <div id="presencaDetail" class="glass-card" style="padding: 18px;"></div>
+                <div class="glass-card" style="padding: 18px;">
+                    <h3 style="margin:0 0 12px 0;color:white;font-size:1.05em">➕ Marcar folga / férias / home office</h3>
+                    <form id="presencaForm" style="display:flex;flex-direction:column;gap:10px">
+                        <select id="pzPerson" class="pz-input"></select>
+                        <div class="pz-types">
+                            <label style="--c:#ff9f43"><input type="radio" name="pzType" value="folga" checked>😴 Folga</label>
+                            <label style="--c:#22c55e"><input type="radio" name="pzType" value="ferias">🌴 Férias</label>
+                            <label style="--c:#02ceff"><input type="radio" name="pzType" value="home">🏠 Home</label>
+                        </div>
+                        <div style="display:flex;gap:8px">
+                            <label style="flex:1;font-size:.75em;color:#a0aec0">De<input type="date" id="pzStart" class="pz-input" required></label>
+                            <label id="pzEndLabel" style="flex:1;font-size:.75em;color:#a0aec0">Até<input type="date" id="pzEnd" class="pz-input"></label>
+                        </div>
+                        <div id="pzRecWrap" style="display:none">
+                            <label style="display:flex;align-items:center;gap:8px;font-size:.85em;color:white;cursor:pointer"><input type="checkbox" id="pzRecurring"> 🔁 Repetir toda semana</label>
+                            <div id="pzWdWrap" class="pz-wds" style="display:none;margin-top:8px">
+                                <label><input type="checkbox" name="pzWd" value="1"><span>Seg</span></label>
+                                <label><input type="checkbox" name="pzWd" value="2"><span>Ter</span></label>
+                                <label><input type="checkbox" name="pzWd" value="3"><span>Qua</span></label>
+                                <label><input type="checkbox" name="pzWd" value="4"><span>Qui</span></label>
+                                <label><input type="checkbox" name="pzWd" value="5"><span>Sex</span></label>
+                            </div>
+                        </div>
+                        <input type="text" id="pzNote" class="pz-input" maxlength="80" placeholder="Observação (opcional)">
+                        <button id="pzSave" type="submit" class="btn-primary" style="background:#22c55e;color:#0f0a1e">Salvar</button>
+                    </form>
+                </div>
+                <div class="glass-card" style="padding: 18px;">
+                    <h3 style="margin:0 0 12px 0;color:white;font-size:1.05em">📋 Próximas marcações</h3>
+                    <div id="presencaMine" style="display:flex;flex-direction:column;gap:6px"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- SEÇÃO: PLANEJAMENTO ESTRATÉGICO 2026-2027 (HOSPEDAGEM DIRETA DO MARKETING-INSPIRAR-MAIN) -->
     <section id="tab-planejamento" class="tab-pane" style="display: none; max-width: 1400px; margin: 0 auto; padding: 0 15px 40px 15px;">
         <!-- Barra Superior de Controles -->
@@ -2242,7 +2322,6 @@ footer {
                     <option value="JOÃO">JOÃO</option>
                     <option value="EDSON">EDSON</option>
                     <option value="LUIZ">LUIZ</option>
-                    <option value="JORGE">JORGE</option>
                     <option value="MARIANA">MARIANA</option>
                     <option value="VANESSA">VANESSA</option>
                     <option value="BRUNO">BRUNO</option>
@@ -2348,7 +2427,6 @@ footer {
                         <option value="JOÃO">JOÃO</option>
                         <option value="EDSON">EDSON</option>
                         <option value="LUIZ">LUIZ</option>
-                        <option value="JORGE">JORGE</option>
                         <option value="MARIANA">MARIANA</option>
                         <option value="VANESSA">VANESSA</option>
                         <option value="BRUNO">BRUNO</option>
@@ -2462,7 +2540,8 @@ footer {
     <script src="o-meu-e-maior-items.js?v=1.0" defer></script>
 <script src="o-meu-e-maior-extra.js?v=1.0" defer></script>
     <script src="o-meu-e-maior.js?v=1.0" defer></script>
-    <script src="app.js?v=87.0" defer></script>
+    <script src="app.js?v=89.0" defer></script>
+    <script src="presenca.js?v=1.2" defer></script>
     <script>
         lucide.createIcons();
     </script>
